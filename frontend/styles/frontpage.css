@@ -1,0 +1,372 @@
+/* Importing Google font - Open Sans */
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+}
+body {
+  height: 100vh;
+  width: 100%;
+  /* background: url("images/hero-bg.jpg") center/cover no-repeat; */
+}
+header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  padding: 0 10px;
+  background-color: #000;
+}
+.navbar {
+  display: flex;
+  padding: 22px 0;
+  align-items: center;
+  max-width: 1200px;
+  margin: 0 auto;
+  justify-content: space-between;
+}
+.navbar .hamburger-btn {
+  display: none;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+.navbar .logo {
+  gap: 10px;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+.navbar .logo img {
+  width: 40px;
+  border-radius: 50%;
+}
+.navbar .logo h2 {
+  color: #ffffff;
+  font-weight: 600;
+  font-size: 1.7rem;
+}
+.navbar .links {
+  display: flex;
+  gap: 35px;
+  list-style: none;
+  align-items: center;
+}
+.navbar .close-btn {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  display: none;
+  color: #000000;
+  cursor: pointer;
+}
+/*for navigating link to make them different color */
+.navbar .links a {
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: 0.1s ease;
+}
+.navbar .links .aboutus-link {
+  color: #ec202a;
+  font-size: medium;
+  font-weight: bolder;
+}
+.navbar .links .contactus-link {
+  color: #fcbf06;
+  font-size: medium;
+  font-weight: bolder;
+}
+.navbar .links .facebook-link {
+  color: #3775b9;
+  font-size: medium;
+  font-weight: bolder;
+}
+/*change color when hover */
+.navbar .links a:hover {
+  color: #19e8ff;
+}
+.navbar .login-btn {
+  border: none;
+  outline: none;
+  background: #36a13a;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 10px 18px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+.navbar .login-btn:hover {
+  background: #ddd;
+  color: #000;
+}
+/*For sections of the pages */
+/* General Full-Screen Styling */
+.section {
+  width: 100vw; /* Full viewport width */
+  height: 100vh; /* Full viewport height */
+  display: flex;
+  font-size: 2rem;
+  color: white;
+}
+
+/* First Section - Gallery Sliding Image (Under Development) */
+.galleryslidingimage {
+  display: none; /* Hide for now, will work on this later */
+  background-color: #2c3e50; /* Dark gray */
+}
+
+/* Second Section - Pricing List (Fully Visible) */
+.pricinglist {
+  background-color: #fff;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Moves content to the top */
+  padding: 20px 20px; /* Reduce top padding */
+}
+
+.pricinglist h1 {
+  margin-top: 2rem; /* Adjust this to move it up */
+  padding-top: 3.125rem;
+  padding-left: 1.875rem;
+  align-self: flex-start;
+  text-align: left;
+  width: 100%;
+  font-size: 2.5rem;
+  color: #000;
+}
+
+.pricing-container {
+  margin-top: 10px; /* Reduce space between h1 and container */
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2.1875rem;
+  max-width: 1800px;
+  width: 100%; /* Ensures full width */
+}
+
+/*use for border on pricing-box */
+.pricing-box {
+  background: #fff;
+  padding-top: 0px;
+  padding-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-align: center;
+  border: 10px solid; /* Default border */
+}
+.pricing-box h4 {
+  font-size: 1.875rem;
+  font-weight: bold;
+}
+.price {
+  font-weight: bolder;
+}
+/* Unique border colors */
+.pricing-box:nth-child(1) {
+  border-color: #ec202a; /* Red-Orange */
+}
+.pricing-box:nth-child(2) {
+  border-color: #36a13a; /* Green */
+}
+.pricing-box:nth-child(3) {
+  border-color: #3775b9; /* Blue */
+}
+
+/* Different colors for each plan */
+/* Different colors for each plan */
+.pricing-box:nth-child(1) h4,
+.pricing-box:nth-child(1) ul li {
+  color: #ec202a;
+}
+
+.pricing-box:nth-child(2) h4,
+.pricing-box:nth-child(2) ul li {
+  color: #36a13a;
+}
+.pricing-box:nth-child(3) h4,
+.pricing-box:nth-child(3) ul li {
+  color: #3775b9;
+}
+
+/* Different colors for each paragraph */
+.pricing-box:nth-child(1) p {
+  color: #ffffff;
+  background-color: #ec202a;
+  padding: 10px 0; /* Add padding to fill background */
+  display: block; /* Ensure full width */
+}
+
+.pricing-box:nth-child(2) p {
+  color: #ffffff;
+  background-color: #36a13a;
+  padding: 10px 0;
+  display: block;
+}
+
+.pricing-box:nth-child(3) p {
+  color: #ffffff;
+  background-color: #3775b9;
+  padding: 10px 0;
+  display: block;
+}
+
+/* Extra: Center the text properly */
+.pricing-box p {
+  font-size: 1.4rem;
+  font-weight: bold;
+  width: 100%; /* Makes sure the background color fills the width */
+  text-align: center; /* Centers text */
+}
+
+/* Style the ul list */
+.pricing-box ul {
+  padding-left: 30px;
+}
+
+/* Style each li */
+.pricing-box ul li {
+  font-size: 18px;
+  padding: 8px 0;
+}
+/* For Button Styles */
+.pricing-box button {
+  font-size: 1rem;
+  font-weight: bold;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: 0.3s ease;
+  width: 50%;
+  margin-top: 0.9375rem;
+}
+
+/* Bronze Plan Button */
+.pricing-box:nth-child(1) button {
+  background-color: #ec202a;
+  color: #fff;
+}
+
+.pricing-box:nth-child(1) button:hover {
+  background-color: #ff3b3b;
+}
+
+/* Silver Plan Button */
+.pricing-box:nth-child(2) button {
+  background-color: #36a13a;
+  color: #fff;
+}
+
+.pricing-box:nth-child(2) button:hover {
+  background-color: #45c64a;
+}
+
+/* Gold Plan Button */
+.pricing-box:nth-child(3) button {
+  background-color: #3775b9;
+  color: #fff;
+}
+
+.pricing-box:nth-child(3) button:hover {
+  background-color: #5592d1;
+}
+/* Make Footer Always Visible */
+footer {
+  width: 100%;
+  padding: 20px 0;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 1000; /* Ensure it stays on top */
+}
+
+/* Style Footer Image */
+.footer img {
+  width: 150px; /* Resize as needed */
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+/*For laptops */
+@media (max-width: 950px) {
+  .navbar :is(.hamburger-btn, .close-btn) {
+    display: block;
+  }
+  .navbar {
+    padding: 15px 0;
+  }
+  .navbar .logo img {
+    display: none;
+  }
+  .navbar .logo h2 {
+    font-size: 1.4rem;
+  }
+  .navbar .links {
+    position: fixed;
+    top: 0;
+    z-index: 10;
+    left: -100%;
+    display: block;
+    height: 100vh;
+    width: 100%;
+    padding-top: 60px;
+    text-align: center;
+    background: #fff;
+    transition: 0.2s ease;
+  }
+  .navbar .links.show-menu {
+    left: 0;
+  }
+  .navbar .links a {
+    display: inline-flex;
+    margin: 20px 0;
+    font-size: 1.2rem;
+  }
+  .navbar .links a:hover {
+    color: #00bcd4;
+  }
+  .navbar .login-btn {
+    font-size: 0.9rem;
+    padding: 7px 10px;
+  }
+  .pricinglist h1 {
+    font-size: 1.5625rem;
+    margin-top: 3.75rem; /* Adjust size as needed */
+    padding: 0;
+  }
+}
+/*For smartphones */
+@media (max-width: 760px) {
+  .section {
+    height: auto;
+    min-height: 100vh;
+    padding: 0.625rem;
+  }
+  .pricinglist h1 {
+    font-size: 1.25rem; /* Adjust size as needed */
+    text-align: center;
+    padding: 0;
+  }
+  .pricing-container {
+    grid-template-columns: 1fr; /* 1 column on small screens */
+    width: auto;
+    height: auto;
+  }
+  footer {
+    display: none;
+  }
+}

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lynx Fiber Internet</title>
+    <!-- Google Fonts Link For Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Sigmar&display=swap"
+      rel="stylesheet"
+    />
+    <!--For icons link hamburger-->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded"
+      rel="stylesheet"
+    />
+    <!--Change the default icon of the xampp-->
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="frontend/assets/images/icons/lynxicon.ico"
+    />
+    <link rel="stylesheet" href="frontend/styles/frontpage.css" />
+    <script src="scripts/hamburger.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <span class="hamburger-btn material-symbols-rounded">menu</span>
+        <a href="#" class="logo">
+          <img src="frontend/assets/images/logos/Lynx_logo.png" alt="logo" />
+          <h2>L.Y.N.X</h2>
+        </a>
+        <ul class="links">
+          <span class="close-btn material-symbols-rounded">close</span>
+          <li><a href="#" class="aboutus-link">ABOUT US</a></li>
+          <li><a href="#" class="contactus-link">CONTACT US</a></li>
+          <li><a href="#" class="facebook-link">FACEBOOK PAGE</a></li>
+        </ul>
+        <button class="login-btn">LOGIN</button>
+      </nav>
+    </header>
+
+    <!-- for hamburger menu-->
+    <div class="blur-bg-overlay"></div>
+    <div class="form-popup">
+      <span class="close-btn material-symbols-rounded">close</span>
+    </div>
+
+    <!--Sliding section rezada i add template-->
+    <div class="section galleryslidingimage">
+      <h1>Gallery Sliding Image For Lynx (Under Development)</h1>
+    </div>
+    <!--Second section-->
+    <div class="section pricinglist">
+      <h1>OUR PRICING LIST</h1>
+      <!--div for subscription prices-->
+      <div class="pricing-container">
+        <div class="pricing-box">
+          <h4>BRONZE</h4>
+          <p>
+            <span class="price">PHP 1199</span><br />
+            a month
+          </p>
+          <ul>
+            <li>Up to 50 Mbps</li>
+            <li>Unlimited Bandwidth</li>
+            <li>24/7 Support</li>
+          </ul>
+          <button class="bronze_plan">CHOOSE</button>
+        </div>
+        <div class="pricing-box">
+          <h4>SILVER</h4>
+          <p>
+            <span class="price">PHP 4199</span><br />
+            a month
+          </p>
+          <ul>
+            <li>Up to 100 Mbps</li>
+            <li>Unlimited Bandwidth</li>
+            <li>24/7 Support</li>
+          </ul>
+          <button class="silver_plan">CHOOSE</button>
+        </div>
+        <div class="pricing-box">
+          <h4>GOLD</h4>
+          <p>
+            <span class="price">PHP 1799</span><br />
+            a month
+          </p>
+          <ul>
+            <li>Up to 150 Mbps</li>
+            <li>Unlimited Bandwidth</li>
+            <li>24/7 Support</li>
+          </ul>
+          <button class="gold_plan">CHOOSE</button>
+        </div>
+      </div>
+    </div>
+    <footer>
+      <div class="footer">
+        <img
+          src="frontend/assets/images/logos/lynxfooter.png"
+          alt="lynx footer"
+        />
+      </div>
+    </footer>
+  </body>
+</html>
