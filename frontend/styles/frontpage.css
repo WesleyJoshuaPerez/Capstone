@@ -427,12 +427,19 @@ footer {
     padding: 0.625rem;
   }
   .galleryslidingimage {
-    height: 70vh;
+    height: 75vh;
   }
 
   .slide {
-    height: 70vh;
+    height: 75vh;
   }
+
+  .slide img {
+    object-fit: fill; /* Prevents cutting important parts of the image */
+    width: auto;
+    max-width: 100%;
+  }
+
   .prev,
   .next {
     font-size: 18px;
