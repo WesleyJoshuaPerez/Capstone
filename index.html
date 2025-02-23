@@ -23,7 +23,10 @@
       href="frontend/assets/images/icons/lynxicon.ico"
     />
     <link rel="stylesheet" href="frontend/styles/frontpage.css" />
+    <!--For hamburger menu-->
     <script src="scripts/hamburger.js" defer></script>
+    <!--For sliding images-->
+    <script src="scripts/slidingimages.js" defer></script>
   </head>
   <body>
     <header>
@@ -51,7 +54,30 @@
 
     <!--Sliding section rezada i add template-->
     <div class="section galleryslidingimage">
-      <h1>Gallery Sliding Image For Lynx (Under Development)</h1>
+      <div class="slider-wrapper">
+        <div class="slider-container">
+          <div class="slide">
+            <img
+              src="frontend/assets/images/slidingbackgrounds/slidingimg1.jpg"
+              alt="Slide 1"
+            />
+          </div>
+          <div class="slide">
+            <img
+              src="frontend/assets/images/slidingbackgrounds/slidingimg2.jpg"
+              alt="Slide 2"
+            />
+          </div>
+          <div class="slide">
+            <img
+              src="frontend/assets/images/slidingbackgrounds/slidingimg3.jpg"
+              alt="Slide 3"
+            />
+          </div>
+        </div>
+        <button class="prev" onclick="moveSlide(-1)">❮</button>
+        <button class="next" onclick="moveSlide(1)">❯</button>
+      </div>
     </div>
 
     <!--Second section-->
