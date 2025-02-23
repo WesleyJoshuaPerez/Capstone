@@ -403,7 +403,7 @@ footer {
 
   .slide img {
     object-fit: fill; /* Prevents cutting important parts of the image */
-    width: auto;
+    width: 100%;
     max-width: 100%;
   }
 
