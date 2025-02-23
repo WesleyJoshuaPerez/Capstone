@@ -13,6 +13,22 @@ function moveSlide(step) {
   }
 
   slides.style.transform = `translateX(-${currentIndex * 100}vw)`;
+  updateIndicators();
+}
+
+function goToSlide(index) {
+  currentIndex = index;
+  document.querySelector(".slider-container").style.transform = `translateX(-${
+    currentIndex * 100
+  }vw)`;
+  updateIndicators();
+}
+
+function updateIndicators() {
+  const dots = document.querySelectorAll(".dot");
+  dots.forEach((dot, index) => {
+    dot.classList.toggle("active", index === currentIndex);
+  });
 }
 
 // Auto-slide every 3.5 seconds
