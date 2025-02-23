@@ -467,16 +467,16 @@ footer {
 /*For smartphones */
 @media (max-width: 760px) {
   .section {
+    margin-top: 1.25rem;
     height: auto;
-    min-height: 100vh;
-    padding: 0.625rem;
+    min-height: 70vh;
   }
   .galleryslidingimage {
-    height: 75vh;
+    height: 70vh;
   }
 
   .slide {
-    height: 100vh;
+    height: 70vh;
   }
 
   .slide img {
