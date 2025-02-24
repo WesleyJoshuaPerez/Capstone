@@ -23,6 +23,7 @@
       href="frontend/assets/images/icons/lynxicon.ico"
     />
     <link rel="stylesheet" href="frontend/styles/frontpage.css" />
+    <link rel="stylesheet" href="frontend/styles/chatbot.css" />
     <!--For hamburger menu-->
     <script src="scripts/hamburger.js" defer></script>
     <!--For sliding images-->
@@ -144,6 +145,35 @@
         </div>
       </div>
     </div>
+    <!--For Chatbot-->
+    <div class="chatbot-container">
+      <div class="chatbot-window" id="chatWindow" style="display: none">
+        <div class="chat-header">
+          <img
+            src="frontend/assets/images/icons/chatbotprofile.png"
+            alt="Chatbot Icon"
+            class="chatbot-icon"
+          />
+          Chatbot
+          <button id="closeChatbot" onclick="closeChatbot()">✖</button>
+        </div>
+        <div class="chat-body" id="chatBody"></div>
+        <div class="chat-footer">
+          <input type="text" id="chatInput" placeholder="Type a message..." />
+          <button onclick="sendMessage()">Send</button>
+        </div>
+      </div>
+      <button id="chatToggle" class="chatbot-toggle" onclick="toggleChatbot()">
+        <img
+          src="frontend/assets/images/icons/chatboticon.png"
+          alt="Chat"
+          class="chat-icon"
+        />
+      </button>
+    </div>
+
+    <!--For ChatbotFunction-->
+    <script src="scripts/chatbot.js"></script>
     <footer>
       <div class="footer">
         <img
