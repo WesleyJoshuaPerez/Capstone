@@ -1,0 +1,247 @@
+/* Importing Google font - Open Sans */
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+h1 {
+  text-align: center;
+  margin-top: 40px;
+  font-size: 40px;
+}
+
+h2 {
+  position: relative;
+  left: 150px;
+  top: 110px;
+  font-size: 2rem;
+}
+
+p {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 16px;
+}
+
+.pricing-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  gap: 20px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Main Grid Container */
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* Two equal columns */
+  gap: 20px; /* Space between the bronze box and form */
+  max-width: 1200px;
+  width: 90%;
+  margin: 0 auto; /* Centering */
+  align-items: start; /* Aligns the top edges of both elements */
+}
+
+.pricing-box {
+  background: #fff;
+  padding-top: 0px;
+  padding-bottom: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: center;
+  border: 10px solid #ec202a;
+  width: 100%; /* Adjust width for responsiveness */
+  max-width: 400px;
+  position: relative;
+  margin-top: 150px; /* Keep the Bronze border slightly above */
+}
+
+.pricing-box h4 {
+  font-size: 1.875rem;
+  font-weight: bold;
+}
+.price {
+  font-weight: bolder;
+  font-size: 20px;
+}
+/* Unique border colors */
+.pricing-box:nth-child(1) {
+  border-color: #ec202a; /* Red-Orange */
+}
+
+/* Unique border colors */
+.pricing-box:nth-child(1) {
+  border-color: #ec202a; /* Red-Orange */
+}
+
+/* Different colors for each plan */
+.pricing-box h2 {
+  color: #ec202a;
+  position: relative;
+  top: 12px; /* Adjust position above the price */
+  left: 50%;
+  transform: translateX(-50%); /* Center horizontally */
+  background-color: white; /* Background to make it stand out */
+  padding: 5px 15px;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.pricing-box:nth-child(1) .price {
+  color: #ffffff;
+  background-color: #ec202a;
+  padding: 10px 0; /* Add padding to fill background */
+  display: block; /* Ensure full width */
+  font-style: italic;
+  font-size: 25px;
+}
+
+.form-container {
+  display: grid;
+  grid-template-columns: 1fr; /* Single column for form inputs */
+  gap: 10px;
+  width: 100%;
+  max-width: 500px;
+  position: relative;
+  top: 60px;
+  padding-bottom: 50px;
+}
+
+/* Labels and Inputs */
+.form-container label {
+  font-weight: bold;
+  text-align: left;
+}
+
+.form-container select,
+.form-container input {
+  width: 100%;
+  padding: 8px;
+  border: 2px solid black;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+/* Styling specifically for the dropdown */
+.form-container select {
+  -webkit-appearance: none; /* Removes default styling in Safari */
+  -moz-appearance: none; /* Removes default styling in Firefox */
+  appearance: none; /* Removes default styling in all browsers */
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="black" d="M7 10l5 5 5-5z"/></svg>'); 
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  background-size: 18px;
+  padding-right: 30px; /* Ensures space for the arrow */
+}
+
+/* Style specifically for the file input to match other inputs */
+.form-container input[type="file"] {
+  padding: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: white;
+}
+
+/* Container for Checkboxes */
+.consent-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Space between checkboxes */
+  font-size: 14px;
+  margin-top: 20px; /* Adds spacing from form */
+  max-width: 500px; /* Matches form width */
+  width: 100%;
+  align-items: flex-start; /* Aligns checkboxes with the form */
+}
+
+/* Style for Checkbox Labels */
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Space between checkbox and text */
+  width: 100%; /* Ensure full width */
+}
+
+/* Customize Checkbox */
+.checkbox-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  flex-shrink: 0; /* Prevents checkbox from resizing */
+}
+
+button {
+  border-radius: 5px;
+  background-color: #ec202a;
+  border: none;
+  position: relative;
+  top: 25px;  
+  padding-top: 10px;
+  padding-bottom: 10px;
+  color: white;
+  font-size: 25px;
+  font-family: "Open Sans", sans-serif;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #d81b24; /* Slightly darker red on hover */
+}
+
+/* Responsive Design */
+@media (max-width: 950px) {
+  .grid-container {
+    grid-template-columns: 1fr; /* Stack items on smaller screens */
+    text-align: center;
+  }
+
+  .pricing-box {
+    margin-top: 20px; /* Reset margin for smaller screens */
+  }
+
+  .form-container {
+    max-width: 100%;
+  }
+
+  .consent-container {
+    text-align: left;
+    width: 90%; /* Ensures consistency with form */
+    margin: 0 auto; /* Centers it */
+  }
+
+  /* Keep checkboxes aligned with form fields */
+  .checkbox-label {
+    justify-content: flex-start;
+  }
+}
+
+/* Small Screens - Stack Elements Vertically */
+@media (max-width: 760px) {
+  .flex-container {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .pricing-box {
+    width: 100%;
+    max-width: 90%;
+  }
+
+  .form-container {
+    width: 100%;
+    max-width: 90%;
+  }
+}
