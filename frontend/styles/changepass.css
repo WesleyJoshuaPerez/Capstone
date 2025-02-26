@@ -1,42 +1,51 @@
 /* Importing Google font - Open Sans */
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&display=swap");
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Open Sans", sans-serif;
 }
+
 body {
   overflow-x: hidden;
 }
-/*use to remove password hide unside default on edge */
+
+/* Remove password reveal icon in Edge */
 ::-ms-reveal {
   display: none;
 }
+
 h1 {
   color: #fcbf06;
   padding-bottom: 1.25rem;
   font-size: 3.125rem;
+  text-align: center;
 }
+
 .change-password-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; /* Align to the top */
+  justify-content: flex-start;
   height: 100vh;
   width: 100%;
-  margin-top: 3.125rem; /* Add spacing from the top */
+  margin-top: 3.125rem;
+  padding: 1rem;
 }
+
 .form-container {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Aligns content to the top */
-  width: 30rem;
-  height: auto;
+  justify-content: flex-start;
+  width: 90%;
+  max-width: 30rem;
   background-color: #fcbf06;
   border-radius: 0.625rem;
-  padding: 1.25rem; /* Adds spacing inside */
+  padding: 1.25rem;
 }
+
 .form-container label {
   display: block;
   text-align: left;
@@ -45,20 +54,22 @@ h1 {
   font-weight: bold;
   margin-bottom: 0.5rem;
 }
+
 .input_group {
   flex-direction: column;
   margin-bottom: 0.9375rem;
 }
+
 .form-container input {
-  align-self: center;
-  width: 27.5rem; /* Makes the input fill its container */
-  padding: 0.625rem; /* Adds spacing inside the input */
-  font-size: 1rem; /* Adjusts text size */
-  border: 0.125rem solid #ccc; /* Light gray border */
-  border-radius: 0.3125rem; /* Rounded corners */
-  outline: none; /* Removes default focus outline */
-  transition: all 0.3s ease; /* Smooth transition effect */
+  width: 100%;
+  padding: 0.625rem;
+  font-size: 1rem;
+  border: 0.125rem solid #ccc;
+  border-radius: 0.3125rem;
+  outline: none;
+  transition: all 0.3s ease;
 }
+
 .password-wrapper {
   position: relative;
   width: 100%;
@@ -66,7 +77,7 @@ h1 {
 
 .password-wrapper input {
   width: 100%;
-  padding-right: 2.5rem; /* Ensure space for the eye icon */
+  padding-right: 2.5rem;
 }
 
 .toggle-password {
@@ -80,77 +91,50 @@ h1 {
 }
 
 #update_button {
-  width: 12.5rem;
-  height: 4.0625rem;
+  width: 100%;
+  max-width: 12.5rem;
+  height: 4rem;
   font-weight: bolder;
   display: block;
-  margin: 0.625rem auto; /* Centers horizontally */
-  border: 0.125rem solid white; /* White border */
-  font-weight: bolder;
+  margin: 0.625rem auto;
+  border: 0.125rem solid white;
   border-radius: 0.625rem;
   background-color: #36a13a;
-  color: white; /* Ensures text is visible on green */
+  color: white;
   cursor: pointer;
-  position: relative;
   transition: all 0.3s ease;
 }
+
 /* Hover Effect */
 #update_button:hover {
   background-color: #ffffff;
-  border-color: #000000; /* Subtle change */
+  border-color: #000000;
   color: #000000;
 }
-/* Small Screens - Stack Elements Vertically */
+
+/* Responsive Adjustments */
 @media (max-width: 47.5rem) {
   h1 {
-    padding-bottom: 1.25rem;
     font-size: 1.5625rem;
   }
+
   .form-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start; /* Aligns content to the top */
-    width: 26.25rem;
-    height: auto;
-    background-color: #fcbf06;
-    border-radius: 0.625rem;
-    padding: 1.25rem; /* Adds spacing inside */
+    width: 90%;
+    max-width: 26.25rem;
+    padding: 1rem;
   }
+
   .form-container label {
-    display: block;
-    text-align: left;
-    color: #ffffff;
-    font-size: 1.1875rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
+    font-size: 1rem;
   }
-  .input_group {
-    flex-direction: column;
-    margin-bottom: 0.9375rem;
-  }
+
   .form-container input {
-    align-self: center;
-    width: 23.75rem; /* Makes the input fill its container */
-    padding: 0.625rem; /* Adds spacing inside the input */
-    margin-bottom: 0.625rem;
-    font-size: 1rem; /* Adjusts text size */
-    border: 0.125rem solid #ccc; /* Light gray border */
-    border-radius: 0.3125rem; /* Rounded corners */
-    outline: none; /* Removes default focus outline */
-    transition: all 0.3s ease; /* Smooth transition effect */
+    width: 100%;
   }
-  button {
-    width: 12.5rem;
-    height: 3.75rem;
-    display: block;
-    margin: 0.625rem auto; /* Centers horizontally */
-    border: 0.125rem solid white; /* White border */
-    font-weight: bolder;
-    border-radius: 0.625rem;
-    background-color: #36a13a;
-    color: white; /* Ensures text is visible on green */
-    cursor: pointer;
-    position: relative;
-    transition: all 0.3s ease;
+
+  #update_button {
+    width: 100%;
+    max-width: 12.5rem;
+    height: 3.5rem;
   }
 }
