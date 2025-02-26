@@ -1,40 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Function to toggle password visibility
-  function togglePasswordVisibility(passwordInput) {
-    if (passwordInput) {
-      const icon = passwordInput.nextElementSibling.querySelector("i");
-
-      if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-        icon.classList.remove("fa-eye");
-        icon.classList.add("fa-eye-slash");
-      } else {
-        passwordInput.type = "password";
-        icon.classList.remove("fa-eye-slash");
-        icon.classList.add("fa-eye");
-      }
-    }
-  }
-
-  // Toggle for login page
-  const loginToggleButton = document.getElementById("togglePassword");
-  if (loginToggleButton) {
-    loginToggleButton.addEventListener("click", function () {
-      const passwordInput = document.getElementById("password");
-      togglePasswordVisibility(passwordInput);
-    });
-  }
-
-  // Toggle for change password page
-  document.querySelectorAll(".toggle-password").forEach((toggleButton) => {
-    toggleButton.addEventListener("click", function () {
-      const passwordInput =
-        this.closest(".password-wrapper").querySelector("input");
-      togglePasswordVisibility(passwordInput);
-    });
-  });
-
-  // Change Password Page: Toggle Both Passwords
+  // Function to toggle password visibility for multiple inputs
   function togglePasswords() {
     const newPassword = document.getElementById("new-password");
     const confirmPassword = document.getElementById("confirm-password");
@@ -43,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
     if (newPassword && confirmPassword) {
       const isPassword = newPassword.type === "password";
 
+      // Toggle both fields
       newPassword.type = isPassword ? "text" : "password";
       confirmPassword.type = isPassword ? "text" : "password";
 
@@ -59,7 +25,22 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Attach event listeners for change password page buttons
+  // Toggle for login page (only affects the login password field)
+  const loginToggleButton = document.getElementById("togglePassword");
+  if (loginToggleButton) {
+    loginToggleButton.addEventListener("click", function () {
+      const passwordInput = document.getElementById("password");
+      const icon = this.querySelector("i");
+      if (passwordInput) {
+        passwordInput.type =
+          passwordInput.type === "password" ? "text" : "password";
+        icon.classList.toggle("fa-eye");
+        icon.classList.toggle("fa-eye-slash");
+      }
+    });
+  }
+
+  // Attach event listener to both password fields' toggle buttons
   document.querySelectorAll(".toggle-password").forEach((toggleButton) => {
     toggleButton.addEventListener("click", togglePasswords);
   });

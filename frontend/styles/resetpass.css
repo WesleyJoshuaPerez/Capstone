@@ -13,25 +13,28 @@ h1 {
   color: #fcbf06;
   padding-bottom: 20px;
   font-size: 50px;
+  text-align: center;
 }
 .reset-password-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; /* Align to the top */
+  justify-content: flex-start;
   height: 100vh;
   width: 100%;
-  margin-top: 50px; /* Add spacing from the top */
+  margin-top: 50px;
+  padding: 20px; /* Added padding for spacing */
 }
 .form-container {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Aligns content to the top */
+  justify-content: flex-start;
   width: 480px;
+  max-width: 100%; /* Makes it responsive */
   height: auto;
   background-color: #fcbf06;
   border-radius: 10px;
-  padding: 20px; /* Adds spacing inside */
+  padding: 20px;
 }
 .form-container label {
   display: block;
@@ -47,85 +50,70 @@ h1 {
 }
 .form-container input {
   align-self: center;
-  width: 440px; /* Makes the input fill its container */
-  padding: 10px; /* Adds spacing inside the input */
-  font-size: 16px; /* Adjusts text size */
-  border: 2px solid #ccc; /* Light gray border */
-  border-radius: 5px; /* Rounded corners */
-  outline: none; /* Removes default focus outline */
-  transition: all 0.3s ease; /* Smooth transition effect */
+  width: 100%; /* Ensures full width */
+  max-width: 440px; /* Prevents excessive stretching */
+  padding: 10px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+  transition: all 0.3s ease;
 }
 button {
   width: 200px;
   height: 65px;
   display: block;
-  margin: 10px auto; /* Centers horizontally */
-  border: 2px solid white; /* White border */
+  margin: 10px auto;
+  border: 2px solid white;
   font-weight: bolder;
   border-radius: 10px;
   background-color: #36a13a;
-  color: white; /* Ensures text is visible on green */
+  color: white;
   cursor: pointer;
   position: relative;
   transition: all 0.3s ease;
 }
-/* Hover Effect */
 button:hover {
   background-color: #ffffff;
-  border-color: #000000; /* Subtle change */
+  border-color: #000000;
   color: #000000;
 }
-/* Small Screens - Stack Elements Vertically */
-@media (max-width: 47.5rem) {
+
+/* Responsive Design */
+@media (max-width: 950px) {
   h1 {
-    padding-bottom: 1.25rem;
-    font-size: 1.5625rem;
+    font-size: 36px;
   }
   .form-container {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start; /* Aligns content to the top */
-    width: 26.25rem;
-    height: auto;
-    background-color: #fcbf06;
-    border-radius: 0.625rem;
-    padding: 1.25rem; /* Adds spacing inside */
-  }
-  .form-container label {
-    display: block;
-    text-align: left;
-    color: #ffffff;
-    font-size: 1.1875rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-  }
-  .input_group {
-    flex-direction: column;
-    margin-bottom: 0.9375rem;
+    width: 90%; /* Makes it more adaptive */
   }
   .form-container input {
-    align-self: center;
-    width: 23.75rem; /* Makes the input fill its container */
-    padding: 0.625rem; /* Adds spacing inside the input */
-    margin-bottom: 0.625rem;
-    font-size: 1rem; /* Adjusts text size */
-    border: 0.125rem solid #ccc; /* Light gray border */
-    border-radius: 0.3125rem; /* Rounded corners */
-    outline: none; /* Removes default focus outline */
-    transition: all 0.3s ease; /* Smooth transition effect */
+    max-width: 100%;
   }
   button {
-    width: 12.5rem;
-    height: 3.75rem;
-    display: block;
-    margin: 0.625rem auto; /* Centers horizontally */
-    border: 0.125rem solid white; /* White border */
-    font-weight: bolder;
-    border-radius: 0.625rem;
-    background-color: #36a13a;
-    color: white; /* Ensures text is visible on green */
-    cursor: pointer;
-    position: relative;
-    transition: all 0.3s ease;
+    width: 70%;
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 760px) {
+  h1 {
+    font-size: 28px;
+  }
+  .reset-password-container {
+    margin-top: 20px;
+    padding: 10px;
+  }
+  .form-container {
+    width: 100%;
+    padding: 15px;
+  }
+  .form-container input {
+    font-size: 14px;
+  }
+  button {
+    width: 100%;
+    max-width: 180px;
+    height: 50px;
   }
 }

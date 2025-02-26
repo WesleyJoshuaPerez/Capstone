@@ -24,7 +24,7 @@ body {
   height: 100vh;
   width: 100%;
   margin-top: 3.125rem;
-  padding: 1rem; /* Added padding for better spacing on smaller screens */
+  padding: 1rem;
 }
 
 .loginform_container {
@@ -33,7 +33,7 @@ body {
   align-items: center;
   justify-content: flex-start;
   width: 30rem;
-  max-width: 100%; /* Ensures form doesn't overflow */
+  max-width: 100%;
   background-color: #3775b9;
   border-radius: 0.625rem;
   padding: 1.25rem;
@@ -42,10 +42,12 @@ body {
 .input_group {
   flex-direction: column;
   margin-bottom: 0.9375rem;
+  width: 100%;
 }
 
 .input_group input {
-  width: 100%; /* Makes the input responsive */
+  width: 25rem; /* Keeps input size similar to original */
+  max-width: 100%; /* Ensures responsiveness */
   padding: 0.625rem;
   font-size: 1rem;
   border: 0.125rem solid #ccc;
@@ -54,19 +56,16 @@ body {
   transition: all 0.3s ease;
 }
 
-/* Input Focus Effect */
 .input_group input:focus {
   border-color: #36a13a;
   box-shadow: 0 0 0.3125rem rgba(54, 161, 58, 0.5);
 }
 
-/* Placeholder Text Styling */
 .input_group input::placeholder {
   color: #888;
   font-size: 0.875rem;
 }
 
-/* Styling the Forgot Password Link */
 .loginform_container a {
   display: block;
   text-align: center;
@@ -100,7 +99,8 @@ label {
   border: 0.125rem solid #ccc;
   border-radius: 0.3125rem;
   outline: none;
-  width: 100%;
+  width: 25rem;
+  max-width: 100%;
 }
 
 .password_container button {
@@ -129,44 +129,24 @@ label {
   transition: all 0.3s ease;
 }
 
-/* Hover Effect */
 #loginbutton:hover {
   background-color: #2d8b30;
   border-color: #f8f9fa;
 }
 
-/* Active (Click) Effect */
 #loginbutton:active {
   background-color: #267327;
   border-color: #e0e0e0;
 }
 
-/* Remove password hide icon in Edge */
 ::-ms-reveal {
   display: none;
-}
-
-/* Responsive Design */
-@media (max-width: 950px) {
-  .container {
-    max-width: 90%;
-    padding: 1rem;
-  }
-
-  .loginform_container {
-    width: 100%;
-    max-width: 90%;
-  }
-
-  .input_group input {
-    width: 100%;
-  }
 }
 
 /* Small Screens - Stack Elements Vertically */
 @media (max-width: 760px) {
   .logo img {
-    width: 12.5rem;
+    width: 10rem;
     height: auto;
   }
 
@@ -179,8 +159,10 @@ label {
     padding: 1rem;
   }
 
-  .input_group input {
+  .input_group input,
+  .password_container input {
     width: 100%;
+    max-width: 20rem; /* Slightly smaller for compact devices */
   }
 
   label {
@@ -190,5 +172,34 @@ label {
   #loginbutton {
     width: 100%;
     height: 3.4375rem;
+  }
+}
+
+/* Extra Small Screens */
+@media (max-width: 480px) {
+  .container {
+    padding: 0.5rem;
+  }
+
+  .loginform_container {
+    padding: 1rem;
+  }
+
+  .input_group {
+    margin-bottom: 0.75rem;
+  }
+
+  .input_group input,
+  .password_container input {
+    width: 100%;
+    max-width: 18rem; /* Ensures proper layout on very small screens */
+  }
+
+  label {
+    font-size: 0.9rem;
+  }
+
+  #loginbutton {
+    height: 3rem;
   }
 }

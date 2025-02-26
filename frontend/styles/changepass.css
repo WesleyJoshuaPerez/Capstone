@@ -1,29 +1,24 @@
 /* Importing Google font - Open Sans */
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&display=swap");
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Open Sans", sans-serif;
 }
-
 body {
   overflow-x: hidden;
 }
-
-/* Remove password reveal icon in Edge */
+/*use to remove password hide unside default on edge */
 ::-ms-reveal {
   display: none;
 }
-
 h1 {
   color: #fcbf06;
   padding-bottom: 1.25rem;
   font-size: 3.125rem;
   text-align: center;
 }
-
 .change-password-container {
   display: flex;
   flex-direction: column;
@@ -34,18 +29,16 @@ h1 {
   margin-top: 3.125rem;
   padding: 1rem;
 }
-
 .form-container {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  width: 90%;
-  max-width: 30rem;
+  width: 480px;
+  max-width: 90%;
   background-color: #fcbf06;
   border-radius: 0.625rem;
   padding: 1.25rem;
 }
-
 .form-container label {
   display: block;
   text-align: left;
@@ -54,13 +47,12 @@ h1 {
   font-weight: bold;
   margin-bottom: 0.5rem;
 }
-
 .input_group {
   flex-direction: column;
   margin-bottom: 0.9375rem;
 }
-
 .form-container input {
+  align-self: center;
   width: 100%;
   padding: 0.625rem;
   font-size: 1rem;
@@ -69,17 +61,14 @@ h1 {
   outline: none;
   transition: all 0.3s ease;
 }
-
 .password-wrapper {
   position: relative;
   width: 100%;
 }
-
 .password-wrapper input {
   width: 100%;
   padding-right: 2.5rem;
 }
-
 .toggle-password {
   position: absolute;
   right: 0.625rem;
@@ -89,11 +78,9 @@ h1 {
   font-size: 1.125rem;
   color: #555;
 }
-
 #update_button {
-  width: 100%;
-  max-width: 12.5rem;
-  height: 4rem;
+  width: 12.5rem;
+  height: 4.0625rem;
   font-weight: bolder;
   display: block;
   margin: 0.625rem auto;
@@ -104,37 +91,51 @@ h1 {
   cursor: pointer;
   transition: all 0.3s ease;
 }
-
-/* Hover Effect */
 #update_button:hover {
   background-color: #ffffff;
   border-color: #000000;
   color: #000000;
 }
 
-/* Responsive Adjustments */
-@media (max-width: 47.5rem) {
-  h1 {
-    font-size: 1.5625rem;
+/* Responsive Design */
+@media (max-width: 950px) {
+  .change-password-container {
+    margin-top: 1.5rem;
   }
-
   .form-container {
     width: 90%;
-    max-width: 26.25rem;
-    padding: 1rem;
   }
+}
 
-  .form-container label {
-    font-size: 1rem;
+@media (max-width: 760px) {
+  h1 {
+    font-size: 28px;
   }
-
+  .form-container {
+    width: 95%;
+  }
   .form-container input {
-    width: 100%;
+    font-size: 0.9rem;
   }
-
   #update_button {
     width: 100%;
-    max-width: 12.5rem;
     height: 3.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  h1 {
+    font-size: 1.5rem;
+  }
+  .form-container {
+    padding: 1rem;
+  }
+  .form-container input {
+    padding: 0.5rem;
+    font-size: 6px;
+  }
+  #update_button {
+    font-size: 1rem;
+    height: 3rem;
   }
 }
