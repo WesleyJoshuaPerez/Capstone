@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Change Password</title>
+    <!--Use for styling-->
+    <link rel="stylesheet" href="/frontend/styles/changepass.css" />
+    <!--For icon password-->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <!--Change the default icon of the xampp-->
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="/frontend/assets/images/icons/lynxicon.ico"
+    />
+    <!--For password hiding-->
+    <script src="/scripts/passwordhider.js" defer></script>
+  </head>
+  <body>
+    <div class="change-password-container">
+      <h1>Change Password</h1>
+      <form action="" method="post">
+        <input type="hidden" name="code" value="<?php echo $_GET['code']; ?>" />
+
+        <div class="form-container">
+          <label for="email">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            placeholder="Enter Email Address"
+            class="email-input"
+            name="email"
+            required
+          />
+
+          <div class="input_group">
+            <label for="new-password">New Password</label>
+            <div class="password-wrapper">
+              <input
+                type="password"
+                id="new-password"
+                placeholder="Enter New Password"
+                class="email-input"
+                name="new_password"
+                required
+              />
+              <span class="toggle-password" onclick="togglePasswords()">
+                <i class="fa-solid fa-eye"></i>
+              </span>
+            </div>
+          </div>
+
+          <div class="input_group">
+            <label for="confirm-password">Confirm Password</label>
+            <div class="password-wrapper">
+              <input
+                type="password"
+                id="confirm-password"
+                placeholder="Enter Confirm Password"
+                class="email-input"
+                name="confirm_password"
+                required
+              />
+              <span class="toggle-password" onclick="togglePasswords()">
+                <i class="fa-solid fa-eye"></i>
+              </span>
+            </div>
+          </div>
+
+          <button
+            type="submit"
+            class="update-button"
+            name="update"
+            id="update_button"
+          >
+            UPDATE PASSWORD
+          </button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

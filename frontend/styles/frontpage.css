@@ -359,7 +359,6 @@ footer {
   width: 100%;
   padding: 10px 0;
   text-align: center;
-  position: sticky;
   bottom: 0;
   left: 0;
   z-index: 1000; /* Ensure it stays on top */

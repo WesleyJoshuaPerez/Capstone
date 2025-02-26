@@ -1,0 +1,217 @@
+/* Importing Google font - Open Sans */
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+}
+body {
+  overflow-x: hidden;
+}
+.hidden {
+  display: none;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Align to the top */
+  height: 100vh;
+  width: 100%;
+  margin-top: 3.125rem; /* Add spacing from the top */
+}
+.loginform_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Aligns content to the top */
+  width: 30rem;
+  height: auto;
+  background-color: #3775b9;
+  border-radius: 0.625rem;
+  padding: 1.25rem; /* Adds spacing inside */
+}
+
+.input_group {
+  flex-direction: column;
+  margin-bottom: 0.9375rem;
+}
+
+.input_group input {
+  width: 28.125rem; /* Makes the input fill its container */
+  padding: 0.625rem; /* Adds spacing inside the input */
+  font-size: 1rem; /* Adjusts text size */
+  border: 0.125rem solid #ccc; /* Light gray border */
+  border-radius: 0.3125rem; /* Rounded corners */
+  outline: none; /* Removes default focus outline */
+  transition: all 0.3s ease; /* Smooth transition effect */
+}
+
+/* Input Focus Effect */
+.input_group input:focus {
+  border-color: #36a13a; /* Green border on focus */
+  box-shadow: 0 0 0.3125rem rgba(54, 161, 58, 0.5); /* Soft glow effect */
+}
+
+/* Placeholder Text Styling */
+.input_group input::placeholder {
+  color: #888; /* Light gray text */
+  font-size: 0.875rem;
+}
+
+/* Styling the Forgot Password Link */
+.loginform_container a {
+  display: block; /* Makes it a block element */
+  text-align: center;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 0.875rem;
+}
+
+.loginform_container a:hover {
+  text-decoration: underline;
+}
+
+label {
+  color: #ffffff;
+  text-align: left;
+  font-size: 1.1875rem;
+  font-weight: bold;
+}
+
+.password_container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: auto; /* Adjust width as needed */
+}
+
+.password_container input {
+  flex: 1;
+  padding: 0.625rem;
+  font-size: 1rem;
+  border: 0.125rem solid #ccc;
+  border-radius: 0.3125rem;
+  outline: none;
+  width: 100%;
+}
+
+.password_container button {
+  position: absolute;
+  right: 0.625rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.125rem;
+  color: #555;
+}
+
+.password_container button:focus {
+  outline: none;
+}
+
+#loginbutton {
+  width: 12.5rem;
+  height: 4.0625rem;
+  display: block;
+  margin: 0.625rem auto; /* Centers horizontally */
+  border: 0.125rem solid white; /* White border */
+  font-weight: bolder;
+  border-radius: 0.625rem;
+  background-color: #36a13a;
+  color: white; /* Ensures text is visible on green */
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+/* Hover Effect */
+#loginbutton:hover {
+  background-color: #2d8b30; /* Slightly darker green */
+  border-color: #f8f9fa; /* Lighter white border */
+}
+
+/* Active (Click) Effect */
+#loginbutton:active {
+  background-color: #267327;
+  border-color: #e0e0e0; /* Subtle change */
+}
+
+/*use to remove password hide unside default on edge */
+::-ms-reveal {
+  display: none;
+}
+/* Small Screens - Stack Elements Vertically */
+@media (max-width: 47.5rem) {
+  .logo img {
+    width: 15.625rem; /* Adjust width as needed */
+    height: auto; /* Maintains aspect ratio */
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Align to the top */
+    height: 100vh;
+    width: 100%;
+    margin-top: 3.125rem; /* Add spacing from the top */
+  }
+  .loginform_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start; /* Aligns content to the top */
+    width: 26.25rem;
+    height: auto;
+    background-color: #3775b9;
+    border-radius: 0.625rem;
+    padding: 1.25rem; /* Adds spacing inside */
+  }
+  .input_group input {
+    width: 23.75rem; /* Makes the input fill its container */
+    padding: 0.625rem; /* Adds spacing inside the input */
+    font-size: 1rem; /* Adjusts text size */
+    border: 0.125rem solid #ccc; /* Light gray border */
+    border-radius: 0.3125rem; /* Rounded corners */
+    outline: none; /* Removes default focus outline */
+    transition: all 0.3s ease; /* Smooth transition effect */
+  }
+  label {
+    color: #ffffff;
+    text-align: left;
+    font-size: 0.9375rem;
+    font-weight: bold;
+  }
+  #loginbutton {
+    width: 12.5rem;
+    height: 3.4375rem;
+  }
+  .password_container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: auto; /* Adjust width as needed */
+  }
+
+  .password_container input {
+    flex: 1;
+    padding: 0.625rem;
+    font-size: 1rem;
+    border: 0.125rem solid #ccc;
+    border-radius: 0.3125rem;
+    outline: none;
+    width: 100%;
+  }
+
+  .password_container button {
+    position: absolute;
+    right: 0.625rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.125rem;
+    color: #555;
+  }
+}

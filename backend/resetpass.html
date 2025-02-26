@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reset Password</title>
+    <!--Use for styling-->
+    <link rel="stylesheet" href="/frontend/styles/resetpass.css" />
+  </head>
+  <body>
+    <div class="reset-password-container">
+      <h1>RESET PASSWORD</h1>
+      <div class="form-container">
+        <form action="" method="POST">
+          <label for="email" class="email-label">Email Address</label>
+          <input
+            type="email"
+            name="email"
+            placeholder="Enter Email Address"
+            class="email-input"
+            required
+          />
+          <button
+            type="submit"
+            name="password_reset_link"
+            class="reset-button"
+            onclick="location.href='changepass.html';"
+          >
+            Send Password Reset Link
+          </button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>

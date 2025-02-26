@@ -74,7 +74,7 @@ p {
 }
 .price {
   font-weight: bolder;
-  font-size: 20px;
+  font-size: 1.25rem;
 }
 /* Unique border colors */
 .pricing-box:nth-child(1) {
@@ -105,7 +105,7 @@ p {
   padding: 10px 0; /* Add padding to fill background */
   display: block; /* Ensure full width */
   font-style: italic;
-  font-size: 25px;
+  font-size: 1.5625rem;
 }
 
 .form-container {
@@ -131,7 +131,7 @@ p {
   padding: 8px;
   border: 2px solid black;
   border-radius: 4px;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 /* Styling specifically for the dropdown */
@@ -139,7 +139,7 @@ p {
   -webkit-appearance: none; /* Removes default styling in Safari */
   -moz-appearance: none; /* Removes default styling in Firefox */
   appearance: none; /* Removes default styling in all browsers */
-  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="black" d="M7 10l5 5 5-5z"/></svg>'); 
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="black" d="M7 10l5 5 5-5z"/></svg>');
   background-repeat: no-repeat;
   background-position: right 10px center;
   background-size: 18px;
@@ -149,7 +149,7 @@ p {
 /* Style specifically for the file input to match other inputs */
 .form-container input[type="file"] {
   padding: 6px;
-  font-size: 16px;
+  font-size: 1rem;
   cursor: pointer;
   background-color: white;
 }
@@ -159,7 +159,7 @@ p {
   display: flex;
   flex-direction: column;
   gap: 10px; /* Space between checkboxes */
-  font-size: 14px;
+  font-size: 0.875rem;
   margin-top: 20px; /* Adds spacing from form */
   max-width: 500px; /* Matches form width */
   width: 100%;
@@ -187,7 +187,7 @@ button {
   background-color: #ec202a;
   border: none;
   position: relative;
-  top: 25px;  
+  top: 25px;
   padding-top: 10px;
   padding-bottom: 10px;
   color: white;

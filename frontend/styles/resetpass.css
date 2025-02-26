@@ -1,0 +1,131 @@
+/* Importing Google font - Open Sans */
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+}
+body {
+  overflow-x: hidden;
+}
+h1 {
+  color: #fcbf06;
+  padding-bottom: 20px;
+  font-size: 50px;
+}
+.reset-password-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* Align to the top */
+  height: 100vh;
+  width: 100%;
+  margin-top: 50px; /* Add spacing from the top */
+}
+.form-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; /* Aligns content to the top */
+  width: 480px;
+  height: auto;
+  background-color: #fcbf06;
+  border-radius: 10px;
+  padding: 20px; /* Adds spacing inside */
+}
+.form-container label {
+  display: block;
+  text-align: left;
+  color: #ffffff;
+  font-size: 19px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.input_group {
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+.form-container input {
+  align-self: center;
+  width: 440px; /* Makes the input fill its container */
+  padding: 10px; /* Adds spacing inside the input */
+  font-size: 16px; /* Adjusts text size */
+  border: 2px solid #ccc; /* Light gray border */
+  border-radius: 5px; /* Rounded corners */
+  outline: none; /* Removes default focus outline */
+  transition: all 0.3s ease; /* Smooth transition effect */
+}
+button {
+  width: 200px;
+  height: 65px;
+  display: block;
+  margin: 10px auto; /* Centers horizontally */
+  border: 2px solid white; /* White border */
+  font-weight: bolder;
+  border-radius: 10px;
+  background-color: #36a13a;
+  color: white; /* Ensures text is visible on green */
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+}
+/* Hover Effect */
+button:hover {
+  background-color: #ffffff;
+  border-color: #000000; /* Subtle change */
+  color: #000000;
+}
+/* Small Screens - Stack Elements Vertically */
+@media (max-width: 47.5rem) {
+  h1 {
+    padding-bottom: 1.25rem;
+    font-size: 1.5625rem;
+  }
+  .form-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; /* Aligns content to the top */
+    width: 26.25rem;
+    height: auto;
+    background-color: #fcbf06;
+    border-radius: 0.625rem;
+    padding: 1.25rem; /* Adds spacing inside */
+  }
+  .form-container label {
+    display: block;
+    text-align: left;
+    color: #ffffff;
+    font-size: 1.1875rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  .input_group {
+    flex-direction: column;
+    margin-bottom: 0.9375rem;
+  }
+  .form-container input {
+    align-self: center;
+    width: 23.75rem; /* Makes the input fill its container */
+    padding: 0.625rem; /* Adds spacing inside the input */
+    margin-bottom: 0.625rem;
+    font-size: 1rem; /* Adjusts text size */
+    border: 0.125rem solid #ccc; /* Light gray border */
+    border-radius: 0.3125rem; /* Rounded corners */
+    outline: none; /* Removes default focus outline */
+    transition: all 0.3s ease; /* Smooth transition effect */
+  }
+  button {
+    width: 12.5rem;
+    height: 3.75rem;
+    display: block;
+    margin: 0.625rem auto; /* Centers horizontally */
+    border: 0.125rem solid white; /* White border */
+    font-weight: bolder;
+    border-radius: 0.625rem;
+    background-color: #36a13a;
+    color: white; /* Ensures text is visible on green */
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s ease;
+  }
+}
