@@ -48,6 +48,15 @@ h1 {
   flex-direction: column;
   margin-bottom: 15px;
 }
+.input_group {
+  flex-direction: column;
+  margin-bottom: 1.25rem;
+}
+.input_group input:focus {
+  border-color: #36a13a;
+  box-shadow: 0 0 0.3125rem rgba(54, 161, 58, 0.5);
+}
+
 .form-container input {
   align-self: center;
   width: 100%; /* Ensures full width */
@@ -98,7 +107,7 @@ button:hover {
 
 @media (max-width: 760px) {
   h1 {
-    font-size: 28px;
+    font-size: 1.75rem;
   }
   .reset-password-container {
     margin-top: 20px;
@@ -109,7 +118,7 @@ button:hover {
     padding: 15px;
   }
   .form-container input {
-    font-size: 14px;
+    font-size: 0.875rem;
   }
   button {
     width: 100%;

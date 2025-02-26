@@ -59,7 +59,10 @@ h1 {
   flex-direction: column;
   margin-bottom: 1.25rem;
 }
-
+.input_group input:focus {
+  border-color: #36a13a;
+  box-shadow: 0 0 0.3125rem rgba(54, 161, 58, 0.5);
+}
 .form-container input {
   align-self: center;
   width: 100%;
