@@ -1,36 +1,42 @@
 /* Importing Google font - Open Sans */
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&display=swap");
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   font-family: "Open Sans", sans-serif;
 }
+
 body {
   overflow-x: hidden;
 }
+
 .hidden {
   display: none;
 }
+
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; /* Align to the top */
+  justify-content: flex-start;
   height: 100vh;
   width: 100%;
-  margin-top: 3.125rem; /* Add spacing from the top */
+  margin-top: 3.125rem;
+  padding: 1rem; /* Added padding for better spacing on smaller screens */
 }
+
 .loginform_container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start; /* Aligns content to the top */
+  justify-content: flex-start;
   width: 30rem;
-  height: auto;
+  max-width: 100%; /* Ensures form doesn't overflow */
   background-color: #3775b9;
   border-radius: 0.625rem;
-  padding: 1.25rem; /* Adds spacing inside */
+  padding: 1.25rem;
 }
 
 .input_group {
@@ -39,30 +45,30 @@ body {
 }
 
 .input_group input {
-  width: 28.125rem; /* Makes the input fill its container */
-  padding: 0.625rem; /* Adds spacing inside the input */
-  font-size: 1rem; /* Adjusts text size */
-  border: 0.125rem solid #ccc; /* Light gray border */
-  border-radius: 0.3125rem; /* Rounded corners */
-  outline: none; /* Removes default focus outline */
-  transition: all 0.3s ease; /* Smooth transition effect */
+  width: 100%; /* Makes the input responsive */
+  padding: 0.625rem;
+  font-size: 1rem;
+  border: 0.125rem solid #ccc;
+  border-radius: 0.3125rem;
+  outline: none;
+  transition: all 0.3s ease;
 }
 
 /* Input Focus Effect */
 .input_group input:focus {
-  border-color: #36a13a; /* Green border on focus */
-  box-shadow: 0 0 0.3125rem rgba(54, 161, 58, 0.5); /* Soft glow effect */
+  border-color: #36a13a;
+  box-shadow: 0 0 0.3125rem rgba(54, 161, 58, 0.5);
 }
 
 /* Placeholder Text Styling */
 .input_group input::placeholder {
-  color: #888; /* Light gray text */
+  color: #888;
   font-size: 0.875rem;
 }
 
 /* Styling the Forgot Password Link */
 .loginform_container a {
-  display: block; /* Makes it a block element */
+  display: block;
   text-align: center;
   color: #ffffff;
   text-decoration: none;
@@ -84,7 +90,7 @@ label {
   position: relative;
   display: flex;
   align-items: center;
-  width: auto; /* Adjust width as needed */
+  width: 100%;
 }
 
 .password_container input {
@@ -107,20 +113,17 @@ label {
   color: #555;
 }
 
-.password_container button:focus {
-  outline: none;
-}
-
 #loginbutton {
-  width: 12.5rem;
+  width: 100%;
+  max-width: 12.5rem;
   height: 4.0625rem;
   display: block;
-  margin: 0.625rem auto; /* Centers horizontally */
-  border: 0.125rem solid white; /* White border */
+  margin: 0.625rem auto;
+  border: 0.125rem solid white;
   font-weight: bolder;
   border-radius: 0.625rem;
   background-color: #36a13a;
-  color: white; /* Ensures text is visible on green */
+  color: white;
   cursor: pointer;
   position: relative;
   transition: all 0.3s ease;
@@ -128,90 +131,64 @@ label {
 
 /* Hover Effect */
 #loginbutton:hover {
-  background-color: #2d8b30; /* Slightly darker green */
-  border-color: #f8f9fa; /* Lighter white border */
+  background-color: #2d8b30;
+  border-color: #f8f9fa;
 }
 
 /* Active (Click) Effect */
 #loginbutton:active {
   background-color: #267327;
-  border-color: #e0e0e0; /* Subtle change */
+  border-color: #e0e0e0;
 }
 
-/*use to remove password hide unside default on edge */
+/* Remove password hide icon in Edge */
 ::-ms-reveal {
   display: none;
 }
+
+/* Responsive Design */
+@media (max-width: 950px) {
+  .container {
+    max-width: 90%;
+    padding: 1rem;
+  }
+
+  .loginform_container {
+    width: 100%;
+    max-width: 90%;
+  }
+
+  .input_group input {
+    width: 100%;
+  }
+}
+
 /* Small Screens - Stack Elements Vertically */
-@media (max-width: 47.5rem) {
+@media (max-width: 760px) {
   .logo img {
-    width: 15.625rem; /* Adjust width as needed */
-    height: auto; /* Maintains aspect ratio */
+    width: 12.5rem;
+    height: auto;
   }
 
   .container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start; /* Align to the top */
-    height: 100vh;
-    width: 100%;
-    margin-top: 3.125rem; /* Add spacing from the top */
+    max-width: 95%;
   }
+
   .loginform_container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start; /* Aligns content to the top */
-    width: 26.25rem;
-    height: auto;
-    background-color: #3775b9;
-    border-radius: 0.625rem;
-    padding: 1.25rem; /* Adds spacing inside */
-  }
-  .input_group input {
-    width: 23.75rem; /* Makes the input fill its container */
-    padding: 0.625rem; /* Adds spacing inside the input */
-    font-size: 1rem; /* Adjusts text size */
-    border: 0.125rem solid #ccc; /* Light gray border */
-    border-radius: 0.3125rem; /* Rounded corners */
-    outline: none; /* Removes default focus outline */
-    transition: all 0.3s ease; /* Smooth transition effect */
-  }
-  label {
-    color: #ffffff;
-    text-align: left;
-    font-size: 0.9375rem;
-    font-weight: bold;
-  }
-  #loginbutton {
-    width: 12.5rem;
-    height: 3.4375rem;
-  }
-  .password_container {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: auto; /* Adjust width as needed */
+    width: 100%;
+    padding: 1rem;
   }
 
-  .password_container input {
-    flex: 1;
-    padding: 0.625rem;
-    font-size: 1rem;
-    border: 0.125rem solid #ccc;
-    border-radius: 0.3125rem;
-    outline: none;
+  .input_group input {
     width: 100%;
   }
 
-  .password_container button {
-    position: absolute;
-    right: 0.625rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1.125rem;
-    color: #555;
+  label {
+    font-size: 1rem;
+  }
+
+  #loginbutton {
+    width: 100%;
+    height: 3.4375rem;
   }
 }
