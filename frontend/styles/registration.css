@@ -17,17 +17,11 @@ h1 {
   font-size: 35px;
 }
 
-h2 {
-  position: relative;
-  left: 150px;
-  top: 110px;
-  font-size: 1rem;
-}
-
 p {
   text-align: center;
   margin-top: 10px;
   font-size: 16px;
+  color: #6f6f6f;
 }
 
 .pricing-container {
@@ -61,10 +55,11 @@ p {
   font-size: 1rem;
   font-weight: bold;
   text-align: center;
-  border: 10px solid #ec202a;
+  border: 10px solid #6f6f6f;
   width: 100%; /* Adjust width for responsiveness */
   max-width: 400px;
   position: relative;
+  left: 25px;
   margin-top: 150px; /* Keep the Bronze border slightly above */
 }
 
@@ -78,17 +73,17 @@ p {
 }
 /* Unique border colors */
 .pricing-box:nth-child(1) {
-  border-color: #ec202a; /* Red-Orange */
+  border-color: #6f6f6f; /* Red-Orange */
 }
 
 /* Unique border colors */
 .pricing-box:nth-child(1) {
-  border-color: #ec202a; /* Red-Orange */
+  border-color: #6f6f6f; /* Red-Orange */
 }
 
 /* Different colors for each plan */
 .pricing-box h2 {
-  color: #ec202a;
+  color: #6f6f6f;
   position: relative;
   top: 12px; /* Adjust position above the price */
   left: 50%;
@@ -101,7 +96,7 @@ p {
 
 .pricing-box:nth-child(1) .price {
   color: #ffffff;
-  background-color: #ec202a;
+  background-color: #6f6f6f;
   padding: 10px 0; /* Add padding to fill background */
   display: block; /* Ensure full width */
   font-style: italic;
@@ -115,6 +110,7 @@ p {
   width: 100%;
   max-width: 400px;
   position: relative;
+  left: 30px;
   top: 60px;
   padding-bottom: 50px;
 }
