@@ -1,5 +1,6 @@
 /* Importing Google font - Open Sans */
 @import url("https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -9,8 +10,10 @@
 
 body {
   overflow-x: hidden;
+  background-color: #f9f9f9;
 }
 
+/* Styling Header */
 h1 {
   text-align: center;
   margin-top: 40px;
@@ -24,28 +27,56 @@ p {
   color: #6f6f6f;
 }
 
-.pricing-container {
+/* Progress Bar */
+.progress-bar {
   display: flex;
-  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  width: 100%;
-  max-width: 1200px;
-  gap: 20px;
-  margin: 0 auto;
-  padding: 20px;
+  gap: 50px;
+  margin: 20px auto;
+  max-width: 800px;
+  padding: 20px 0;
 }
 
-/* Main Grid Container */
+.step {
+  text-align: center;
+  color: #a0a0a0;
+  font-weight: bold;
+}
+
+.step.active {
+  color: #333;
+}
+
+.circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #d1d1d1;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 auto;
+  font-size: 16px;
+}
+
+.step.active .circle {
+  background-color: #6f6f6f;
+}
+
+/* Main Grid Layout */
 .grid-container {
   display: grid;
   grid-template-columns: 1fr 1fr; /* Two equal columns */
-  gap: 20px; /* Space between the bronze box and form */
+  gap: 20px;
   max-width: 1200px;
   width: 90%;
-  margin: 0 auto; /* Centering */
-  align-items: start; /* Aligns the top edges of both elements */
+  margin: 0 auto;
+  align-items: start;
 }
 
+/* Pricing Box */
 .pricing-box {
   background: #fff;
   padding-top: 0px;
@@ -60,7 +91,7 @@ p {
   max-width: 400px;
   position: relative;
   left: 25px;
-  margin-top: 150px; /* Keep the Bronze border slightly above */
+  margin-top: 100px; /* Keep the Bronze border slightly above */
 }
 
 .pricing-box h4 {
@@ -103,26 +134,58 @@ p {
   font-size: 1.5625rem;
 }
 
-.form-container {
-  display: grid;
-  grid-template-columns: 1fr; /* Single column for form inputs */
+/* Form Steps - Multi-step form container */
+.form-step {
+  display: none;
+  flex-direction: column;
   gap: 10px;
-  width: 100%;
   max-width: 400px;
+  width: 100%;
   position: relative;
-  left: 30px;
-  top: 60px;
-  padding-bottom: 50px;
+  left: 25px;
 }
 
-/* Labels and Inputs */
-.form-container label {
+/* Form Step 2 (ID Details) */
+.form-step.step-2 {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 400px;
+  width: 100%;
+  position: relative;
+  left: 25px;
+  top: 70px;
+}
+
+/* Form Step 3 (Address & Consent) */
+.form-step.step-3 {
+  display: none;
+  flex-direction: column;
+  gap: 10px;
+  max-width: 400px;
+  width: 100%;
+  position: relative;
+  left: 25px;
+  top: 20px;
+}
+
+/* Active Step */
+.form-step.active {
+  display: flex;
+}
+
+.form-step.active {
+  display: flex;
+}
+
+/* Labels & Inputs */
+.form-step label {
   font-weight: bold;
   text-align: left;
 }
 
-.form-container select,
-.form-container input {
+.form-step select,
+.form-step input {
   width: 100%;
   padding: 8px;
   border: 1px solid black;
@@ -130,102 +193,193 @@ p {
   font-size: 0.8rem;
 }
 
-/* Styling specifically for the dropdown */
-.form-container select {
-  -webkit-appearance: none; /* Removes default styling in Safari */
-  -moz-appearance: none; /* Removes default styling in Firefox */
-  appearance: none; /* Removes default styling in all browsers */
+/* Custom Dropdown Styling */
+.form-step select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
   background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><path fill="black" d="M7 10l5 5 5-5z"/></svg>');
   background-repeat: no-repeat;
   background-position: right 10px center;
   background-size: 18px;
-  padding-right: 30px; /* Ensures space for the arrow */
+  padding-right: 30px;
 }
 
-/* Style specifically for the file input to match other inputs */
-.form-container input[type="file"] {
+/* File Upload Input */
+.form-step input[type="file"] {
   padding: 6px;
   font-size: 0.8rem;
   cursor: pointer;
   background-color: white;
 }
 
-/* Container for Checkboxes */
+/* Consent Container */
 .consent-container {
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Space between checkboxes */
+  gap: 10px;
   font-size: 0.7rem;
-  margin-top: 20px; /* Adds spacing from form */
-  max-width: 500px; /* Matches form width */
+  margin-top: 20px;
+  max-width: 400px;
   width: 100%;
-  align-items: flex-start; /* Aligns checkboxes with the form */
+  align-items: flex-start;
 }
 
-/* Style for Checkbox Labels */
+.ownership-container {
+  margin-bottom: 20px;
+}
+.ownership-container h3 {
+  margin-bottom: 10px;
+  font-size: 14px;
+  text-align: left;
+  color: #333;
+}
+.ownership-options {
+  display: flex;
+  gap: 20px;
+}
+.ownership-options label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #555;
+}
+.ownership-options input[type="radio"] {
+  margin: 0;
+  width: 16px;
+  height: 16px;
+}
+
+/* Checkbox Labels */
 .checkbox-label {
   display: flex;
   align-items: center;
-  gap: 10px; /* Space between checkbox and text */
-  width: 100%; /* Ensure full width */
+  gap: 10px;
+  width: 100%;
 }
 
-/* Customize Checkbox */
 .checkbox-label input[type="checkbox"] {
   width: 18px;
   height: 18px;
   cursor: pointer;
-  flex-shrink: 0; /* Prevents checkbox from resizing */
+  flex-shrink: 0;
 }
 
+/* Buttons */
 button {
   border-radius: 5px;
-  background-color: #ec202a;
+  background-color: #6f6f6f;
   border: none;
-  position: relative;
-  top: 25px;
-  padding-top: 10px;
-  padding-bottom: 10px;
+  padding: 10px 20px;
   color: white;
   font-size: 15px;
   font-family: "Open Sans", sans-serif;
   cursor: pointer;
+  width: 100%;
+  max-width: 200px;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 30px;
 }
 
 button:hover {
-  background-color: #d81b24; /* Slightly darker red on hover */
+  background-color: #a1a1a1;
+}
+
+.next-btn2 {
+  border-radius: 5px;
+  background-color: #6f6f6f;
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  font-size: 15px;
+  font-family: "Open Sans", sans-serif;
+  cursor: pointer;
+  width: 100%;
+  max-width: 200px;
+  text-align: center;
+  position: relative;
+  bottom: 99px;
+  margin-bottom: 30px;
+  left: 200px;
+}
+
+.prev-btn {
+  border-radius: 5px;
+  background-color: white;
+  border: 1px solid black;
+  padding: 10px 20px;
+  color: black;
+  font-size: 15px;
+  font-family: "Open Sans", sans-serif;
+  cursor: pointer;
+  width: 100%;
+  max-width: 170px;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 30px;
+}
+
+.prev-btn:hover {
+  background-color: white;
+}
+
+.submit {
+  border-radius: 5px;
+  background-color: #6f6f6f;
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  font-size: 15px;
+  font-family: "Open Sans", sans-serif;
+  cursor: pointer;
+  width: 100%;
+  max-width: 200px;
+  text-align: center;
+  position: relative;
+  bottom: 99px;
+  left: 200px;
+}
+
+.submit:hover {
+  background-color: #a1a1a1;
 }
 
 /* Responsive Design */
 @media (max-width: 950px) {
   .grid-container {
-    grid-template-columns: 1fr; /* Stack items on smaller screens */
+    grid-template-columns: 1fr;
     text-align: center;
   }
 
   .pricing-box {
-    margin-top: 20px; /* Reset margin for smaller screens */
+    margin-top: 20px;
   }
 
-  .form-container {
-    max-width: 100%;
+  .form-step {
+    display: none;
+  }
+  
+  .form-step.active {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
   }
 
   .consent-container {
     text-align: left;
-    width: 90%; /* Ensures consistency with form */
-    margin: 0 auto; /* Centers it */
+    width: 90%;
+    margin: 0 auto;
   }
 
-  /* Keep checkboxes aligned with form fields */
   .checkbox-label {
     justify-content: flex-start;
   }
 }
 
-/* Small Screens - Stack Elements Vertically */
 @media (max-width: 760px) {
-  .flex-container {
+  .grid-container {
     flex-direction: column;
     align-items: center;
     gap: 20px;
@@ -236,7 +390,7 @@ button:hover {
     max-width: 90%;
   }
 
-  .form-container {
+  .form-step {
     width: 100%;
     max-width: 90%;
   }

@@ -1,250 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <head>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registration</title>
-    <!-- Google Fonts Link -->
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Sigmar&display=swap"
-      rel="stylesheet"
-    />
-    <!--For styling the page-->
+    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet" />
+
+    <!-- CSS -->
     <link rel="stylesheet" href="frontend/styles/registration.css" />
-  </head>
-  <body>
+
+    <!-- Installation Date -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+</head>
+<body>
+
     <h1>LYNX Fiber Internet Application Form</h1>
     <p>Processing of your application only starts upon the submission of one valid ID.</p>
 
-    <div class="grid-container">
-      <!-- Pricing Box -->
-      <div id="pricing-box" class="pricing-box bronze">
-        <h2 id="plan-title"><strong>BRONZE</strong></h2>
-        <p class="price" id="plan-price">PHP 1199<br /><strong>per month</strong></p>
-        <p class="details" id="plan-details">
-          Up to 50 Mbps<br />Unlimited Bandwidth<br />24/7 Support
-        </p>
-      </div>
-
-      <form action="post">
-        <div class="form-container">
-
-          <!-- Subscription Plan Dropdown -->
-          <label for="subscription-plan">Subscription Plan</label>
-          <select id="subscription-plan" name="subscription-plan">
-            <option value="bronze">Bronze Plan</option>
-            <option value="silver">Silver Plan</option>
-            <option value="gold">Gold Plan</option>
-          </select>
-
-          <label for="first-name">First Name</label>
-          <input type="text" id="first-name" name="first-name" placeholder="First Name"/>
-
-          <label for="last-name">Last Name</label>
-          <input type="text" id="last-name" name="last-name" placeholder="Last Name"/>
-
-          <label for="contact-number">Contact Number</label>
-          <input type="text" id="contact-number" name="contact-number" placeholder="Contact Number"/>
-
-          <label for="email">Email Address</label>
-          <input type="email" id="email" name="email" placeholder="Email Address"/>
-
-          <label for="birth_date">Birth Date</label>
-          <input type="date" id="birth_date" name="birth_date" />
-
-          <!-- Dropdown for ID Type -->
-          <label for="id-type" class="id">ID Type</label>
-          <select id="id-type" name="id-type">
-            <option value="" disabled selected>Select an ID Type</option>
-            <option value="philippine-passport">Philippine Passport</option>
-            <option value="drivers-license">Driver's License</option>
-            <option value="umid">Unified Multi-Purpose ID (UMID)</option>
-            <option value="postal-id">Postal ID</option>
-            <option value="philhealth-id">PhilHealth ID</option>
-            <option value="voters-id">Voter's ID</option>
-          </select>
-
-          <label for="id_num">ID Number</label>
-          <input type="text" id="id_num" name="id_num" placeholder="ID Number"/>
-
-          <label for="id-photo">Upload ID Photo</label>
-          <input type="file" id="id-photo" name="id-photo" />
-
-          <!-- Dropdown for Sex -->
-          <label for="sex" class="sex">Sex</label>
-          <select id="sex" name="sex">
-            <option value="" disabled selected>Select a sex</option>
-            <option value="male">Male</option>
-            <option value="female">Female</option>
-          </select>
-
-          <!-- Dropdown for Province -->
-          <label for="province" class="province">Province</label>
-          <select id="province" name="province">
-            <option value="" disabled selected>Select a province</option>
-            <option value="bataan">Bataan</option>
-          </select>
-
-          <!-- Dropdown for Municipality and Barangay -->
-          <label for="municipality">Municipality</label>
-          <select id="municipality" name="municipality">
-            <option value="" disabled selected>Select a municipality</option>
-            <option value="orion">Orion</option>
-            <option value="limay">Limay</option>
-          </select>
-
-          <label for="barangay">Barangay</label>
-          <select id="barangay" name="barangay">
-            <option value="" disabled selected>Select a barangay</option>
-          </select>
-
-          <label for="installation_date">Installation Date</label>
-          <input type="date" id="installation_date" name="installation_date" />
-
-          <div class="consent-container">
-            <label class="checkbox-label">
-              <input type="checkbox" name="terms" required />
-              I consent to the terms and conditions.
-            </label>
-
-            <label class="checkbox-label">
-              <input type="checkbox" name="data-processing" required />
-              I consent to the processing of my data.
-            </label>
-
-            <label class="checkbox-label">
-              <input type="checkbox" name="id-photo" required />
-              I consent to the collection of my ID photo.
-            </label>
-          </div>
-
-          <button><strong>SUBMIT</strong></button>
+    <!-- Progress Bar -->
+    <div class="progress-bar">
+        <div class="step active" id="step-1">
+            <span class="circle">1</span>
+            <p>Basic Details</p>
         </div>
-      </form>
+        <div class="step" id="step-2">
+            <span class="circle">2</span>
+            <p>ID Details</p>
+        </div>
+        <div class="step" id="step-3">
+            <span class="circle">3</span>
+            <p>Address & Consent</p>
+        </div>
+    </div>
+
+    <div class="grid-container">
+        <!-- Pricing Box -->
+        <div id="pricing-box" class="pricing-box bronze">
+            <h2 id="plan-title"><strong>BRONZE</strong></h2>
+            <p class="price" id="plan-price">PHP 1199<br /><strong>per month</strong></p>
+            <p class="details" id="plan-details">
+                Up to 50 Mbps<br />Unlimited Bandwidth<br />24/7 Support
+            </p>
+        </div>
+
+        <form id="registration-form">
+            <!-- STEP 1 -->
+            <div class="form-step active">
+
+                    <!-- Subscription Plan Dropdown -->
+                <label for="subscription-plan">Subscription Plan</label>
+                <select id="subscription-plan" name="subscription-plan">
+                  <option value="bronze">Bronze Plan</option>
+                  <option value="silver">Silver Plan</option>
+                  <option value="gold">Gold Plan</option>
+                </select>
+
+                <label for="first-name">First Name</label>
+                <input type="text" id="first-name" name="first-name" placeholder="First Name"/>
+
+                <label for="last-name">Last Name</label>
+                <input type="text" id="last-name" name="last-name" placeholder="Last Name"/>
+
+                <label for="sex">Sex</label>
+                <select id="sex" name="sex">
+                    <option value="" disabled selected>Select a sex</option>
+                    <option value="male">Male</option>
+                    <option value="female">Female</option>
+                </select>
+
+                <label for="contact-number">Contact Number</label>
+                <input type="text" id="contact-number" name="contact-number" placeholder="Contact Number"/>
+
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="Email Address"/>
+
+                <label for="birth-date">Birth Date</label>
+                <input type="text" id="birth-date" name="birth-date" placeholder="Please select a date" readonly>
+
+                <button type="button" class="next-btn">Next</button>
+            </div>
+
+            <!-- STEP 2 -->
+            <div class="form-step step-2">
+                <label for="id-type">Valid Government ID</label>
+                <select id="id-type" name="id-type">
+                    <option value="" disabled selected>Select an ID Type</option>
+                    <option value="passport">Philippine Passport</option>
+                    <option value="drivers-license">Driver's License</option>
+                    <option value="umid">Unified Multi-Purpose ID (UMID)</option>
+                    <option value="postal-id">Postal ID</option>
+                    <option value="philhealth-id">PhilHealth ID</option>
+                    <option value="voters-id">Voter's ID</option>
+                </select>
+
+                <label for="id-number">ID Number</label>
+                <input type="text" id="id-number" name="id-number" placeholder="ID Number"/>
+
+                <label for="id-photo">Upload ID Photo</label>
+                <input type="file" id="id-photo" name="id-photo" />
+
+                <button type="button" class="prev-btn">Previous</button>
+                <button type="button" class="next-btn2">Next</button>
+            </div>
+
+            <!-- STEP 3 -->
+            <div class="form-step step-3">
+              <div class="ownership-container">
+                <h3>HOME OWNERSHIP TYPE</h3>
+                <div class="ownership-options">
+                    <label>
+                        <input type="radio" name="ownership" value="owned">
+                        Owned
+                    </label>
+                    <label>
+                        <input type="radio" name="ownership" value="rented">
+                        Rented
+                    </label>
+                </div>
+              </div>
+
+              <label for="province">Province</label>
+              <select id="province" name="province">
+                  <option value="" disabled selected>Select a province</option>
+                  <option value="bataan">Bataan</option>
+              </select>
+
+              <label for="municipality">Municipality</label>
+              <select id="municipality" name="municipality">
+                  <option value="" disabled selected>Select a municipality</option>
+                  <option value="orion">Orion</option>
+                  <option value="limay">Limay</option>
+              </select>
+
+              <label for="barangay">Barangay</label>
+              <select id="barangay" name="barangay">
+                <option value="" disabled selected>Select a barangay</option>
+              </select>
+
+              <label for="id-photo">Upload Proof of Residency</label>
+              <input type="file" id="residency-photo" name="id-photo" />
+
+              <label for="installation-date">Installation Date</label>
+              <input type="text" id="installation-date" name="installation-date" placeholder="Please select a date" readonly>
+
+              <div class="consent-container">
+                  <label class="checkbox-label">
+                      <input type="checkbox" name="terms" required />
+                      I consent to the terms and conditions.
+                  </label>
+
+                  <label class="checkbox-label">
+                      <input type="checkbox" name="data-processing" required />
+                      I consent to the processing of my data.
+                  </label>
+
+                  <label class="checkbox-label">
+                      <input type="checkbox" name="id-photo-consent" required />
+                      I consent to the collection of my ID photo.
+                  </label>
+              </div>
+
+              <button type="button" class="prev-btn">Previous</button>
+              <button type="submit" class="submit"><strong>SUBMIT</strong></button>
+            </div>
+
+        </form>
     </div>
 
     <!-- JavaScript -->
-    <script>
-      // Barangay options for each municipality
-      const barangayData = {
-        orion: ["Bilolo", "Sto. Domingo", "Balagtas", "Lati", "General Lim"],
-        limay: ["Alangan", "Duale", "Kitang", "Townsite", "Wawa"]
-      };
+    <script src="multi-stepform.js"></script>
+    <script src="registration.js"></script>
 
-      // Subscription plan data
-      const planData = {
-        bronze: {
-          title: "BRONZE",
-          price: "PHP 1199<br /><strong>per month</strong>",
-          details: "Up to 50 Mbps<br />Unlimited Bandwidth<br />24/7 Support",
-          color: "#6f6f6f",
-        },
-        silver: {
-          title: "SILVER",
-          price: "PHP 1499<br /><strong>per month</strong>",
-          details: "Up to 100 Mbps<br />Unlimited Bandwidth<br />24/7 Support",
-          color: "#6f6f6f",
-        },
-        gold: {
-          title: "GOLD",
-          price: "PHP 1799<br /><strong>per month</strong>",
-          details: "Up to 150 Mbps<br />Unlimited Bandwidth<br />24/7 Support",
-          color: "#6f6f6f",
-        }
-      };
-
-      // Get elements
-      const subscriptionSelect = document.getElementById("subscription-plan");
-      const pricingBox = document.getElementById("pricing-box");
-      const planTitle = document.getElementById("plan-title");
-      const planPrice = document.getElementById("plan-price");
-      const planDetails = document.getElementById("plan-details");
-      const additionalOptionsSelect = document.getElementById("additional-options");
-
-      const municipalitySelect = document.getElementById("municipality");
-      const barangaySelect = document.getElementById("barangay");
-
-      // Function to update the pricing box based on selected plan
-      function updatePlanUI() {
-        const selectedPlan = subscriptionSelect.value;
-
-        // Update text content
-        planTitle.innerHTML = `<strong>${planData[selectedPlan].title}</strong>`;
-        planPrice.innerHTML = planData[selectedPlan].price;
-        planDetails.innerHTML = planData[selectedPlan].details;
-
-        // Change pricing box border color
-        pricingBox.style.borderColor = planData[selectedPlan].color;
-
-        // Update additional options dropdown
-        additionalOptionsSelect.innerHTML = '<option value="" disabled selected>Select an option</option>';
-        planData[selectedPlan].options.forEach(option => {
-          let opt = document.createElement("option");
-          opt.value = option.toLowerCase().replace(/\s+/g, "-");
-          opt.textContent = option;
-          additionalOptionsSelect.appendChild(opt);
-        });
-      }
-
-      // Function to update barangay dropdown based on municipality
-      function updateBarangays() {
-        const selectedMunicipality = municipalitySelect.value;
-        barangaySelect.innerHTML = '<option value="" disabled selected>Select a barangay</option>';
-        barangayData[selectedMunicipality].forEach(barangay => {
-          let option = document.createElement("option");
-          option.value = barangay.toLowerCase().replace(/\s+/g, "-");
-          option.textContent = barangay;
-          barangaySelect.appendChild(option);
-        });
-      }
-
-      // Event listeners
-      subscriptionSelect.addEventListener("change", updatePlanUI);
-      municipalitySelect.addEventListener("change", updateBarangays);
-
-      // Function for birth_date 
-      document.addEventListener("DOMContentLoaded", function () {
-        const birthDateInput = document.getElementById("birth_date");
-        const today = new Date();
-        
-        // Get the minimum allowed date for 18-year-old users
-        const minAllowedDate = new Date();
-        minAllowedDate.setFullYear(today.getFullYear() - 18); // Subtract 18 years
-        const formattedMinDate = minAllowedDate.toISOString().split("T")[0];
-    
-        // Disable future dates
-        birthDateInput.setAttribute("max", formattedMinDate); // Prevents selecting 2024, 2025, etc.
-      });
-
-      // Function for installation date
-      document.addEventListener("DOMContentLoaded", function () {
-        const installationDateInput = document.getElementById("installation_date");
-        const today = new Date();
-    
-        // Set the minimum allowed date (4 days after today)
-        const minInstallDate = new Date();
-        minInstallDate.setDate(today.getDate() + 4);
-        const formattedMinDate = minInstallDate.toISOString().split("T")[0];
-    
-        // Set the maximum date (End of the current month)
-        const maxInstallDate = new Date(today.getFullYear(), today.getMonth() + 1, 0); // Last day of the month
-        const formattedMaxDate = maxInstallDate.toISOString().split("T")[0];
-    
-        // Apply restrictions to the input field
-        installationDateInput.setAttribute("min", formattedMinDate);
-        installationDateInput.setAttribute("max", formattedMaxDate);
-    
-        // Prevent users from manually inputting an invalid date
-        installationDateInput.addEventListener("input", function () {
-          const selectedDate = new Date(this.value);
-          if (selectedDate < minInstallDate || selectedDate > maxInstallDate) {
-            this.value = ""; // Clear invalid date
-          }
-        });
-      });
-
-    </script>
-  </body>
+</body>
 </html>
