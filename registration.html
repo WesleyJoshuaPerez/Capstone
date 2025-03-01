@@ -48,7 +48,7 @@
             </p>
         </div>
 
-        <form id="registration-form">
+        <form id="registration-form" action="backend/insert_registration.php" method="POST" enctype="multipart/form-data">
             <!-- STEP 1 -->
             <div class="form-step active">
 
@@ -98,7 +98,7 @@
                     <option value="voters-id">Voter's ID</option>
                 </select>
 
-                <label for="id-number">ID Number</label>
+                <label for="id-number">ID Number (Optional)</label>
                 <input type="text" id="id-number" name="id-number" placeholder="ID Number"/>
 
                 <label for="id-photo">Upload ID Photo</label>
@@ -173,8 +173,8 @@
     </div>
 
     <!-- JavaScript -->
-    <script src="multi-stepform.js"></script>
-    <script src="registration.js"></script>
+    <script src="backend/multi-stepform.js"></script>
+    <script src="backend/registration.js"></script>
 
 </body>
 </html>
