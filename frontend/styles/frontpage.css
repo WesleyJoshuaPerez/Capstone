@@ -388,7 +388,7 @@ footer {
   margin: 0 auto;
 }
 /*For laptops */
-@media (max-width: 59.375rem) {
+@media (max-width: 950px) {
   .navbar :is(.hamburger-btn, .close-btn) {
     display: block;
   }
@@ -453,7 +453,7 @@ footer {
   .carousel-indicators {
     text-align: center;
     position: absolute;
-    bottom: 1.25rem;
+    bottom: -50px;
     left: 50%;
     transform: translateX(-50%);
     display: flex;
