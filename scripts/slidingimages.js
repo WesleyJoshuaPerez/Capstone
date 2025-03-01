@@ -1,35 +1,51 @@
-let currentIndex = 0;
+document.addEventListener("DOMContentLoaded", () => {
+  const slides = document.querySelectorAll(".slide");
+  const dots = document.querySelectorAll(".dot");
+  let currentIndex = 0;
+  const intervalTime = 3000; // Time in milliseconds between slides
 
-function moveSlide(step) {
-  const slides = document.querySelector(".slider-container");
-  const totalSlides = document.querySelectorAll(".slide").length;
+  function showSlide(index) {
+    const sliderContainer = document.querySelector(".slider-container");
+    sliderContainer.style.transform = `translateX(-${index * 70}vw)`;
 
-  currentIndex += step;
-
-  if (currentIndex < 0) {
-    currentIndex = totalSlides - 1;
-  } else if (currentIndex >= totalSlides) {
-    currentIndex = 0;
+    dots.forEach((dot) => dot.classList.remove("active"));
+    dots[index].classList.add("active");
   }
 
-  slides.style.transform = `translateX(-${currentIndex * 100}vw)`;
-  updateIndicators();
-}
+  function nextSlide() {
+    currentIndex = currentIndex < slides.length - 1 ? currentIndex + 1 : 0;
+    showSlide(currentIndex);
+  }
 
-function goToSlide(index) {
-  currentIndex = index;
-  document.querySelector(".slider-container").style.transform = `translateX(-${
-    currentIndex * 100
-  }vw)`;
-  updateIndicators();
-}
+  function prevSlide() {
+    currentIndex = currentIndex > 0 ? currentIndex - 1 : slides.length - 1;
+    showSlide(currentIndex);
+  }
 
-function updateIndicators() {
-  const dots = document.querySelectorAll(".dot");
-  dots.forEach((dot, index) => {
-    dot.classList.toggle("active", index === currentIndex);
+  document.querySelector(".prev").addEventListener("click", () => {
+    prevSlide();
+    resetInterval();
   });
-}
 
-// Auto-slide every 3.5 seconds
-setInterval(() => moveSlide(1), 3500);
+  document.querySelector(".next").addEventListener("click", () => {
+    nextSlide();
+    resetInterval();
+  });
+
+  dots.forEach((dot, index) => {
+    dot.addEventListener("click", () => {
+      currentIndex = index;
+      showSlide(currentIndex);
+      resetInterval();
+    });
+  });
+
+  let slideInterval = setInterval(nextSlide, intervalTime);
+
+  function resetInterval() {
+    clearInterval(slideInterval);
+    slideInterval = setInterval(nextSlide, intervalTime);
+  }
+
+  showSlide(currentIndex);
+});
