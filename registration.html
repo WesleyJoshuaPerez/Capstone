@@ -4,7 +4,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <head>
     <title>Registration</title>
-    <!-- Google Fonts Link For Icons -->
+    <!-- Google Fonts Link -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -13,32 +13,32 @@
     />
     <!--For styling the page-->
     <link rel="stylesheet" href="frontend/styles/registration.css" />
-    <!--Change the default icon of the xampp-->
-    <link
-      rel="icon"
-      type="image/x-icon"
-      href="frontend/assets/images/icons/lynxicon.ico"
-    />
   </head>
   <body>
     <h1>LYNX Fiber Internet Application Form</h1>
-    <p>
-      Processing of your application only starts upon the submission of one
-      valid ID
-    </p>
+    <p>Processing of your application only starts upon the submission of one valid ID.</p>
 
     <div class="grid-container">
-      <!-- Bronze Pricing Box -->
-      <div class="pricing-box">
-        <h2><strong>BRONZE</strong></h2>
-        <p class="price">PHP 1199<br /><strong>per month</strong></p>
-        <p class="details">
+      <!-- Pricing Box -->
+      <div id="pricing-box" class="pricing-box bronze">
+        <h2 id="plan-title"><strong>BRONZE</strong></h2>
+        <p class="price" id="plan-price">PHP 1199<br /><strong>per month</strong></p>
+        <p class="details" id="plan-details">
           Up to 50 Mbps<br />Unlimited Bandwidth<br />24/7 Support
         </p>
       </div>
 
       <form action="post">
         <div class="form-container">
+
+          <!-- Subscription Plan Dropdown -->
+          <label for="subscription-plan">Subscription Plan</label>
+          <select id="subscription-plan" name="subscription-plan">
+            <option value="bronze">Bronze Plan</option>
+            <option value="silver">Silver Plan</option>
+            <option value="gold">Gold Plan</option>
+          </select>
+
           <label for="first-name">First Name</label>
           <input type="text" id="first-name" name="first-name" placeholder="First Name"/>
 
@@ -52,7 +52,7 @@
           <input type="email" id="email" name="email" placeholder="Email Address"/>
 
           <label for="birth_date">Birth Date</label>
-          <input type="date" id="date" name="date" />
+          <input type="date" id="birth_date" name="birth_date" />
 
           <!-- Dropdown for ID Type -->
           <label for="id-type" class="id">ID Type</label>
@@ -77,7 +77,7 @@
           <select id="sex" name="sex">
             <option value="" disabled selected>Select a sex</option>
             <option value="male">Male</option>
-            <option value="female">Demale</option>
+            <option value="female">Female</option>
           </select>
 
           <!-- Dropdown for Province -->
@@ -87,28 +87,21 @@
             <option value="bataan">Bataan</option>
           </select>
 
-          <!-- Dropdown for Municipality -->
-          <label for="municipality" class="municipality">Municipality</label>
+          <!-- Dropdown for Municipality and Barangay -->
+          <label for="municipality">Municipality</label>
           <select id="municipality" name="municipality">
             <option value="" disabled selected>Select a municipality</option>
-            <option value="bataan">Orion</option>
-            <option value="bataan">Limay</option>
+            <option value="orion">Orion</option>
+            <option value="limay">Limay</option>
           </select>
 
-          <!-- Dropdown for Barangay -->
-          <!-- Options of barangay will change based on chosen municipality -->
-          <label for="barangay" class="barangay">Barangay</label>
+          <label for="barangay">Barangay</label>
           <select id="barangay" name="barangay">
             <option value="" disabled selected>Select a barangay</option>
-            <option value="bilolo">Bilolo</option>
-            <option value="sto.domingo">Sto. Domingo</option>
           </select>
 
-          <label for="street">Unit/House Number, Street Name</label>
-          <input type="text" id="street" name="street" placeholder="Unit/House Number, Street Name"/>
-
           <label for="installation_date">Installation Date</label>
-          <input type="date" id="date" name="date" />
+          <input type="date" id="installation_date" name="installation_date" />
 
           <div class="consent-container">
             <label class="checkbox-label">
@@ -131,5 +124,127 @@
         </div>
       </form>
     </div>
+
+    <!-- JavaScript -->
+    <script>
+      // Barangay options for each municipality
+      const barangayData = {
+        orion: ["Bilolo", "Sto. Domingo", "Balagtas", "Lati", "General Lim"],
+        limay: ["Alangan", "Duale", "Kitang", "Townsite", "Wawa"]
+      };
+
+      // Subscription plan data
+      const planData = {
+        bronze: {
+          title: "BRONZE",
+          price: "PHP 1199<br /><strong>per month</strong>",
+          details: "Up to 50 Mbps<br />Unlimited Bandwidth<br />24/7 Support",
+          color: "#6f6f6f",
+        },
+        silver: {
+          title: "SILVER",
+          price: "PHP 1499<br /><strong>per month</strong>",
+          details: "Up to 100 Mbps<br />Unlimited Bandwidth<br />24/7 Support",
+          color: "#6f6f6f",
+        },
+        gold: {
+          title: "GOLD",
+          price: "PHP 1799<br /><strong>per month</strong>",
+          details: "Up to 150 Mbps<br />Unlimited Bandwidth<br />24/7 Support",
+          color: "#6f6f6f",
+        }
+      };
+
+      // Get elements
+      const subscriptionSelect = document.getElementById("subscription-plan");
+      const pricingBox = document.getElementById("pricing-box");
+      const planTitle = document.getElementById("plan-title");
+      const planPrice = document.getElementById("plan-price");
+      const planDetails = document.getElementById("plan-details");
+      const additionalOptionsSelect = document.getElementById("additional-options");
+
+      const municipalitySelect = document.getElementById("municipality");
+      const barangaySelect = document.getElementById("barangay");
+
+      // Function to update the pricing box based on selected plan
+      function updatePlanUI() {
+        const selectedPlan = subscriptionSelect.value;
+
+        // Update text content
+        planTitle.innerHTML = `<strong>${planData[selectedPlan].title}</strong>`;
+        planPrice.innerHTML = planData[selectedPlan].price;
+        planDetails.innerHTML = planData[selectedPlan].details;
+
+        // Change pricing box border color
+        pricingBox.style.borderColor = planData[selectedPlan].color;
+
+        // Update additional options dropdown
+        additionalOptionsSelect.innerHTML = '<option value="" disabled selected>Select an option</option>';
+        planData[selectedPlan].options.forEach(option => {
+          let opt = document.createElement("option");
+          opt.value = option.toLowerCase().replace(/\s+/g, "-");
+          opt.textContent = option;
+          additionalOptionsSelect.appendChild(opt);
+        });
+      }
+
+      // Function to update barangay dropdown based on municipality
+      function updateBarangays() {
+        const selectedMunicipality = municipalitySelect.value;
+        barangaySelect.innerHTML = '<option value="" disabled selected>Select a barangay</option>';
+        barangayData[selectedMunicipality].forEach(barangay => {
+          let option = document.createElement("option");
+          option.value = barangay.toLowerCase().replace(/\s+/g, "-");
+          option.textContent = barangay;
+          barangaySelect.appendChild(option);
+        });
+      }
+
+      // Event listeners
+      subscriptionSelect.addEventListener("change", updatePlanUI);
+      municipalitySelect.addEventListener("change", updateBarangays);
+
+      // Function for birth_date 
+      document.addEventListener("DOMContentLoaded", function () {
+        const birthDateInput = document.getElementById("birth_date");
+        const today = new Date();
+        
+        // Get the minimum allowed date for 18-year-old users
+        const minAllowedDate = new Date();
+        minAllowedDate.setFullYear(today.getFullYear() - 18); // Subtract 18 years
+        const formattedMinDate = minAllowedDate.toISOString().split("T")[0];
+    
+        // Disable future dates
+        birthDateInput.setAttribute("max", formattedMinDate); // Prevents selecting 2024, 2025, etc.
+      });
+
+      // Function for installation date
+      document.addEventListener("DOMContentLoaded", function () {
+        const installationDateInput = document.getElementById("installation_date");
+        const today = new Date();
+    
+        // Set the minimum allowed date (4 days after today)
+        const minInstallDate = new Date();
+        minInstallDate.setDate(today.getDate() + 4);
+        const formattedMinDate = minInstallDate.toISOString().split("T")[0];
+    
+        // Set the maximum date (End of the current month)
+        const maxInstallDate = new Date(today.getFullYear(), today.getMonth() + 1, 0); // Last day of the month
+        const formattedMaxDate = maxInstallDate.toISOString().split("T")[0];
+    
+        // Apply restrictions to the input field
+        installationDateInput.setAttribute("min", formattedMinDate);
+        installationDateInput.setAttribute("max", formattedMaxDate);
+    
+        // Prevent users from manually inputting an invalid date
+        installationDateInput.addEventListener("input", function () {
+          const selectedDate = new Date(this.value);
+          if (selectedDate < minInstallDate || selectedDate > maxInstallDate) {
+            this.value = ""; // Clear invalid date
+          }
+        });
+      });
+
+    </script>
   </body>
 </html>
