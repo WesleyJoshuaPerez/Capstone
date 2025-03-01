@@ -14,14 +14,14 @@ body {
 h1 {
   text-align: center;
   margin-top: 40px;
-  font-size: 40px;
+  font-size: 35px;
 }
 
 h2 {
   position: relative;
   left: 150px;
   top: 110px;
-  font-size: 2rem;
+  font-size: 1rem;
 }
 
 p {
@@ -113,7 +113,7 @@ p {
   grid-template-columns: 1fr; /* Single column for form inputs */
   gap: 10px;
   width: 100%;
-  max-width: 500px;
+  max-width: 400px;
   position: relative;
   top: 60px;
   padding-bottom: 50px;
@@ -129,9 +129,9 @@ p {
 .form-container input {
   width: 100%;
   padding: 8px;
-  border: 2px solid black;
+  border: 1px solid black;
   border-radius: 4px;
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 
 /* Styling specifically for the dropdown */
@@ -149,7 +149,7 @@ p {
 /* Style specifically for the file input to match other inputs */
 .form-container input[type="file"] {
   padding: 6px;
-  font-size: 1rem;
+  font-size: 0.8rem;
   cursor: pointer;
   background-color: white;
 }
@@ -159,7 +159,7 @@ p {
   display: flex;
   flex-direction: column;
   gap: 10px; /* Space between checkboxes */
-  font-size: 0.875rem;
+  font-size: 0.7rem;
   margin-top: 20px; /* Adds spacing from form */
   max-width: 500px; /* Matches form width */
   width: 100%;
@@ -191,7 +191,7 @@ button {
   padding-top: 10px;
   padding-bottom: 10px;
   color: white;
-  font-size: 25px;
+  font-size: 15px;
   font-family: "Open Sans", sans-serif;
   cursor: pointer;
 }
