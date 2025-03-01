@@ -18,7 +18,8 @@ header {
   left: 0;
   z-index: 10;
   padding: 0 0.625rem;
-  background-color: #000;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 .navbar {
   display: flex;
@@ -71,28 +72,28 @@ header {
   transition: 0.1s ease;
 }
 .navbar .links .aboutus-link {
-  color: #ec202a;
+  color: #6f6f6f;
   font-size: small;
   font-weight: bolder;
 }
 .navbar .links .contactus-link {
-  color: #fcbf06;
+  color: #6f6f6f;
   font-size: small;
   font-weight: bolder;
 }
 .navbar .links .facebook-link {
-  color: #3775b9;
+  color: #6f6f6f;
   font-size: small;
   font-weight: bolder;
 }
 /*change color when hover */
 .navbar .links a:hover {
-  color: #19e8ff;
+  color: #a1a1a1;
 }
 .navbar .login-btn {
   border: none;
   outline: none;
-  background: #36a13a;
+  background: #6f6f6f;
   color: #fff;
   font-size: 14.4px; /* Adjust font size */
   font-weight: 600;
@@ -102,8 +103,8 @@ header {
   transition: 0.15s ease;
 }
 .navbar .login-btn:hover {
-  background: #ddd;
-  color: #000;
+  background: #a1a1a1;
+  color: white;
 }
 /*For sections of the pages */
 /* General Full-Screen Styling */
@@ -423,7 +424,7 @@ footer {
     font-size: 19.2px;
   }
   .navbar .links a:hover {
-    color: #00bcd4;
+    color: #6f6f6f;
   }
   .navbar .login-btn {
     font-size: 12.8px; /* Adjust font size */

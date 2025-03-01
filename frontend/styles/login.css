@@ -32,7 +32,7 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  width: 300px; /* Slightly smaller for a better fit */
+  width: 350px; /* Slightly smaller for a better fit */
   background-color: rgb(222, 218, 218);
   box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.15);
   border-radius: 0.625rem;
@@ -63,7 +63,7 @@ body {
 
 .input_group input::placeholder {
   color: #888;
-  font-size: 0.9rem;
+  font-size: 0.8rem;
 }
 
 .loginform_container a {
@@ -81,7 +81,7 @@ body {
 label {
   color: #555;
   text-align: left;
-  font-size: 0.875rem;
+  font-size: 0.7rem;
   font-weight: bold;
 }
 
@@ -111,7 +111,7 @@ label {
   color: #555;
 }
 
-/* ✅ Center the login button properly */
+/* Center the login button properly */
 #loginbutton {
   width: 100%;
   max-width: 12.5rem;
@@ -149,7 +149,7 @@ label {
   min-height: 3.125rem;
 }
 
-/* ✅ Responsive Adjustments for 759px and below */
+/* Responsive Adjustments for 759px and below */
 @media (max-width: 759px) {
   .loginform_container {
     width: 60%;
@@ -181,7 +181,7 @@ label {
   }
 }
 
-/* ✅ Extra Small Screens - 480px and below */
+/* Extra Small Screens - 480px and below */
 @media (max-width: 480px) {
   .container {
     padding: 0.5rem;
