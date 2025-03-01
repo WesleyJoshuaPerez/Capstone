@@ -113,6 +113,12 @@ h1 {
 #update_button:hover {
   background-color: #6f6f6f;
 }
+/* ✅ Make Images Smaller */
+.logo img {
+  width: 7.5rem;
+  height: auto;
+  min-height: 3.125rem;
+}
 
 /* Responsive Design */
 @media (max-width: 950px) {
@@ -127,36 +133,37 @@ h1 {
 
 @media (max-width: 760px) {
   h1 {
-    font-size: 1.75rem;
+    font-size: 20px;
   }
   .form-container {
     width: 97%;
     padding: 1.75rem;
   }
   .form-container input {
-    font-size: 1.2rem;
+    font-size: 15px;
     padding: 1rem;
   }
   #update_button {
     width: 100%;
+    font-size: 20px;
     height: 4.5rem;
   }
 }
 
 @media (max-width: 480px) {
   h1 {
-    font-size: 1.75rem;
+    font-size: 20px;
   }
   .form-container {
     width: 99%;
     padding: 2rem;
   }
   .form-container input {
-    font-size: 1.2rem;
+    font-size: 15px;
     padding: 1rem;
   }
   #update_button {
-    font-size: 1.3rem;
+    font-size: 15px;
     height: 4rem;
   }
 }

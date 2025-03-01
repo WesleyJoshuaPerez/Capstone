@@ -22,11 +22,15 @@
   </head>
   <body>
     <div class="change-password-container">
-      <h1>CHANGE PASSWORD</h1>
+      <!--Use for lynx logo-->
+      <div class="logo">
+        <img src="frontend/assets/images/logos/lynxlogo.png" alt="Lynx Logo" />
+      </div>
       <form action="" method="post">
         <input type="hidden" name="code" value="<?php echo $_GET['code']; ?>" />
 
         <div class="form-container">
+          <h1>CHANGE PASSWORD</h1>
           <div class="input_group">
             <label for="email">Email Address</label>
             <input

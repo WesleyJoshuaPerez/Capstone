@@ -86,27 +86,16 @@ button {
 button:hover {
   background-color: #6f6f6f;
 }
-
-/* Responsive Design */
-@media (max-width: 950px) {
-  h1 {
-    font-size: 36px;
-  }
-  .form-container {
-    width: 90%; /* Makes it more adaptive */
-  }
-  .form-container input {
-    max-width: 100%;
-  }
-  button {
-    width: 70%;
-    max-width: 200px;
-  }
+/* ✅ Make Images Smaller */
+.logo img {
+  width: 7.5rem;
+  height: auto;
+  min-height: 3.125rem;
 }
 
 @media (max-width: 760px) {
   h1 {
-    font-size: 1.75rem;
+    font-size: 20px;
   }
   .reset-password-container {
     margin-top: 20px;
@@ -117,11 +106,12 @@ button:hover {
     padding: 15px;
   }
   .form-container input {
-    font-size: 0.875rem;
+    font-size: 15px;
   }
   button {
     width: 100%;
     max-width: 180px;
     height: 50px;
+    font-size: 12px;
   }
 }

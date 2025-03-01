@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registration</title>
@@ -8,173 +8,217 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- CSS -->
     <link rel="stylesheet" href="frontend/styles/registration.css" />
 
     <!-- Installation Date -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-  <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-</head>
-<body>
-
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+  </head>
+  <body>
     <h1>LYNX Fiber Internet Application Form</h1>
-    <p>Processing of your application only starts upon the submission of one valid ID.</p>
+    <p>
+      Processing of your application only starts upon the submission of one
+      valid ID.
+    </p>
 
     <!-- Progress Bar -->
     <div class="progress-bar">
-        <div class="step active" id="step-1">
-            <span class="circle">1</span>
-            <p>Basic Details</p>
-        </div>
-        <div class="step" id="step-2">
-            <span class="circle">2</span>
-            <p>ID Details</p>
-        </div>
-        <div class="step" id="step-3">
-            <span class="circle">3</span>
-            <p>Address & Consent</p>
-        </div>
+      <div class="step active" id="step-1">
+        <span class="circle">1</span>
+        <p>Basic Details</p>
+      </div>
+      <div class="step" id="step-2">
+        <span class="circle">2</span>
+        <p>ID Details</p>
+      </div>
+      <div class="step" id="step-3">
+        <span class="circle">3</span>
+        <p>Address & Consent</p>
+      </div>
     </div>
 
     <div class="grid-container">
-        <!-- Pricing Box -->
-        <div id="pricing-box" class="pricing-box bronze">
-            <h2 id="plan-title"><strong>BRONZE</strong></h2>
-            <p class="price" id="plan-price">PHP 1199<br /><strong>per month</strong></p>
-            <p class="details" id="plan-details">
-                Up to 50 Mbps<br />Unlimited Bandwidth<br />24/7 Support
-            </p>
+      <!-- Pricing Box -->
+      <div id="pricing-box" class="pricing-box bronze">
+        <h2 id="plan-title"><strong>BRONZE</strong></h2>
+        <p class="price" id="plan-price">
+          PHP 1199<br /><strong>per month</strong>
+        </p>
+        <p class="details" id="plan-details">
+          Up to 50 Mbps<br />Unlimited Bandwidth<br />24/7 Support
+        </p>
+      </div>
+
+      <form id="registration-form">
+        <!-- STEP 1 -->
+        <div class="form-step active">
+          <!-- Subscription Plan Dropdown -->
+          <label for="subscription-plan">Subscription Plan</label>
+          <select id="subscription-plan" name="subscription-plan">
+            <option value="bronze">Bronze Plan</option>
+            <option value="silver">Silver Plan</option>
+            <option value="gold">Gold Plan</option>
+          </select>
+
+          <label for="first-name">First Name</label>
+          <input
+            type="text"
+            id="first-name"
+            name="first-name"
+            placeholder="First Name"
+          />
+
+          <label for="last-name">Last Name</label>
+          <input
+            type="text"
+            id="last-name"
+            name="last-name"
+            placeholder="Last Name"
+          />
+
+          <label for="sex">Sex</label>
+          <select id="sex" name="sex">
+            <option value="" disabled selected>Select a sex</option>
+            <option value="male">Male</option>
+            <option value="female">Female</option>
+          </select>
+
+          <label for="contact-number">Contact Number</label>
+          <input
+            type="text"
+            id="contact-number"
+            name="contact-number"
+            placeholder="Contact Number"
+          />
+
+          <label for="email">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Email Address"
+          />
+
+          <label for="birth-date">Birth Date</label>
+          <input
+            type="text"
+            id="birth-date"
+            name="birth-date"
+            placeholder="Please select a date"
+            readonly
+          />
+
+          <button type="button" class="next-btn">Next</button>
         </div>
 
-        <form id="registration-form">
-            <!-- STEP 1 -->
-            <div class="form-step active">
+        <!-- STEP 2 -->
+        <div class="form-step step-2">
+          <label for="id-type">Valid Government ID</label>
+          <select id="id-type" name="id-type">
+            <option value="" disabled selected>Select an ID Type</option>
+            <option value="passport">Philippine Passport</option>
+            <option value="drivers-license">Driver's License</option>
+            <option value="umid">Unified Multi-Purpose ID (UMID)</option>
+            <option value="postal-id">Postal ID</option>
+            <option value="philhealth-id">PhilHealth ID</option>
+            <option value="voters-id">Voter's ID</option>
+          </select>
 
-                    <!-- Subscription Plan Dropdown -->
-                <label for="subscription-plan">Subscription Plan</label>
-                <select id="subscription-plan" name="subscription-plan">
-                  <option value="bronze">Bronze Plan</option>
-                  <option value="silver">Silver Plan</option>
-                  <option value="gold">Gold Plan</option>
-                </select>
+          <label for="id-number">ID Number</label>
+          <input
+            type="text"
+            id="id-number"
+            name="id-number"
+            placeholder="ID Number"
+          />
 
-                <label for="first-name">First Name</label>
-                <input type="text" id="first-name" name="first-name" placeholder="First Name"/>
+          <label for="id-photo">Upload ID Photo</label>
+          <input type="file" id="id-photo" name="id-photo" />
 
-                <label for="last-name">Last Name</label>
-                <input type="text" id="last-name" name="last-name" placeholder="Last Name"/>
+          <button type="button" class="prev-btn">Previous</button>
+          <button type="button" class="next-btn2">Next</button>
+        </div>
 
-                <label for="sex">Sex</label>
-                <select id="sex" name="sex">
-                    <option value="" disabled selected>Select a sex</option>
-                    <option value="male">Male</option>
-                    <option value="female">Female</option>
-                </select>
-
-                <label for="contact-number">Contact Number</label>
-                <input type="text" id="contact-number" name="contact-number" placeholder="Contact Number"/>
-
-                <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" placeholder="Email Address"/>
-
-                <label for="birth-date">Birth Date</label>
-                <input type="text" id="birth-date" name="birth-date" placeholder="Please select a date" readonly>
-
-                <button type="button" class="next-btn">Next</button>
+        <!-- STEP 3 -->
+        <div class="form-step step-3">
+          <div class="ownership-container">
+            <h3>HOME OWNERSHIP TYPE</h3>
+            <div class="ownership-options">
+              <label>
+                <input type="radio" name="ownership" value="owned" />
+                Owned
+              </label>
+              <label>
+                <input type="radio" name="ownership" value="rented" />
+                Rented
+              </label>
             </div>
+          </div>
 
-            <!-- STEP 2 -->
-            <div class="form-step step-2">
-                <label for="id-type">Valid Government ID</label>
-                <select id="id-type" name="id-type">
-                    <option value="" disabled selected>Select an ID Type</option>
-                    <option value="passport">Philippine Passport</option>
-                    <option value="drivers-license">Driver's License</option>
-                    <option value="umid">Unified Multi-Purpose ID (UMID)</option>
-                    <option value="postal-id">Postal ID</option>
-                    <option value="philhealth-id">PhilHealth ID</option>
-                    <option value="voters-id">Voter's ID</option>
-                </select>
+          <label for="province">Province</label>
+          <select id="province" name="province">
+            <option value="" disabled selected>Select a province</option>
+            <option value="bataan">Bataan</option>
+          </select>
 
-                <label for="id-number">ID Number</label>
-                <input type="text" id="id-number" name="id-number" placeholder="ID Number"/>
+          <label for="municipality">Municipality</label>
+          <select id="municipality" name="municipality">
+            <option value="" disabled selected>Select a municipality</option>
+            <option value="orion">Orion</option>
+            <option value="limay">Limay</option>
+          </select>
 
-                <label for="id-photo">Upload ID Photo</label>
-                <input type="file" id="id-photo" name="id-photo" />
+          <label for="barangay">Barangay</label>
+          <select id="barangay" name="barangay">
+            <option value="" disabled selected>Select a barangay</option>
+          </select>
 
-                <button type="button" class="prev-btn">Previous</button>
-                <button type="button" class="next-btn2">Next</button>
-            </div>
+          <label for="id-photo">Upload Proof of Residency</label>
+          <input type="file" id="residency-photo" name="id-photo" />
 
-            <!-- STEP 3 -->
-            <div class="form-step step-3">
-              <div class="ownership-container">
-                <h3>HOME OWNERSHIP TYPE</h3>
-                <div class="ownership-options">
-                    <label>
-                        <input type="radio" name="ownership" value="owned">
-                        Owned
-                    </label>
-                    <label>
-                        <input type="radio" name="ownership" value="rented">
-                        Rented
-                    </label>
-                </div>
-              </div>
+          <label for="installation-date">Installation Date</label>
+          <input
+            type="text"
+            id="installation-date"
+            name="installation-date"
+            placeholder="Please select a date"
+            readonly
+          />
 
-              <label for="province">Province</label>
-              <select id="province" name="province">
-                  <option value="" disabled selected>Select a province</option>
-                  <option value="bataan">Bataan</option>
-              </select>
+          <div class="consent-container">
+            <label class="checkbox-label">
+              <input type="checkbox" name="terms" required />
+              I consent to the terms and conditions.
+            </label>
 
-              <label for="municipality">Municipality</label>
-              <select id="municipality" name="municipality">
-                  <option value="" disabled selected>Select a municipality</option>
-                  <option value="orion">Orion</option>
-                  <option value="limay">Limay</option>
-              </select>
+            <label class="checkbox-label">
+              <input type="checkbox" name="data-processing" required />
+              I consent to the processing of my data.
+            </label>
 
-              <label for="barangay">Barangay</label>
-              <select id="barangay" name="barangay">
-                <option value="" disabled selected>Select a barangay</option>
-              </select>
+            <label class="checkbox-label">
+              <input type="checkbox" name="id-photo-consent" required />
+              I consent to the collection of my ID photo.
+            </label>
+          </div>
 
-              <label for="id-photo">Upload Proof of Residency</label>
-              <input type="file" id="residency-photo" name="id-photo" />
-
-              <label for="installation-date">Installation Date</label>
-              <input type="text" id="installation-date" name="installation-date" placeholder="Please select a date" readonly>
-
-              <div class="consent-container">
-                  <label class="checkbox-label">
-                      <input type="checkbox" name="terms" required />
-                      I consent to the terms and conditions.
-                  </label>
-
-                  <label class="checkbox-label">
-                      <input type="checkbox" name="data-processing" required />
-                      I consent to the processing of my data.
-                  </label>
-
-                  <label class="checkbox-label">
-                      <input type="checkbox" name="id-photo-consent" required />
-                      I consent to the collection of my ID photo.
-                  </label>
-              </div>
-
-              <button type="button" class="prev-btn">Previous</button>
-              <button type="submit" class="submit"><strong>SUBMIT</strong></button>
-            </div>
-
-        </form>
+          <button type="button" class="prev-btn">Previous</button>
+          <button type="submit" class="submit"><strong>SUBMIT</strong></button>
+        </div>
+      </form>
     </div>
 
     <!-- JavaScript -->
-    <script src="multi-stepform.js"></script>
-    <script src="registration.js"></script>
-
-</body>
+    <script src="scripts/multi-stepform.js"></script>
+    <script src="scripts/registration.js"></script>
+  </body>
 </html>
