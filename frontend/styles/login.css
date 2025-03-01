@@ -60,7 +60,6 @@ body {
 
 .input_group input:focus {
   border-color: #b3b5b3;
-  box-shadow: 0 0 0.3125rem rgba(54, 161, 58, 0.5);
 }
 
 .input_group input::placeholder {
