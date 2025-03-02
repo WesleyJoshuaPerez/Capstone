@@ -44,11 +44,15 @@ $data_processing_consent = isset($_POST['data-processing']) ? "Checked" : "Unche
 $id_photo_consent = isset($_POST['id-photo-consent']) ? "Checked" : "Unchecked";
 
 // Handle file uploads
-$target_dir = "../uploads/"; // Ensure correct path
-if (!is_dir($target_dir)) { mkdir($target_dir, 0777, true); }
+$target_dir1 = "../frontend/assets/images/uploads/Id_Photo/"; // Ensure correct path
+if (!is_dir($target_dir1)) { mkdir($target_dir1, 0777, true); }
+$target_dir2 = "../frontend/assets/images/uploads/Proof_of_Recidency/";  
+if (!is_dir($target_dir2)) { mkdir($target_dir2, 0777, true); }
 
-$id_photo_path = $target_dir . basename($_FILES["id_photo"]["name"]);
-$proof_of_residency_path = $target_dir . basename($_FILES["proof_of_residency"]["name"]);
+
+
+$id_photo_path = $target_dir1 . basename($_FILES["id_photo"]["name"]);
+$proof_of_residency_path = $target_dir2 . basename($_FILES["proof_of_residency"]["name"]);
 
 move_uploaded_file($_FILES["id_photo"]["tmp_name"], $id_photo_path);
 move_uploaded_file($_FILES["proof_of_residency"]["tmp_name"], $proof_of_residency_path);

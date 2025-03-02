@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Registration</title>
 
     <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- CSS -->
-    <link rel="stylesheet" href="frontend/styles/registration.css">
+    <link rel="stylesheet" href="frontend/styles/registration.css" />
 
     <!--Change the default icon of the xampp-->
     <link
@@ -21,7 +24,10 @@
     />
 
     <!-- Date Picker -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 
     <!-- external js -->
@@ -30,61 +36,117 @@
     <!-- Function for multi-stepform-->
     <script src="scripts/multi-stepform.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-</head>
-<body>
-    <h1>LYNX Fiber Internet Application Form</h1>
-    <p>Processing of your application only starts upon the submission of one valid ID.</p>
+  </head>
+  <body>
+    <h1>
+      <img
+        src="frontend/assets/images/logos/lynxlogoicon.png"
+        alt="Logo"
+        style="height: 40px; vertical-align: middle"
+      />
+      LYNX Fiber Internet Application Form
+    </h1>
+    <p>
+      Processing of your application only starts upon the submission of one
+      valid ID.
+    </p>
 
     <!-- Progress Bar -->
     <div class="progress-bar">
-        <div class="step active"><span class="circle">1</span><p>Basic Details</p></div>
-        <div class="step"><span class="circle">2</span><p>ID Details</p></div>
-        <div class="step"><span class="circle">3</span><p>Address & Consent</p></div>
+      <div class="step active">
+        <span class="circle">1</span>
+        <p>Basic Details</p>
+      </div>
+      <div class="step">
+        <span class="circle">2</span>
+        <p>ID Details</p>
+      </div>
+      <div class="step">
+        <span class="circle">3</span>
+        <p>Address & Consent</p>
+      </div>
     </div>
 
     <div class="grid-container">
-    <!-- Pricing Box -->
-    <div id="pricing-box" class="pricing-box bronze">
-      <h2 id="plan-title"><strong>BRONZE</strong></h2>
-      <p class="price" id="plan-price">PHP 1199<br><strong>per month</strong></p>
-      <p class="details" id="plan-details">Up to 50 Mbps<br>Unlimited Bandwidth<br>24/7 Support</p>
-    </div>
-      
+      <!-- Pricing Box -->
+      <div id="pricing-box" class="pricing-box bronze">
+        <h2 id="plan-title"><strong>BRONZE</strong></h2>
+        <p class="price" id="plan-price">
+          PHP 1199<br /><strong>per month</strong>
+        </p>
+        <p class="details" id="plan-details">
+          Up to 50 Mbps<br />Unlimited Bandwidth<br />24/7 Support
+        </p>
+      </div>
 
-    <!-- Form -->
-    <form id="registration-form" action="backend/insert_registration.php" method="POST" enctype="multipart/form-data">
-    <!-- STEP 1 -->
-    <div class="form-step active">
-      <label for="subscription-plan">Subscription Plan</label>
-      <select id="subscription-plan" name="subscription_plan">
-          <option value="bronze">Bronze Plan</option>
-          <option value="silver">Silver Plan</option>
-          <option value="gold">Gold Plan</option>
-      </select>
+      <!-- Form -->
+      <form
+        id="registration-form"
+        action="backend/insert_registration.php"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        <!-- STEP 1 -->
+        <div class="form-step active">
+          <label for="subscription-plan">Subscription Plan</label>
+          <select id="subscription-plan" name="subscription_plan">
+            <option value="bronze">Bronze Plan</option>
+            <option value="silver">Silver Plan</option>
+            <option value="gold">Gold Plan</option>
+          </select>
 
-        <label for="first-name">First Name</label>
-        <input type="text" id="first-name" name="first_name" required placeholder="First Name">
+          <label for="first-name">First Name</label>
+          <input
+            type="text"
+            id="first-name"
+            name="first_name"
+            required
+            placeholder="First Name"
+          />
 
-        <label for="last-name">Last Name</label>
-        <input type="text" id="last-name" name="last_name" required placeholder="Last Name">
+          <label for="last-name">Last Name</label>
+          <input
+            type="text"
+            id="last-name"
+            name="last_name"
+            required
+            placeholder="Last Name"
+          />
 
-        <label for="contact-number">Contact Number</label>
-        <input type="text" id="contact-number" name="contact_number" required placeholder="Contact Number">
+          <label for="contact-number">Contact Number</label>
+          <input
+            type="text"
+            id="contact-number"
+            name="contact_number"
+            required
+            placeholder="Contact Number"
+          />
 
-        <label for="email">Email Address</label>
-        <input type="email" id="email" name="email_address" required placeholder="Email Address">
+          <label for="email">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            name="email_address"
+            required
+            placeholder="Email Address"
+          />
 
-        <label for="birth-date">Birth Date</label>
-        <input type="text" id="birth-date" name="birth_date" placeholder="YYYY-MM-DD" required>
+          <label for="birth-date">Birth Date</label>
+          <input
+            type="text"
+            id="birth-date"
+            name="birth_date"
+            placeholder="YYYY-MM-DD"
+            required
+          />
 
-        <button type="button" class="next-btn">Next</button>
-    </div>
+          <button type="button" class="next-btn">Next</button>
+        </div>
 
-    <!-- STEP 2 -->
-    <div class="form-step step-2">
-        <label for="id-type">Valid Government ID</label>
-        <select id="id-type" name="id_type" required>
+        <!-- STEP 2 -->
+        <div class="form-step step-2">
+          <label for="id-type">Valid Government ID</label>
+          <select id="id-type" name="id_type" required>
             <option value="" disabled selected>Select an ID Type</option>
             <option value="passport">Philippine Passport</option>
             <option value="drivers-license">Driver's License</option>
@@ -92,81 +154,102 @@
             <option value="postal-id">Postal ID</option>
             <option value="philhealth-id">PhilHealth ID</option>
             <option value="voters-id">Voter's ID</option>
-        </select>
+          </select>
 
-        <label for="id-number">ID Number (optional)</label>
-        <input type="text" id="id-number" name="id_number" placeholder="ID Number">
+          <label for="id-number">ID Number (optional)</label>
+          <input
+            type="text"
+            id="id-number"
+            name="id_number"
+            placeholder="ID Number"
+          />
 
-        <label for="id-photo">Upload ID Photo</label>
-        <input type="file" id="id-photo" name="id_photo" required>
+          <label for="id-photo">Upload ID Photo</label>
+          <input type="file" id="id-photo" name="id_photo" required />
 
-        <button type="button" class="prev-btn">Previous</button>
-        <button type="button" class="next-btn2">Next</button>
-    </div>
-
-    <!-- STEP 3 -->
-    <div class="form-step step-3">
-      <h3>Home Ownership Type</h3>
-      <div class="ownership-options">
-          <label>
-              <input type="radio" name="home_ownership_type" value="Owned" required> Owned
-          </label>
-          <label>
-              <input type="radio" name="home_ownership_type" value="Rented" required> Rented
-          </label>
-      </div>
-
-        <label for="province">Province</label>
-        <select id="province" name="province">
-            <option value="bataan">Bataan</option>
-        </select>
-
-        <label for="municipality">Municipality</label>
-        <select id="municipality" name="municipality">
-          <option value="" disabled selected>Select a barangay</option>
-            <option value="orion">Orion</option>
-            <option value="limay">Limay</option>
-        </select>
-
-        <label for="barangay">Barangay</label>
-        <select id="barangay" name="barangay" required>
-            <option value="" disabled selected>Select a barangay</option>
-        </select>
-        
-        <label for="residency-photo">Upload Proof of Residency</label>
-        <input type="file" id="residency-photo" name="proof_of_residency" required>
-
-        <label for="installation-date">Installation Date</label>
-        <input
-          type="text"
-          id="installation-date"
-          name="installation-date"
-          placeholder="Please select a date"
-          required
-        />
-
-        <div class="consent-container">
-          <label class="checkbox-label">
-            <input type="checkbox" name="terms" required />
-            I consent to the terms and conditions.
-          </label>
-
-          <label class="checkbox-label">
-            <input type="checkbox" name="data-processing" required />
-            I consent to the processing of my data.
-          </label>
-
-          <label class="checkbox-label">
-            <input type="checkbox" name="id-photo-consent" required />
-            I consent to the collection of my submitted photo.
-          </label>
+          <button type="button" class="prev-btn">Previous</button>
+          <button type="button" class="next-btn2">Next</button>
         </div>
 
-        <button type="button" class="prev-btn">Previous</button>
-        <button type="submit" class="submit"><strong>SUBMIT</strong></button>
-    </div>
-    </form>
-    </div>
+        <!-- STEP 3 -->
+        <div class="form-step step-3">
+          <h3>Home Ownership Type</h3>
+          <div class="ownership-options">
+            <label>
+              <input
+                type="radio"
+                name="home_ownership_type"
+                value="Owned"
+                required
+              />
+              Owned
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="home_ownership_type"
+                value="Rented"
+                required
+              />
+              Rented
+            </label>
+          </div>
 
-</body>
+          <label for="province">Province</label>
+          <select id="province" name="province">
+            <option value="bataan">Bataan</option>
+          </select>
+
+          <label for="municipality">Municipality</label>
+          <select id="municipality" name="municipality">
+            <option value="" disabled selected>Select a barangay</option>
+            <option value="orion">Orion</option>
+            <option value="limay">Limay</option>
+          </select>
+
+          <label for="barangay">Barangay</label>
+          <select id="barangay" name="barangay" required>
+            <option value="" disabled selected>Select a barangay</option>
+          </select>
+
+          <label for="residency-photo">Upload Proof of Residency</label>
+          <input
+            type="file"
+            id="residency-photo"
+            name="proof_of_residency"
+            required
+          />
+
+          <label for="installation-date">Installation Date</label>
+          <input
+            type="text"
+            id="installation-date"
+            name="installation-date"
+            placeholder="Please select a date"
+            required
+          />
+
+          <div class="consent-container">
+            <label class="checkbox-label">
+              <input type="checkbox" name="terms" required />
+              I consent to the terms and conditions.
+            </label>
+
+            <label class="checkbox-label">
+              <input type="checkbox" name="data-processing" required />
+              I consent to the processing of my data.
+            </label>
+
+            <label class="checkbox-label">
+              <input type="checkbox" name="id-photo-consent" required />
+              I consent to the collection of my submitted photo.
+            </label>
+          </div>
+
+          <button type="button" class="prev-btn">Previous</button>
+          <button type="submit" class="submit"><strong>SUBMIT</strong></button>
+        </div>
+      </form>
+    </div>
+  </body>
 </html>

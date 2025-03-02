@@ -369,7 +369,7 @@ button:hover {
   .form-step {
     display: none;
   }
-  
+
   .form-step.active {
     display: flex;
     flex-direction: column;
@@ -384,6 +384,10 @@ button:hover {
 
   .checkbox-label {
     justify-content: flex-start;
+  }
+  /**For the h3 home ownership type */
+  h3 {
+    text-align: left;
   }
 }
 
@@ -404,7 +408,11 @@ button:hover {
     max-width: 90%;
   }
 
-  .ownership-options label{
+  .ownership-options label {
     text-align: center;
+  }
+  /**For the h3 home ownership type */
+  h3 {
+    text-align: left;
   }
 }
