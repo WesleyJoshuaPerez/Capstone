@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Side Navigation Bar</title>
+    <link rel="stylesheet" href="frontend/styles/admin.css" />
+    <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <h2>L.Y.N.X</h2>
+        <ul>
+          <li>
+            <a href="#"><i class="fas fa-home"></i>Home</a>
+          </li>
+          <li>
+            <a href="#"><i class="fas fa-user"></i>Subscriber</a>
+          </li>
+          <li>
+            <a href="#" id="applicationLink"
+              ><i class="fas fa-address-card"></i>Application</a
+            >
+          </li>
+          <li>
+            <a href="#"><i class="fas fa-project-diagram"></i>Technician</a>
+          </li>
+          <li>
+            <a href="#"><i class="fas fa-exclamation-circle"></i>Tickets</a>
+          </li>
+          <li>
+            <a href="#"><i class="fas fa-address-book"></i>Contact</a>
+          </li>
+          <li>
+            <a href="#"><i class="fas fa-map"></i>2D Map</a>
+          </li>
+        </ul>
+      </div>
+      <div class="main_content">
+        <div class="header">Lynx Admin Dashboard.</div>
+        <div class="info">
+          <div id="applicationDiv">
+            <h2>Applications</h2>
+            <table id="applicationTable">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Subscription Plan</th>
+                  <th>First Name</th>
+                  <th>Last Name</th>
+                  <th>Contact Number</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Data will be inserted here dynamically -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="scripts/approve.js"></script>
+  </body>
+</html>

@@ -44,19 +44,24 @@ $data_processing_consent = isset($_POST['data-processing']) ? "Checked" : "Unche
 $id_photo_consent = isset($_POST['id-photo-consent']) ? "Checked" : "Unchecked";
 
 // Handle file uploads
-$target_dir1 = "../frontend/assets/images/uploads/Id_Photo/"; // Ensure correct path
+// Handle file uploads
+$target_dir1 = "../frontend/assets/images/uploads/Id_Photo/";
 if (!is_dir($target_dir1)) { mkdir($target_dir1, 0777, true); }
-$target_dir2 = "../frontend/assets/images/uploads/Proof_of_Recidency/";  
+
+$target_dir2 = "../frontend/assets/images/uploads/Proof_of_Residency/";
 if (!is_dir($target_dir2)) { mkdir($target_dir2, 0777, true); }
 
+// Extract only the filename
+$id_photo_filename = basename($_FILES["id_photo"]["name"]);
+$proof_of_residency_filename = basename($_FILES["proof_of_residency"]["name"]);
 
+// Define full paths for moving the file
+$id_photo_path = $target_dir1 . $id_photo_filename;
+$proof_of_residency_path = $target_dir2 . $proof_of_residency_filename;
 
-$id_photo_path = $target_dir1 . basename($_FILES["id_photo"]["name"]);
-$proof_of_residency_path = $target_dir2 . basename($_FILES["proof_of_residency"]["name"]);
-
+// Move uploaded files
 move_uploaded_file($_FILES["id_photo"]["tmp_name"], $id_photo_path);
 move_uploaded_file($_FILES["proof_of_residency"]["tmp_name"], $proof_of_residency_path);
-
 // Insert into database
 $sql = "INSERT INTO registration_acc (
     subscription_plan, first_name, last_name, contact_number, email_address, 
@@ -69,8 +74,8 @@ $stmt = $conn->prepare($sql);
 $stmt->bind_param(
     "ssssssssssssssssss",
     $subscription_plan, $first_name, $last_name, $contact_number, $email_address, 
-    $birth_date, $id_type, $id_number, $id_photo_path, $home_ownership_type, 
-    $province, $municipality, $barangay, $proof_of_residency_path, 
+    $birth_date, $id_type, $id_number, $id_photo_filename, $home_ownership_type, 
+    $province, $municipality, $barangay, $proof_of_residency_filename, 
     $installation_date, $terms_agreed, $data_processing_consent, $id_photo_consent
 );
 
