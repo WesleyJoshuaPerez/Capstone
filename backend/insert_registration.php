@@ -1,4 +1,7 @@
 <?php
+// Enable output buffering to prevent blank pages
+ob_start();
+
 // Enable error reporting
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
@@ -41,7 +44,7 @@ $data_processing_consent = isset($_POST['data-processing']) ? "Checked" : "Unche
 $id_photo_consent = isset($_POST['id-photo-consent']) ? "Checked" : "Unchecked";
 
 // Handle file uploads
-$target_dir = "uploads/";
+$target_dir = "../uploads/"; // Ensure correct path
 if (!is_dir($target_dir)) { mkdir($target_dir, 0777, true); }
 
 $id_photo_path = $target_dir . basename($_FILES["id_photo"]["name"]);
@@ -67,8 +70,71 @@ $stmt->bind_param(
     $installation_date, $terms_agreed, $data_processing_consent, $id_photo_consent
 );
 
-$stmt->execute();
-echo "Registration successful!";
+// ✅ Execute Query and Show SweetAlert Message
+if ($stmt->execute()) {
+    echo '<!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+              <style>
+                  body {
+                      font-family: "Open Sans", sans-serif !important;
+                  }
+              </style>
+          </head>
+          <body>
+              <script>
+                  Swal.fire({
+                      icon: "success",
+                      title: "Registration Successful!",
+                      html: "<p style=\'font-family: Open Sans, sans-serif;\'>Your data has been successfully submitted.<br><br>Login credentials will be sent to your email within 1-2 working days.</p>",
+                      confirmButtonText: "OK",
+                      customClass: {
+                          popup: "custom-font"
+                      }
+                  }).then(() => {
+                      window.location.href = "../index.html"; // 
+                  });
+              </script>
+          </body>
+          </html>';
+} else {
+    echo '<!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+              <style>
+                  body {
+                      font-family: "Open Sans", sans-serif !important;
+                  }
+              </style>
+          </head>
+          <body>
+              <script>
+                  Swal.fire({
+                      icon: "error",
+                      title: "Submission Failed",
+                      html: "<p style=\'font-family: Open Sans, sans-serif;\'>There was an error submitting your data. Please try again.</p>",
+                      confirmButtonText: "OK",
+                      customClass: {
+                          popup: "custom-font"
+                      }
+                  }).then(() => {
+                      window.history.back(); // Redirect back to the form
+                  });
+              </script>
+          </body>
+          </html>';
+}
+
+// Close connection
 $stmt->close();
 $conn->close();
+
+// Flush output to prevent blank page
+ob_end_flush();
 ?>

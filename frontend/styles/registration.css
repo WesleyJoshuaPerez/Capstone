@@ -139,10 +139,11 @@ p {
   display: none;
   flex-direction: column;
   gap: 10px;
-  max-width: 400px;
+  max-width: 450px;
   width: 100%;
   position: relative;
   left: 25px;
+  top: 5px;
 }
 
 /* Form Step 2 (ID Details) */
@@ -150,7 +151,7 @@ p {
   display: none;
   flex-direction: column;
   gap: 10px;
-  max-width: 400px;
+  max-width: 450px;
   width: 100%;
   position: relative;
   left: 25px;
@@ -162,7 +163,7 @@ p {
   display: none;
   flex-direction: column;
   gap: 10px;
-  max-width: 400px;
+  max-width: 450px;
   width: 100%;
   position: relative;
   left: 25px;
@@ -190,7 +191,7 @@ p {
   padding: 8px;
   border: 1px solid black;
   border-radius: 4px;
-  font-size: 0.8rem;
+  font-size: 0.9rem;
 }
 
 /* Custom Dropdown Styling */
@@ -261,6 +262,8 @@ p {
   display: flex;
   align-items: center;
   gap: 10px;
+  position: relative;
+  top: 10px;
   font-size: 14px;
   width: 100%;
 }
@@ -308,7 +311,7 @@ button:hover {
   position: relative;
   bottom: 99px;
   margin-bottom: 30px;
-  left: 200px;
+  left: 248px;
 }
 
 .prev-btn {
@@ -345,7 +348,7 @@ button:hover {
   text-align: center;
   position: relative;
   bottom: 99px;
-  left: 200px;
+  left: 248px;
 }
 
 .submit:hover {
