@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 02, 2025 at 03:33 AM
+-- Generation Time: Mar 02, 2025 at 07:54 AM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -51,14 +51,6 @@ CREATE TABLE `registration_acc` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `registration_acc`
---
-
-INSERT INTO `registration_acc` (`id`, `subscription_plan`, `first_name`, `last_name`, `contact_number`, `email_address`, `birth_date`, `id_type`, `id_number`, `id_photo`, `home_ownership_type`, `province`, `municipality`, `barangay`, `proof_of_residency`, `installation_date`, `registration_date`, `terms_agreed`, `data_processing_consent`, `id_photo_consent`) VALUES
-(1, 'silver', 'kate', 'rezada', '09054627399', 'katerezada0120@gmail.com', '2007-03-01', 'drivers-license', '', 'uploads/yNdMmf8.jpg', 'Rented', 'bataan', 'limay', 'alangan', 'uploads/yNdMmf8.jpg', '2025-03-19', '2025-03-02 02:22:58', 'Checked', 'Checked', 'Checked'),
-(2, 'silver', 'kate', 'rezada', '09054627399', 'katerezada0120@gmail.com', '2007-03-02', 'drivers-license', '', 'uploads/yNdMmf8.jpg', 'Rented', 'bataan', 'limay', 'kitang', 'uploads/yNdMmf8.jpg', '2025-03-14', '2025-03-02 02:27:07', 'Checked', 'Checked', 'Checked');
-
---
 -- Indexes for dumped tables
 --
 
@@ -76,7 +68,7 @@ ALTER TABLE `registration_acc`
 -- AUTO_INCREMENT for table `registration_acc`
 --
 ALTER TABLE `registration_acc`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
