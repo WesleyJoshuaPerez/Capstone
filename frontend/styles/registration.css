@@ -227,24 +227,29 @@ p {
 
 .ownership-container {
   margin-bottom: 20px;
+  text-align: left;
 }
+
 .ownership-container h3 {
   margin-bottom: 10px;
   font-size: 14px;
   text-align: left;
   color: #333;
 }
+
 .ownership-options {
   display: flex;
-  gap: 20px;
+  flex-direction: row; /* Stack radio buttons vertically */
+  gap: 10px; /* Add spacing between radio buttons */
 }
+
 .ownership-options label {
   display: flex;
-  align-items: center;
+  text-align: left;
   gap: 8px;
-  font-size: 13px;
   color: #555;
 }
+
 .ownership-options input[type="radio"] {
   margin: 0;
   width: 16px;
@@ -256,6 +261,7 @@ p {
   display: flex;
   align-items: center;
   gap: 10px;
+  font-size: 14px;
   width: 100%;
 }
 
@@ -393,5 +399,9 @@ button:hover {
   .form-step {
     width: 100%;
     max-width: 90%;
+  }
+
+  .ownership-options label{
+    text-align: center;
   }
 }

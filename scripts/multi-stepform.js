@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
     const steps = document.querySelectorAll(".form-step");
     const progressSteps = document.querySelectorAll(".step");
-    const nextBtns = document.querySelectorAll(".next-btn, .next-btn2"); // ✅ Includes both next button classes
+    const nextBtns = document.querySelectorAll(".next-btn, .next-btn2"); 
     const prevBtns = document.querySelectorAll(".prev-btn");
 
     let currentStep = 0;
