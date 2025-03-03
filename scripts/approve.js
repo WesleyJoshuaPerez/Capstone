@@ -86,24 +86,34 @@ function denyApplication(applicationId) {
 }
 
 function updateApplicationStatus(applicationId, status) {
+  const requestData = { id: applicationId, status: status };
+  console.log("Sending request:", requestData); // ✅ Log data before sending
+
   fetch("backend/update_application_status.php", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ id: applicationId, status: status }),
+    body: JSON.stringify(requestData),
   })
-    .then((response) => response.json())
-    .then((data) => {
+    .then((response) => response.text())
+    .then((text) => {
+      console.log("Raw response:", text); // ✅ Log the raw response before parsing
+      const data = JSON.parse(text);
       if (data.success) {
         Swal.fire(
           "Success!",
           `Application ${status.toLowerCase()} successfully.`,
           "success"
-        );
-        fetchApplications(); // Refresh the table to reflect changes
+        ).then(() => {
+          setTimeout(fetchApplications, 500);
+        });
       } else {
-        Swal.fire("Error!", "Failed to update application status.", "error");
+        Swal.fire(
+          "Error!",
+          data.error || "Failed to update application status.",
+          "error"
+        );
       }
     })
     .catch((error) => console.error("Error updating status:", error));

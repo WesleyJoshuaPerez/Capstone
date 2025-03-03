@@ -4,34 +4,36 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Login</title>
-    <!--Use for styling-->
+    <!-- Use for styling -->
     <link rel="stylesheet" href="frontend/styles/login.css" />
-    <!--For icon password-->
+    <!-- For icon password -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
-    <!--Change the default icon of the xampp-->
+    <!-- Change the default icon of the xampp -->
     <link
       rel="icon"
       type="image/x-icon"
       href="frontend/assets/images/icons/lynxicon.ico"
     />
-    <!--For hiding labels-->
+    <!-- For hiding labels -->
     <script src="scripts/hidelabels.js"></script>
-    <!--For password hiding-->
+    <!-- For password hiding -->
     <script src="scripts/passwordhider.js" defer></script>
+    <!-- SweetAlert for better alerts -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <body>
     <div class="container">
-      <!--Use for lynx logo-->
+      <!-- Use for lynx logo -->
       <div class="logo">
         <img src="frontend/assets/images/logos/lynxlogo.png" alt="Lynx Logo" />
       </div>
 
       <div class="loginform_container">
-        <form saction="" method="POST">
-          <div class="input_group">
+        <form id="loginForm">
+          <div class="input_group" method="POST">
             <label for="username" class="hidden">Username</label>
             <input
               type="text"
@@ -61,5 +63,7 @@
         </form>
       </div>
     </div>
+
+    <script src="scripts/login.js"></script>
   </body>
 </html>
