@@ -31,7 +31,7 @@ header {
 }
 .navbar .hamburger-btn {
   display: none;
-  color: #ffffff;
+  color: #6f6f6f;
   cursor: pointer;
   font-size: 24px;
 }
@@ -46,7 +46,7 @@ header {
   border-radius: 50%;
 }
 .navbar .logo h2 {
-  color: #ffffff;
+  color: #6f6f6f;
   font-weight: 600;
   font-size: 19.2px; /* Reduce font size */
 }
