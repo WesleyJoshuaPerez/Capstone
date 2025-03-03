@@ -21,7 +21,7 @@ body {
 .wrapper .sidebar {
   width: 200px;
   height: 100vh;
-  background: #4b4276;
+  background: #6f6f6f;
   padding: 30px 0;
   position: fixed;
   transition: all 0.3s ease;
@@ -41,16 +41,16 @@ body {
 }
 
 .wrapper .sidebar ul li a {
-  color: #bdb8d7;
+  color: #fff;
   display: block;
 }
 
 .wrapper .sidebar ul li:hover {
-  background-color: #594f8d;
+  background-color: #fff;
 }
 
 .wrapper .sidebar ul li:hover a {
-  color: #fff;
+  color: #6f6f6f;
 }
 
 .wrapper .sidebar .social_media {
@@ -64,12 +64,12 @@ body {
 .wrapper .sidebar .social_media a {
   display: block;
   width: 40px;
-  background: #594f8d;
+  background: #fff;
   height: 40px;
   line-height: 45px;
   text-align: center;
   margin: 0 5px;
-  color: #bdb8d7;
+  color: #6f6f6f;
   border-radius: 5px;
 }
 
@@ -112,7 +112,7 @@ td {
 }
 
 th {
-  background-color: #4b4276;
+  background-color: #6f6f6f;
   color: white;
 }
 
