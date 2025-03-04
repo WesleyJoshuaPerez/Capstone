@@ -102,7 +102,7 @@ if (isset($_SESSION['status'])) {
                         // Send email
                         $mail->isHTML(true);
                         $mail->Subject = 'Password Reset';
-                        $mail->Body    = 'To reset your password, click the link here ------> <a href="http://localhost:8080/Capstone/changepass.php?code='.$code.'">Reset Password</a>.<br>This link will expire in 24 hours.';
+                        $mail->Body    = 'To reset your password, click the link here ------> <a href="http://localhost:/Capstone/changepass.php?code='.$code.'">Reset Password</a>.<br>This link will expire in 24 hours.';
                         
                         // Attempt to send the email
                         if($mail->send()) {
