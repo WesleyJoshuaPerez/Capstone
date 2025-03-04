@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Reset Password</title>
+    <link rel="shortcut icon" type="x-icon" href="logo/logo.png" />
+    <link rel="stylesheet" href="frontend/styles/resetpass.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"
+    />
+    <!-- Change the default icon of the xampp -->
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="frontend/assets/images/icons/lynxicon.ico"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  </head>
+  <body>
+    <div class="reset-password-container">
+      <h1>RESET PASSWORD</h1>
+      <div class="form-container">
+        <form id="resetForm">
+          <label for="email" class="email-label">Email Address</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="Enter Email Address"
+            class="email-input"
+            required
+          />
+          <button type="submit" class="reset-button">
+            Send Password Reset Link
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <!--to connect backend-->
+    <script src="scripts/resetpass.js"></script>
+  </body>
+</html>
