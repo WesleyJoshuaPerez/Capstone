@@ -31,7 +31,7 @@ if ($result->num_rows > 0) {
               </tr>";
     }
 } else {
-    echo "<tr><td colspan='5'>No approved records found.</td></tr>";
+    echo "<tr><td colspan='5'>No pending application found.</td></tr>";
 }
 
 $conn->close();
