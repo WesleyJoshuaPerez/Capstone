@@ -180,3 +180,5 @@ function validateStep(stepIndex) {
 
     updateSteps();
 });
+
+// orig code w/o duplication validation

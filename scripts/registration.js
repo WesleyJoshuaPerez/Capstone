@@ -81,7 +81,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });   
   
 document.addEventListener("DOMContentLoaded", function () {
-    console.log("✅ registration.js loaded");
+    console.log("registration.js loaded");
 
     // Barangay options for each municipality
     const barangayData = {

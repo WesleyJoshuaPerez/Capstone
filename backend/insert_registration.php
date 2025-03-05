@@ -145,5 +145,6 @@ $stmt->close();
 $conn->close();
 
 // Flush output to prevent blank page
+// initial code of php w/o duplication validation
 ob_end_flush();
 ?>
