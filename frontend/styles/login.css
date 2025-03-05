@@ -110,7 +110,17 @@ label {
   font-size: 1.2rem;
   color: #555;
 }
-
+#passwordError {
+  color: red;
+  font-size: 12px;
+  display: none; /* Initially hidden */
+  max-width: 100%; /* Allows the text to adjust dynamically */
+  width: 260px; /* Default width */
+  word-wrap: break-word; /* Ensures text wraps properly */
+  margin-top: 5px;
+  font-weight: bold;
+  text-align: left;
+}
 /* Center the login button properly */
 #loginbutton {
   width: 100%;
@@ -178,6 +188,11 @@ label {
   .logo img {
     width: 6rem;
   }
+  #passwordError {
+    font-size: 10px; /* Reduce font size on smaller screens */
+    width: 90%;
+    text-align: center;
+  }
 }
 
 /* Extra Small Screens - 480px and below */
@@ -205,7 +220,11 @@ label {
   label {
     font-size: 0.85rem;
   }
-
+  #passwordError {
+    font-size: 10px; /* Reduce font size on smaller screens */
+    width: 90%;
+    text-align: center;
+  }
   #loginbutton {
     height: 44.8px;
     width: 150px;

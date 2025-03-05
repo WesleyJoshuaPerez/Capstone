@@ -11,13 +11,30 @@ document
   });
 
 function fetchApplications() {
-  fetch("backend/fetch_applicants.php")
-    .then((response) => response.text())
-    .then((html) => {
-      document.querySelector("#applicationTable tbody").innerHTML = html;
-      attachRowClickEvent();
-    })
-    .catch((error) => console.error("Error fetching data:", error));
+  Swal.fire({
+    title: "Loading Applications...",
+    text: "Please wait while we fetch the applications.",
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    },
+  });
+
+  let xhr = new XMLHttpRequest();
+  xhr.open("GET", "backend/fetch_applicants.php", true);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      Swal.close(); // Close the loading Swal when data is loaded
+      if (xhr.status === 200) {
+        document.querySelector("#applicationTable tbody").innerHTML =
+          xhr.responseText;
+        attachRowClickEvent();
+      } else {
+        Swal.fire("Error!", "Failed to load applications.", "error");
+      }
+    }
+  };
+  xhr.send();
 }
 
 function attachRowClickEvent() {
@@ -86,35 +103,50 @@ function denyApplication(applicationId) {
 }
 
 function updateApplicationStatus(applicationId, status) {
-  const requestData = { id: applicationId, status: status };
-  console.log("Sending request:", requestData); // ✅ Log data before sending
-
-  fetch("backend/update_application_status.php", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
+  Swal.fire({
+    title: `Processing ${status}...`,
+    text: "Please wait while we update the application status.",
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
     },
-    body: JSON.stringify(requestData),
-  })
-    .then((response) => response.text())
-    .then((text) => {
-      console.log("Raw response:", text); // ✅ Log the raw response before parsing
-      const data = JSON.parse(text);
-      if (data.success) {
-        Swal.fire(
-          "Success!",
-          `Application ${status.toLowerCase()} successfully.`,
-          "success"
-        ).then(() => {
-          setTimeout(fetchApplications, 500);
-        });
+  });
+
+  let xhr = new XMLHttpRequest();
+  xhr.open("POST", "backend/update_application_status.php", true);
+  xhr.setRequestHeader("Content-Type", "application/json");
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      Swal.close(); // Close loading Swal after request completion
+      if (xhr.status === 200) {
+        try {
+          let data = JSON.parse(xhr.responseText);
+          if (data.success) {
+            Swal.fire(
+              "Success!",
+              `Application ${status.toLowerCase()} successfully.`,
+              "success"
+            ).then(() => {
+              setTimeout(fetchApplications, 500);
+            });
+          } else {
+            Swal.fire(
+              "Error!",
+              data.error || "Failed to update application status.",
+              "error"
+            );
+          }
+        } catch (e) {
+          console.error("Parsing error:", e);
+          Swal.fire("Error!", "Invalid server response.", "error");
+        }
       } else {
-        Swal.fire(
-          "Error!",
-          data.error || "Failed to update application status.",
-          "error"
-        );
+        console.error("Server error:", xhr.status);
+        Swal.fire("Error!", "Failed to communicate with the server.", "error");
       }
-    })
-    .catch((error) => console.error("Error updating status:", error));
+    }
+  };
+
+  xhr.send(JSON.stringify({ id: applicationId, status: status }));
 }

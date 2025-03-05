@@ -3,25 +3,41 @@ document.addEventListener("DOMContentLoaded", function () {
   const username = document.getElementById("username");
   const password = document.getElementById("password");
   const loginButton = document.getElementById("loginbutton");
+  const passwordError = document.getElementById("passwordError");
 
-  // Function to toggle login button state
-  function toggleButtonState() {
-    loginButton.disabled = !(username.value.trim() && password.value.trim());
+  function isValidPassword(password) {
+    return password.length >= 8 && /\d/.test(password); // At least 8 chars & 1 number
   }
 
-  // Disable login button by default
+  function toggleButtonState() {
+    const passwordValue = password.value.trim();
+    const isPasswordValid = isValidPassword(passwordValue);
+    const isUsernameValid = username.value.trim().length > 0; // Username should not be empty
+
+    if (passwordValue === "") {
+      passwordError.style.display = "none"; // Hide the error if password field is empty
+    } else if (isPasswordValid) {
+      passwordError.style.display = "none"; // Hide error if valid
+    } else {
+      passwordError.style.display = "block"; // Show error if invalid
+      passwordError.textContent =
+        "Password must be at least 8 characters and contain at least 1 number.";
+    }
+
+    // Disable button if username or password is invalid
+    loginButton.disabled = !(isPasswordValid && isUsernameValid);
+  }
+
+  // Initial check when page loads
   toggleButtonState();
 
-  // Listen for input changes
+  // Listen for input events to validate fields
   username.addEventListener("input", toggleButtonState);
   password.addEventListener("input", toggleButtonState);
 
-  // Handle form submission
   loginForm.addEventListener("submit", function (event) {
-    event.preventDefault(); // Prevent default form submission
-
-    // Ensure button is enabled before submitting
-    if (loginButton.disabled) return;
+    event.preventDefault();
+    if (loginButton.disabled) return; // Prevent submission if button is disabled
 
     let formData = new FormData(loginForm);
 
@@ -31,7 +47,7 @@ document.addEventListener("DOMContentLoaded", function () {
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Server Response:", data); // Debugging
+        console.log("Server Response:", data);
 
         if (data.status === "success") {
           Swal.fire({
@@ -41,7 +57,7 @@ document.addEventListener("DOMContentLoaded", function () {
             timer: 1500,
             showConfirmButton: true,
           }).then(() => {
-            window.location.href = "login.html"; // Redirect on success
+            window.location.href = "login.html";
           });
         } else {
           Swal.fire({
