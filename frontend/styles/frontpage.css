@@ -9,7 +9,7 @@
 body {
   height: 100vh;
   width: 100%;
-  /* background: url("images/hero-bg.jpg") center/cover no-repeat; */
+  background-color: white;
 }
 header {
   position: fixed;
@@ -125,9 +125,8 @@ header {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 6rem; /* Pushes it down to avoid getting cut */
+  margin-top: 0; /* Pushes it down to avoid getting cut */
 }
-
 
 .slider-wrapper {
   position: relative;
@@ -145,21 +144,19 @@ header {
 .slide {
   flex: 0 0 100vw; /* Ensures each slide takes up full width */
   width: 100vw; /* Full width of viewport */
-  height: 100%; /* Ensure full height */
+  height: 50vh;
 }
 
 .slide img {
+  object-fit: cover; /* Ensures image fills container */
+  height: 100%;
   width: 100%;
-  height: auto; /* Maintain aspect ratio */
-  max-height: 100%; /* Prevents image from overflowing */
-  object-fit: contain; /* Ensures full image is displayed without cropping */
 }
-
 
 .prev,
 .next {
   position: absolute;
-  top: 50%;
+  top: 40%;
   transform: translateY(-50%);
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
@@ -175,31 +172,6 @@ header {
 
 .next {
   right: 1.25rem;
-}
-
-.dots {
-  position: relative; /* Position it relative to the slider */
-  bottom: 20px; /* Adjust this to move it closer or farther */
-  left: 50%;
-  transform: translateX(-50%); /* Centers the dots */
-  display: flex;
-  gap: 8px; /* Spacing between dots */
-}
-
-
-.dot {
-  height: 0.25rem; /* Make it a thin line */
-  width: 2.5rem; /* Adjust length */
-  background-color: #bbb;
-  border-radius: 0.3125rem; /* Slightly rounded edges */
-  display: inline-block;
-  cursor: pointer;
-  transition: background-color 0.3s, width 0.3s;
-}
-
-.dot.active {
-  background-color: #333;
-  width: 3.125rem; /* Make active line slightly longer */
 }
 
 /* Pricing Section */
@@ -242,8 +214,8 @@ header {
 }
 
 /* Header (Title & Badge) */
+/* Default Style */
 .pricing-header {
-  background: linear-gradient(to right, #4a4a4a, #a1a1a1);
   color: white;
   padding: 15px;
   border-radius: 8px 8px 0 0;
@@ -251,6 +223,23 @@ header {
   font-weight: bold;
   text-align: center;
   position: relative;
+}
+
+/* Different Background Colors for Each Plan */
+.pricing-box:nth-child(1) .pricing-header {
+  background: linear-gradient(to right, #ec202a, #ff7676); /* Red Gradient */
+}
+
+.pricing-box:nth-child(2) .pricing-header {
+  background: linear-gradient(to right, #36a13a, #7ed957); /* Green Gradient */
+}
+
+.pricing-box:nth-child(3) .pricing-header {
+  background: linear-gradient(
+    to right,
+    #fcbf06,
+    #ff9900
+  ); /* Yellow-Orange Gradient */
 }
 
 /* Plan Details */
@@ -275,10 +264,10 @@ header {
 }
 
 /* Apply Now Button */
+/* Default Button Styling */
 .apply-btn {
   display: block;
   width: 100%;
-  background: #464646;
   color: white;
   text-align: center;
   padding: 12px;
@@ -288,12 +277,38 @@ header {
   border-radius: 5px;
   cursor: pointer;
   margin-top: 15px;
+  transition: background 0.3s ease-in-out;
 }
 
-.apply-btn:hover {
-  background: #807f7f;
+/* Different Gradient Backgrounds */
+.pricing-box:nth-child(1) .apply-btn {
+  background: linear-gradient(to right, #ec202a, #ff7676); /* Red Gradient */
 }
 
+.pricing-box:nth-child(2) .apply-btn {
+  background: linear-gradient(to right, #36a13a, #7ed957); /* Green Gradient */
+}
+
+.pricing-box:nth-child(3) .apply-btn {
+  background: linear-gradient(
+    to right,
+    #fcbf06,
+    #ff9900
+  ); /* Yellow-Orange Gradient */
+}
+
+/* Hover Effects */
+.pricing-box:nth-child(1) .apply-btn:hover {
+  background: linear-gradient(to right, #ff3b3b, #ff9999); /* Lighter Red */
+}
+
+.pricing-box:nth-child(2) .apply-btn:hover {
+  background: linear-gradient(to right, #4caf50, #9beb79); /* Lighter Green */
+}
+
+.pricing-box:nth-child(3) .apply-btn:hover {
+  background: linear-gradient(to right, #ffcc33, #ffb84d); /* Lighter Yellow */
+}
 
 ul {
   list-style-type: none; /* Hides the bullet points */
@@ -362,104 +377,57 @@ footer {
   /**To make responsive gallery slide and subcripstion page */
   .galleryslidingimage {
     height: 85vh; /* Slightly reduce height */
-    margin: 40px auto 0;
+    margin-top: 0;
   }
 
   .slide {
-    height: 85vh;
+    height: 40vh;
   }
 
   .slide img {
-    object-fit: fill; /* Prevents cutting important parts of the image */
+    object-fit: contain; /* Ensures image fills container */
+    height: 100%;
     width: 100%;
-    max-width: 100%;
   }
 
   .prev,
   .next {
+    position: absolute;
+    top: 35%;
     font-size: 20px;
     padding: 10px;
   }
-  .carousel-indicators {
-    text-align: center;
-    position: absolute;
-    bottom: -50px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 0.625rem;
-  }
 
-  .dot {
-    height: 0.25rem; /* Make it a thin line */
-    width: 2.5rem; /* Adjust length */
-    background-color: #bbb;
-    border-radius: 0.3125rem; /* Slightly rounded edges */
-    display: inline-block;
-    cursor: pointer;
-    transition: background-color 0.3s, width 0.3s;
-  }
-
-  .dot.active {
-    background-color: #333;
-    width: 3.125rem; /* Make active line slightly longer */
-  }
   .pricinglist h1 {
     font-size: 25px;
     padding: 0;
   }
 }
 /*For smartphones */
-@media (max-width: 47.5rem) {
-  .section {
-    margin-top: 20px;
-    height: auto;
-    min-height: 70vh;
-  }
+@media (max-width: 768px) {
   .galleryslidingimage {
-    height: 70vh;
-    margin: 5.625rem auto 0; /* Adjust the top margin as needed */
+    height: 85vh;
+    margin-top: 0;
   }
 
   .slide {
-    height: 70vh;
+    height: 50vh;
   }
 
   .slide img {
-    object-fit: fill; /* Prevents cutting important parts of the image */
-    width: auto;
-    max-width: 100%;
+    object-fit: contain; /* Ensures image fills container */
+    height: 100%;
+    width: 100%;
   }
 
   .prev,
   .next {
-    font-size: 18px;
-    padding: 0.5rem;
-  }
-  .carousel-indicators {
-    text-align: center;
     position: absolute;
-    bottom: 0.625rem;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 0.625rem;
+    top: 35%;
+    font-size: 20px;
+    padding: 10px;
   }
 
-  .dot {
-    height: 0.25rem; /* Make it a thin line */
-    width: 2.5rem; /* Adjust length */
-    background-color: #bbb;
-    border-radius: 0.3125rem; /* Slightly rounded edges */
-    display: inline-block;
-    cursor: pointer;
-    transition: background-color 0.3s, width 0.3s;
-  }
-
-  .dot.active {
-    background-color: #333;
-    width: 3.125rem; /* Make active line slightly longer */
-  }
   .pricinglist h1 {
     font-size: 20px; /* Adjust size as needed */
     text-align: center;
@@ -470,57 +438,68 @@ footer {
     width: auto;
     height: auto;
   }
-  .pricing-box button {
-    width: 80%; /* Make buttons wider on mobile */
-    font-size: 12.8px; /* Reduce font size */
-    padding: 0.5rem 0.75rem; /* Adjust padding */
+  .apply-btn {
+    display: block;
+    width: auto;
+    background: #464646;
+    color: white;
+    text-align: center;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 15px auto; /* Auto centers it horizontally */
+  }
+
+  .apply-btn:hover {
+    background: #807f7f;
   }
   footer {
     display: none;
   }
 }
 
-/* Make it fully responsive for smaller screens */
-@media (max-width: 768px) {
+@media (max-width: 480px) {
   .galleryslidingimage {
-    height: 85vh; /* Adjust height for mobile */
-    margin-top: 3rem; /* Push down on mobile */
+    height: 75vh; /* Further adjust height */
+    margin-top: 0; /* Push down */
+  }
+
+  .slide {
+    height: 50vh;
   }
 
   .slide img {
-    object-fit: contain; /* Keep full image visible */
+    object-fit: contain; /* Ensures image fills container */
+    height: 100%;
     width: 100%;
-    max-width: 100%;
   }
 
   .prev,
   .next {
-    top: 10%; /* Move arrows below the slider */
-    transform: translateY(50%); /* Adjust positioning */
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 10px; /* Adjust button size */
-    font-size: 16px; /* Reduce icon size */
+    position: absolute;
+    top: 35%;
+    font-size: 20px;
+    padding: 10px;
   }
-
-  .prev {
-    left: 3%; /* Center towards left */
-  }
-
-  .next {
-    right: 3%; /* Center towards right */
-  }
-}
-
-@media (max-width: 480px) {
-  .galleryslidingimage {
-    height: 75vh; /* Further adjust height */
-    margin-top: 4rem; /* Push down */
-  }
-
-  .slide img {
+  .apply-btn {
+    display: block;
     width: auto;
-    max-width: 100%;
-    object-fit: contain;
+    background: #464646;
+    color: white;
+    text-align: center;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 15px auto; /* Auto centers it horizontally */
   }
-  
+
+  .apply-btn:hover {
+    background: #807f7f;
+  }
 }

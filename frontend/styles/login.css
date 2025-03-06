@@ -10,6 +10,7 @@
 
 body {
   overflow-x: hidden;
+  background: #fff;
 }
 
 .hidden {
@@ -162,7 +163,7 @@ label {
 /* Responsive Adjustments for 759px and below */
 @media (max-width: 759px) {
   .loginform_container {
-    width: 60%;
+    width: 90%;
     max-width: 24rem; /* Slightly smaller */
     padding: 1rem;
   }
