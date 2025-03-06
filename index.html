@@ -72,19 +72,19 @@
         <div class="slider-container">
           <div class="slide">
             <img
-              src="frontend/assets/images/slidingbackgrounds/slidingimg1.jpg"
+              src="frontend/assets/images/slidingbackgrounds/bg1.png"
               alt="Slide 1"
             />
           </div>
           <div class="slide">
             <img
-              src="frontend/assets/images/slidingbackgrounds/slidingimg2.jpg"
+              src="frontend/assets/images/slidingbackgrounds/bg3.png"
               alt="Slide 2"
             />
           </div>
           <div class="slide">
             <img
-              src="frontend/assets/images/slidingbackgrounds/slidingimg3.jpg"
+              src="frontend/assets/images/slidingbackgrounds/bg2.png"
               alt="Slide 3"
             />
           </div>
@@ -93,65 +93,55 @@
         <button class="next" onclick="moveSlide(1)">❯</button>
 
         <!-- Indicators -->
-        <div class="carousel-indicators">
-          <span class="dot active" onclick="goToSlide(0)"></span>
-          <span class="dot" onclick="goToSlide(1)"></span>
-          <span class="dot" onclick="goToSlide(2)"></span>
-        </div>
+      
       </div>
     </div>
 
     <!--Second section-->
-    <div class="section pricinglist">
-      <h1>OUR PRICING LIST</h1>
-      <!--div for subscription prices-->
+    <section class="pricing-section">
+      <h2>CHOOSE YOUR PLAN</h2>
       <div class="pricing-container">
         <div class="pricing-box">
-          <h4>BRONZE</h4>
-          <p>
-            <span class="price">PHP 1199</span><br />
-            per month
-          </p>
+          <div class="pricing-header">
+            <h3>Dual Play P1199/mo</h3>
+          </div>
           <ul>
             <li>Up to 50 Mbps</li>
-            <li>Unlimited Bandwidth</li>
-            <li>24/7 Support</li>
+            <li>50% off on the installation fee. Low cash out of ₱999 only, balance of ₱501 payable in 5 months</li>
+            <li>Free Access to all Cignal Channels up to 90 Days</li>
+            <li>100% Fiber Internet</li>
           </ul>
-          <button
-            class="bronze_plan"
-            onclick="window.location.href='registration.html'"
-          >
-            CHOOSE
-          </button>
+          <button class="apply-btn">APPLY NOW</button>
         </div>
+    
         <div class="pricing-box">
-          <h4>SILVER</h4>
-          <p>
-            <span class="price">PHP 1499</span><br />
-            per month
-          </p>
+          <div class="pricing-header">
+            <h3>Dual Play P1499/mo</h3>
+          </div>
           <ul>
             <li>Up to 100 Mbps</li>
-            <li>Unlimited Bandwidth</li>
-            <li>24/7 Support</li>
+            <li>50% off on the installation fee. Low cash out of ₱999 only, balance of ₱501 payable in 5 months</li>
+            <li>Free Access to all Cignal Channels up to 90 Days</li>
+            <li>100% Fiber Internet</li>
           </ul>
-          <button class="silver_plan">CHOOSE</button>
+          <button class="apply-btn">APPLY NOW</button>
         </div>
+    
         <div class="pricing-box">
-          <h4>GOLD</h4>
-          <p>
-            <span class="price">PHP 1799</span><br />
-            per month
-          </p>
+          <div class="pricing-header">
+            <h3>Dual Play P1799/mo</h3>
+          </div>
           <ul>
             <li>Up to 150 Mbps</li>
-            <li>Unlimited Bandwidth</li>
-            <li>24/7 Support</li>
+            <li>50% off on the installation fee. Low cash out of ₱999 only, balance of ₱501 payable in 5 months</li>
+            <li>Free Access to all Cignal Channels up to 90 Days</li>
+            <li>100% Fiber Internet</li>
           </ul>
-          <button class="gold_plan">CHOOSE</button>
+          <button class="apply-btn">APPLY NOW</button>
         </div>
       </div>
-    </div>
+    </section>
+    
     <!--For Chatbot-->
     <div class="chatbot-container">
       <div class="chatbot-window" id="chatWindow" style="display: none">

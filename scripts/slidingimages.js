@@ -1,15 +1,23 @@
 document.addEventListener("DOMContentLoaded", () => {
   const slides = document.querySelectorAll(".slide");
+  const sliderContainer = document.querySelector(".slider-container");
   const dots = document.querySelectorAll(".dot");
   let currentIndex = 0;
   const intervalTime = 3000; // Time in milliseconds between slides
 
-  function showSlide(index) {
-    const sliderContainer = document.querySelector(".slider-container");
-    sliderContainer.style.transform = `translateX(-${index * 70}vw)`;
+  // Make the slider container width dynamic
+  function adjustSliderWidth() {
+    sliderContainer.style.width = `${slides.length * window.innerWidth}px`;
+    slides.forEach(slide => {
+      slide.style.width = `${window.innerWidth}px`;
+    });
+  }
 
-    dots.forEach((dot) => dot.classList.remove("active"));
-    dots[index].classList.add("active");
+  function showSlide(index) {
+    sliderContainer.style.transform = `translateX(-${index * window.innerWidth}px)`;
+
+    dots.forEach(dot => dot.classList.remove("active"));
+    if (dots[index]) dots[index].classList.add("active");
   }
 
   function nextSlide() {
@@ -47,5 +55,10 @@ document.addEventListener("DOMContentLoaded", () => {
     slideInterval = setInterval(nextSlide, intervalTime);
   }
 
+  // Adjust slider when window resizes
+  window.addEventListener("resize", adjustSliderWidth);
+
+  // Initial adjustments
+  adjustSliderWidth();
   showSlide(currentIndex);
 });
