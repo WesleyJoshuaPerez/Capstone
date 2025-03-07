@@ -31,7 +31,7 @@ header {
 }
 .navbar .hamburger-btn {
   display: none;
-  color: #6f6f6f;
+  color: #36a13a;
   cursor: pointer;
   font-size: 24px;
 }
@@ -46,7 +46,6 @@ header {
   border-radius: 50%;
 }
 .navbar .logo h2 {
-  color: #6f6f6f;
   font-weight: 600;
   font-size: 19.2px; /* Reduce font size */
 }
@@ -72,28 +71,28 @@ header {
   transition: 0.1s ease;
 }
 .navbar .links .aboutus-link {
-  color: #6f6f6f;
+  color: #2e8b57;
   font-size: small;
   font-weight: bolder;
 }
 .navbar .links .contactus-link {
-  color: #6f6f6f;
+  color: #2e8b57;
   font-size: small;
   font-weight: bolder;
 }
 .navbar .links .facebook-link {
-  color: #6f6f6f;
+  color: #2e8b57;
   font-size: small;
   font-weight: bolder;
 }
 /*change color when hover */
 .navbar .links a:hover {
-  color: #a1a1a1;
+  color: #d63b3b;
 }
 .navbar .login-btn {
   border: none;
   outline: none;
-  background: #6f6f6f;
+  background: #36a13a;
   color: #fff;
   font-size: 14.4px; /* Adjust font size */
   font-weight: 600;
@@ -103,7 +102,7 @@ header {
   transition: 0.15s ease;
 }
 .navbar .login-btn:hover {
-  background: #a1a1a1;
+  background: #d63b3b;
   color: white;
 }
 /*For sections of the pages */
@@ -111,27 +110,30 @@ header {
 .section {
   display: flex;
   font-size: 32px;
+  width: 100vw;
+  height: 67vh; /* Adjust height dynamically */
   color: white;
 }
 
 /* First Section - Gallery Sliding Image */
 .galleryslidingimage {
   width: 100vw;
-  height: 80vh; /* Adjust height dynamically */
+  height: 67vh; /* Adjust height dynamically */
+  min-height: 400px;
   text-align: center;
   position: relative;
-  bottom: 70px;
+  margin-bottom: 300px;
   overflow: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-top: 0; /* Pushes it down to avoid getting cut */
+  margin-top: 5px; /* Pushes it down to avoid getting cut */
 }
 
 .slider-wrapper {
   position: relative;
   width: 100vw; /* Full width */
-  height: 70vh;
+  height: 60vh;
 }
 
 .slider-container {
@@ -144,7 +146,7 @@ header {
 .slide {
   flex: 0 0 100vw; /* Ensures each slide takes up full width */
   width: 100vw; /* Full width of viewport */
-  height: 50vh;
+  height: 70vh;
 }
 
 .slide img {
@@ -156,7 +158,7 @@ header {
 .prev,
 .next {
   position: absolute;
-  top: 40%;
+  top: 50%;
   transform: translateY(-50%);
   background-color: rgba(0, 0, 0, 0.5);
   color: white;
@@ -267,7 +269,8 @@ header {
 /* Default Button Styling */
 .apply-btn {
   display: block;
-  width: 100%;
+  width: 80%;
+  background: #464646;
   color: white;
   text-align: center;
   padding: 12px;
@@ -276,8 +279,7 @@ header {
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  margin-top: 15px;
-  transition: background 0.3s ease-in-out;
+  margin: 15px auto; /* Auto centers it horizontally */
 }
 
 /* Different Gradient Backgrounds */
@@ -376,24 +378,33 @@ footer {
   }
   /**To make responsive gallery slide and subcripstion page */
   .galleryslidingimage {
-    height: 85vh; /* Slightly reduce height */
-    margin-top: 0;
+    margin-top: 5px;
+    margin-bottom: 200px;
+    height: 67h;
+  }
+
+  .slider-container {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 100vw; /* Adjusted dynamically in JS */
+    overflow: hidden;
   }
 
   .slide {
-    height: 40vh;
+    flex: 0 0 100vw; /* Ensures each slide takes up full width */
+    width: 100vw; /* Full width of viewport */
+    height: 55vh;
   }
-
   .slide img {
-    object-fit: contain; /* Ensures image fills container */
-    height: 100%;
+    object-fit: cover; /* Ensures image fills container */
+    height: auto;
     width: 100%;
   }
 
   .prev,
   .next {
     position: absolute;
-    top: 35%;
+    top: 45%;
     font-size: 20px;
     padding: 10px;
   }
@@ -405,25 +416,35 @@ footer {
 }
 /*For smartphones */
 @media (max-width: 768px) {
+  /**To make responsive gallery slide and subcripstion page */
   .galleryslidingimage {
-    height: 85vh;
-    margin-top: 0;
+    margin-top: 5px;
+    margin-bottom: 200px;
+    height: 67h;
+  }
+
+  .slider-container {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 100vw; /* Adjusted dynamically in JS */
+    overflow: hidden;
   }
 
   .slide {
+    flex: 0 0 100vw; /* Ensures each slide takes up full width */
+    width: 100vw; /* Full width of viewport */
     height: 50vh;
   }
-
   .slide img {
-    object-fit: contain; /* Ensures image fills container */
-    height: 100%;
+    object-fit: cover; /* Ensures image fills container */
+    height: auto;
     width: 100%;
   }
 
   .prev,
   .next {
     position: absolute;
-    top: 35%;
+    top: 40%;
     font-size: 20px;
     padding: 10px;
   }
@@ -440,7 +461,7 @@ footer {
   }
   .apply-btn {
     display: block;
-    width: auto;
+    width: 80%;
     background: #464646;
     color: white;
     text-align: center;
@@ -462,36 +483,46 @@ footer {
 }
 
 @media (max-width: 480px) {
+  /**To make responsive gallery slide and subcripstion page */
   .galleryslidingimage {
-    height: 75vh; /* Further adjust height */
-    margin-top: 0; /* Push down */
+    margin-top: 0rem;
+    margin-bottom: 9.375rem;
+    height: 67h;
+  }
+
+  .slider-container {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+    width: 100vw; /* Adjusted dynamically in JS */
+    overflow: hidden;
   }
 
   .slide {
+    flex: 0 0 100vw; /* Ensures each slide takes up full width */
+    width: 100vw; /* Full width of viewport */
     height: 50vh;
   }
-
   .slide img {
-    object-fit: contain; /* Ensures image fills container */
-    height: 100%;
+    object-fit: cover; /* Ensures image fills container */
+    height: auto;
     width: 100%;
   }
 
   .prev,
   .next {
     position: absolute;
-    top: 35%;
-    font-size: 20px;
-    padding: 10px;
+    top: 45%;
+    font-size: 1.25rem;
+    padding: 0.625rem;
   }
   .apply-btn {
     display: block;
-    width: auto;
+    width: 80%;
     background: #464646;
     color: white;
     text-align: center;
     padding: 12px;
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: bold;
     border: none;
     border-radius: 5px;

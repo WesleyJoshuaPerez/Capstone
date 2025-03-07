@@ -38,7 +38,7 @@
           <h2>
             <span style="color: #36a13a">L.</span>
             <span style="color: #3775b9">Y.</span>
-            <span style="color: #ec202a">N.</span>
+            <span style="color: #fcbf06">N.</span>
             <span style="color: #ec202a">X</span>
           </h2>
         </a>
@@ -76,22 +76,82 @@
       <div class="slider-wrapper">
         <div class="slider-container">
           <div class="slide">
-            <img
-              src="frontend/assets/images/slidingbackgrounds/bg1.png"
-              alt="Slide 1"
-            />
+            <picture>
+              <source
+                media="(max-width: 480px)"
+                srcset="
+                  frontend/assets/images/slidingbackgrounds/slide1small.png
+                "
+              />
+              <source
+                media="(max-width: 768px)"
+                srcset="
+                  frontend/assets/images/slidingbackgrounds/slide1medium.png
+                "
+              />
+              <source
+                media="(max-width: 950px)"
+                srcset="
+                  frontend/assets/images/slidingbackgrounds/slide1large.png
+                "
+              />
+              <img
+                src="frontend/assets/images/slidingbackgrounds/slide1largest.png"
+                alt="Slide 1"
+              />
+            </picture>
           </div>
           <div class="slide">
-            <img
-              src="frontend/assets/images/slidingbackgrounds/bg3.png"
-              alt="Slide 2"
-            />
+            <picture>
+              <source
+                media="(max-width: 480px)"
+                srcset="
+                  frontend/assets/images/slidingbackgrounds/slide2small.png
+                "
+              />
+              <source
+                media="(max-width: 768px)"
+                srcset="
+                  frontend/assets/images/slidingbackgrounds/slide2medium.png
+                "
+              />
+              <source
+                media="(max-width: 950px)"
+                srcset="
+                  frontend/assets/images/slidingbackgrounds/slide2large.png
+                "
+              />
+              <img
+                src="frontend/assets/images/slidingbackgrounds/slide2largest.png"
+                alt="Slide 2"
+              />
+            </picture>
           </div>
           <div class="slide">
-            <img
-              src="frontend/assets/images/slidingbackgrounds/bg2.png"
-              alt="Slide 3"
-            />
+            <picture>
+              <source
+                media="(max-width: 480px)"
+                srcset="
+                  frontend/assets/images/slidingbackgrounds/slide3small.png
+                "
+              />
+              <source
+                media="(max-width: 768px)"
+                srcset="
+                  frontend/assets/images/slidingbackgrounds/slide3medium.png
+                "
+              />
+              <source
+                media="(max-width: 950px)"
+                srcset="
+                  frontend/assets/images/slidingbackgrounds/slide3large.png
+                "
+              />
+              <img
+                src="frontend/assets/images/slidingbackgrounds/slide3largest.png"
+                alt="Slide 1"
+              />
+            </picture>
           </div>
         </div>
         <button class="prev" onclick="moveSlide(-1)">❮</button>
