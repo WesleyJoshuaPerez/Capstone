@@ -52,7 +52,7 @@ p {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background-color: #d1d1d1;
+  background-color: #0EA5E9;
   color: white;
   display: flex;
   justify-content: center;
@@ -62,7 +62,7 @@ p {
 }
 
 .step.active .circle {
-  background-color: #6f6f6f;
+  background-color: #1E3A8A;
 }
 
 /* Main Grid Layout */
@@ -86,7 +86,9 @@ p {
   font-size: 1rem;
   font-weight: bold;
   text-align: center;
-  border: 10px solid #6f6f6f;
+  border: 10px solid transparent;
+  border-image-source: linear-gradient(to right, #0073ffb7, #00c6ff); /* Gradient border */
+  border-image-slice: 1; /* Ensure full coverage */
   width: 100%; /* Adjust width for responsiveness */
   max-width: 400px;
   position: relative;
@@ -127,7 +129,7 @@ p {
 
 .pricing-box:nth-child(1) .price {
   color: #ffffff;
-  background-color: #6f6f6f;
+  background: linear-gradient(to right, #0073ffb7, #00c6ff);
   padding: 10px 0; /* Add padding to fill background */
   display: block; /* Ensure full width */
   font-style: italic;
@@ -278,7 +280,7 @@ p {
 /* Buttons */
 button {
   border-radius: 5px;
-  background-color: #6f6f6f;
+  background-color: #0487c4;
   border: none;
   padding: 10px 20px;
   color: white;
@@ -293,12 +295,12 @@ button {
 }
 
 button:hover {
-  background-color: #a1a1a1;
+  background-color: #27b2f3;
 }
 
 .next-btn2 {
   border-radius: 5px;
-  background-color: #6f6f6f;
+  background-color: #0487c4;
   border: none;
   padding: 10px 20px;
   color: white;
@@ -334,9 +336,16 @@ button:hover {
   background-color: white;
 }
 
+#map {
+  height: 400px; /* Adjust as needed */
+  width: 100%;
+  border: 1px solid #ccc;
+}
+
+
 .submit {
   border-radius: 5px;
-  background-color: #6f6f6f;
+  background-color: #0487c4;
   border: none;
   padding: 10px 20px;
   color: white;
@@ -352,7 +361,7 @@ button:hover {
 }
 
 .submit:hover {
-  background-color: #a1a1a1;
+  background-color: #27b2f3;
 }
 
 /* Responsive Design */
