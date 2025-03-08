@@ -102,7 +102,7 @@ header {
   transition: 0.15s ease;
 }
 .navbar .login-btn:hover {
-  background: #d63b3b;
+  background: #ec202a;
   color: white;
 }
 /*For sections of the pages */

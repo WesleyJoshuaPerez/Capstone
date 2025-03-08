@@ -10,7 +10,7 @@
 }
 
 body {
-  background-color: #f3f5f9;
+  background-color: #ffffff;
 }
 
 .wrapper {
@@ -18,10 +18,11 @@ body {
   position: relative;
 }
 
+/* Sidebar Styles */
 .wrapper .sidebar {
   width: 200px;
   height: 100vh;
-  background: #6f6f6f;
+  background: #3775b9;
   padding: 30px 0;
   position: fixed;
   transition: all 0.3s ease;
@@ -50,7 +51,7 @@ body {
 }
 
 .wrapper .sidebar ul li:hover a {
-  color: #6f6f6f;
+  color: #3775b9;
 }
 
 .wrapper .sidebar .social_media {
@@ -69,10 +70,11 @@ body {
   line-height: 45px;
   text-align: center;
   margin: 0 5px;
-  color: #6f6f6f;
+  color: #3775b9;
   border-radius: 5px;
 }
 
+/* Main Content */
 .wrapper .main_content {
   width: calc(100% - 200px);
   margin-left: 200px;
@@ -82,8 +84,11 @@ body {
 .wrapper .main_content .header {
   padding: 20px;
   background: #fff;
-  color: #717171;
+  color: #000000;
+  padding: 15px;
   border-bottom: 1px solid #e0e4e8;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 4px -2px rgba(0, 0, 0, 0.1); /* Add shadow effect */
 }
 
 /* Hide application section initially */
@@ -94,32 +99,9 @@ body {
   border: 1px solid #ddd;
   margin-top: 20px;
   border-radius: 5px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  box-shadow: 1px 4px 44px -19px rgba(0, 0, 0, 1);
 }
 
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 10px;
-}
-
-table,
-th,
-td {
-  border: 1px solid #ddd;
-  text-align: left;
-  padding: 10px;
-}
-
-th {
-  background-color: #6f6f6f;
-  color: white;
-}
-
-tr:hover {
-  background-color: #f1f1f1;
-  cursor: pointer;
-}
 /* Responsive Sidebar */
 @media screen and (max-width: 768px) {
   .wrapper .sidebar {
@@ -128,7 +110,8 @@ tr:hover {
   }
 
   .wrapper .sidebar h2 {
-    display: none;
+    display: block; /* Show text for logo */
+    font-size: 14px; /* Adjust logo text size */
   }
 
   .wrapper .sidebar ul li {
@@ -136,12 +119,11 @@ tr:hover {
   }
 
   .wrapper .sidebar ul li a {
-    padding: 10px;
-    font-size: 0;
+    font-size: 0; /* Hide text */
   }
 
-  .wrapper .sidebar ul li a .fas {
-    font-size: 20px;
+  .wrapper .sidebar ul li a i {
+    font-size: 20px; /* Keep icons visible */
   }
 
   .wrapper .sidebar .social_media {
@@ -154,35 +136,109 @@ tr:hover {
   }
 }
 
+/* Adjust Sidebar for Mobile */
 @media screen and (max-width: 480px) {
-  .wrapper {
-    flex-direction: column;
+  .wrapper .sidebar {
+    width: 65px;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    padding-top: 20px;
+    overflow: hidden;
   }
 
-  .wrapper .sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
-    padding: 10px 0;
-    text-align: center;
+  .wrapper .sidebar h2 {
+    display: block; /* Show text for logo */
+    font-size: 12px; /* Adjust logo text size further for smaller screens */
   }
 
   .wrapper .sidebar ul {
-    display: flex;
-    justify-content: center;
+    display: block;
   }
 
   .wrapper .sidebar ul li {
     padding: 10px;
-    border: none;
+    text-align: center;
   }
 
   .wrapper .sidebar ul li a {
-    font-size: 14px;
+    font-size: 0; /* Hide text */
+  }
+
+  .wrapper .sidebar ul li a i {
+    font-size: 20px; /* Show only icons */
   }
 
   .wrapper .main_content {
     width: 100%;
-    margin-left: 0;
+    margin-left: 65px;
+  }
+}
+
+/* Responsive Table */
+.table-container {
+  width: 100%;
+  overflow-x: auto; /* Enables horizontal scrolling */
+}
+
+#applicationTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+#applicationTable th,
+#applicationTable td {
+  border: 1px solid #ddd;
+  text-align: left;
+  padding: 10px;
+}
+
+#applicationTable th {
+  background-color: #3775b9;
+  color: white;
+}
+
+#applicationTable tr:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+
+/* Ensure the table fits on smaller screens */
+@media screen and (max-width: 600px) {
+  .table-container {
+    width: 100%;
+    overflow-x: auto; /* Allows horizontal scrolling */
+  }
+
+  #applicationTable {
+    min-width: 400px; /* Prevents the table from becoming too small */
+    font-size: 14px;
+  }
+
+  #applicationTable th,
+  #applicationTable td {
+    padding: 5px; /* Reduce padding */
+    font-size: 12px; /* Make text smaller */
+  }
+}
+
+/* Additional adjustments for improved mobile responsiveness */
+@media screen and (max-width: 400px) {
+  .table-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  #applicationTable {
+    min-width: 300px; /* Further reduce the minimum width for very small screens */
+    font-size: 12px;
+  }
+
+  #applicationTable th,
+  #applicationTable td {
+    padding: 3px; /* Further reduce padding */
+    font-size: 10px; /* Further reduce font size */
   }
 }

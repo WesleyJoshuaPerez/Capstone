@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Admin</title>
     <link rel="stylesheet" href="frontend/styles/admin.css" />
     <!-- Change the default icon of the xampp -->
@@ -59,20 +60,23 @@
         <div class="info">
           <div id="applicationDiv">
             <h2>Applications</h2>
-            <table id="applicationTable">
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Subscription Plan</th>
-                  <th>First Name</th>
-                  <th>Last Name</th>
-                  <th>Contact Number</th>
-                </tr>
-              </thead>
-              <tbody>
-                <!-- Data will be inserted here dynamically -->
-              </tbody>
-            </table>
+            <!-- Add a wrapper div with class "table-container" -->
+            <div class="table-container">
+              <table id="applicationTable">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Subscription Plan</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Contact Number</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Data will be inserted here dynamically -->
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>

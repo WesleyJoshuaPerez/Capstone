@@ -33,9 +33,10 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  width: 350px; /* Slightly smaller for a better fit */
-  background-color: rgb(222, 218, 218);
-  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 350px;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 1px 4px 44px -19px rgba(0, 0, 0, 1);
   border-radius: 0.625rem;
   padding: 1.5rem;
 }
@@ -45,16 +46,20 @@ body {
   flex-direction: column;
   margin-bottom: 0.8rem;
   width: 100%;
+  position: relative;
 }
 
 .input_group input {
-  width: 260px; /* Input fields now take up almost full width */
+  width: 100%;
+  min-width: 260px;
   padding: 0.8rem;
   font-size: 1rem;
-  border: 2px solid #ccc;
+  border: 2.4px solid #ccc;
+  background-color: #fffcfc;
   border-radius: 10px;
   outline: none;
   transition: all 0.3s ease;
+  resize: vertical;
 }
 
 .input_group input:focus {
@@ -80,7 +85,7 @@ body {
 }
 
 label {
-  color: #555;
+  color: #000000;
   text-align: left;
   font-size: 0.7rem;
   font-weight: bold;
@@ -94,12 +99,13 @@ label {
 }
 
 .password_container input {
-  width: 100%; /* Same width as username input */
+  width: 100%;
   padding: 0.8rem;
   font-size: 1rem;
-  border: 2px solid #ccc;
+  border: 2.4px solid #ccc;
   border-radius: 10px;
   outline: none;
+  resize: vertical;
 }
 
 .password_container button {
@@ -111,18 +117,20 @@ label {
   font-size: 1.2rem;
   color: #555;
 }
+
 #passwordError {
   color: red;
   font-size: 12px;
-  display: none; /* Initially hidden */
-  max-width: 100%; /* Allows the text to adjust dynamically */
-  width: 260px; /* Default width */
-  word-wrap: break-word; /* Ensures text wraps properly */
-  margin-top: 5px;
+  display: none;
+  max-width: 100%;
+  width: 100%;
+  word-wrap: break-word;
   font-weight: bold;
-  text-align: left;
+  text-align: center;
+  margin-top: 5px;
+  position: static;
 }
-/* Center the login button properly */
+
 #loginbutton {
   width: 100%;
   max-width: 180px;
@@ -132,46 +140,41 @@ label {
   border: 0.125rem solid white;
   font-weight: bolder;
   border-radius: 10px;
-  background-color: #a1a1a1;
-  color: white;
+  background-color: #36a13a;
+  color: #fff;
   cursor: pointer;
   position: relative;
   transition: all 0.3s ease;
 }
 
 #loginbutton:hover {
-  background-color: #6f6f6f;
-  border-color: #f8f9fa;
+  background-color: #ec202a;
+  border-color: #fff;
 }
 
 #loginbutton:active {
   background-color: #a1a1a1;
   border-color: #e0e0e0;
 }
-
 ::-ms-reveal {
   display: none;
 }
 
-/* ✅ Make Images Smaller */
 .logo img {
-  width: 7.5rem;
+  width: 120px;
   height: auto;
   min-height: 3.125rem;
 }
 
-/* Responsive Adjustments for 759px and below */
 @media (max-width: 759px) {
   .loginform_container {
     width: 90%;
-    max-width: 24rem; /* Slightly smaller */
+    max-width: 24rem;
     padding: 1rem;
   }
 
   .input_group input,
   .password_container input {
-    /* Full width inside the container */
-    max-width: 300px;
     font-size: 0.9rem;
     padding: 0.7rem;
   }
@@ -185,18 +188,8 @@ label {
     height: 3rem;
     font-size: 0.9rem;
   }
-
-  .logo img {
-    width: 6rem;
-  }
-  #passwordError {
-    font-size: 10px; /* Reduce font size on smaller screens */
-    width: 90%;
-    text-align: center;
-  }
 }
 
-/* Extra Small Screens - 480px and below */
 @media (max-width: 480px) {
   .container {
     padding: 0.5rem;
@@ -212,8 +205,6 @@ label {
 
   .input_group input,
   .password_container input {
-    /* Full width inside the container */
-    max-width: 230px;
     font-size: 0.9rem;
     padding: 0.7rem;
   }
@@ -221,18 +212,10 @@ label {
   label {
     font-size: 0.85rem;
   }
-  #passwordError {
-    font-size: 10px; /* Reduce font size on smaller screens */
-    width: 90%;
-    text-align: center;
-  }
+
   #loginbutton {
     height: 44.8px;
     width: 150px;
     font-size: 0.85rem;
-  }
-
-  .logo img {
-    width: 5rem;
   }
 }

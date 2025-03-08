@@ -11,7 +11,7 @@ body {
   background: #fff;
 }
 h1 {
-  color: #6f6f6f;
+  color: #000000;
   padding-bottom: 20px;
   font-size: 25px;
   text-align: center;
@@ -33,15 +33,15 @@ h1 {
   width: 380px;
   max-width: 100%; /* Makes it responsive */
   height: auto;
-  background-color: rgb(222, 218, 218);
-  box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.15);
+  background-color: rgb(255, 255, 255);
+  box-shadow: 1px 4px 44px -19px rgba(0, 0, 0, 1);
   border-radius: 10px;
   padding: 20px;
 }
 .form-container label {
   display: block;
   text-align: left;
-  color: #a1a1a1;
+  color: #000000;
   font-size: 15px;
   font-weight: bold;
   margin-bottom: 8px;
@@ -66,27 +66,32 @@ h1 {
   padding: 10px;
   font-size: 12px;
   border: 2px solid #ccc;
+  background-color: #fffcfc;
   border-radius: 5px;
   outline: none;
   transition: all 0.3s ease;
 }
+
 button {
-  width: 200px;
-  height: 40px;
-  display: block;
-  margin: 10px auto;
-  border: 2px solid white;
+  width: 200px; /* Wider button */
+  height: 40px; /* More height for easy clicking */
   font-weight: bolder;
-  border-radius: 10px;
-  background-color: #a1a1a1;
-  color: white;
+  display: block;
+  border: none;
+  outline: none;
+  background: #36a13a;
+  color: #fff;
+  margin: 10px auto;
+  border-radius: 8px;
   cursor: pointer;
-  position: relative;
-  transition: all 0.3s ease;
+  transition: 0.15s ease;
 }
+
 button:hover {
-  background-color: #6f6f6f;
+  background: #ec202a;
+  color: white;
 }
+
 /* ✅ Make Images Smaller */
 .logo img {
   width: 7.5rem;
