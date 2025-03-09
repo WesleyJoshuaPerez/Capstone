@@ -31,10 +31,12 @@
         </h2>
         <ul>
           <li>
-            <a href="#"><i class="fas fa-home"></i> Home</a>
+            <a href="#" id="homeLink"><i class="fas fa-home"></i> Home</a>
           </li>
           <li>
-            <a href="#"><i class="fas fa-user"></i> Subscriber</a>
+            <a href="#" id="subscriberLink"
+              ><i class="fas fa-user"></i> Subscriber</a
+            >
           </li>
           <li>
             <a href="#" id="applicationLink"
@@ -45,21 +47,57 @@
             <a href="#"><i class="fas fa-project-diagram"></i> Technician</a>
           </li>
           <li>
-            <a href="#"><i class="fas fa-exclamation-circle"></i> Tickets</a>
+            <a href="#" id="maintenanceLink"
+              ><i class="fas fa-exclamation-circle"></i> Maintenance Request</a
+            >
           </li>
           <li>
-            <a href="#"><i class="fas fa-address-book"></i> Contact</a>
+            <a href="#"><i class="fa-solid fa-box"></i> Box slots</a>
           </li>
           <li>
             <a href="#"><i class="fas fa-map"></i> 2D Map</a>
           </li>
         </ul>
       </div>
+      <!--Contain all the elements need in admin-->
       <div class="main_content">
         <div class="header">Lynx Admin Dashboard.</div>
+
+        <!-- Summary Container -->
+        <div class="summary-container" id="summary-container">
+          <div class="summary-box">
+            <i class="fas fa-address-card fa-3x" style="color: #3775b9"></i>
+            <h3>Applicants</h3>
+            <p id="totalApplicants">0</p>
+          </div>
+          <div class="summary-box">
+            <i class="fas fa-user fa-3x" style="color: #3775b9"></i>
+            <h3>Subscribers</h3>
+            <p id="totalSubscribers">0</p>
+          </div>
+          <div class="summary-box">
+            <i class="fas fa-project-diagram fa-3x" style="color: #3775b9"></i>
+            <h3>Technicians</h3>
+            <p id="totalTechnicians">0</p>
+          </div>
+          <div class="summary-box">
+            <i
+              class="fas fa-exclamation-circle fa-3x"
+              style="color: #3775b9"
+            ></i>
+            <h3>Maintenance Requests</h3>
+            <p id="totalMaintenance">0</p>
+          </div>
+          <div class="summary-box">
+            <i class="fa-solid fa-box fa-3x" style="color: #3775b9"></i>
+            <h3>Box slots</h3>
+            <p id="totalBoxslots">0</p>
+          </div>
+        </div>
+
         <div class="info">
           <div id="applicationDiv">
-            <h2>Applications</h2>
+            <h2>Applicants</h2>
             <!-- Add a wrapper div with class "table-container" -->
             <div class="table-container">
               <table id="applicationTable">
@@ -78,10 +116,59 @@
               </table>
             </div>
           </div>
+
+          <div id="subscriberDiv">
+            <h2>Subscriber</h2>
+            <!-- Add a wrapper div with class "table-container" -->
+            <div class="table-container">
+              <table id="subscriberTable">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Subscription Plan</th>
+                    <th>Current Bill</th>
+                    <th>Due date</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Contact Number</th>
+                    <th>Address</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Data will be inserted here dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="maintenance_reqDiv">
+            <h2>Maintenance Request</h2>
+            <!-- Add a wrapper div with class "table-container" -->
+            <div class="table-container">
+              <table id="maintenace_reqTable">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Technician Name</th>
+                    <th>Customer Subscription Plan</th>
+                    <th>Customer Fullname</th>
+                    <th>Type of Concern</th>
+                    <th>Created at</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Data will be inserted here dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <script src="scripts/approve.js"></script>
+    <script src="scripts/subscriber.js"></script>
+    <script src="scripts/summary.js"></script>
   </body>
 </html>

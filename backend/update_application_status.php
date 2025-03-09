@@ -36,6 +36,17 @@ if (isset($decodedData['id']) && isset($decodedData['status'])) {
             if ($result->num_rows > 0) {
                 $user = $result->fetch_assoc();
 
+                // Determine the current bill based on subscription_plan
+                $currentBill = 0;
+                $plan = strtolower($user['subscription_plan']);
+                if ($plan == 'bronze') {
+                    $currentBill = 1199;
+                } elseif ($plan == 'silver') {
+                    $currentBill = 1499;
+                } elseif ($plan == 'gold') {
+                    $currentBill = 1799;
+                }
+
                 // Generate username
                 $firstLetters = strtoupper(substr($user['first_name'], 0, 1));
                 $secondLetters = strpos($user['first_name'], ' ') !== false ? strtoupper(substr(explode(' ', $user['first_name'])[1], 0, 1)) : "";
@@ -53,8 +64,9 @@ if (isset($decodedData['id']) && isset($decodedData['status'])) {
                 $fullname = $user['first_name'] . " " . $user['last_name'];
                 $address = $user['barangay'] . ", " . $user['municipality'] . ", " . $user['province'];
 
-                $insertQuery = "INSERT INTO approved_user (user_id, username, password, subscription_plan, fullname, birth_date, address, contact_number, email_address, id_type, id_number, id_photo, proof_of_residency, home_ownership_type, installation_date, registration_date) 
-                   VALUES ('$id', '$username', '$plainPassword', '$user[subscription_plan]', '$fullname', '$user[birth_date]', '$address', '$user[contact_number]', '$user[email_address]', '$user[id_type]', '$user[id_number]', '$user[id_photo]', '$user[proof_of_residency]', '$user[home_ownership_type]', '$user[installation_date]', NOW())";
+                // Modify the insert query to include currentbill
+                $insertQuery = "INSERT INTO approved_user (user_id, username, password, subscription_plan, currentbill, fullname, birth_date, address, contact_number, email_address, id_type, id_number, id_photo, proof_of_residency, home_ownership_type, installation_date, registration_date) 
+                   VALUES ('$id', '$username', '$plainPassword', '{$user['subscription_plan']}', '$currentBill', '$fullname', '{$user['birth_date']}', '$address', '{$user['contact_number']}', '{$user['email_address']}', '{$user['id_type']}', '{$user['id_number']}', '{$user['id_photo']}', '{$user['proof_of_residency']}', '{$user['home_ownership_type']}', '{$user['installation_date']}', NOW())";
 
                 if ($conn->query($insertQuery) === TRUE) {
                     sendApprovalEmail($user['email_address'], $username, $plainPassword);

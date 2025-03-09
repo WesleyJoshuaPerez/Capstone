@@ -19,7 +19,7 @@ body {
 }
 
 /* Sidebar Styles */
-.wrapper .sidebar {
+.sidebar {
   width: 200px;
   height: 100vh;
   background: #3775b9;
@@ -28,33 +28,33 @@ body {
   transition: all 0.3s ease;
 }
 
-.wrapper .sidebar h2 {
+.sidebar h2 {
   color: #fff;
   text-transform: uppercase;
   text-align: center;
   margin-bottom: 30px;
 }
 
-.wrapper .sidebar ul li {
+.sidebar ul li {
   padding: 15px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.wrapper .sidebar ul li a {
+.sidebar ul li a {
   color: #fff;
   display: block;
 }
 
-.wrapper .sidebar ul li:hover {
+.sidebar ul li:hover {
   background-color: #fff;
 }
 
-.wrapper .sidebar ul li:hover a {
+.sidebar ul li:hover a {
   color: #3775b9;
 }
 
-.wrapper .sidebar .social_media {
+.sidebar .social_media {
   position: absolute;
   bottom: 10px;
   left: 50%;
@@ -62,37 +62,75 @@ body {
   display: flex;
 }
 
-.wrapper .sidebar .social_media a {
+.sidebar .social_media a {
   display: block;
   width: 40px;
-  background: #fff;
   height: 40px;
   line-height: 45px;
   text-align: center;
   margin: 0 5px;
+  background: #fff;
   color: #3775b9;
   border-radius: 5px;
 }
 
 /* Main Content */
-.wrapper .main_content {
+.main_content {
   width: calc(100% - 200px);
   margin-left: 200px;
   transition: margin-left 0.3s ease;
 }
 
-.wrapper .main_content .header {
+.header {
   padding: 20px;
   background: #fff;
-  color: #000000;
-  padding: 15px;
+  color: #000;
   border-bottom: 1px solid #e0e4e8;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 4px 4px -2px rgba(0, 0, 0, 0.1); /* Add shadow effect */
+  box-shadow: 0 4px 4px -2px rgba(0, 0, 0, 0.1);
+}
+
+.summary-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+.summary-box {
+  background: #f4f4f4;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  min-width: 300px;
+  min-height: 300px;
+  flex: 1;
+  max-width: 350px;
+  max-height: 350px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+
+  /* Center content vertically and horizontally */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.summary-box h3 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.summary-box p {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 5px 0 0;
 }
 
 /* Hide application section initially */
-#applicationDiv {
+#applicationDiv,
+#subscriberDiv,
+#maintenance_reqDiv {
   display: none;
   padding: 20px;
   background: white;
@@ -102,143 +140,122 @@ body {
   box-shadow: 1px 4px 44px -19px rgba(0, 0, 0, 1);
 }
 
-/* Responsive Sidebar */
-@media screen and (max-width: 768px) {
-  .wrapper .sidebar {
-    width: 60px;
-    padding: 20px 0;
-  }
-
-  .wrapper .sidebar h2 {
-    display: block; /* Show text for logo */
-    font-size: 14px; /* Adjust logo text size */
-  }
-
-  .wrapper .sidebar ul li {
-    text-align: center;
-  }
-
-  .wrapper .sidebar ul li a {
-    font-size: 0; /* Hide text */
-  }
-
-  .wrapper .sidebar ul li a i {
-    font-size: 20px; /* Keep icons visible */
-  }
-
-  .wrapper .sidebar .social_media {
-    display: none;
-  }
-
-  .wrapper .main_content {
-    width: calc(100% - 60px);
-    margin-left: 60px;
-  }
-}
-
-/* Adjust Sidebar for Mobile */
-@media screen and (max-width: 480px) {
-  .wrapper .sidebar {
-    width: 65px;
-    height: 100vh;
-    position: fixed;
-    left: 0;
-    top: 0;
-    padding-top: 20px;
-    overflow: hidden;
-  }
-
-  .wrapper .sidebar h2 {
-    display: block; /* Show text for logo */
-    font-size: 12px; /* Adjust logo text size further for smaller screens */
-  }
-
-  .wrapper .sidebar ul {
-    display: block;
-  }
-
-  .wrapper .sidebar ul li {
-    padding: 10px;
-    text-align: center;
-  }
-
-  .wrapper .sidebar ul li a {
-    font-size: 0; /* Hide text */
-  }
-
-  .wrapper .sidebar ul li a i {
-    font-size: 20px; /* Show only icons */
-  }
-
-  .wrapper .main_content {
-    width: 100%;
-    margin-left: 65px;
-  }
-}
-
 /* Responsive Table */
 .table-container {
   width: 100%;
-  overflow-x: auto; /* Enables horizontal scrolling */
+  overflow-x: auto;
 }
 
-#applicationTable {
+#applicationTable,
+#subscriberTable,
+#maintenace_reqTable {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
 }
 
 #applicationTable th,
-#applicationTable td {
+#subscriberTable th,
+#maintenace_reqTable th,
+#applicationTable td,
+#subscriberTable td,
+#maintenace_reqTable td {
   border: 1px solid #ddd;
   text-align: left;
   padding: 10px;
 }
 
-#applicationTable th {
+#applicationTable th,
+#subscriberTable th,
+#maintenace_reqTable th {
   background-color: #3775b9;
   color: white;
 }
 
-#applicationTable tr:hover {
+#applicationTable tr:hover,
+#subscriberTable tr:hover,
+#maintenace_reqTable tr:hover {
   background-color: #f1f1f1;
   cursor: pointer;
 }
 
-/* Ensure the table fits on smaller screens */
-@media screen and (max-width: 600px) {
-  .table-container {
-    width: 100%;
-    overflow-x: auto; /* Allows horizontal scrolling */
+/* Responsive Sidebar */
+@media screen and (max-width: 768px) {
+  .sidebar {
+    width: 60px;
+    padding: 20px 0;
   }
 
-  #applicationTable {
-    min-width: 400px; /* Prevents the table from becoming too small */
+  .sidebar h2 {
     font-size: 14px;
   }
 
-  #applicationTable th,
-  #applicationTable td {
-    padding: 5px; /* Reduce padding */
-    font-size: 12px; /* Make text smaller */
+  .sidebar ul li a {
+    font-size: 0;
+  }
+
+  .sidebar ul li a i {
+    font-size: 20px;
+  }
+
+  .sidebar .social_media {
+    display: none;
+  }
+
+  .main_content {
+    width: calc(100% - 60px);
+    margin-left: 60px;
   }
 }
 
-/* Additional adjustments for improved mobile responsiveness */
-@media screen and (max-width: 400px) {
+@media screen and (max-width: 480px) {
+  .sidebar {
+    width: 65px;
+    height: 100vh;
+    padding-top: 20px;
+  }
+
+  .sidebar h2 {
+    font-size: 12px;
+  }
+
+  .sidebar ul li {
+    padding: 10px;
+  }
+
+  .main_content {
+    width: 100%;
+    margin-left: 65px;
+  }
+}
+
+@media screen and (max-width: 600px) {
   .table-container {
     width: 100%;
     overflow-x: auto;
   }
 
   #applicationTable {
-    min-width: 300px; /* Further reduce the minimum width for very small screens */
+    min-width: 400px;
+    font-size: 14px;
+  }
+
+  #applicationTable th,
+  #applicationTable td {
+    padding: 5px;
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  #applicationTable {
+    min-width: 300px;
     font-size: 12px;
   }
 
   #applicationTable th,
   #applicationTable td {
-    padding: 3px; /* Further reduce padding */
-    font-size: 10px; /* Further reduce font size */
+    padding: 3px;
+    font-size: 10px;
   }
 }
