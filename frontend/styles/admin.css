@@ -245,6 +245,28 @@ body {
     padding: 5px;
     font-size: 12px;
   }
+
+  #subscriberTable {
+    min-width: 400px;
+    font-size: 14px;
+  }
+
+  #subscriberTable th,
+  #subscriberTable td {
+    padding: 5px;
+    font-size: 12px;
+  }
+
+  #maintenace_reqTable {
+    min-width: 400px;
+    font-size: 14px;
+  }
+
+  #maintenace_reqTable th,
+  #maintenace_reqTable td {
+    padding: 5px;
+    font-size: 12px;
+  }
 }
 
 @media screen and (max-width: 400px) {
@@ -255,6 +277,27 @@ body {
 
   #applicationTable th,
   #applicationTable td {
+    padding: 3px;
+    font-size: 10px;
+  }
+  #subscriberTable {
+    min-width: 300px;
+    font-size: 12px;
+  }
+
+  #subscriberTable th,
+  #subscriberTable td {
+    padding: 3px;
+    font-size: 10px;
+  }
+
+  #maintenace_reqTable {
+    min-width: 300px;
+    font-size: 12px;
+  }
+
+  #maintenace_reqTable th,
+  #maintenace_reqTable td {
     padding: 3px;
     font-size: 10px;
   }
