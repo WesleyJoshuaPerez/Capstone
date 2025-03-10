@@ -708,7 +708,7 @@ select:focus {
   }
 
   .header {
-    width: calc(100% - 55px) !important; /* Ensures it fits the screen */
+    width: calc(100% - 65px) !important; /* Ensures it fits the screen */
     left: 16px !important;
     top: 0;
     position: fixed !important;
@@ -768,12 +768,16 @@ select:focus {
     right: 0.5rem !important;
   }
   .table-container {
+    width: 100% !important; /* Ensure it takes full screen width */
+    max-width: 100% !important;
+    overflow-x: auto !important; /* Enable scrolling if needed */
     position: relative !important;
-    right: 1.3rem;
-    width: 15rem !important;
+    right: 0 !important; /* Prevent shifting */
   }
-  #historyTable th {
-    font-size: 1rem !important;
+  #historyTable {
+    width: 100% !important; /* Makes the table responsive */
+    min-width: 350px; /* Ensures columns fit */
+    table-layout: auto !important; /* Allows content to adjust */
   }
   #applicationDiv {
     position: relative !important;
