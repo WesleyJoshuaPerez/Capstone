@@ -768,15 +768,15 @@ select:focus {
     right: 0.5rem !important;
   }
   .table-container {
-    width: 100% !important; /* Ensure it takes full screen width */
-    max-width: 100% !important;
+    width: 18rem !important; /* Ensure it takes full screen width */
+    max-width: 420px !important;
     overflow-x: auto !important; /* Enable scrolling if needed */
     position: relative !important;
-    right: 0 !important; /* Prevent shifting */
+    right: 1rem !important; /* Prevent shifting */
   }
   #historyTable {
     width: 100% !important; /* Makes the table responsive */
-    min-width: 370px; /* Ensures columns fit */
+    min-width: 350px; /* Ensures columns fit */
     table-layout: auto !important; /* Allows content to adjust */
   }
   #applicationDiv {
