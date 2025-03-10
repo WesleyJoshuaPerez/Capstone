@@ -14,23 +14,37 @@ require 'PHPMailer/src/SMTP.php';
 // Database connection
 $conn = new mysqli('localhost', 'root', '', 'lynx');
 if ($conn->connect_error) {
-    echo json_encode(["status" => "error", "title" => "Database Error", "message" => "Could not connect to the database."]);
+    echo json_encode(["status" => "error", "title" => "Database Error", "message" => "Database connection failed: " . $conn->connect_error]);
     exit();
 }
 
 if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['email'])) {
     $email = trim($_POST['email']);
-
-    // Check if email exists
-    $stmt = $conn->prepare("SELECT user_id FROM approved_user WHERE email_address = ?");
-    $stmt->bind_param("s", $email);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
     $user_id = null;
+    $role = null;
+
+    // Check if email exists in approved_user or admin_lynx
+    $stmt = $conn->prepare("
+        SELECT user_id, 'user' AS role FROM approved_user WHERE email_address = ? 
+        UNION 
+        SELECT admin_id AS user_id, 'admin' AS role FROM admin_lynx WHERE email_address = ?
+    ");
+    if (!$stmt) {
+        echo json_encode(["status" => "error", "title" => "Database Error", "message" => "Query preparation failed: " . $conn->error]);
+        exit();
+    }
+
+    $stmt->bind_param("ss", $email, $email);
+    if (!$stmt->execute()) {
+        echo json_encode(["status" => "error", "title" => "Database Error", "message" => "Query execution failed: " . $stmt->error]);
+        exit();
+    }
+
+    $result = $stmt->get_result();
     if ($result->num_rows > 0) {
         $row = $result->fetch_assoc();
         $user_id = $row['user_id'];
+        $role = $row['role'];
     }
     $stmt->close();
 
@@ -43,10 +57,26 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['email'])) {
     $reset_token = substr(str_shuffle('1234567890QWERTYUIOPASDFGHJKLZXCVBNM'), 0, 10);
     $request_date = date('Y-m-d H:i:s');
 
+    // Check if role column exists in resetpass_request
+    $role_exists = false;
+    $role_check = $conn->query("SHOW COLUMNS FROM resetpass_request LIKE 'role'");
+    if ($role_check && $role_check->num_rows > 0) {
+        $role_exists = true;
+    }
+
     // Insert reset token into database
-    $insertStmt = $conn->prepare("INSERT INTO resetpass_request (reset_token, email_address, request_date, user_id) VALUES (?, ?, ?, ?)");
-    $insertStmt->bind_param("sssi", $reset_token, $email, $request_date, $user_id);
-    $insertStmt->execute();
+    if ($role_exists) {
+        $insertStmt = $conn->prepare("INSERT INTO resetpass_request (reset_token, email_address, request_date, user_id, role) VALUES (?, ?, ?, ?, ?)");
+        $insertStmt->bind_param("sssis", $reset_token, $email, $request_date, $user_id, $role);
+    } else {
+        $insertStmt = $conn->prepare("INSERT INTO resetpass_request (reset_token, email_address, request_date, user_id) VALUES (?, ?, ?, ?)");
+        $insertStmt->bind_param("sssi", $reset_token, $email, $request_date, $user_id);
+    }
+
+    if (!$insertStmt->execute()) {
+        echo json_encode(["status" => "error", "title" => "Database Error", "message" => "Error inserting token: " . $conn->error]);
+        exit();
+    }
     $insertStmt->close();
 
     // Send email with reset link

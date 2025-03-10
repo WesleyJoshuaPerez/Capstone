@@ -57,7 +57,8 @@ document.addEventListener("DOMContentLoaded", function () {
             timer: 1500,
             showConfirmButton: true,
           }).then(() => {
-            window.location.href = "login.html";
+            // Redirect to the correct page
+            window.location.href = data.redirect; //
           });
         } else {
           Swal.fire({

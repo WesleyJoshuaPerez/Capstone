@@ -17,6 +17,19 @@ body {
   display: flex;
   position: relative;
 }
+/* Hide the sidebar completely */
+.sidebar.collapsed {
+  width: 0;
+  overflow: hidden;
+  padding: 0;
+  transition: width 0.3s ease, padding 0.3s ease;
+}
+
+/* Adjust main content when sidebar is hidden */
+.main_content.expanded {
+  margin-left: 0;
+  width: 100%;
+}
 
 /* Sidebar Styles */
 .sidebar {
@@ -82,13 +95,33 @@ body {
 }
 
 .header {
+  position: sticky;
+  top: 0;
   padding: 20px;
   background: #fff;
+  font-weight: bold;
   color: #000;
   border-bottom: 1px solid #e0e4e8;
   box-shadow: 0 4px 4px -2px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  gap: 10px; /* Adds spacing between the button and text */
 }
 
+/* Hamburger Button */
+#hamburgerBtn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  display: none; /* Initially hidden for larger screens */
+}
+
+#hamburgerBtn:hover {
+  color: #2a5c92;
+}
+
+/* Summary Section */
 .summary-container {
   display: flex;
   gap: 20px;
@@ -183,6 +216,7 @@ body {
 @media screen and (max-width: 768px) {
   .sidebar {
     width: 60px;
+    min-height: 100vh;
     padding: 20px 0;
   }
 
@@ -192,6 +226,10 @@ body {
 
   .sidebar ul li a {
     font-size: 0;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .sidebar ul li a i {
@@ -206,12 +244,40 @@ body {
     width: calc(100% - 60px);
     margin-left: 60px;
   }
+
+  .table-container {
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  #applicationTable,
+  #subscriberTable,
+  #maintenace_reqTable {
+    min-width: 400px;
+    font-size: 14px;
+  }
+
+  #applicationTable th,
+  #applicationTable td,
+  #subscriberTable th,
+  #subscriberTable td,
+  #maintenace_reqTable th,
+  #maintenace_reqTable td {
+    padding: 5px;
+    font-size: 12px;
+  }
+
+  /* Show Hamburger Button */
+  #hamburgerBtn {
+    display: none;
+  }
 }
 
 @media screen and (max-width: 480px) {
   .sidebar {
     width: 65px;
-    height: 100vh;
+    min-height: 100vh;
+    height: auto;
     padding-top: 20px;
   }
 
@@ -227,75 +293,18 @@ body {
     width: 100%;
     margin-left: 65px;
   }
-}
 
-@media screen and (max-width: 600px) {
-  .table-container {
-    width: 100%;
-    overflow-x: auto;
-  }
-
-  #applicationTable {
-    min-width: 400px;
-    font-size: 14px;
-  }
-
-  #applicationTable th,
-  #applicationTable td {
-    padding: 5px;
-    font-size: 12px;
-  }
-
-  #subscriberTable {
-    min-width: 400px;
-    font-size: 14px;
-  }
-
-  #subscriberTable th,
-  #subscriberTable td {
-    padding: 5px;
-    font-size: 12px;
-  }
-
-  #maintenace_reqTable {
-    min-width: 400px;
-    font-size: 14px;
-  }
-
-  #maintenace_reqTable th,
-  #maintenace_reqTable td {
-    padding: 5px;
-    font-size: 12px;
-  }
-}
-
-@media screen and (max-width: 400px) {
-  #applicationTable {
-    min-width: 300px;
-    font-size: 12px;
-  }
-
-  #applicationTable th,
-  #applicationTable td {
-    padding: 3px;
-    font-size: 10px;
-  }
-  #subscriberTable {
-    min-width: 300px;
-    font-size: 12px;
-  }
-
-  #subscriberTable th,
-  #subscriberTable td {
-    padding: 3px;
-    font-size: 10px;
-  }
-
+  #applicationTable,
+  #subscriberTable,
   #maintenace_reqTable {
     min-width: 300px;
     font-size: 12px;
   }
 
+  #applicationTable th,
+  #applicationTable td,
+  #subscriberTable th,
+  #subscriberTable td,
   #maintenace_reqTable th,
   #maintenace_reqTable td {
     padding: 3px;
