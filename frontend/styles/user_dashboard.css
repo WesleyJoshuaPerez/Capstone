@@ -709,7 +709,7 @@ select:focus {
 
   .header {
     width: calc(100% - 55px) !important; /* Ensures it fits the screen */
-    left: 17px !important;
+    left: 15px !important;
     top: 0;
     position: fixed !important;
     z-index: 1000;
