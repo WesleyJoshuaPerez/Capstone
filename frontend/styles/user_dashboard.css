@@ -709,7 +709,7 @@ select:focus {
 
   .header {
     width: calc(100% - 55px) !important; /* Ensures it fits the screen */
-    left: 17px !important;
+    left: 10px !important;
     top: 0;
     position: fixed !important;
     z-index: 1000;
@@ -852,7 +852,7 @@ select:focus {
   }
 
   #homeSection h1 {
-    font-size: 10rem;
+    font-size: 2rem;
   }
 
   #homeSection .status {
