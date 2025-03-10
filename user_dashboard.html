@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>User Dashboard</title>
+    <link rel="stylesheet" href="frontend/styles/user_dashboard.css" />
+    <!-- Change the default icon of the xampp -->
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="frontend/assets/images/icons/lynxicon.ico"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="sidebar">
+        <h2>
+          <img
+            src="frontend/assets/images/logos/lynxlogoicon.png"
+            alt="Logo"
+            style="height: 30px; width: auto; vertical-align: middle"
+          />
+          L.Y.N.X
+        </h2>
+        <ul>
+          <li>
+            <a href="#" id="homeLink">
+                <i class="fa-regular fa-credit-card"></i></i> Home </a>
+          </li>
+          <li>
+            <a href="#" id="billingHistoryLink">
+                <i class="fa-solid fa-clock-rotate-left"></i></i> View Billing History </a>
+          </li>
+          <li>
+            <a href="#" id="applicationLink">
+                <i class="fa-solid fa-bolt"></i></i> Change Subscription Plan</a>
+          </li>
+          <li>
+            <a href="#" id="maintenanceLink">
+                <i class="fas fa-project-diagram"></i> Request Maintenance</a>
+          </li>
+          <li>
+            <a href="#" id="viewProfileLink">
+                <i class="fa-solid fa-user"></i></i> View Profile</a>
+          </li>
+          <li>
+            <a href="#" id="changePasswordLink">
+            <i class="fa-solid fa-unlock-keyhole"></i></i> Change Password</a>
+          </li>
+          <li>
+            <a href="#"><i class="fas fa-map"></i> To Fill Section</a>
+          </li>
+        </ul>
+      </div>
+      <div class="main_content">
+        <div class="header">
+            <span>User Dashboard</span>
+            <a href="/logout" class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </a>
+        </div>
+
+        <!-- start of dynamically changing div -->
+        <div class="info">
+
+        <!-- home div -->
+        <div id="homeSection">
+        <div class="home-content">
+            <h1>Hi, <span id="userName">Kate!</span></h1>
+            <p class="account">Account No: <span id="accountNumber">01</span> <span class="dropdown-icon">▼</span></p>
+            
+            <!-- Status Section -->
+            <div class="status">
+                <span class="status-icon"></span>
+                <span id="accountStatus">Active</span>
+            </div>
+        </div>
+    
+        <!-- Flex container for cards -->
+        <div class="card-container">
+            <div class="card">
+                <h3>MY PLAN</h3>
+                <p>SILVER PLAY</p>
+                <p class="price">₱ <strong>1249.33</strong></p>
+            </div>
+    
+            <div class="card">
+                <h3>MY MODEM</h3>
+                <a href="https://fast.com/">Test your Internet Speed</a>
+                <div class="modem-info">
+                    <span><i class="fa-solid fa-temperature-high"></i> Modem Temperature --</span>
+                    <span><i class="fa-solid fa-signal"></i> Signal Strength --</span>
+                </div>
+            </div>            
+    
+            <div class="card">
+                <h3>AMOUNT TO PAY</h3>
+                <p class="price">₱ <strong>1249.33</strong></p>
+                <p>Due on Mar 13, 2025</p>
+                <button class="pay-btn">PAY NOW</button>
+            </div>
+        </div>
+        </div>    
+        <!-- end home div-->
+
+        <!-- start of billing history div-->
+        <div id="historyDiv">
+            <h2>Subscription Billing History</h2>
+            <!-- Add a wrapper div with class "table-container" -->
+            <div class="table-container">
+              <table id="historyTable">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Subscription Plan</th>
+                    <th>Mode of Payment</th>
+                    <th>Amount</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Data will be inserted here dynamically -->
+                </tbody>
+              </table>
+            </div>
+        </div>
+        <!-- end of billing history div-->
+
+        <!-- change subscription plan div -->
+        <div id="applicationDiv"> <h2>Change Subscription Plan</h2> 
+        <!-- start of form -->
+        <div class="subscription-form-container">
+        <form id="changeSubscriptionForm">
+            <div class="Plan-form-group">
+                <label for="userId">User ID</label>
+                <input type="text" id="userId" name="userId" value="12345" readonly>
+            </div>
+    
+            <div class="Plan-form-group">
+                <label for="fullName">Full Name</label>
+                <input type="text" id="fullName" name="fullName" value="John Doe" readonly>
+            </div>
+    
+            <div class="Plan-form-group">
+                <label for="currentSubscription">Current Subscription</label>
+                <input type="text" id="currentSubscription" name="currentSubscription" value="Premium" readonly>
+            </div>
+
+            <div class="Plan-form-group">
+                <label for="selectSubscription">Choose Subscription Plan</label>
+                <select id="selectSubscription" name="selectSubscription">
+                    <option value="bronze">Bronze - ₱1199/mo, 50 Mbps, 24/7 Support</option>
+                    <option value="silver">Silver - ₱1499/mo, 100 Mbps, 24/7 Support</option>
+                    <option value="gold">Gold - ₱1799/mo, 150 Mbps, 24/7 Support</option>
+                </select>
+            </div>
+            
+            <button type="submit" class="newSub_btn">Change Plan</button>
+        </form>
+        </div>
+        </div>
+        <!-- end of change subscription plan div-->
+
+        <!-- maintenance request div -->
+        <div id="maintenanceDiv">
+            <h2>Request Maintenance</h2>
+            <div class="maintenance-form-container">
+            <form id="maintenanceRequestForm" enctype="multipart/form-data">
+        
+            <!-- Row 1: ID, Full Name, Contact Number -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="userId">User ID</label>
+                    <input type="text" id="userId" name="userId" value="12345" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" value="John Doe" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="contactNumber">Contact Number</label>
+                    <input type="text" id="contactNumber" name="contactNumber" value="+639123456789" readonly>
+                </div>
+            </div>
+
+            <!-- Row 2: Home Address, Type of Issue, Describe Issue -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="homeAddress">Home Address</label>
+                    <input type="text" id="homeAddress" name="homeAddress" value="123 Main St, City, ZIP" readonly>
+                </div>
+
+                <div class="form-group">
+                    <label for="issueType">Type of Issue</label>
+                    <select id="issueType" name="issueType" required>
+                        <option value="slow">Slow Internet Speed</option>
+                        <option value="no-internet">No Internet Connection</option>
+                        <option value="disconnect">Frequent Disconnections</option>
+                        <option value="modem">Router/Modem Issues</option>
+                        <option value="billing">Billing Concerns</option>
+                        <option value="other">Other (Specify Below)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="issueDescription">Describe the Issue</label>
+                    <textarea id="issueDescription" name="issueDescription" rows="4" placeholder="Provide details about the issue..." required></textarea>
+                </div>
+            </div>
+
+            <!-- Row 3: Preferred Contact Time, Upload Evidence -->
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="contactTime">Preferred Contact Time</label>
+                    <select id="contactTime" name="contactTime" required>
+                        <option value="morning">Morning (8AM - 12PM)</option>
+                        <option value="afternoon">Afternoon (12PM - 4PM)</option>
+                        <option value="evening">Evening (4PM - 8PM)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="uploadEvidence">Upload Evidence (JPG/PNG) (Optional)</label>
+                    <input type="file" id="uploadEvidence" name="uploadEvidence" accept="image/png, image/jpeg">
+                </div>
+            </div>
+
+            <button type="submit" class="maintenance-btn">Submit Request</button>
+            </form>
+            </div>
+        </div> 
+        <!-- end of maintenance request div-->
+
+        <!-- start of view profile div-->
+        <div id="profileDiv">
+        <h2>View Profile</h2>
+        <div class="profile-form-container">
+            <form id="profileForm">
+
+            <!-- Row 1: User ID, Full Name -->
+            <div class="profile-form-row">
+                <div class="profile-form-group">
+                    <label for="userId">User ID</label>
+                    <input type="text" id="userId" name="userId" value="12345" readonly>
+                </div>
+
+                <div class="profile-form-group">
+                    <label for="fullName">Full Name</label>
+                    <input type="text" id="fullName" name="fullName" value="John Doe" readonly>
+                </div>
+            </div>
+
+            <!-- Row 2: Birth Date, Address -->
+            <div class="profile-form-row">
+                <div class="profile-form-group">
+                    <label for="birthDate">Birth Date</label>
+                    <input type="date" id="birthDate" name="birthDate" value="1990-05-15" readonly>
+                </div>
+
+                <div class="profile-form-group">
+                    <label for="address">Address</label>
+                    <input type="text" id="address" name="address" value="123 Main St, City, ZIP" readonly>
+                </div>
+            </div>
+
+            <!-- Row 3: Subscribed Plan, Registration Date -->
+            <div class="profile-form-row">
+                <div class="profile-form-group">
+                    <label for="subscribedPlan">Current Subscribed Plan</label>
+                    <input type="text" id="subscribedPlan" name="subscribedPlan" value="Premium Plan" readonly>
+                </div>
+
+                <div class="profile-form-group">
+                    <label for="registrationDate">Registration Date</label>
+                    <input type="date" id="registrationDate" name="registrationDate" value="2023-01-10" readonly>
+                </div>
+            </div>
+
+            <!-- Row 4: Contact Number, Email (Editable) -->
+            <div class="profile-form-row">
+                <div class="profile-form-group">
+                    <label for="contactNumber">Contact Number</label>
+                    <div class="editable-field">
+                        <input type="text" id="contactNumber" name="contactNumber" value="+639123456789" readonly>
+                        <span class="edit-icon" onclick="makeEditable('contactNumber')">&#9998;</span>
+                    </div>
+                </div>
+
+                <div class="profile-form-group">
+                    <label for="emailAddress">Email Address</label>
+                    <div class="editable-field">
+                        <input type="email" id="emailAddress" name="emailAddress" value="johndoe@email.com" readonly>
+                        <span class="edit-icon" onclick="makeEditable('emailAddress')">&#9998;</span>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="update-btn">Update Profile</button>
+            </form>
+        </div>
+        </div>
+        <!-- end of view profile div-->
+
+        <!-- start of change pass div-->
+        <div id="changePasswordDiv">
+        <h2>Change Password</h2>
+        <div class="password-form-container">
+            <form id="changePasswordForm">
+                
+                <!-- Current Password -->
+                <div class="password-form-group">
+                    <label for="currentPassword">Current Password</label>
+                    <input type="password" id="currentPassword" name="currentPassword" placeholder="Type current password">
+                </div>
+    
+                <!-- New Password -->
+                <div class="password-form-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword" name="newPassword" placeholder="Type new password" required>
+                </div>
+    
+                <!-- Confirm Password -->
+                <div class="password-form-group">
+                    <label for="confirmPassword">Confirm New Password</label>
+                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+                </div>
+    
+                <button type="submit" class="change-password-btn">Change Password</button>
+            </form>
+        </div>
+        </div>
+        <!-- end of change pass div-->
+
+      </div>
+
+      <!-- end of dynamically changing div -->
+    </div>
+
+    <script src="scripts/user_dashboard.js"></script>
+  </body>
+</html>
