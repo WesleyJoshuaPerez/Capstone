@@ -768,7 +768,7 @@ select:focus {
     right: 0.5rem !important;
   }
   .table-container {
-    width: 18rem !important; /* Ensure it takes full screen width */
+    width: 19rem !important; /* Ensure it takes full screen width */
     max-width: 420px !important;
     overflow-x: auto !important; /* Enable scrolling if needed */
     position: relative !important;
