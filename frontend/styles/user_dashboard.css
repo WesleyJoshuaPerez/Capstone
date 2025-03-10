@@ -708,7 +708,7 @@ select:focus {
   }
 
   .header {
-    width: calc(100% - 50px) !important; /* Ensures it fits the screen */
+    width: calc(100% - 40px) !important; /* Ensures it fits the screen */
     left: 16px !important;
     top: 0;
     position: fixed !important;
