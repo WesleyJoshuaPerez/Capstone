@@ -760,7 +760,7 @@ select:focus {
     position: relative !important;
     right: 2.5rem !important;
     top: 4rem;
-    width: 317px;
+    width: 18.7rem !important;
   }
   #historyDiv h2{
     font-size: 1rem !important;
@@ -778,7 +778,7 @@ select:focus {
   #applicationDiv {
     position: relative !important;
     right: 2.5rem !important;
-    width: 19.8rem !important;
+    width: 18.7rem !important;
     top: 3rem;
   }
   #applicationDiv h2{
@@ -828,7 +828,7 @@ select:focus {
   #changePasswordDiv {
     position: relative !important;
     right: 2.5rem !important;
-    width: 19.7rem !important;
+    width: 18.7rem !important;
     top: 4rem;
   }
   #changePasswordDiv h2{
