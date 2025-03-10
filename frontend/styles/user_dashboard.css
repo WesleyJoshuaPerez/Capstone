@@ -776,7 +776,7 @@ select:focus {
   }
   #historyTable {
     width: 100% !important; /* Makes the table responsive */
-    min-width: 350px; /* Ensures columns fit */
+    min-width: 370px; /* Ensures columns fit */
     table-layout: auto !important; /* Allows content to adjust */
   }
   #applicationDiv {
