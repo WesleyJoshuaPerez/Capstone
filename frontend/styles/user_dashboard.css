@@ -843,40 +843,93 @@ select:focus {
   .change-password-btn {
     width: 70%;
   }
-
 }
 
 /* Home Section Responsiveness */
 @media screen and (max-width: 768px) {
+  .header {
+    width: calc(100% - 5px) !important; /* Ensures it fits the screen */
+    position: relative;
+    right: 2.5rem !important;
+  }
   #homeSection {
     flex-direction: column;
     height: 7rem;
     padding: 20px;
-    text-align: center;
+    position: relative;
+    top: 2rem;
   }
 
   #homeSection h1 {
     font-size: 2rem;
+    position: relative;
   }
 
   #homeSection .status {
-    justify-content: center;
+    justify-content: left;
   }
-}
-
-/* Cards in Home Section */
-@media screen and (max-width: 768px) {
   .card-container {
     flex-direction: column;
     align-items: center;
     position: relative;
     left: 0;
     top: 4rem;
+    width: calc(100% - 0px) !important;
   }
-
   .card {
     width: 90%;
     max-width: 400px;
+  }
+  #homeSection .account {
+    position: relative !important;
+    right: 10.3rem !important;
+  }
+  .form-row {
+    flex-direction: column;
+  }
+  .form-group {
+    min-width: 100%;
+  }
+  #historyDiv {
+    position: relative;
+    right: 2rem;
+    top: 2rem;
+    width: calc(100% - 0px) !important;
+  }
+  .table-container {
+    width: 35rem;
+    overflow-x: auto;
+    position: relative;
+    left: 0.5;
+    width: calc(100% - 5px) !important;
+  }
+  #applicationDiv {
+    position: relative;
+    right: 2rem;
+    top: 1rem;
+    width: 35rem;
+    width: calc(100% - 0px) !important;
+  }
+  #maintenanceDiv {
+    position: relative;
+    right: 2rem;
+    top: 2rem;
+    width: 34rem;
+    width: calc(100% - 0px) !important;
+  }
+  #profileDiv {
+    position: relative;
+    right: 2rem;
+    top: 2rem;
+    width: 35rem;
+    width: calc(100% - 0px) !important;
+  }
+  #changePasswordDiv {
+    position: relative;
+    right: 2rem;
+    top: 2rem;
+    width: 35rem;
+    width: calc(100% - 0px) !important;
   }
 }
 
@@ -892,23 +945,9 @@ select:focus {
   }
 }
 
-/* Forms in General */
-@media screen and (max-width: 768px) {
-  .form-row {
-    flex-direction: column;
-  }
-
-  .form-group {
-    min-width: 100%;
-  }
-}
-
 /* Billing History Table */
 @media screen and (max-width: 600px) {
-  .table-container {
-    width: 100%;
-    overflow-x: auto;
-  }
+  
 }
 
 /* Subscription Form */
