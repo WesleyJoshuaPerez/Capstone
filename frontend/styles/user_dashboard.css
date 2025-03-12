@@ -630,33 +630,26 @@ select:focus {
     width: 60px;
     padding: 20px 0;
   }
-
   .wrapper .sidebar h2 {
     display: block;
     font-size: 12px;
   }
-
   .wrapper .sidebar ul li {
     text-align: center;
   }
-
   .wrapper .sidebar ul li a {
     font-size: 0;
   }
-
   .wrapper .sidebar ul li a i {
     font-size: 18px;
   }
-
   .wrapper .sidebar .social_media {
     display: none;
   }
-
   .wrapper .main_content {
     width: calc(100% - 60px);
     margin-left: 60px;
   }
-
   .header {
     right: 40px;
   }
