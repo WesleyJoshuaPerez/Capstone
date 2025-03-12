@@ -196,7 +196,7 @@ body {
   color: #ffffff; /* Dark purple */
   margin: 0;
   position: relative;
-  left: 2rem;
+  left: 1rem;
 }
 
 #homeSection p {
@@ -207,14 +207,6 @@ body {
   text-align: center;
 }
 
-#homeSection .account {
-  font-size: 16px;
-  color: #ffffff;
-  margin: 0;
-  position: relative;
-  right: 35rem;
-}
-
 /* Status styling */
 #homeSection .status {
   display: flex;
@@ -223,7 +215,8 @@ body {
   font-weight: bold;
   color: #18b500; /* Gold color */
   position: relative;
-  left: 2rem;
+  left: 1rem;
+
 }
 
 #homeSection .status-icon {
@@ -679,34 +672,27 @@ select:focus {
     padding-top: 20px;
     overflow: hidden;
   }
-
   .wrapper .sidebar h2 {
     font-size: 12px;
   }
-
   .wrapper .sidebar ul {
     display: block;
   }
-
   .wrapper .sidebar ul li {
     padding: 10px;
     text-align: center;
   }
-
   .wrapper .sidebar ul li a {
     font-size: 0;
   }
-
   .wrapper .sidebar ul li a i {
     font-size: 20px;
   }
-
   .wrapper .main_content {
     width: calc(100% - 65px) !important;
     margin-left: 65px !important;
     max-width: 100%;
   }
-
   .header {
     width: calc(100% - 65px) !important; /* Ensures it fits the screen */
     left: 16px !important;
@@ -730,7 +716,7 @@ select:focus {
     right: 0.3rem !important;
     max-width: 100%;
     top: 4rem;
-}
+  }
   #homeSection h1 {
     font-size: 1.5rem !important;
     margin-right: 4rem !important;
@@ -748,11 +734,12 @@ select:focus {
     width: 250px !important;
     margin-right: 0.5rem !important;
   }
-
+  .card-container {
+    width: 100% !important; 
+  }
   .price {
     font-size: 18px !important;
   }
-  
   .modem-info {
     font-size: 14px !important;
   }
@@ -768,16 +755,16 @@ select:focus {
     right: 0.5rem !important;
   }
   .table-container {
-    width: 18rem !important; /* Ensure it takes full screen width */
+    width: 18rem !important; 
     max-width: 420px !important;
-    overflow-x: auto !important; /* Enable scrolling if needed */
+    overflow-x: auto !important; 
     position: relative !important;
-    right: 1rem !important; /* Prevent shifting */
+    right: 1rem !important; 
   }
   #historyTable {
-    width: 100% !important; /* Makes the table responsive */
-    min-width: 350px; /* Ensures columns fit */
-    table-layout: auto !important; /* Allows content to adjust */
+    width: 100% !important; 
+    min-width: 350px; 
+    table-layout: auto !important; 
   }
   #applicationDiv {
     position: relative !important;
@@ -845,26 +832,23 @@ select:focus {
   }
 }
 
-/* Home Section Responsiveness */
+/* Responsiveness for 768px screen */
 @media screen and (max-width: 768px) {
   .header {
-    width: calc(100% - 5px) !important; /* Ensures it fits the screen */
+    width: calc(100% - 65px) !important; /* Adjust width to consider the sidebar */
     position: relative;
-    right: 2.5rem !important;
+    right: 0 !important; /* Prevent shifting */
+    margin-left: 20px; /* Ensures it doesn't overlap */
   }
   #homeSection {
-    flex-direction: column;
-    height: 7rem;
-    padding: 20px;
-    position: relative;
-    top: 2rem;
+      width: calc(100% - 65px) !important; /* Make sure it fits within the screen */
+      margin-left: 39px !important; /* Align with sidebar */
+      height: 7rem; /* Allow flexible height */
+      padding: 20px;
   }
-
   #homeSection h1 {
     font-size: 2rem;
-    position: relative;
   }
-
   #homeSection .status {
     justify-content: left;
   }
@@ -879,10 +863,6 @@ select:focus {
   .card {
     width: 90%;
     max-width: 400px;
-  }
-  #homeSection .account {
-    position: relative !important;
-    right: 10.3rem !important;
   }
   .form-row {
     flex-direction: column;
