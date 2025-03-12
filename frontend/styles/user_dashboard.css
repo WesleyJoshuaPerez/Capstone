@@ -689,7 +689,7 @@ select:focus {
   }
   .header {
     width: calc(100% - 65px) !important; /* Ensures it fits the screen */
-    left: 20px !important;
+    margin-left: 1rem !important;
     top: 0;
     position: fixed !important;
     z-index: 1000;
@@ -715,18 +715,17 @@ select:focus {
     font-size: 1.5rem !important;
     margin-right: 4rem !important;
   }
-  #homeSection .account {
-    text-align: center !important;
-  }
   #homeSection .status {
     position: relative;
-    bottom: 1rem !important;
+    top: 0.3rem !important;
     margin-right: 4rem !important;
   }
   .card {
     height: 70px !important;
     width: 250px !important;
-    margin-right: 0.5rem !important;
+    margin-right: 2rem !important;
+    position: relative;
+    bottom: 2.4rem !important;
   }
   .card-container {
     width: 100% !important; 
@@ -739,8 +738,8 @@ select:focus {
   }
   #historyDiv {
     position: relative !important;
-    right: 2.5rem !important;
-    top: 4rem;
+    right: 2rem !important;
+    top: 5rem !important;
     width: 18.7rem !important;
   }
   #historyDiv h2{
@@ -749,11 +748,10 @@ select:focus {
     right: 0.5rem !important;
   }
   .table-container {
-    width: 18rem !important; 
-    max-width: 420px !important;
+    max-width: 600px !important;
     overflow-x: auto !important; 
     position: relative !important;
-    right: 1rem !important; 
+    right: 0.2rem !important; 
   }
   #historyTable {
     width: 100% !important; 
@@ -762,9 +760,9 @@ select:focus {
   }
   #applicationDiv {
     position: relative !important;
-    right: 2.5rem !important;
+    right: 2rem !important;
+    top: 4rem !important;
     width: 18.7rem !important;
-    top: 3rem;
   }
   #applicationDiv h2{
     font-size: 1rem !important;
@@ -781,9 +779,9 @@ select:focus {
   }
   #maintenanceDiv {
     position: relative !important;
-    right: 2.5rem !important;
+    right: 2rem !important;
+    top: 5rem !important;
     width: 18.7rem !important;
-    top: 4rem;
   }
   #maintenanceDiv h2 {
     font-size: 1rem !important;
@@ -798,9 +796,9 @@ select:focus {
   }
   #profileDiv {
     position: relative !important;
-    right: 2.5rem !important;
+    right: 2rem !important;
+    top: 5rem !important;
     width: 18.7rem !important;
-    top: 4rem;
   }
   #profileDiv h2{
     font-size: 1rem !important;
@@ -812,9 +810,9 @@ select:focus {
   }
   #changePasswordDiv {
     position: relative !important;
-    right: 2.5rem !important;
+    right: 2rem !important;
+    top: 5rem !important;
     width: 18.7rem !important;
-    top: 4rem;
   }
   #changePasswordDiv h2{
     font-size: 1rem !important;
