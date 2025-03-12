@@ -139,8 +139,8 @@ body {
   background: linear-gradient(to right, #a00000, #ff6666);
   height: 120px;
   border-bottom: 3px solid rgba(0, 0, 0, 0.1); /* Soft bottom border */
-  margin-top: 0; /* Align at the top */
-  border-radius: 0; /* No rounded corners for a full-width effect */
+  margin-top: 0; 
+  border-radius: 0; 
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
   width: 100%;
 }
@@ -229,13 +229,15 @@ body {
 
 .card-container {
   display: flex;
-  justify-content: center;
+  flex-wrap: wrap; /* Ensures wrapping on smaller screens */
+  justify-content: center; /* Centers cards horizontally */
   gap: 20px; /* Space between cards */
   width: 100%;
   max-width: 900px;
   position: relative;
   top: 8rem;
-  left: 13rem;
+  left: auto; /* Removes fixed left positioning */
+  margin: 0 auto; /* Centers the container */
 }
 
 /* Individual Card Style */
@@ -287,7 +289,6 @@ body {
   background-color: #a42b2b;
 }
 /* start of home div style */
-
 
 /* start of billing history div style */
 .table-container {
@@ -853,16 +854,13 @@ select:focus {
     justify-content: left;
   }
   .card-container {
-    flex-direction: column;
-    align-items: center;
-    position: relative;
-    left: 0;
-    top: 4rem;
-    width: calc(100% - 0px) !important;
+    flex-direction: column; /* Stack cards vertically */
+    align-items: center; /* Centers the cards */
+    padding-left: 0; /* Remove extra left padding */
   }
   .card {
-    width: 90%;
-    max-width: 400px;
+    width: 90% !important; /* Make cards take full width */
+    max-width: 400px; /* Prevents cards from being too wide */
   }
   .form-row {
     flex-direction: column;
@@ -912,6 +910,15 @@ select:focus {
     width: calc(100% - 0px) !important;
   }
 }
+
+@media screen and (max-width: 1024px) {
+  .card-container {
+    justify-content: flex-start; /* Align to the left on medium screens */
+    max-width: 100%;
+    padding-left: 2rem; /* Slight left margin for spacing */
+}
+}
+
 
 
 
