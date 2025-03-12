@@ -124,18 +124,21 @@ function makeEditable(fieldId) {
         }).then((result) => {
             if (result.isConfirmed) {
                 field.value = result.value; // Updates the field
-                field.setAttribute("value", result.value); 
+                field.setAttribute("value", result.value);
                 field.dispatchEvent(new Event("change")); // Triggers update event
                 
                 Swal.fire("Updated!", `${fieldLabel} has been updated successfully.`, "success");
             }
         });
 
-        // Remove readonly while editing
-        field.removeAttribute("readonly");
-
-    }, 500); 
+    }, 500);
 }
+
+// Ensure the field remains readonly at all times
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("contactNumber").setAttribute("readonly", true);
+    document.getElementById("emailAddress").setAttribute("readonly", true);
+});
 
 
 
