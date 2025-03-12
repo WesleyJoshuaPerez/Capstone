@@ -721,8 +721,6 @@ select:focus {
     margin-right: 4rem !important;
   }
   .card {
-    height: 70px !important;
-    width: 250px !important;
     margin-right: 2rem !important;
     position: relative;
     bottom: 2.4rem !important;
@@ -739,7 +737,7 @@ select:focus {
   #historyDiv {
     position: relative !important;
     right: 2rem !important;
-    top: 5rem !important;
+    top: 4.5rem !important;
     width: 18.7rem !important;
   }
   #historyDiv h2{
@@ -748,7 +746,6 @@ select:focus {
     right: 0.5rem !important;
   }
   .table-container {
-    max-width: 600px !important;
     overflow-x: auto !important; 
     position: relative !important;
     right: 0.2rem !important; 
@@ -761,7 +758,7 @@ select:focus {
   #applicationDiv {
     position: relative !important;
     right: 2rem !important;
-    top: 4rem !important;
+    top: 3.5rem !important;
     width: 18.7rem !important;
   }
   #applicationDiv h2{
@@ -780,7 +777,7 @@ select:focus {
   #maintenanceDiv {
     position: relative !important;
     right: 2rem !important;
-    top: 5rem !important;
+    top: 4.5rem !important;
     width: 18.7rem !important;
   }
   #maintenanceDiv h2 {
@@ -797,7 +794,7 @@ select:focus {
   #profileDiv {
     position: relative !important;
     right: 2rem !important;
-    top: 5rem !important;
+    top: 4.5rem !important;
     width: 18.7rem !important;
   }
   #profileDiv h2{
@@ -811,7 +808,7 @@ select:focus {
   #changePasswordDiv {
     position: relative !important;
     right: 2rem !important;
-    top: 5rem !important;
+    top: 4.5rem !important;
     width: 18.7rem !important;
   }
   #changePasswordDiv h2{
