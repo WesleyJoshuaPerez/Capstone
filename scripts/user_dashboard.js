@@ -91,3 +91,58 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     }
 });
+
+// edit contact number and email address function
+
+function makeEditable(fieldId) {
+    setTimeout(() => {
+        let field = document.getElementById(fieldId);
+
+        if (!field) {
+            console.error(`Element with ID '${fieldId}' not found.`);
+            return;
+        }
+
+        let fieldLabel = fieldId === "contactNumber" ? "Contact Number" : "Email Address";
+
+        Swal.fire({
+            title: `Edit ${fieldLabel}`,
+            input: "text",
+            inputValue: field.value,
+            showCancelButton: true,
+            confirmButtonText: "Save",
+            cancelButtonText: "Cancel",
+            inputValidator: (value) => {
+                if (!value) return "This field cannot be empty!";
+                if (fieldId === "contactNumber" && !/^\+639\d{9}$/.test(value)) {
+                    return "Enter a valid Philippine contact number (+639XXXXXXXXX)";
+                }
+                if (fieldId === "emailAddress" && !/^\S+@\S+\.\S+$/.test(value)) {
+                    return "Enter a valid email address!";
+                }
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                field.value = result.value; // Updates the field
+                field.setAttribute("value", result.value); 
+                field.dispatchEvent(new Event("change")); // Triggers update event
+                
+                Swal.fire("Updated!", `${fieldLabel} has been updated successfully.`, "success");
+            }
+        });
+
+        // Remove readonly while editing
+        field.removeAttribute("readonly");
+
+    }, 500); 
+}
+
+
+
+
+
+
+
+
+
+
