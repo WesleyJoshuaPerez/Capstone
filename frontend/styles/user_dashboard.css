@@ -1,5 +1,5 @@
-@import url("https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap");
-
+/* Importing Google font - Open Sans */
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&display=swap");
 * {
   margin: 0;
   padding: 0;
@@ -7,7 +7,7 @@
   list-style: none;
   text-decoration: none;
   font-family: "Open Sans", sans-serif;
-} 
+}
 
 body {
   background-color: #ffffff;
@@ -17,9 +17,21 @@ body {
   display: flex;
   position: relative;
 }
+/* Hide the sidebar completely */
+.sidebar.collapsed {
+  width: 0;
+  overflow: hidden;
+  padding: 0;
+  transition: width 0.3s ease, padding 0.3s ease;
+}
 
+/* Adjust main content when sidebar is hidden */
+.main_content.expanded {
+  margin-left: 0;
+  width: 100%;
+}
 /* Sidebar Styles */
-.wrapper .sidebar {
+.sidebar {
   width: 240px;
   height: 100vh;
   background: #700000;
@@ -28,33 +40,33 @@ body {
   transition: all 0.3s ease;
 }
 
-.wrapper .sidebar h2 {
+.sidebar h2 {
   color: #fff;
   text-transform: uppercase;
   text-align: center;
   margin-bottom: 30px;
 }
 
-.wrapper .sidebar ul li {
+.sidebar ul li {
   padding: 15px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   border-top: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-.wrapper .sidebar ul li a {
+.sidebar ul li a {
   color: #fff;
   display: block;
 }
 
-.wrapper .sidebar ul li:hover {
+ul li:hover {
   background-color: #fff;
 }
 
-.wrapper .sidebar ul li:hover a {
+.sidebar ul li:hover a {
   color: #700000;
 }
 
-.wrapper .sidebar .social_media {
+.sidebar .social_media {
   position: absolute;
   bottom: 10px;
   left: 50%;
@@ -62,7 +74,7 @@ body {
   display: flex;
 }
 
-.wrapper .sidebar .social_media a {
+.sidebar .social_media a {
   display: block;
   width: 40px;
   background: #fff;
@@ -75,13 +87,14 @@ body {
 }
 
 /* Main Content */
-.wrapper .main_content {
+.main_content {
   width: calc(100% - 200px);
   margin-left: 200px;
   transition: margin-left 0.3s ease;
 }
 
-.wrapper .main_content .header {
+.main_content .header {
+  top: 0;
   padding: 20px;
   background: #fff;
   color: #000000;
@@ -90,33 +103,35 @@ body {
   border-top: 1px solid rgba(255, 255, 255, 0.05);
   box-shadow: 0 4px 4px -2px rgba(0, 0, 0, 0.1); /* Add shadow effect */
   margin-left: 2.5rem;
+  gap: 10px;
+  font-weight: bold;
 }
 
 .header {
-    display: flex;
-    justify-content: space-between; /* Push items to opposite ends */
-    align-items: center; /* Align vertically */
-    padding: 15px;
-    background: #fff;
-    color: #000;
-    border-bottom: 1px solid #e0e4e8;
-    box-shadow: 0 4px 4px -2px rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between; /* Push items to opposite ends */
+  align-items: center; /* Align vertically */
+  padding: 15px;
+  background: #fff;
+  color: #000;
+  border-bottom: 1px solid #e0e4e8;
+  box-shadow: 0 4px 4px -2px rgba(0, 0, 0, 0.1);
 }
 
 .logout-btn {
-    text-decoration: none;
-    color: #8f0303;
-    font-size: 16px;
-    display: flex;
-    align-items: center; /* Aligns icon and text properly */
-    gap: 5px;
-    padding: 5px 10px;
-    border-radius: 5px;
-    margin-left: auto; /* Pushes logout button to the right */
+  text-decoration: none;
+  color: #8f0303;
+  font-size: 16px;
+  display: flex;
+  align-items: center; /* Aligns icon and text properly */
+  gap: 5px;
+  padding: 5px 10px;
+  border-radius: 5px;
+  margin-left: auto; /* Pushes logout button to the right */
 }
 
 .logout-btn i {
-    font-size: 18px;
+  font-size: 18px;
 }
 
 #applicationDiv {
@@ -125,7 +140,7 @@ body {
   background: white;
   height: 70px;
   border: 1px solid #ddd;
-  margin-top: 20px;
+  margin-top: 0px;
   border-radius: 5px;
   box-shadow: 1px 4px 44px -19px rgba(0, 0, 0, 1);
   margin-left: 2rem;
@@ -139,43 +154,43 @@ body {
   background: linear-gradient(to right, #a00000, #ff6666);
   height: 120px;
   border-bottom: 3px solid rgba(0, 0, 0, 0.1); /* Soft bottom border */
-  margin-top: 0; 
-  border-radius: 0; 
+  margin-top: 0;
+  border-radius: 0;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
   width: 100%;
 }
 
 #historyDiv {
-    display: none;
-    padding: 20px;
-    background: white;
-    height: 70px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 1px 4px 44px -19px rgba(0, 0, 0, 1);
-    margin-left: 2rem;
+  display: none;
+  padding: 20px;
+  background: white;
+  height: 70px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 1px 4px 44px -19px rgba(0, 0, 0, 1);
+  margin-left: 2rem;
 }
 
 #maintenanceDiv {
-    display: none;
-    padding: 20px;
-    background: white;
-    height: 70px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 1px 4px 44px -19px rgba(0, 0, 0, 1);
-    margin-left: 2rem;
+  display: none;
+  padding: 20px;
+  background: white;
+  height: 70px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 1px 4px 44px -19px rgba(0, 0, 0, 1);
+  margin-left: 2rem;
 }
 
 #profileDiv {
-    display: none;
-    padding: 20px;
-    background: white;
-    height: 70px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 1px 4px 44px -19px rgba(0, 0, 0, 1);
-    margin-left: 2rem;
+  display: none;
+  padding: 20px;
+  background: white;
+  height: 70px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 1px 4px 44px -19px rgba(0, 0, 0, 1);
+  margin-left: 2rem;
 }
 
 #changePasswordDiv {
@@ -216,7 +231,6 @@ body {
   color: #18b500; /* Gold color */
   position: relative;
   left: 1rem;
-
 }
 
 #homeSection .status-icon {
@@ -229,15 +243,15 @@ body {
 
 .card-container {
   display: flex;
-  flex-wrap: wrap; 
-  justify-content: center; 
-  gap: 20px; 
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
   width: 100%;
   max-width: 900px;
   position: relative;
-  top: 8rem;
-  left: auto; 
-  margin: 0 auto; 
+  top: 90px;
+  left: auto;
+  margin: 0 auto;
 }
 
 /* Individual Card Style */
@@ -247,9 +261,9 @@ body {
   padding: 20px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   flex: 1;
-  width: 300px; 
+  width: 300px;
   max-width: 320px;
-  height: 180px; 
+  height: 180px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -325,259 +339,259 @@ body {
 /* start of change subscription div style */
 .change_subscription-container {
   width: 100%;
-  overflow-x: auto; 
+  overflow-x: auto;
 }
 
 .change-subscription-container {
-    padding: 20px;
-    margin-bottom: 10px;
+  padding: 20px;
+  margin-bottom: 10px;
 }
 
 /* Separate div for form */
 .subscription-form-container {
-    max-width: 400px;
-    margin: 0 auto; /* Center the form */
-    padding: 20px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    position: relative;
-    top: 5rem;
+  max-width: 400px;
+  margin: 0 auto; /* Center the form */
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  position: relative;
+  top: 5rem;
 }
 
 /* Style the form fields */
 .Plan-form-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
 }
 
 .Plan-form-group label {
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #333;
-    font-size: 0.9rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+  font-size: 0.9rem;
 }
 
 .Plan-form-group input {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-    background-color: #f5f5f5;
-    cursor: not-allowed; /* Indicate read-only fields */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  background-color: #f5f5f5;
+  cursor: not-allowed; /* Indicate read-only fields */
 }
 
 select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 12px;
-    background: white;
-    cursor: pointer;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 12px;
+  background: white;
+  cursor: pointer;
 }
 
 select:focus {
-    border-color: #3775b9;
-    outline: none;
+  border-color: #3775b9;
+  outline: none;
 }
 
 .newSub_btn {
-    width: 50%;
-    padding: 10px;  
-    background-color: #8f0303;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    display: block; /* Ensures it's treated as a block-level element */
-    margin: 5px auto; /* Centers the button horizontally */
-    text-align: center;
+  width: 50%;
+  padding: 10px;
+  background-color: #8f0303;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  display: block; /* Ensures it's treated as a block-level element */
+  margin: 5px auto; /* Centers the button horizontally */
+  text-align: center;
 }
 
 .newSub_btn:hover {
-    background-color: #a42b2b;
+  background-color: #a42b2b;
 }
 /* end of change subscription div style */
 
 /* start of request maintenance div style */
 .maintenance-form-container {
-    max-width: 700px; 
-    width: 100%;
-    padding: 20px;
-    background: white;
-    border-radius: 8px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
-    margin: 20px auto;
-    text-align: center;
-    position: relative;
-    top: 3rem;
+  max-width: 700px;
+  width: 100%;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  margin: 20px auto;
+  text-align: center;
+  position: relative;
+  top: 3rem;
 }
 
 .form-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 15px;
-    justify-content: space-between;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: space-between;
 }
 
 /* Each Field Container */
 .form-group {
-    flex: 1;
-    min-width: 30%; /* Ensures 3 items per row */
+  flex: 1;
+  min-width: 30%; /* Ensures 3 items per row */
 }
 
 .form-group label {
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #333;
-    text-align: left;
-    display: block;
-    padding-top: 1.5rem;
-    font-size: 0.9rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+  color: #333;
+  text-align: left;
+  display: block;
+  padding-top: 1.5rem;
+  font-size: 0.9rem;
 }
 
 .form-group input,
 .form-group select,
 .form-group textarea {
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 14px;
-    background: white;
-    width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  background: white;
+  width: 100%;
 }
 
 /* Readonly Fields */
 .form-group input[readonly] {
-    background-color: #f5f5f5;
-    cursor: not-allowed;
+  background-color: #f5f5f5;
+  cursor: not-allowed;
 }
 
 .form-group textarea {
-    resize: none;
+  resize: none;
 }
 
 .form-group input[type="file"] {
-    border: none;
-    padding: 5px;
-    cursor: pointer;
+  border: none;
+  padding: 5px;
+  cursor: pointer;
 }
 
 .maintenance-btn {
-    width: 40%;
-    padding: 10px;
-    background-color: #8f0303;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 20px;
+  width: 40%;
+  padding: 10px;
+  background-color: #8f0303;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
 }
 
 .maintenance-btn:hover {
-    background-color: #a42b2b;
+  background-color: #a42b2b;
 }
 /* end of request maintenance div style */
 
 /* start of view profile div style */
 .profile-form-container {
-    max-width: 600px;
-    margin: 20px auto;
-    padding: 20px;
-    background: #f8f8f8;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    position: relative;
-    top: 3rem;
-}
-
-/* Form Row - Flexbox for alignment */
-.profile-form-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
-}
-
-.profile-form-group {
-    flex: 1;
-    margin-right: 10px;
-}
-
-.profile-form-group:last-child {
-    margin-right: 0;
-}
-
-.profile-form-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-    font-size: 0.9rem;
-}
-
-.profile-form-group input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background: #eaeaea;
-    font-size: 14px;
-}
-
-/* Editable Fields */
-.editable-field {
-    display: flex;
-    align-items: center;
-    position: relative;
-}
-
-.edit-icon {
-    cursor: pointer;
-    font-size: 18px;
-    margin-left: 8px;
-    color: #8f0303;
-    transition: color 0.3s ease;
-}
-
-.edit-icon:hover {
-    color: #a42b2b;
-}
-
-.update-btn {
-    width: 50%;
-    padding: 10px;
-    background-color: #8f0303;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
-    transition: background 0.3s ease;
-    display: block;  /* Ensures it takes full width */
-    margin: 20px auto; /* Centers the button */
-    text-align: center;
-    position: relative;
-    top: 1rem;
-}
-
-.update-btn:hover {
-    background-color: #a42b2b;
-}
-/* end of view profile div style */
-
-/* start of change pass div style */
-.password-form-container {
-  max-width: 400px;
+  max-width: 600px;
   margin: 20px auto;
   padding: 20px;
   background: #f8f8f8;
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   position: relative;
-  top: 6rem; 
+  top: 3rem;
+}
+
+/* Form Row - Flexbox for alignment */
+.profile-form-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 15px;
+}
+
+.profile-form-group {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.profile-form-group:last-child {
+  margin-right: 0;
+}
+
+.profile-form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  font-size: 0.9rem;
+}
+
+.profile-form-group input {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #eaeaea;
+  font-size: 14px;
+}
+
+/* Editable Fields */
+.editable-field {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.edit-icon {
+  cursor: pointer;
+  font-size: 18px;
+  margin-left: 8px;
+  color: #8f0303;
+  transition: color 0.3s ease;
+}
+
+.edit-icon:hover {
+  color: #a42b2b;
+}
+
+.update-btn {
+  width: 50%;
+  padding: 10px;
+  background-color: #8f0303;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background 0.3s ease;
+  display: block; /* Ensures it takes full width */
+  margin: 20px auto; /* Centers the button */
+  text-align: center;
+  position: relative;
+  top: 1rem;
+}
+
+.update-btn:hover {
+  background-color: #a42b2b;
+}
+/* end of view profile div style */
+
+/* start of change pass div style */
+.password-form-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background: #f8f8f8;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+  position: relative;
+  top: 60px;
 }
 
 /* Form Group Styling */
@@ -623,145 +637,136 @@ select:focus {
   background-color: #a42b2b;
 }
 /* end of change pass div style */
+/* Hamburger Button */
+#hamburgerBtn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  display: none; /* Initially hidden for larger screens */
+}
+
+#hamburgerBtn:hover {
+  color: #700000;
+}
 
 /* Responsive Sidebar */
 @media screen and (max-width: 768px) {
-  .wrapper .sidebar {
+  .main_content .header {
+    margin-left: 0;
+  }
+  .sidebar {
     width: 60px;
+    min-height: 100vh;
     padding: 20px 0;
   }
-  .wrapper .sidebar h2 {
-    display: block;
-    font-size: 12px;
+  .sidebar h2 {
+    font-size: 14px;
   }
-  .wrapper .sidebar ul li {
-    text-align: center;
-  }
-  .wrapper .sidebar ul li a {
+
+  .sidebar ul li a {
     font-size: 0;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
-  .wrapper .sidebar ul li a i {
-    font-size: 18px;
+  .sidebar ul li a i {
+    font-size: 20px;
   }
-  .wrapper .sidebar .social_media {
+  .sidebar .social_media {
     display: none;
   }
-  .wrapper .main_content {
+  .main_content {
     width: calc(100% - 60px);
-    margin-left: 60px;
+    margin-left: 65px;
   }
-  .header {
-    right: 40px;
+
+  /* Show Hamburger Button */
+  #hamburgerBtn {
+    display: none;
   }
 }
 
 /* For Mobile */
 @media screen and (max-width: 480px) {
-  .wrapper .sidebar {
+  .sidebar {
     width: 65px;
-    height: 100vh;
-    position: fixed;
-    left: 0;
-    top: 0;
+    height: auto;
     padding-top: 20px;
-    overflow: hidden;
   }
-  .wrapper .sidebar h2 {
+  .sidebar h2 {
     font-size: 12px;
   }
-  .wrapper .sidebar ul {
+  .sidebar ul {
     display: block;
   }
-  .wrapper .sidebar ul li {
+  .sidebar ul li {
     padding: 10px;
     text-align: center;
   }
-  .wrapper .sidebar ul li a {
+  .sidebar ul li a {
     font-size: 0;
   }
-  .wrapper .sidebar ul li a i {
+  .sidebar ul li a i {
     font-size: 20px;
   }
-  .wrapper .main_content {
-    width: calc(100% - 65px) !important;
-    margin-left: 65px !important;
-    max-width: 100%;
-  }
-  .header {
-    width: calc(100% - 65px) !important; /* Ensures it fits the screen */
-    margin-left: 1rem !important;
-    top: 0;
-    position: fixed !important;
-    z-index: 1000;
-    display: flex;
-    justify-content: space-between; /* Keeps items aligned */
-    align-items: center;
-  }
-  .logout-btn {
-    position: absolute !important;
-    right: 10px !important; /* Keeps it in place */
-    top: 10px !important;
-  }
+
   #homeSection {
-    height: 80px !important; 
-    width: 100% !important;
-    padding: 10px !important;
+    height: 80px !important;
+    width: 100wh !important;
     position: relative;
-    right: 0.3rem !important;
-    max-width: 100%;
-    top: 4rem;
+    top: 10px;
   }
   #homeSection h1 {
-    font-size: 1.5rem !important;
-    margin-right: 4rem !important;
+    font-size: 24px !important;
   }
   #homeSection .status {
     position: relative;
-    top: 0.3rem !important;
-    margin-right: 4rem !important;
+    top: 4.8px !important;
   }
   .card {
-    margin-right: 2rem !important;
+    margin-right: 32px !important;
     position: relative;
-    bottom: 2.4rem !important;
+    bottom: 38.4px !important;
   }
   .card-container {
-    width: 100% !important; 
+    width: 100% !important;
   }
   .price {
-    font-size: 18px !important;
+    font-size: 1.125rem !important;
   }
   .modem-info {
-    font-size: 14px !important;
+    font-size: 0.875rem !important;
   }
   #historyDiv {
     position: relative !important;
-    right: 2rem !important;
-    top: 4.5rem !important;
-    width: 18.7rem !important;
+    right: 32px !important;
+    top: 10px !important;
+    width: 299.2px !important;
   }
-  #historyDiv h2{
-    font-size: 1rem !important;
+  #historyDiv h2 {
+    font-size: 16px !important;
     position: relative !important;
-    right: 0.5rem !important;
+    right: 8px !important;
   }
   .table-container {
-    overflow-x: auto !important; 
+    overflow-x: auto !important;
     position: relative !important;
-    right: 0.2rem !important; 
+    right: 3.2px !important;
   }
   #historyTable {
-    width: 100% !important; 
-    min-width: 350px; 
-    table-layout: auto !important; 
+    width: 100% !important;
+    min-width: 21.875rem;
+    table-layout: auto !important;
   }
   #applicationDiv {
     position: relative !important;
-    right: 2rem !important;
-    top: 3.5rem !important;
-    width: 18.7rem !important;
+    right: 32px !important;
+    top: 10px !important;
+    width: 299.2px !important;
   }
-  #applicationDiv h2{
+  #applicationDiv h2 {
     font-size: 1rem !important;
     position: relative !important;
     right: 0.5rem !important;
@@ -777,7 +782,7 @@ select:focus {
   #maintenanceDiv {
     position: relative !important;
     right: 2rem !important;
-    top: 4.5rem !important;
+    top: 10px !important;
     width: 18.7rem !important;
   }
   #maintenanceDiv h2 {
@@ -794,10 +799,10 @@ select:focus {
   #profileDiv {
     position: relative !important;
     right: 2rem !important;
-    top: 4.5rem !important;
+    top: 10px !important;
     width: 18.7rem !important;
   }
-  #profileDiv h2{
+  #profileDiv h2 {
     font-size: 1rem !important;
     position: relative !important;
     right: 0.5rem !important;
@@ -807,14 +812,14 @@ select:focus {
   }
   #changePasswordDiv {
     position: relative !important;
-    right: 2rem !important;
-    top: 4.5rem !important;
-    width: 18.7rem !important;
+    right: 32px !important;
+    top: 10px !important;
+    width: 299.2px !important;
   }
-  #changePasswordDiv h2{
-    font-size: 1rem !important;
+  #changePasswordDiv h2 {
+    font-size: 16px !important;
     position: relative !important;
-    right: 0.5rem !important;
+    right: 8px !important;
   }
   .change-password-btn {
     width: 70%;
@@ -823,17 +828,9 @@ select:focus {
 
 /* Responsiveness for 768px screen */
 @media screen and (max-width: 768px) {
-  .header {
-    width: calc(100% - 65px) !important; 
-    position: relative;
-    right: 0 !important; 
-    margin-left: 20px; 
-  }
   #homeSection {
-      width: calc(100% - 65px) !important; 
-      margin-left: 39px !important; 
-      height: 7rem; 
-      padding: 20px;
+    height: 7rem;
+    padding: 20px;
   }
   #homeSection h1 {
     font-size: 2rem;
@@ -842,8 +839,8 @@ select:focus {
     justify-content: left;
   }
   .card-container {
-    flex-direction: column; 
-    align-items: center; 
+    flex-direction: column;
+    align-items: center;
     padding-left: 0;
   }
   .card {
@@ -901,16 +898,12 @@ select:focus {
 
 @media screen and (max-width: 1024px) {
   .card-container {
-    justify-content: flex-start; 
+    justify-content: flex-start;
     max-width: 100%;
-    padding-left: 2rem; 
+    padding-left: 2rem;
   }
   .pay-btn {
     font-size: 12px;
     padding: 7px;
   }
 }
-
-
-
-
