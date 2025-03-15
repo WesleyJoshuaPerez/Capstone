@@ -57,7 +57,7 @@ if ($user) {
         if ($is_admin) {
             echo json_encode(["status" => "success", "message" => "Login successful.", "redirect" => "admin.html"]);
         } else {
-            echo json_encode(["status" => "success", "message" => "Login successful.", "redirect" => "index.html"]);
+            echo json_encode(["status" => "success", "message" => "Login successful.", "redirect" => "user_dashboard.html"]);
         }
     } else {
         echo json_encode(["status" => "error", "message" => "Invalid username or password."]);
