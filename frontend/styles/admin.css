@@ -147,6 +147,90 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
+
+  /* Add transition for smooth effects */
+  transition: transform 0.3s ease, box-shadow 0.3s ease, opacity 0.5s ease;
+
+  /* Add the fade-in effect */
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+/* Hover effect */
+.summary-box:hover {
+  transform: scale(1.05);
+  box-shadow: 4px 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Keyframe animation for fade-in effect */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Pop-up animation for icons */
+.summary-box i {
+  transform: scale(0);
+  animation: popUp 0.5s ease-out forwards;
+}
+
+/* Keyframe animation for pop-up effect */
+@keyframes popUp {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.2);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Staggered effect for each summary box */
+.summary-box:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.summary-box:nth-child(1) i {
+  animation-delay: 0.2s;
+}
+
+.summary-box:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.summary-box:nth-child(2) i {
+  animation-delay: 0.3s;
+}
+
+.summary-box:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.summary-box:nth-child(3) i {
+  animation-delay: 0.4s;
+}
+
+.summary-box:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.summary-box:nth-child(4) i {
+  animation-delay: 0.5s;
+}
+
+.summary-box:nth-child(5) {
+  animation-delay: 0.5s;
+}
+.summary-box:nth-child(5) i {
+  animation-delay: 0.6s;
 }
 
 .summary-box h3 {
@@ -163,7 +247,8 @@ body {
 /* Hide application section initially */
 #applicationDiv,
 #subscriberDiv,
-#maintenance_reqDiv {
+#maintenance_reqDiv,
+#technicianDiv {
   display: none;
   padding: 20px;
   background: white;
@@ -181,7 +266,8 @@ body {
 
 #applicationTable,
 #subscriberTable,
-#maintenace_reqTable {
+#maintenace_reqTable,
+#technicianTable {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
@@ -190,9 +276,11 @@ body {
 #applicationTable th,
 #subscriberTable th,
 #maintenace_reqTable th,
+#technicianTable th,
 #applicationTable td,
 #subscriberTable td,
-#maintenace_reqTable td {
+#maintenace_reqTable td,
+#technicianTable td {
   border: 1px solid #ddd;
   text-align: left;
   padding: 10px;
@@ -200,7 +288,8 @@ body {
 
 #applicationTable th,
 #subscriberTable th,
-#maintenace_reqTable th {
+#maintenace_reqTable th,
+#technicianTable th {
   background-color: #3775b9;
   color: white;
 }
@@ -210,6 +299,32 @@ body {
 #maintenace_reqTable tr:hover {
   background-color: #f1f1f1;
   cursor: pointer;
+}
+/*For technican assign and delete button*/
+.assign-btn {
+  background-color: green;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.assign-btn:hover {
+  background-color: darkgreen;
+}
+
+.delete-btn {
+  background-color: red;
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.delete-btn:hover {
+  background-color: darkred;
 }
 
 /* Responsive Sidebar */
@@ -296,7 +411,8 @@ body {
 
   #applicationTable,
   #subscriberTable,
-  #maintenace_reqTable {
+  #maintenace_reqTable,
+  #technicianTable {
     min-width: 300px;
     font-size: 12px;
   }

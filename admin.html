@@ -44,7 +44,9 @@
             >
           </li>
           <li>
-            <a href="#"><i class="fas fa-project-diagram"></i> Technician</a>
+            <a href="#" id="technicianLink"
+              ><i class="fas fa-project-diagram"></i> Technician</a
+            >
           </li>
           <li>
             <a href="#" id="maintenanceLink"
@@ -73,22 +75,22 @@
 
         <!-- Summary Container -->
         <div class="summary-container" id="summary-container">
-          <div class="summary-box">
+          <div class="summary-box" id="applicantsBox">
             <i class="fas fa-address-card fa-3x" style="color: #3775b9"></i>
             <h3>Applicants</h3>
             <p id="totalApplicants">0</p>
           </div>
-          <div class="summary-box">
+          <div class="summary-box" id="subscribersBox">
             <i class="fas fa-user fa-3x" style="color: #3775b9"></i>
             <h3>Subscribers</h3>
             <p id="totalSubscribers">0</p>
           </div>
-          <div class="summary-box">
+          <div class="summary-box" id="techniciansBox">
             <i class="fas fa-project-diagram fa-3x" style="color: #3775b9"></i>
             <h3>Technicians</h3>
             <p id="totalTechnicians">0</p>
           </div>
-          <div class="summary-box">
+          <div class="summary-box" id="maintenanceBox">
             <i
               class="fas fa-exclamation-circle fa-3x"
               style="color: #3775b9"
@@ -96,7 +98,7 @@
             <h3>Maintenance Requests</h3>
             <p id="totalMaintenance">0</p>
           </div>
-          <div class="summary-box">
+          <div class="summary-box" id="boxSlotsBox">
             <i class="fa-solid fa-box fa-3x" style="color: #3775b9"></i>
             <h3>Box slots</h3>
             <p id="totalBoxslots">0</p>
@@ -149,6 +151,28 @@
             </div>
           </div>
 
+          <div id="technicianDiv">
+            <h2>Technicians</h2>
+            <!-- Add a wrapper div with class "table-container" -->
+            <div class="table-container">
+              <table id="technicianTable">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Contact</th>
+                    <th>Role</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Data will be inserted here dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
           <div id="maintenance_reqDiv">
             <h2>Maintenance Request</h2>
             <!-- Add a wrapper div with class "table-container" -->
@@ -176,8 +200,14 @@
     </div>
 
     <script src="scripts/approve.js"></script>
+    <!--For approving applicants-->
     <script src="scripts/subscriber.js"></script>
+    <!--For subscriber-->
     <script src="scripts/summary.js"></script>
+    <!--For summary-->
     <script src="scripts/adminsidebar.js"></script>
+    <!--For sidebar-->
+    <script src="scripts/technician.js" defer></script>
+    <!--For technicians-->
   </body>
 </html>

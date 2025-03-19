@@ -6,10 +6,14 @@ async function fetchTotals() {
     // Update the dashboard totals
     document.getElementById("totalApplicants").innerText = data.applicants;
     document.getElementById("totalSubscribers").innerText = data.subscribers;
+    document.getElementById("totalTechnicians").innerText = data.technicians;
   } catch (error) {
     console.error("Error fetching totals:", error);
   }
 }
 
 // Fetch totals when the page loads
-document.addEventListener("DOMContentLoaded", fetchTotals);
+document.addEventListener("DOMContentLoaded", () => {
+  fetchTotals(); // Initial fetch
+  setInterval(fetchTotals, 1000); // Update every 1 second
+});

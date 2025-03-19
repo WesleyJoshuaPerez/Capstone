@@ -47,3 +47,116 @@ document.addEventListener("DOMContentLoaded", function () {
   checkScreenSize();
   window.addEventListener("resize", checkScreenSize);
 });
+//for clicking sidebar to appear the divs
+document.addEventListener("DOMContentLoaded", function () {
+  const summary_container = document.querySelector("#summary-container");
+  const subscriberDiv = document.querySelector("#subscriberDiv");
+  const applicationDiv = document.querySelector("#applicationDiv");
+  const maintenance_reqDiv = document.querySelector("#maintenance_reqDiv");
+  const homeLink = document.querySelector("#homeLink");
+  const subscriberLink = document.querySelector("#subscriberLink");
+  const applicationLink = document.querySelector("#applicationLink");
+  const maintenanceLink = document.querySelector("#maintenanceLink");
+  const technicianLink = document.querySelector("#technicianLink");
+
+  //for clicking summary boxes
+  const applicantsBox = document.querySelector("#applicantsBox");
+  const subscribersBox = document.querySelector("#subscribersBox");
+  const techniciansBox = document.querySelector("#techniciansBox");
+  const maintenanceBox = document.querySelector("#maintenanceBox");
+
+  // Hide sections initially
+  summary_container.style.display = "flex";
+  subscriberDiv.style.display = "none";
+  applicationDiv.style.display = "none";
+  maintenance_reqDiv.style.display = "none";
+  technicianDiv.style.display = "none";
+
+  // Show Home and hide other section
+  homeLink.addEventListener("click", function (event) {
+    event.preventDefault();
+    summary_container.style.display = "flex";
+    applicationDiv.style.display = "none";
+    maintenance_reqDiv.style.display = "none";
+    subscriberDiv.style.display = "none";
+    technicianDiv.style.display = "none";
+  });
+
+  // Show Subscribers and hide other section
+  subscriberLink.addEventListener("click", function (event) {
+    event.preventDefault();
+    subscriberDiv.style.display = "block";
+    applicationDiv.style.display = "none";
+    maintenance_reqDiv.style.display = "none";
+    summary_container.style.display = "none";
+    technicianDiv.style.display = "none";
+    fetchSubscribers();
+  });
+  subscribersBox.addEventListener("click", function (event) {
+    event.preventDefault();
+    subscriberDiv.style.display = "block";
+    applicationDiv.style.display = "none";
+    maintenance_reqDiv.style.display = "none";
+    summary_container.style.display = "none";
+    technicianDiv.style.display = "none";
+    fetchSubscribers();
+  });
+
+  // Show Applications and hide other section
+  applicationLink.addEventListener("click", function (event) {
+    event.preventDefault();
+    applicationDiv.style.display = "block";
+    subscriberDiv.style.display = "none";
+    maintenance_reqDiv.style.display = "none";
+    summary_container.style.display = "none";
+    technicianDiv.style.display = "none";
+    fetchApplications();
+  });
+  applicantsBox.addEventListener("click", function (event) {
+    event.preventDefault();
+    applicationDiv.style.display = "block";
+    subscriberDiv.style.display = "none";
+    maintenance_reqDiv.style.display = "none";
+    summary_container.style.display = "none";
+    technicianDiv.style.display = "none";
+    fetchApplications();
+  });
+
+  // Show maintenance and hide other section
+  maintenanceLink.addEventListener("click", function (event) {
+    event.preventDefault();
+    maintenance_reqDiv.style.display = "block";
+    subscriberDiv.style.display = "none";
+    applicationDiv.style.display = "none";
+    summary_container.style.display = "none";
+    technicianDiv.style.display = "none";
+  });
+  maintenanceBox.addEventListener("click", function (event) {
+    event.preventDefault();
+    maintenance_reqDiv.style.display = "block";
+    subscriberDiv.style.display = "none";
+    applicationDiv.style.display = "none";
+    summary_container.style.display = "none";
+    technicianDiv.style.display = "none";
+  });
+
+  //Show technician and hide other section
+  technicianLink.addEventListener("click", function (event) {
+    event.preventDefault();
+    technicianDiv.style.display = "block";
+    maintenance_reqDiv.style.display = "none";
+    subscriberDiv.style.display = "none";
+    applicationDiv.style.display = "none";
+    summary_container.style.display = "none";
+    fetchTechnicians();
+  });
+  techniciansBox.addEventListener("click", function (event) {
+    event.preventDefault();
+    technicianDiv.style.display = "block";
+    maintenance_reqDiv.style.display = "none";
+    subscriberDiv.style.display = "none";
+    applicationDiv.style.display = "none";
+    summary_container.style.display = "none";
+    fetchTechnicians();
+  });
+});
