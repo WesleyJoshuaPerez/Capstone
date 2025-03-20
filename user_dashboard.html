@@ -73,7 +73,7 @@
         <!-- home div -->
         <div id="homeSection">
         <div class="home-content">
-            <h1>Hi, <span id="userName">Kate!</span></h1>
+            <h1>Hi, <span id="userName"></span></h1>
             
             <!-- Status Section -->
             <div class="status">
@@ -141,17 +141,17 @@
         <form id="changeSubscriptionForm">
             <div class="Plan-form-group">
                 <label for="userId">User ID</label>
-                <input type="text" id="userId" name="userId" value="12345" readonly>
+                <input type="text" id="userId" name="userId" readonly>
             </div>
     
             <div class="Plan-form-group">
                 <label for="fullName">Full Name</label>
-                <input type="text" id="fullName" name="fullName" value="John Doe" readonly>
+                <input type="text" id="fullName" name="fullName" readonly>
             </div>
     
             <div class="Plan-form-group">
                 <label for="currentSubscription">Current Subscription</label>
-                <input type="text" id="currentSubscription" name="currentSubscription" value="Premium" readonly>
+                <input type="text" id="currentSubscription" name="currentSubscription" readonly>
             </div>
 
             <div class="Plan-form-group">
@@ -179,17 +179,17 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="userId">Account Number</label>
-                    <input type="text" id="userId" name="userId" value="12345" readonly>
+                    <input type="text" id="userId_request" name="userId_request" readonly>
                 </div>
 
                 <div class="form-group">
                     <label for="fullName">Full Name</label>
-                    <input type="text" id="fullName" name="fullName" value="John Doe" readonly>
+                    <input type="text" id="fullName_request" name="fullName_request" readonly>
                 </div>
 
                 <div class="form-group">
                     <label for="contactNumber">Contact Number</label>
-                    <input type="text" id="contact_Number" name="contactNumber" value="+639123456789" readonly>
+                    <input type="text" id="contactNumber" name="contactNumber" readonly>
                 </div>
             </div>
 
@@ -197,7 +197,7 @@
             <div class="form-row">
                 <div class="form-group">
                     <label for="homeAddress">Home Address</label>
-                    <input type="text" id="homeAddress" name="homeAddress" value="123 Main St, City, ZIP" readonly>
+                    <input type="text" id="homeAddress" name="homeAddress" readonly>
                 </div>
 
                 <div class="form-group">
@@ -251,12 +251,12 @@
             <div class="profile-form-row">
                 <div class="profile-form-group">
                     <label for="userId">Account Number</label>
-                    <input type="text" id="userId" name="userId" value="12345" readonly>
+                    <input type="text" id="userId_view" name="userId_view" readonly>
                 </div>
 
                 <div class="profile-form-group">
                     <label for="fullName">Full Name</label>
-                    <input type="text" id="fullName" name="fullName" value="John Doe" readonly>
+                    <input type="text" id="fullName_view" name="fullName_view" readonly>
                 </div>
             </div>
 
@@ -264,12 +264,12 @@
             <div class="profile-form-row">
                 <div class="profile-form-group">
                     <label for="birthDate">Birth Date</label>
-                    <input type="date" id="birthDate" name="birthDate" value="1990-05-15" readonly>
+                    <input type="date" id="birthDate_view" name="birthDate_view" readonly>
                 </div>
 
                 <div class="profile-form-group">
                     <label for="address">Address</label>
-                    <input type="text" id="address" name="address" value="123 Main St, City, ZIP" readonly>
+                    <input type="text" id="address_view" name="address_view" readonly>
                 </div>
             </div>
 
@@ -277,12 +277,12 @@
             <div class="profile-form-row">
                 <div class="profile-form-group">
                     <label for="subscribedPlan">Current Subscribed Plan</label>
-                    <input type="text" id="subscribedPlan" name="subscribedPlan" value="Premium Plan" readonly>
+                    <input type="text" id="subscribedPlan_view" name="subscribedPlan_view" readonly>
                 </div>
 
                 <div class="profile-form-group">
                     <label for="registrationDate">Registration Date</label>
-                    <input type="date" id="registrationDate" name="registrationDate" value="2023-01-10" readonly>
+                    <input type="date" id="registrationDate" name="registrationDate" readonly>
                 </div>
             </div>
 
@@ -291,21 +291,20 @@
                 <div class="profile-form-group">
                     <label for="contact-number">Contact Number</label>
                     <div class="editable-field">
-                        <input type="text" id="contactNumber" name="contact_number" value="+639123456789" readonly>
-                        <span class="edit-icon" onclick="makeEditable('contactNumber')">&#9998;</span>
+                        <input type="text" id="contact_number_view" name="contact_number_view" readonly>
+                        <span class="edit-icon" onclick="makeEditable('contact_number_view')">&#9998;</span>
                     </div>
                 </div>
             
                 <div class="profile-form-group">    
                     <label for="emailAddress">Email Address</label>
                     <div class="editable-field">
-                        <input type="email" id="emailAddress" name="emailAddress" value="johndoe@email.com" readonly>
-                        <span class="edit-icon" onclick="makeEditable('emailAddress')">&#9998;</span>
+                        <input type="email" id="emailAddress_view" name="emailAddress_view" readonly>
+                        <span class="edit-icon" onclick="makeEditable('emailAddress_view')">&#9998;</span>
                     </div>
                 </div>
             </div>
-                                 
-
+                                
             <button type="submit" class="update-btn">Update Profile</button>
             </form>
         </div>
@@ -322,18 +321,27 @@
                 <div class="password-form-group">
                     <label for="currentPassword">Current Password</label>
                     <input type="password" id="currentPassword" name="currentPassword" placeholder="Type current password">
+                    <button type="button" id="togglePassword">
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+                    </button>
                 </div>
     
                 <!-- New Password -->
                 <div class="password-form-group">
                     <label for="newPassword">New Password</label>
                     <input type="password" id="newPassword" name="newPassword" placeholder="Type new password" required>
+                    <button type="button" id="togglePassword">
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+                    </button>
                 </div>
     
                 <!-- Confirm Password -->
                 <div class="password-form-group">
                     <label for="confirmPassword">Confirm New Password</label>
                     <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+                    <button type="button" id="togglePassword">
+                        <i class="fa fa-eye" aria-hidden="true"></i>
+                    </button>
                 </div>
     
                 <button type="submit" class="change-password-btn">Change Password</button>
@@ -347,7 +355,57 @@
       <!-- end of dynamically changing div -->
     </div>
 
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            fetch('backend/get_user_data.php')
+              .then(response => response.json())
+              .then(data => {
+                if (data.status === 'success') {
+                  // Check if the elements exist before setting their values
+                  let userIdField = document.getElementById('userId');
+                  let userId_view = document.getElementById('userId_view');
+                  let fullNameField = document.getElementById('fullName');
+                  let userNameSpan = document.getElementById('userName');
+                  let fullName_request = document.getElementById('fullName_request');
+                  let fullName_view = document.getElementById('fullName_view');
+                  let userId_request = document.getElementById('userId_request');      
+                  let contactNumberField = document.getElementById('contactNumber');
+                  let contact_number_view = document.getElementById('contact_number_view');
+                  let homeAddressField = document.getElementById('homeAddress');
+                  let address_view = document.getElementById('address_view');
+                  let subscriptionField = document.getElementById('currentSubscription');
+                  let subscribedPlan_view = document.getElementById('subscribedPlan_view');
+                  let currentBillField = document.getElementById('currentBill');
+                  let birthDate_view = document.getElementById('birthDate_view');
+                  let emailAddress_view = document.getElementById('emailAddress_view');
+                  let registrationDate = document.getElementById('registrationDate');
+          
+                  if (userId_view) userId_view.value = data.user_id;
+                  if (userIdField) userIdField.value = data.user_id;
+                  if (userId_request) userId_request.value = data.user_id;
+                  if (fullNameField) fullNameField.value = data.fullname;
+                  if (userNameSpan) userNameSpan.textContent = data.fullname; // Greeting
+                  if (fullName_request) fullName_request.value = data.fullname;
+                  if (fullName_view) fullName_view.value = data.fullname;
+                  if (birthDate_view) birthDate_view.value = data.birth_date;
+                  if (emailAddress_view) emailAddress_view.value = data.email_address;
+                  if (contactNumberField) contactNumberField.value = data.contact_number;
+                  if (contact_number_view) contact_number_view.value = data.contact_number;
+                  if (homeAddressField) homeAddressField.value = data.address;
+                  if (address_view) address_view.value = data.address;
+                  if (subscriptionField) subscriptionField.value = data.subscription_plan;
+                  if (subscribedPlan_view) subscribedPlan_view.value = data.subscription_plan;
+                  if (registrationDate) registrationDate.value = data.registration_date;
+                } else {
+                  console.error('Error:', data.message);
+                }
+              })
+              .catch(error => console.error('Fetch error:', error));
+          });
+
+      </script>
     <script src="scripts/user_dashboard.js"></script>
+    <script src="backend/changepass_dashboard.php" defer></script>
     <script src="scripts/userdash_sidebar.js"></script>
   </body>
 </html>

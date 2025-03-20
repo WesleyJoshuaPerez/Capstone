@@ -1,0 +1,61 @@
+<?php
+session_start();
+header("Content-Type: application/json");
+require "connectdb.php"; // Ensure the database connection
+
+// Enable error reporting for debugging
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// Check if user is logged in
+if (!isset($_SESSION["user_id"])) {
+    echo json_encode(["status" => "error", "message" => "User not logged in."]);
+    exit;
+}
+
+$user_id = $_SESSION["user_id"];
+$data = json_decode(file_get_contents("php://input"), true);
+
+// Debugging: Check if data is received
+if (!$data) {
+    echo json_encode(["status" => "error", "message" => "No input received."]);
+    exit;
+}
+
+$currentPassword = $data["currentPassword"] ?? "";
+$newPassword = $data["newPassword"] ?? "";
+
+// Fetch the current password from the database
+$stmt = $conn->prepare("SELECT password FROM approved_user WHERE user_id = ?");
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+if ($result->num_rows === 0) {
+    echo json_encode(["status" => "error", "message" => "User not found."]);
+    exit;
+}
+
+$user = $result->fetch_assoc();
+
+// **Fix: Compare plain text passwords directly (No hashing)**
+if ($currentPassword !== $user["password"]) {
+    echo json_encode(["status" => "error", "message" => "Current password is incorrect."]);
+    exit;
+}
+
+// **Fix: Directly store the new password without hashing**
+$updateStmt = $conn->prepare("UPDATE approved_user SET password = ? WHERE user_id = ?");
+$updateStmt->bind_param("si", $newPassword, $user_id);
+
+if ($updateStmt->execute()) {
+    echo json_encode(["status" => "success", "message" => "Password updated successfully."]);
+} else {
+    echo json_encode(["status" => "error", "message" => "Failed to update password."]);
+}
+
+// Close database connections
+$stmt->close();
+$updateStmt->close();
+$conn->close();
+?>
