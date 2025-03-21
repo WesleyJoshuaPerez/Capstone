@@ -12,7 +12,11 @@
 body {
   background-color: #ffffff;
 }
-
+/*use to hide edge password reveal button */
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}
 .wrapper {
   display: flex;
   position: relative;
