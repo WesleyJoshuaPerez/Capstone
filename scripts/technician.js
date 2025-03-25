@@ -33,12 +33,12 @@ function fetchTechnicians() {
           row.innerHTML = `
                     <td>${technician.id}</td>
                     <td>${technician.name}</td>
-                    <td>${technician.role}</td>
                     <td>${technician.contact}</td>
+                    <td>${technician.role}</td>
                     <td style="color: ${statusColor}; font-weight: bold;">${technician.status}</td>
                     <td>
                         <button class="assign-btn" data-id="${technician.id}">Assign</button>
-                        <button class="delete-btn" data-id="${technician.id}">Delete</button>
+                        <button class="delete-btn" data-id="${technician.id}">Disable</button>
                     </td>
                   `;
 
@@ -46,6 +46,7 @@ function fetchTechnicians() {
         });
 
         attachTechnicianRowClickEvent();
+        attachDisableButtonEvent();
       } else {
         console.error("Failed to fetch technicians:", data.error);
         Swal.fire("Error!", "Failed to load technicians.", "error");
@@ -58,6 +59,7 @@ function fetchTechnicians() {
     });
 }
 
+//use to see data of technician
 function attachTechnicianRowClickEvent() {
   const rows = document.querySelectorAll("#technicianTable tbody tr");
 
@@ -105,6 +107,55 @@ function attachTechnicianRowClickEvent() {
               Swal.fire("Success", "Task assigned successfully.", "success");
             }
           });
+        }
+      });
+    });
+  });
+}
+
+//use for disabling technician account
+function attachDisableButtonEvent() {
+  const deleteButtons = document.querySelectorAll(".delete-btn");
+
+  deleteButtons.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.stopPropagation(); // Prevent triggering the row click event
+
+      Swal.fire({
+        title: "Are you sure?",
+        text: "This action cannot be undone!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "Cancel",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Simulate success message without deleting
+          Swal.fire("Deleted!", "Technician has been removed.", "success");
+
+          // for backend
+          /*
+          fetch("backend/delete_technician.php", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ id: technicianId }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.success) {
+                Swal.fire("Deleted!", "Technician has been removed.", "success");
+                fetchTechnicians(); // Refresh the list
+              } else {
+                Swal.fire("Error!", data.error, "error");
+              }
+            })
+            .catch((error) => {
+              console.error("Error deleting technician:", error);
+              Swal.fire("Error!", "Failed to delete technician.", "error");
+            });
+          */
         }
       });
     });
