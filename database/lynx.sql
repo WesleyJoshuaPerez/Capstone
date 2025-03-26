@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 19, 2025 at 09:10 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: Mar 26, 2025 at 01:10 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -77,7 +77,32 @@ CREATE TABLE `approved_user` (
 INSERT INTO `approved_user` (`user_id`, `username`, `password`, `subscription_plan`, `currentBill`, `fullname`, `birth_date`, `address`, `contact_number`, `email_address`, `id_type`, `id_number`, `id_photo`, `proof_of_residency`, `home_ownership_type`, `installation_date`, `registration_date`) VALUES
 (15, 'WJperez01', 'wesperez17', 'bronze', 1199, 'WESLEY JOSHUA PEREZ', '2007-03-01', 'duale, limay, bataan', '09380868921', 'wesleyjoshuaperez@gmail.com', 'passport', '', 'idexample.jfif', 'por.jpg', 'Owned', '2025-03-23', '2025-03-09'),
 (16, 'Wperez jr14', 'Znx!lh9E', 'silver', 1499, 'WILFREDO PEREZ JR', '1970-12-14', 'bilolo, orion, bataan', '09389234373', 'wilfredoperez@gmail.com', 'drivers-license', '', 'davidid.jfif', 'residency.png', 'Owned', '2025-03-16', '2025-03-19'),
-(17, 'Spaclaon01', 'sebastian12', 'gold', 1799, 'SEBASTIAN PACLAON', '2007-03-01', 'duale, limay, bataan', '09380868921', 'wesleyjoshuaperez.iskolar@gmail.com', 'passport', '', 'davidid.jfif', 'por.jpg', 'Rented', '2025-03-17', '2025-03-09');
+(17, 'Spaclaon01', 'sebastian12', 'gold', 1799, 'SEBASTIAN PACLAON', '2007-03-01', 'duale, limay, bataan', '09380868921', 'wesleyjoshuaperez.iskolar@gmail.com', 'passport', '', 'davidid.jfif', 'por.jpg', 'Rented', '2025-03-17', '2025-03-09'),
+(19, 'Krezada20', 'Rezada20', 'silver', 1499, 'KATE REZADA', '2003-11-20', 'duale, limay, bataan', '09961680320', 'katerezada0120@gmail.com', 'philhealth-id', '', 'Paps Valid ID.jpg', 'cat.png', 'Rented', '2025-03-25', '2025-03-20');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `change_plan_application`
+--
+
+CREATE TABLE `change_plan_application` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `full_name` varchar(100) NOT NULL,
+  `current_plan` varchar(50) NOT NULL,
+  `new_plan` varchar(50) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `changed_at` datetime DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `change_plan_application`
+--
+
+INSERT INTO `change_plan_application` (`id`, `user_id`, `full_name`, `current_plan`, `new_plan`, `price`, `changed_at`) VALUES
+(1, 19, 'KATE REZADA', 'silver', 'bronze', 1199.00, '2025-03-26 12:00:17'),
+(2, 19, 'KATE REZADA', 'silver', 'gold', 1799.00, '2025-03-26 12:03:08');
 
 -- --------------------------------------------------------
 
@@ -105,6 +130,35 @@ INSERT INTO `lynx_technicians` (`id`, `name`, `role`, `contact`, `status`, `prof
 (3, 'Michael Johnson', 'Installer', '09345678901', 'On Leave', 'michael_johnson.png', '2025-03-19 06:47:27'),
 (4, 'Emily Davis', 'Repair Technician', '09456789012', 'Available', 'emily_davis.png', '2025-03-19 06:47:27'),
 (5, 'Robert Brown', 'Installer', '09567890123', 'Available', 'robert_brown.png', '2025-03-19 06:47:27');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `maintenance_requests`
+--
+
+CREATE TABLE `maintenance_requests` (
+  `id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `full_name` varchar(100) NOT NULL,
+  `contact_number` varchar(15) NOT NULL,
+  `address` text NOT NULL,
+  `issue_type` varchar(50) NOT NULL,
+  `issue_description` text NOT NULL,
+  `contact_time` varchar(50) NOT NULL,
+  `evidence_filename` varchar(255) DEFAULT NULL,
+  `submitted_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `status` varchar(20) NOT NULL DEFAULT 'pending'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `maintenance_requests`
+--
+
+INSERT INTO `maintenance_requests` (`id`, `user_id`, `full_name`, `contact_number`, `address`, `issue_type`, `issue_description`, `contact_time`, `evidence_filename`, `submitted_at`, `status`) VALUES
+(12, 19, 'KATE REZADA', '09961680320', 'duale, limay, bataan', 'modem', 'asdasd', 'morning', '', '2025-03-26 11:05:44', 'pending'),
+(13, 19, 'KATE REZADA', '09961680320', 'duale, limay, bataan', 'no-internet', 'sdada', 'Morning (8AM - 12PM)', '1742987302_11.jpg', '2025-03-26 11:08:22', 'pending'),
+(14, 19, 'KATE REZADA', '09961680320', 'duale, limay, bataan', 'disconnect', 'dfksdlkfs', 'Evening (4PM - 8PM)', '1742990843_10.jpg', '2025-03-26 12:07:23', 'pending');
 
 -- --------------------------------------------------------
 
@@ -144,7 +198,8 @@ INSERT INTO `registration_acc` (`id`, `subscription_plan`, `first_name`, `last_n
 (15, 'bronze', 'WESLEY JOSHUA', 'PEREZ', '09380868921', 'wesleyjoshuaperez@gmail.com', '2007-03-01', 'passport', '', 'idexample.jfif', 'Owned', 'bataan', 'limay', 'duale', 'por.jpg', '2025-03-23', '2025-03-02 11:05:58', 'Checked', 'Checked', 'Checked', 'Approved'),
 (16, 'silver', 'WILFREDO', 'PEREZ JR', '09389234373', 'wilfredoperez@gmail.com', '1970-12-14', 'drivers-license', '', 'davidid.jfif', 'Owned', 'bataan', 'orion', 'bilolo', 'residency.png', '2025-03-16', '2025-03-02 12:57:33', 'Checked', 'Checked', 'Checked', 'Approved'),
 (17, 'gold', 'SEBASTIAN', 'PACLAON', '09380868921', 'wesleyjoshuaperez.iskolar@gmail.com', '2007-03-01', 'passport', '', 'davidid.jfif', 'Rented', 'bataan', 'limay', 'duale', 'por.jpg', '2025-03-17', '2025-03-04 04:14:44', 'Checked', 'Checked', 'Checked', 'Approved'),
-(18, 'silver', 'TROY', 'MENDOZA', '09300864398', 'troymendoza@gmail.com', '2007-03-04', 'drivers-license', '', 'davidid.jfif', 'Rented', 'bataan', 'orion', 'sto.-domingo', 'residency.png', '2025-03-24', '2025-03-19 01:49:58', 'Checked', 'Checked', 'Checked', 'Denied');
+(18, 'silver', 'TROY', 'MENDOZA', '09300864398', 'troymendoza@gmail.com', '2007-03-04', 'drivers-license', '', 'davidid.jfif', 'Rented', 'bataan', 'orion', 'sto.-domingo', 'residency.png', '2025-03-24', '2025-03-19 01:49:58', 'Checked', 'Checked', 'Checked', 'Denied'),
+(19, 'silver', 'KATE', 'REZADA', '09054627399', 'katerezada0120@gmail.com', '2003-11-20', 'philhealth-id', '', 'Paps Valid ID.jpg', 'Rented', 'bataan', 'limay', 'duale', 'cat.png', '2025-03-25', '2025-03-20 10:35:35', 'Checked', 'Checked', 'Checked', 'Approved');
 
 -- --------------------------------------------------------
 
@@ -202,9 +257,21 @@ ALTER TABLE `approved_user`
   ADD PRIMARY KEY (`user_id`);
 
 --
+-- Indexes for table `change_plan_application`
+--
+ALTER TABLE `change_plan_application`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `lynx_technicians`
 --
 ALTER TABLE `lynx_technicians`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `maintenance_requests`
+--
+ALTER TABLE `maintenance_requests`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -231,22 +298,34 @@ ALTER TABLE `admin_lynx`
   MODIFY `admin_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `change_plan_application`
+--
+ALTER TABLE `change_plan_application`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `lynx_technicians`
 --
 ALTER TABLE `lynx_technicians`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT for table `maintenance_requests`
+--
+ALTER TABLE `maintenance_requests`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
 -- AUTO_INCREMENT for table `registration_acc`
 --
 ALTER TABLE `registration_acc`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `resetpass_request`
 --
 ALTER TABLE `resetpass_request`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
