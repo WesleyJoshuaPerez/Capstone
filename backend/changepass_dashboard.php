@@ -1,9 +1,9 @@
 <?php
+// changing of password from user dashboard
 session_start();
 header("Content-Type: application/json");
 require "connectdb.php"; // Ensure the database connection
 
-// Enable error reporting for debugging
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
@@ -16,7 +16,6 @@ if (!isset($_SESSION["user_id"])) {
 $user_id = $_SESSION["user_id"];
 $data = json_decode(file_get_contents("php://input"), true);
 
-// Debugging: Check if data is received
 if (!$data) {
     echo json_encode(["status" => "error", "message" => "No input received."]);
     exit;
@@ -38,13 +37,11 @@ if ($result->num_rows === 0) {
 
 $user = $result->fetch_assoc();
 
-// **Fix: Compare plain text passwords directly (No hashing)**
 if ($currentPassword !== $user["password"]) {
     echo json_encode(["status" => "error", "message" => "Current password is incorrect."]);
     exit;
 }
 
-// **Fix: Directly store the new password without hashing**
 $updateStmt = $conn->prepare("UPDATE approved_user SET password = ? WHERE user_id = ?");
 $updateStmt->bind_param("si", $newPassword, $user_id);
 
@@ -54,7 +51,6 @@ if ($updateStmt->execute()) {
     echo json_encode(["status" => "error", "message" => "Failed to update password."]);
 }
 
-// Close database connections
 $stmt->close();
 $updateStmt->close();
 $conn->close();

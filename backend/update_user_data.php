@@ -1,4 +1,5 @@
 <?php
+// update the contact number and email address from user dashboard
 session_start();
 header('Content-Type: application/json');
 require 'connectdb.php'; // Ensure correct path

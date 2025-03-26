@@ -85,9 +85,9 @@
         <!-- Flex container for cards -->
         <div class="card-container">
             <div class="card">
-                <h3>MY PLAN</h3>
-                <p>SILVER PLAY</p>
-                <p class="price">₱ <strong>1249.33</strong></p>
+              <h3>MY PLAN</h3>
+              <p id="plan-name">Loading...</p>
+              <p class="price">₱ <strong id="plan-price">0.00</strong></p>
             </div>
     
             <div class="card">
@@ -101,10 +101,11 @@
     
             <div class="card">
                 <h3>AMOUNT TO PAY</h3>
-                <p class="price">₱ <strong>1249.33</strong></p>
-                <p>Due on Mar 13, 2025</p>
+                <p class="price">₱ <strong id="billing-amount">0.00</strong></p>
+                <p>Due on <span id="due-date">Loading...</span></p>
                 <button class="pay-btn">PAY NOW</button>
             </div>
+
         </div>
         </div>    
         <!-- end home div-->
@@ -164,6 +165,7 @@
             </div>
             
             <button type="submit" class="newSub_btn">Change Plan</button>
+            <p id="changePlanWarning" style="color: red; display: none; margin-top: 10px;"></p>
         </form>
         </div>
         </div>
@@ -203,31 +205,33 @@
                 <div class="form-group">
                     <label for="issueType">Type of Issue</label>
                     <select id="issueType" name="issueType" required>
-                        <option value="slow">Slow Internet Speed</option>
-                        <option value="no-internet">No Internet Connection</option>
-                        <option value="disconnect">Frequent Disconnections</option>
-                        <option value="modem">Router/Modem Issues</option>
-                        <option value="billing">Billing Concerns</option>
-                        <option value="other">Other (Specify Below)</option>
+                      <option value="" disabled selected>Select an issue type</option>
+                      <option value="slow">Slow Internet Speed</option>
+                      <option value="no-internet">No Internet Connection</option>
+                      <option value="disconnect">Frequent Disconnections</option>
+                      <option value="modem">Router/Modem Issues</option>
+                      <option value="billing">Billing Concerns</option>
+                      <option value="other">Other (Specify Below)</option>
                     </select>
-                </div>
+                  </div>
 
                 <div class="form-group">
                     <label for="issueDescription">Describe the Issue</label>
                     <textarea id="issueDescription" name="issueDescription" rows="4" placeholder="Provide details about the issue..." required></textarea>
                 </div>
-            </div>
 
             <!-- Row 3: Preferred Contact Time, Upload Evidence -->
             <div class="form-row">
                 <div class="form-group">
-                    <label for="contactTime">Preferred Contact Time</label>
-                    <select id="contactTime" name="contactTime" required>
-                        <option value="morning">Morning (8AM - 12PM)</option>
-                        <option value="afternoon">Afternoon (12PM - 4PM)</option>
-                        <option value="evening">Evening (4PM - 8PM)</option>
-                    </select>
+                  <label for="contactTime">Preferred Contact Time</label>
+                  <select id="contactTime" name="contactTime" required>
+                    <option value="" disabled selected>Select a contact time</option>
+                    <option value="morning">Morning (8AM - 12PM)</option>
+                    <option value="afternoon">Afternoon (12PM - 4PM)</option>
+                    <option value="evening">Evening (4PM - 8PM)</option>
+                  </select>
                 </div>
+            </div>
 
                 <div class="form-group">
                     <label for="uploadEvidence">Upload Evidence (JPG/PNG) (Optional)</label>

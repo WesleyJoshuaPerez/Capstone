@@ -202,6 +202,7 @@ function makeEditable(fieldId) {
             return;
         }
 
+        // Determine if this is an email or contact number for the prompt title
         let fieldLabel = fieldId.includes("contact") ? "Contact Number" : "Email Address";
 
         Swal.fire({
@@ -212,24 +213,52 @@ function makeEditable(fieldId) {
             confirmButtonText: "Save",
             cancelButtonText: "Cancel",
             inputValidator: (value) => {
-                if (!value) return "This field cannot be empty!";
-                if (fieldId.includes("contact") && !/^\d{11}$/.test(value)) {
-                    return "Enter a valid 11-digit contact number (e.g., 09123456789)";
-                }                
-                if (fieldId.includes("email") && !/^\S+@\S+\.\S+$/.test(value)) {
-                    return "Enter a valid email address!";
+                // Check for empty value
+                if (!value) {
+                    return "This field cannot be empty!";
                 }
+
+                //contact validation
+                if (fieldId.includes("contact")) {
+                    if (!/^\d{11}$/.test(value)) {
+                        return "Enter a valid 11-digit contact number (e.g., 09123456789).";
+                    }
+                }
+
+                // If it's the email field, require @gmail.com or @yahoo.com
+                // If it's the email field, require only certain characters before '@'
+                // and force the domain to be @gmail.com or @yahoo.com
+                if (fieldId.includes("email")) {
+                    // Optional: Check length to avoid overly long addresses
+                    if (value.length > 254) {
+                        return "Email address must be 254 characters or less!";
+                    }
+
+                    // Regex Explanation:
+                    // ^[A-Za-z0-9._-]+  => One or more letters, digits, underscores, dots, or hyphens
+                    // @                 => Exactly one '@'
+                    // (gmail|yahoo)     => Domain must be 'gmail' or 'yahoo'
+                    // \.com             => Followed by '.com'
+                    // $                 => End of string
+                    // 'i' flag          => Case-insensitive (so 'GMAIL.com' is also valid)
+                    const pattern = /^[A-Za-z0-9._-]+@(gmail|yahoo)\.com$/i;
+                    if (!pattern.test(value)) {
+                        return "Invalid email! Only letters/digits/._- are allowed before '@', and it must end with @gmail.com or @yahoo.com.";
+                    }
+                }
+                // If all checks pass, no error message
+                return null;
             }
         }).then((result) => {
             if (result.isConfirmed) {
-                field.value = result.value; // Updates the field
+                // Update the field with the validated input
+                field.value = result.value;
                 field.setAttribute("value", result.value);
-                field.dispatchEvent(new Event("change")); // Triggers update event
-                
+                field.dispatchEvent(new Event("change"));
+
                 Swal.fire("Updated!", `${fieldLabel} has been updated successfully.`, "success");
             }
         });
-
     }, 500);
 }
 
@@ -337,11 +366,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-
-
-
 // toggle button to view password
-
 document.addEventListener("DOMContentLoaded", function () {
     // Select all toggle buttons
     document.querySelectorAll(".password-form-group button").forEach(button => {
@@ -362,7 +387,201 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
+// fetch subscription plan, current bill, and billing cycle
+document.addEventListener("DOMContentLoaded", async () => {
+    const planNameEl = document.getElementById("plan-name");
+    const planPriceEl = document.getElementById("plan-price");
+    const billingAmountEl = document.getElementById("billing-amount");
+    const dueDateEl = document.getElementById("due-date");
+    const subscriptionField = document.getElementById("currentSubscription");
+    const selectDropdown = document.getElementById("selectSubscription");
+    const changeBtn = document.querySelector(".newSub_btn");
+    const warningLabel = document.getElementById("changePlanWarning"); 
 
+    try {
+        const response = await fetch("backend/get_user_data.php");
+        const data = await response.json();
+
+        if (data.status === "success") {
+            const plan = data.subscription_plan || "none";
+            const bill = parseFloat(data.currentBill) || 0;
+
+            if (planNameEl) planNameEl.textContent = `${plan.toUpperCase()} PLAN`;
+            if (planPriceEl) planPriceEl.textContent = bill.toFixed(2);
+            if (billingAmountEl) billingAmountEl.textContent = bill.toFixed(2);
+
+            if (data.installation_date && dueDateEl) {
+                const installDate = new Date(data.installation_date);
+                const dueDate = new Date(installDate);
+                dueDate.setMonth(dueDate.getMonth() + 1);
+
+                const options = { year: 'numeric', month: 'short', day: '2-digit' };
+                dueDateEl.textContent = dueDate.toLocaleDateString('en-US', options);
+            } else {
+                if (dueDateEl) dueDateEl.textContent = "Unavailable";
+            }
+
+            // Set current subscription input and hide it in dropdown
+            if (subscriptionField) {
+                subscriptionField.value = data.subscription_plan;
+                const currentPlan = data.subscription_plan.toLowerCase();
+
+                Array.from(selectDropdown.options).forEach(option => {
+                    option.style.display = option.value === currentPlan ? "none" : "block";
+                });
+            }
+        } else {
+            const fallback = "0.00";
+            if (planPriceEl) planPriceEl.textContent = fallback;
+            if (billingAmountEl) billingAmountEl.textContent = fallback;
+            if (dueDateEl) dueDateEl.textContent = "Unavailable";
+        }
+
+        // Check plan change restriction
+        const restrictionRes = await fetch("backend/check_plan_change_limit.php");
+        const restrictionData = await restrictionRes.json();
+
+        if (restrictionData.status === "locked") {
+            if (changeBtn) {
+                changeBtn.disabled = true;
+                changeBtn.classList.add("disabled");
+            }
+            if (warningLabel) {
+                warningLabel.style.display = "block";
+                warningLabel.style.textAlign = "center";
+                warningLabel.textContent = `You cannot change your subscription plan until ${restrictionData.next_allowed_date}.`;
+            }
+        }
+    } catch (error) {
+        console.error("Error fetching user data or restriction status:", error);
+    }
+});
+
+// Handle Plan Change Form Submission
+document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("changeSubscriptionForm");
+    const changeBtn = document.querySelector(".newSub_btn");
+
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        Swal.fire({
+            title: "Submit Plan Change?",
+            text: "Please wait for admin approval after submission.",
+            icon: "info",
+            showCancelButton: true,
+            confirmButtonText: "Submit",
+            cancelButtonText: "Cancel"
+        }).then((result) => {
+            if (result.isConfirmed) {
+                const formData = new FormData(form);
+
+                fetch("backend/change_subscription.php", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        if (changeBtn) {
+                            changeBtn.disabled = true;
+                            changeBtn.classList.add("disabled");
+                            changeBtn.textContent = "Submitted";
+                        }
+
+                        Swal.fire({
+                            icon: "success",
+                            title: "Submitted!",
+                            text: "Plan change submitted for approval.\nNote: You can only change your subscription plan every 5 months.",
+                        });
+                    } else {
+                        Swal.fire("Error", data.message, "error");
+                    }
+                })
+                .catch(error => {
+                    console.error("Fetch error:", error);
+                    Swal.fire("Error", "Something went wrong while submitting.", "error");
+                });
+            }
+        });
+    });
+});
+
+// sweetalert for maintenance request
+document.addEventListener("DOMContentLoaded", function () {
+    const maintenanceForm = document.getElementById("maintenanceRequestForm");
+    if (maintenanceForm) {
+        maintenanceForm.addEventListener("submit", function (event) {
+            event.preventDefault();
+
+            // List all required field IDs
+            const requiredFields = [
+                "userId_request",
+                "fullName_request",
+                "contactNumber",
+                "homeAddress",
+                "issueType",
+                "issueDescription",
+                "contactTime"
+            ];
+
+            // Validate each required field
+            let allFilled = true;
+            requiredFields.forEach(function(fieldId) {
+                const field = document.getElementById(fieldId);
+                if (!field || field.value.trim() === "") {
+                    allFilled = false;
+                }
+            });
+
+            if (!allFilled) {
+                Swal.fire("Error!", "Please fill in all required fields.", "error");
+                return; 
+            }
+
+            // Proceed with form submission if validation passed
+            const formData = new FormData(maintenanceForm);
+
+            fetch("backend/submit_maintenance.php", {
+                method: "POST",
+                body: formData,
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === "success") {
+                    Swal.fire("Success!", data.message, "success");
+
+                    // Reset only the specific fields 
+                    document.getElementById("issueType").selectedIndex = 0;
+                    document.getElementById("issueDescription").value = "";
+                    document.getElementById("contactTime").selectedIndex = 0;
+                    document.getElementById("uploadEvidence").value = "";
+                } else if (data.status === "exists") {
+                    Swal.fire("Request Already Submitted", data.message, "info");
+                } else {
+                    Swal.fire("Error!", data.message, "error");
+                }
+            })
+            .catch(error => {
+                console.error("Request error:", error);
+                Swal.fire("Error!", "An unexpected error occurred.", "error");
+            });
+        });
+    }
+});
+
+
+
+
+
+
+
+
+
+
+
+  
+  
 
 
 
