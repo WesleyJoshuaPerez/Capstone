@@ -37,7 +37,7 @@ function fetchTechnicians() {
                     <td>${technician.role}</td>
                     <td style="color: ${statusColor}; font-weight: bold;">${technician.status}</td>
                     <td>
-                        <button class="assign-btn" data-id="${technician.id}">Assign</button>
+                        <button class="assign-btn" data-name="${technician.name}">Assign</button>
                         <button class="delete-btn" data-id="${technician.id}">Disable</button>
                     </td>
                   `;
@@ -47,6 +47,7 @@ function fetchTechnicians() {
 
         attachTechnicianRowClickEvent();
         attachDisableButtonEvent();
+        attachAssignButtonEvent(); // Attach event for assign buttons
       } else {
         console.error("Failed to fetch technicians:", data.error);
         Swal.fire("Error!", "Failed to load technicians.", "error");
@@ -59,7 +60,7 @@ function fetchTechnicians() {
     });
 }
 
-//use to see data of technician
+// Function to attach event listener to technician row clicks
 function attachTechnicianRowClickEvent() {
   const rows = document.querySelectorAll("#technicianTable tbody tr");
 
@@ -71,10 +72,8 @@ function attachTechnicianRowClickEvent() {
         title: `Technician: ${technician.name}`,
         html: `
               <div style="text-align: left; max-height: 400px; overflow-y: auto;">
-                             
-              
                   <strong>ID Photo:</strong><br>
-                  <img src="frontend/assets/images/technicians//${
+                  <img src="frontend/assets/images/technicians/${
                     technician.profile_image
                   }" width="100%" style="cursor: pointer;" 
                       onclick="viewImage(this.src)" onerror="this.onerror=null;this.src='frontend/assets/images/uploads/default_id_photo.jpg';"><br>
@@ -93,27 +92,193 @@ function attachTechnicianRowClickEvent() {
         denyButtonText: "Assign Task",
       }).then((result) => {
         if (result.isDenied) {
-          Swal.fire({
-            title: "Assign Task",
-            input: "text",
-            inputLabel: "Enter the task description:",
-            showCancelButton: true,
-            confirmButtonText: "Assign",
-          }).then((taskResult) => {
-            if (taskResult.isConfirmed && taskResult.value) {
-              console.log(
-                `Task assigned to ${technician.name}: ${taskResult.value}`
+          fetchOngoingMaintenanceRequests()
+            .then((requests) => {
+              if (requests.length === 0) {
+                Swal.fire(
+                  "No Ongoing Requests",
+                  "There are no ongoing maintenance requests to assign.",
+                  "info"
+                );
+                return;
+              }
+
+              const requestOptions = requests
+                .map(
+                  (request) => `
+                <option value="${request.id}">${request.full_name} - ${request.issue_type}</option>
+              `
+                )
+                .join("");
+
+              Swal.fire({
+                title: "Assign Maintenance Request",
+                html: `
+                  <select id="maintenanceRequestSelect" class="swal2-select">
+                    ${requestOptions}
+                  </select>
+                `,
+                showCancelButton: true,
+                confirmButtonText: "Assign",
+                preConfirm: () => {
+                  const requestId = Swal.getPopup().querySelector(
+                    "#maintenanceRequestSelect"
+                  ).value;
+                  return { technicianName: technician.name, requestId };
+                },
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  assignMaintenanceRequest(
+                    result.value.technicianName,
+                    result.value.requestId
+                  )
+                    .then(() => {
+                      Swal.fire(
+                        "Success",
+                        "Maintenance request assigned successfully.",
+                        "success"
+                      );
+                    })
+                    .catch((error) => {
+                      console.error(
+                        "Error assigning maintenance request:",
+                        error
+                      );
+                      Swal.fire(
+                        "Error",
+                        "Failed to assign maintenance request.",
+                        "error"
+                      );
+                    });
+                }
+              });
+            })
+            .catch((error) => {
+              console.error(
+                "Error fetching ongoing maintenance requests:",
+                error
               );
-              Swal.fire("Success", "Task assigned successfully.", "success");
-            }
-          });
+              Swal.fire(
+                "Error!",
+                "Failed to fetch ongoing maintenance requests.",
+                "error"
+              );
+            });
         }
       });
     });
   });
 }
 
-//use for disabling technician account
+// Function to attach event listener to the assign buttons
+function attachAssignButtonEvent() {
+  const assignButtons = document.querySelectorAll(".assign-btn");
+
+  assignButtons.forEach((button) => {
+    button.addEventListener("click", (event) => {
+      event.stopPropagation(); // Prevent triggering the row click event
+
+      const technicianName = button.getAttribute("data-name");
+
+      fetchOngoingMaintenanceRequests()
+        .then((requests) => {
+          if (requests.length === 0) {
+            Swal.fire(
+              "No Ongoing Requests",
+              "There are no ongoing maintenance requests to assign.",
+              "info"
+            );
+            return;
+          }
+
+          const requestOptions = requests
+            .map(
+              (request) => `
+            <option value="${request.id}">${request.full_name} - ${request.issue_type}</option>
+          `
+            )
+            .join("");
+
+          Swal.fire({
+            title: "Assign Maintenance Request",
+            html: `
+              <select id="maintenanceRequestSelect" class="swal2-select">
+                ${requestOptions}
+              </select>
+            `,
+            showCancelButton: true,
+            confirmButtonText: "Assign",
+            preConfirm: () => {
+              const requestId = Swal.getPopup().querySelector(
+                "#maintenanceRequestSelect"
+              ).value;
+              return { technicianName, requestId };
+            },
+          }).then((result) => {
+            if (result.isConfirmed) {
+              assignMaintenanceRequest(
+                result.value.technicianName,
+                result.value.requestId
+              )
+                .then(() => {
+                  Swal.fire(
+                    "Success",
+                    "Maintenance request assigned successfully.",
+                    "success"
+                  );
+                })
+                .catch((error) => {
+                  console.error("Error assigning maintenance request:", error);
+                  Swal.fire(
+                    "Error",
+                    "Failed to assign maintenance request.",
+                    "error"
+                  );
+                });
+            }
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching ongoing maintenance requests:", error);
+          Swal.fire(
+            "Error!",
+            "Failed to fetch ongoing maintenance requests.",
+            "error"
+          );
+        });
+    });
+  });
+}
+
+function fetchOngoingMaintenanceRequests() {
+  return fetch("backend/fetch_ongoing_requests.php")
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.success) {
+        return data.data;
+      } else {
+        throw new Error(data.error);
+      }
+    });
+}
+
+function assignMaintenanceRequest(technicianName, requestId) {
+  return fetch("backend/assign_request.php", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ technicianName, requestId }),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (!data.success) {
+        throw new Error(data.error);
+      }
+    });
+}
+
+// Use for disabling technician account
 function attachDisableButtonEvent() {
   const deleteButtons = document.querySelectorAll(".delete-btn");
 

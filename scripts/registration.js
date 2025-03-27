@@ -157,24 +157,22 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   const today = new Date();
 
-  // Set the minimum allowed date (5 days after today)
+  // Minimum allowed date (5 days after today)
   const minInstallDate = new Date();
   minInstallDate.setDate(today.getDate() + 5);
 
-  // Set the maximum date (End of the current month)
-  const maxInstallDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+  // Maximum allowed date (End of the current month)
+  let maxInstallDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
 
-  // Initialize Flatpickr
+  // If minDate is greater than maxDate, extend maxDate to next month
+  if (minInstallDate > maxInstallDate) {
+    maxInstallDate = new Date(today.getFullYear(), today.getMonth() + 2, 0);
+  }
+
   flatpickr("#installation-date", {
-    minDate: minInstallDate,
-    maxDate: maxInstallDate,
-    dateFormat: "m/d/Y", // Format the date as MM/DD/YYYY
-    disableMobile: true, // Ensure the native date picker is not used on mobile
-    allowInput: false, // Prevent manual input
-    onReady: function (selectedDates, dateStr, instance) {
-      // Disable navigation to invalid months
-      instance.changeMonth(minInstallDate.getMonth());
-      instance.changeYear(minInstallDate.getFullYear());
-    },
+    minDate: minInstallDate, // Disable past dates + set min 5 days ahead
+    maxDate: maxInstallDate, // Ensure maxDate is always valid
+    dateFormat: "m/d/Y", // Format: MM/DD/YYYY
+    disableMobile: true, // Prevent native date picker on mobile
   });
 });

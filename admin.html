@@ -44,6 +44,11 @@
             >
           </li>
           <li>
+            <a href="#" id="changePlanLink"
+              ><i class="fas fa-exchange"></i> Change Plan Requests</a
+            >
+          </li>
+          <li>
             <a href="#" id="technicianLink"
               ><i class="fas fa-project-diagram"></i> Technician</a
             >
@@ -85,6 +90,11 @@
             <h3>Subscribers</h3>
             <p id="totalSubscribers">0</p>
           </div>
+          <div class="summary-box" id="ChangePlanBox">
+            <i class="fas fa-exchange fa-3x" style="color: #3775b9"></i>
+            <h3>Change Plan Request</h3>
+            <p id="totalChangePlan">0</p>
+          </div>
           <div class="summary-box" id="techniciansBox">
             <i class="fas fa-project-diagram fa-3x" style="color: #3775b9"></i>
             <h3>Technicians</h3>
@@ -105,6 +115,7 @@
           </div>
         </div>
 
+        <!--For applications of plan-->
         <div class="info">
           <div id="applicationDiv">
             <h2>Applicants</h2>
@@ -127,6 +138,7 @@
             </div>
           </div>
 
+          <!--For subscribers-->
           <div id="subscriberDiv">
             <h2>Subscriber</h2>
             <!-- Add a wrapper div with class "table-container" -->
@@ -151,6 +163,30 @@
             </div>
           </div>
 
+          <!--For Changing Plan-->
+          <div id="changePlanDiv">
+            <h2>Change Plan Request</h2>
+            <!-- Add a wrapper div with class "table-container" -->
+            <div class="table-container">
+              <table id="changePlanTable">
+                <thead>
+                  <tr>
+                    <th>Change Plan ID</th>
+                    <th>User ID</th>
+                    <th>Name</th>
+                    <th>Current Plan</th>
+                    <th>New Plan</th>
+                    <th>Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Data will be inserted here dynamically -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!---For technician-->
           <div id="technicianDiv">
             <h2>Technicians</h2>
             <!-- Add a wrapper div with class "table-container" -->
@@ -173,19 +209,20 @@
             </div>
           </div>
 
+          <!--For maintenance-->
           <div id="maintenance_reqDiv">
             <h2>Maintenance Request</h2>
             <!-- Add a wrapper div with class "table-container" -->
             <div class="table-container">
-              <table id="maintenace_reqTable">
+              <table id="maintenance_reqTable">
                 <thead>
                   <tr>
                     <th>ID</th>
                     <th>Technician Name</th>
-                    <th>Customer Subscription Plan</th>
                     <th>Customer Fullname</th>
+                    <th>Customer Contact</th>
                     <th>Type of Concern</th>
-                    <th>Created at</th>
+                    <th>Submitted at</th>
                     <th>Status</th>
                   </tr>
                 </thead>
@@ -198,16 +235,19 @@
         </div>
       </div>
     </div>
-
-    <script src="scripts/approve.js"></script>
     <!--For approving applicants-->
-    <script src="scripts/subscriber.js"></script>
+    <script src="scripts/approve.js"></script>
     <!--For subscriber-->
-    <script src="scripts/summary.js"></script>
+    <script src="scripts/subscriber.js"></script>
     <!--For summary-->
-    <script src="scripts/adminsidebar.js"></script>
+    <script src="scripts/summary.js"></script>
     <!--For sidebar-->
-    <script src="scripts/technician.js" defer></script>
+    <script src="scripts/adminsidebar.js"></script>
     <!--For technicians-->
+    <script src="scripts/technician.js" defer></script>
+    <!--For maintenance request-->
+    <script src="scripts/maintenance_req.js" defer></script>
+    <!--For change plan request-->
+    <script src="scripts/changeplan.js" defer></script>
   </body>
 </html>

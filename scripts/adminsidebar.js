@@ -56,6 +56,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const homeLink = document.querySelector("#homeLink");
   const subscriberLink = document.querySelector("#subscriberLink");
   const applicationLink = document.querySelector("#applicationLink");
+  const changePlanLink = document.querySelector("#changePlanLink");
   const maintenanceLink = document.querySelector("#maintenanceLink");
   const technicianLink = document.querySelector("#technicianLink");
 
@@ -69,6 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
   summary_container.style.display = "flex";
   subscriberDiv.style.display = "none";
   applicationDiv.style.display = "none";
+  changePlanDiv.style.display = "none";
   maintenance_reqDiv.style.display = "none";
   technicianDiv.style.display = "none";
 
@@ -78,6 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
     summary_container.style.display = "flex";
     applicationDiv.style.display = "none";
     maintenance_reqDiv.style.display = "none";
+    changePlanDiv.style.display = "none";
     subscriberDiv.style.display = "none";
     technicianDiv.style.display = "none";
   });
@@ -88,6 +91,7 @@ document.addEventListener("DOMContentLoaded", function () {
     subscriberDiv.style.display = "block";
     applicationDiv.style.display = "none";
     maintenance_reqDiv.style.display = "none";
+    changePlanDiv.style.display = "none";
     summary_container.style.display = "none";
     technicianDiv.style.display = "none";
     fetchSubscribers();
@@ -97,6 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
     subscriberDiv.style.display = "block";
     applicationDiv.style.display = "none";
     maintenance_reqDiv.style.display = "none";
+    changePlanDiv.style.display = "none";
     summary_container.style.display = "none";
     technicianDiv.style.display = "none";
     fetchSubscribers();
@@ -108,6 +113,7 @@ document.addEventListener("DOMContentLoaded", function () {
     applicationDiv.style.display = "block";
     subscriberDiv.style.display = "none";
     maintenance_reqDiv.style.display = "none";
+    changePlanDiv.style.display = "none";
     summary_container.style.display = "none";
     technicianDiv.style.display = "none";
     fetchApplications();
@@ -117,6 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
     applicationDiv.style.display = "block";
     subscriberDiv.style.display = "none";
     maintenance_reqDiv.style.display = "none";
+    changePlanDiv.style.display = "none";
     summary_container.style.display = "none";
     technicianDiv.style.display = "none";
     fetchApplications();
@@ -129,7 +136,9 @@ document.addEventListener("DOMContentLoaded", function () {
     subscriberDiv.style.display = "none";
     applicationDiv.style.display = "none";
     summary_container.style.display = "none";
+    changePlanDiv.style.display = "none";
     technicianDiv.style.display = "none";
+    fetchMaintenancereq();
   });
   maintenanceBox.addEventListener("click", function (event) {
     event.preventDefault();
@@ -138,6 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
     applicationDiv.style.display = "none";
     summary_container.style.display = "none";
     technicianDiv.style.display = "none";
+    fetchMaintenancereq();
   });
 
   //Show technician and hide other section
@@ -146,6 +156,7 @@ document.addEventListener("DOMContentLoaded", function () {
     technicianDiv.style.display = "block";
     maintenance_reqDiv.style.display = "none";
     subscriberDiv.style.display = "none";
+    changePlanDiv.style.display = "none";
     applicationDiv.style.display = "none";
     summary_container.style.display = "none";
     fetchTechnicians();
@@ -155,8 +166,31 @@ document.addEventListener("DOMContentLoaded", function () {
     technicianDiv.style.display = "block";
     maintenance_reqDiv.style.display = "none";
     subscriberDiv.style.display = "none";
+    changePlanDiv.style.display = "none";
     applicationDiv.style.display = "none";
     summary_container.style.display = "none";
     fetchTechnicians();
+  });
+
+  //Show change plan request and hide other section
+  changePlanLink.addEventListener("click", function (event) {
+    event.preventDefault();
+    changePlanDiv.style.display = "block";
+    maintenance_reqDiv.style.display = "none";
+    subscriberDiv.style.display = "none";
+    technicianDiv.style.display = "none";
+    applicationDiv.style.display = "none";
+    summary_container.style.display = "none";
+    fetchChangeplanReq();
+  });
+  ChangePlanBox.addEventListener("click", function (event) {
+    event.preventDefault();
+    changePlanDiv.style.display = "block";
+    maintenance_reqDiv.style.display = "none";
+    subscriberDiv.style.display = "none";
+    technicianDiv.style.display = "none";
+    applicationDiv.style.display = "none";
+    summary_container.style.display = "none";
+    fetchChangeplanReq();
   });
 });

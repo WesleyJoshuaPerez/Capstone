@@ -248,7 +248,8 @@ body {
 #applicationDiv,
 #subscriberDiv,
 #maintenance_reqDiv,
-#technicianDiv {
+#technicianDiv,
+#changePlanDiv {
   display: none;
   padding: 20px;
   background: white;
@@ -266,8 +267,9 @@ body {
 
 #applicationTable,
 #subscriberTable,
-#maintenace_reqTable,
-#technicianTable {
+#maintenance_reqTable,
+#technicianTable,
+#changePlanTable {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
@@ -275,12 +277,14 @@ body {
 
 #applicationTable th,
 #subscriberTable th,
-#maintenace_reqTable th,
+#maintenance_reqTable th,
 #technicianTable th,
+#changePlanTable th,
 #applicationTable td,
 #subscriberTable td,
-#maintenace_reqTable td,
-#technicianTable td {
+#maintenance_reqTable td,
+#technicianTable td,
+#changePlanTable td {
   border: 1px solid #ddd;
   text-align: left;
   padding: 10px;
@@ -288,15 +292,18 @@ body {
 
 #applicationTable th,
 #subscriberTable th,
-#maintenace_reqTable th,
-#technicianTable th {
+#maintenance_reqTable th,
+#technicianTable th,
+#changePlanTable th {
   background-color: #3775b9;
   color: white;
 }
 
 #applicationTable tr:hover,
 #subscriberTable tr:hover,
-#maintenace_reqTable tr:hover {
+#maintenance_reqTable tr:hover,
+#technicianTable tr:hover,
+#changePlanTable tr:hover {
   background-color: #f1f1f1;
   cursor: pointer;
 }

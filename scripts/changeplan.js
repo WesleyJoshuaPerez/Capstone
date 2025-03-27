@@ -1,0 +1,159 @@
+// Fetch change plan requests from the server
+function fetchChangeplanReq() {
+  Swal.fire({
+    title: "Loading Change Plan Requests...",
+    text: "Please wait while we fetch the data.",
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    },
+  });
+
+  let xhr = new XMLHttpRequest();
+  xhr.open("GET", "backend/fetch_changeplan.php", true);
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      Swal.close(); // Close loading Swal when request is complete
+      if (xhr.status === 200) {
+        let response = JSON.parse(xhr.responseText);
+        if (response.success) {
+          let tableBody = document.querySelector("#changePlanTable tbody");
+          tableBody.innerHTML = ""; // Clear previous data
+
+          response.data.forEach((row) => {
+            let tr = document.createElement("tr");
+            tr.innerHTML = `
+                  <td>${row.changeplan_id}</td> 
+                  <td>${row.user_id || "N/A"}</td>
+                  <td>${row.full_name}</td>
+                  <td>${row.current_plan}</td>
+                  <td>${row.new_plan}</td>
+                  <td>${row.price}</td>
+                `;
+            tr.setAttribute("data-changeplan", JSON.stringify(row));
+            tableBody.appendChild(tr);
+          });
+
+          attachChangeRowClickEvent(); // Attach event listener to rows
+        } else {
+          Swal.fire("Error!", response.error, "error");
+        }
+      } else {
+        Swal.fire("Error!", "Failed to load data.", "error");
+      }
+    }
+  };
+  xhr.send();
+}
+
+// Attach click event to each row in the change plan table
+function attachChangeRowClickEvent() {
+  const rows = document.querySelectorAll("#changePlanTable tbody tr");
+  rows.forEach((row) => {
+    row.addEventListener("click", () => {
+      const changeplan = JSON.parse(row.getAttribute("data-changeplan"));
+
+      Swal.fire({
+        title: `Change Plan ID: ${changeplan.changeplan_id}`, // ✅ FIXED: Use correct field name
+        html: `
+            <div style="text-align: left; max-height: 400px; overflow-y: auto; padding-right: 10px;">
+                <strong>User ID:</strong> ${changeplan.user_id}<br>
+                <strong>Name:</strong> ${changeplan.full_name}<br>
+                <strong>Current Plan:</strong> ${changeplan.current_plan}<br>
+                <strong>New Plan:</strong> ${changeplan.new_plan}<br>
+                <strong>Price:</strong> ${changeplan.price}<br>
+                <strong>Request Date:</strong> ${changeplan.changed_at}<br>
+            </div>
+        `,
+        icon: "info",
+        showCancelButton: true,
+        showDenyButton: true,
+        confirmButtonText: "Approve",
+        denyButtonText: "Deny",
+        cancelButtonText: "Close",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          updateChangePlanStatus(
+            changeplan.changeplan_id, // ✅ FIXED: Pass the correct ID
+            changeplan.user_id,
+            "Approved",
+            changeplan.new_plan,
+            changeplan.price
+          );
+        } else if (result.isDenied) {
+          updateChangePlanStatus(
+            changeplan.changeplan_id,
+            changeplan.user_id,
+            "Denied"
+          );
+        }
+      });
+    });
+  });
+}
+
+// Update change plan status in the database
+// Update change plan status in the database
+function updateChangePlanStatus(
+  changeplanId,
+  userId,
+  status,
+  newPlan = null,
+  price = null
+) {
+  if (!changeplanId) {
+    console.error("Error: Missing Change Plan ID");
+    Swal.fire("Error!", "Change Plan ID is missing.", "error");
+    return;
+  }
+
+  let requestData = {
+    id: changeplanId, // ✅ FIXED: Use the correct field name
+    user_id: userId,
+    status: status,
+  };
+
+  if (newPlan) requestData.new_plan = newPlan;
+  if (price !== null) requestData.price = price;
+
+  console.log("Sending request data:", requestData); // Debugging
+
+  let xhr = new XMLHttpRequest();
+  xhr.open("POST", "backend/update_changeplan_status.php", true);
+  xhr.setRequestHeader("Content-Type", "application/json");
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      console.log("Response received:", xhr.responseText); // Debugging
+      Swal.close();
+      if (xhr.status === 200) {
+        try {
+          let data = JSON.parse(xhr.responseText);
+          if (data.success) {
+            Swal.fire(
+              "Success!",
+              `Change Plan ${status.toLowerCase()} successfully.`,
+              "success"
+            ).then(() => {
+              fetchChangeplanReq();
+            });
+          } else {
+            Swal.fire(
+              "Error!",
+              data.error || "Failed to update change plan status.",
+              "error"
+            );
+          }
+        } catch (e) {
+          console.error("Parsing error:", e);
+          Swal.fire("Error!", "Invalid server response.", "error");
+        }
+      } else {
+        console.error("Server error:", xhr.status);
+        Swal.fire("Error!", "Failed to communicate with the server.", "error");
+      }
+    }
+  };
+
+  xhr.send(JSON.stringify(requestData));
+}
