@@ -25,7 +25,7 @@ $requests = [];
 // Fetch and process results
 while ($row = $result->fetch_assoc()) {
     $requests[] = [
-        "id" => $row["id"],
+        "id" => $row["maintenance_id"],
         "full_name" => $row["full_name"],
         "issue_type" => $row["issue_type"],
         "issue_description" => $row["issue_description"],

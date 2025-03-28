@@ -4,8 +4,8 @@ include 'connectdb.php'; // Ensure you include your DB connection
 // Get JSON data from request
 $data = json_decode(file_get_contents("php://input"), true);
 
-if (isset($data['id'], $data['user_id'], $data['status'])) {
-    $id = intval($data['id']);
+if (isset($data['change_plan_id'], $data['user_id'], $data['status'])) {
+    $change_plan_id = intval($data['change_plan_id']);
     $user_id = intval($data['user_id']);
     $status = $data['status'];
     $new_plan = isset($data['new_plan']) ? $data['new_plan'] : null;
@@ -16,13 +16,13 @@ if (isset($data['id'], $data['user_id'], $data['status'])) {
 
     // Update the status and approved_date (if status is Approved)
     if ($status === 'Approved') {
-        $query = "UPDATE change_plan_application SET status = ?, approved_date = ? WHERE id = ? AND user_id = ?";
+        $query = "UPDATE change_plan_application SET status = ?, approved_date = ? WHERE change_plan_id = ? AND user_id = ?";
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("ssii", $status, $current_date, $id, $user_id);
+        $stmt->bind_param("ssii", $status, $current_date, $change_plan_id, $user_id);
     } else {
-        $query = "UPDATE change_plan_application SET status = ? WHERE id = ? AND user_id = ?";
+        $query = "UPDATE change_plan_application SET status = ? WHERE change_plan_id = ? AND user_id = ?";
         $stmt = $conn->prepare($query);
-        $stmt->bind_param("sii", $status, $id, $user_id);
+        $stmt->bind_param("sii", $status, $change_plan_id, $user_id);
     }
 
     if ($stmt->execute()) {
