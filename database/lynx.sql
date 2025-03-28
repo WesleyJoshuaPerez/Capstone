@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 27, 2025 at 08:14 AM
+-- Generation Time: Mar 28, 2025 at 03:40 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -42,7 +42,7 @@ CREATE TABLE `admin_lynx` (
 --
 
 INSERT INTO `admin_lynx` (`admin_id`, `username`, `password`, `full_name`, `email_address`, `phone`, `created_at`) VALUES
-(1, 'wesleyperez', 'adminsuper17', 'Wesley Joshua Perez', 'wjhperez@bpsu.edu.ph', '09300864398', '2025-03-10 03:54:22');
+(1, 'wesleyperez', 'superadmin17', 'Wesley Joshua Perez', 'wjhperez@bpsu.edu.ph', '09300864398', '2025-03-10 03:54:22');
 
 -- --------------------------------------------------------
 
@@ -75,9 +75,9 @@ CREATE TABLE `approved_user` (
 --
 
 INSERT INTO `approved_user` (`user_id`, `username`, `password`, `subscription_plan`, `currentBill`, `fullname`, `birth_date`, `address`, `contact_number`, `email_address`, `id_type`, `id_number`, `id_photo`, `proof_of_residency`, `home_ownership_type`, `installation_date`, `registration_date`) VALUES
-(15, 'WJperez01', 'wesperez17', 'gold', 1799, 'WESLEY JOSHUA PEREZ', '2007-03-01', 'duale, limay, bataan', '09380868921', 'wesleyjoshuaperez@gmail.com', 'passport', '', 'idexample.jfif', 'por.jpg', 'Owned', '2025-03-23', '2025-03-27'),
-(16, 'Wperez jr14', 'Znx!lh9E', 'silver', 1499, 'WILFREDO PEREZ JR', '1970-12-14', 'bilolo, orion, bataan', '09389234373', 'wilfredoperez@gmail.com', 'drivers-license', '', 'davidid.jfif', 'residency.png', 'Owned', '2025-03-16', '2025-03-19'),
-(17, 'Spaclaon01', 'sebastian12', 'gold', 1799, 'SEBASTIAN PACLAON', '2007-03-01', 'duale, limay, bataan', '09380868921', 'wesleyjoshuaperez.iskolar@gmail.com', 'passport', '', 'davidid.jfif', 'por.jpg', 'Rented', '2025-03-17', '2025-03-09'),
+(15, 'WJperez01', 'wesperez17', 'silver', 1499, 'WESLEY JOSHUA PEREZ', '2007-03-01', 'duale, limay, bataan', '09380868921', 'wesleyjoshuaperez@gmail.com', 'passport', '', 'idexample.jfif', 'por.jpg', 'Owned', '2025-03-28', '2025-03-27'),
+(16, 'Wperez jr14', 'Znx!lh9E', 'bronze', 1199, 'WILFREDO PEREZ JR', '1970-12-14', 'bilolo, orion, bataan', '09389234373', 'wilfredoperez@gmail.com', 'drivers-license', '', 'davidid.jfif', 'residency.png', 'Owned', '2025-03-16', '2025-03-28'),
+(17, 'Spaclaon01', 'sebastian12', 'silver', 1499, 'SEBASTIAN PACLAON', '2007-03-01', 'duale, limay, bataan', '09380868921', 'wesleyjoshuaperez.iskolar@gmail.com', 'passport', '', 'davidid.jfif', 'por.jpg', 'Rented', '2025-03-28', '2025-03-09'),
 (19, 'Krezada20', 'Rezada20', 'bronze', 1199, 'KATE REZADA', '2003-11-20', 'duale, limay, bataan', '09961680320', 'katerezada0120@gmail.com', 'philhealth-id', '', 'Paps Valid ID.jpg', 'cat.png', 'Rented', '2025-03-25', '2025-03-27');
 
 -- --------------------------------------------------------
@@ -105,7 +105,9 @@ CREATE TABLE `change_plan_application` (
 INSERT INTO `change_plan_application` (`id`, `user_id`, `full_name`, `current_plan`, `new_plan`, `price`, `changed_at`, `status`, `approved_date`) VALUES
 (1, 19, 'KATE REZADA', 'silver', 'bronze', 1199.00, '2025-03-26 12:00:17', 'Approved', NULL),
 (2, 19, 'KATE REZADA', 'silver', 'gold', 1799.00, '2025-03-26 12:03:08', 'Approved', NULL),
-(3, 15, 'WESLEY JOSHUA PEREZ', 'bronze', 'gold', 1799.00, '2025-03-27 14:37:02', 'Approved', NULL);
+(4, 16, 'WILFREDO PEREZ JR', 'silver', 'bronze', 1199.00, '2025-03-28 08:07:00', 'Approved', '2025-03-28'),
+(5, 17, 'SEBASTIAN PACLAON', 'gold', 'silver', 1499.00, '2025-03-28 09:15:24', 'Pending', NULL),
+(6, 15, 'WESLEY JOSHUA PEREZ', 'gold', 'silver', 1499.00, '2025-03-28 09:50:31', 'Approved', '2025-03-28');
 
 -- --------------------------------------------------------
 
@@ -163,7 +165,8 @@ INSERT INTO `maintenance_requests` (`id`, `user_id`, `full_name`, `contact_numbe
 (12, 19, 'KATE REZADA', '09961680320', 'duale, limay, bataan', 'modem', 'asdasd', 'morning', '', '2025-03-26 11:05:44', 'assigned', 'John Doe'),
 (13, 19, 'KATE REZADA', '09961680320', 'duale, limay, bataan', 'no-internet', 'sdada', 'Morning (8AM - 12PM)', '1742987302_11.jpg', '2025-03-26 11:08:22', 'assigned', 'John Doe'),
 (14, 19, 'KATE REZADA', '09961680320', 'duale, limay, bataan', 'disconnect', 'dfksdlkfs', 'Evening (4PM - 8PM)', '1742990843_10.jpg', '2025-03-26 12:07:23', 'assigned', 'Emily Davis'),
-(15, 15, 'WESLEY JOSHUA PEREZ', '09380868921', 'duale, limay, bataan', 'slow', 'ang bagal ng net', 'Morning (8AM - 12PM)', '1743059618_6496648.jpg', '2025-03-27 07:13:38', 'assigned', 'Robert Brown');
+(15, 15, 'WESLEY JOSHUA PEREZ', '09380868921', 'duale, limay, bataan', 'slow', 'ang bagal ng net', 'Morning (8AM - 12PM)', '1743059618_6496648.jpg', '2025-03-27 07:13:38', 'assigned', 'Robert Brown'),
+(16, 15, 'WESLEY JOSHUA PEREZ', '09380868921', 'duale, limay, bataan', 'no-internet', 'sdsadasd', 'Afternoon (12PM - 4PM)', '1743126976_6085900.jpg', '2025-03-28 01:56:16', 'ongoing', NULL);
 
 -- --------------------------------------------------------
 
@@ -307,7 +310,7 @@ ALTER TABLE `admin_lynx`
 -- AUTO_INCREMENT for table `change_plan_application`
 --
 ALTER TABLE `change_plan_application`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `lynx_technicians`
@@ -319,7 +322,7 @@ ALTER TABLE `lynx_technicians`
 -- AUTO_INCREMENT for table `maintenance_requests`
 --
 ALTER TABLE `maintenance_requests`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `registration_acc`
@@ -331,7 +334,7 @@ ALTER TABLE `registration_acc`
 -- AUTO_INCREMENT for table `resetpass_request`
 --
 ALTER TABLE `resetpass_request`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
