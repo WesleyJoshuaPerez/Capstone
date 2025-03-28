@@ -29,7 +29,7 @@ $maintenance_request = [];
 // Fetch and process results
 while ($row = $result->fetch_assoc()) {
     $maintenance_request[] = [
-        "maintenance_id" => $row["id"], //for change id name
+        "maintenance_id" => $row["maintenance_id"], //for change id name
         "user_id" => $row["user_id"],
         "full_name" => $row["full_name"],
         "contact_number" => $row["contact_number"],

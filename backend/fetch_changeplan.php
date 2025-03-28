@@ -29,7 +29,7 @@ $changeplan = [];
 // Fetch and process results
 while ($row = $result->fetch_assoc()) {
     $changeplan[] = [
-        "changeplan_id" => $row["id"], //for change id name
+        "changeplan_id" => $row["change_plan_id"], //for change id name
         "user_id" => $row["user_id"],
         "full_name" => $row["full_name"],
         "current_plan" => $row["current_plan"],
