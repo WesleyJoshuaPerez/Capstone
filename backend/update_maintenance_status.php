@@ -15,7 +15,7 @@ if (isset($data['id'], $data['status'])) {
     $status = $data['status'];
 
     // Update the maintenance request status
-    $query = "UPDATE maintenance_requests SET status = ? WHERE id = ?";
+    $query = "UPDATE maintenance_requests SET status = ? WHERE maintenance_id = ?";
     $stmt = $conn->prepare($query);
     if (!$stmt) {
         echo json_encode(["success" => false, "error" => "Failed to prepare statement: " . $conn->error]);

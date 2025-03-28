@@ -23,7 +23,7 @@ function fetchChangeplanReq() {
           response.data.forEach((row) => {
             let tr = document.createElement("tr");
             tr.innerHTML = `
-                  <td>${row.changeplan_id}</td> 
+                  <td>${row.change_plan_id}</td> 
                   <td>${row.user_id || "N/A"}</td>
                   <td>${row.full_name}</td>
                   <td>${row.current_plan}</td>
@@ -54,7 +54,7 @@ function attachChangeRowClickEvent() {
       const changeplan = JSON.parse(row.getAttribute("data-changeplan"));
 
       Swal.fire({
-        title: `Change Plan ID: ${changeplan.changeplan_id}`, // ✅ FIXED: Use correct field name
+        title: `Change Plan ID: ${changeplan.change_plan_id}`,
         html: `
             <div style="text-align: left; max-height: 400px; overflow-y: auto; padding-right: 10px;">
                 <strong>User ID:</strong> ${changeplan.user_id}<br>
@@ -74,7 +74,7 @@ function attachChangeRowClickEvent() {
       }).then((result) => {
         if (result.isConfirmed) {
           updateChangePlanStatus(
-            changeplan.changeplan_id, // ✅ FIXED: Pass the correct ID
+            changeplan.change_plan_id,
             changeplan.user_id,
             "Approved",
             changeplan.new_plan,
@@ -82,7 +82,7 @@ function attachChangeRowClickEvent() {
           );
         } else if (result.isDenied) {
           updateChangePlanStatus(
-            changeplan.changeplan_id,
+            changeplan.change_plan_id,
             changeplan.user_id,
             "Denied"
           );
@@ -93,22 +93,21 @@ function attachChangeRowClickEvent() {
 }
 
 // Update change plan status in the database
-// Update change plan status in the database
 function updateChangePlanStatus(
-  changeplanId,
+  changePlanId,
   userId,
   status,
   newPlan = null,
   price = null
 ) {
-  if (!changeplanId) {
+  if (!changePlanId) {
     console.error("Error: Missing Change Plan ID");
     Swal.fire("Error!", "Change Plan ID is missing.", "error");
     return;
   }
 
   let requestData = {
-    id: changeplanId, // ✅ FIXED: Use the correct field name
+    change_plan_id: changePlanId,
     user_id: userId,
     status: status,
   };
