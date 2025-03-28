@@ -186,6 +186,17 @@ ul li:hover {
   margin-left: 2rem;
 }
 
+#notificationDiv {
+  display: none;
+  padding: 20px;
+  background: white;
+  height: 70px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-shadow: 1px 4px 44px -19px rgba(0, 0, 0, 1);
+  margin-left: 2rem;
+}
+
 #profileDiv {
   display: none;
   padding: 20px;
@@ -501,6 +512,38 @@ select:focus {
 }
 /* end of request maintenance div style */
 
+/* start of notification div style */
+.table-container {
+  width: 100%;
+  overflow-x: auto; /* Enables horizontal scrolling */
+  position: relative;
+  top: 2rem;
+}
+
+#notificationTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+#notificationTable th,
+#notificationTable td {
+  border: 1px solid #ddd;
+  text-align: left;
+  padding: 10px;
+}
+
+#notificationTable th {
+  background-color: #8f0303;
+  color: white;
+}
+
+#notificationTable tr:hover {
+  background-color: #f1f1f1;
+  cursor: pointer;
+}
+/* end of notification div style */
+
 /* start of view profile div style */
 .profile-form-container {
   max-width: 600px;
@@ -811,6 +854,27 @@ select:focus {
   .maintenance-btn {
     width: 70%;
   }
+  #notificationDiv {
+    position: relative !important;
+    right: 32px !important;
+    top: 10px !important;
+    width: 299.2px !important;
+  }
+  #notificationDiv h2 {
+    font-size: 16px !important;
+    position: relative !important;
+    right: 8px !important;
+  }
+  .table-container {
+    overflow-x: auto !important;
+    position: relative !important;
+    right: 3.2px !important;
+  }
+  #notificationTable {
+    width: 100% !important;
+    min-width: 21.875rem;
+    table-layout: auto !important;
+  }
   #profileDiv {
     position: relative !important;
     right: 2rem !important;
@@ -893,6 +957,12 @@ select:focus {
     right: 2rem;
     top: 2rem;
     width: 34rem;
+    width: calc(100% - 0px) !important;
+  }
+  #notificationDiv {
+    position: relative;
+    right: 2rem;
+    top: 2rem;
     width: calc(100% - 0px) !important;
   }
   #profileDiv {
