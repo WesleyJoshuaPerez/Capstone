@@ -23,7 +23,7 @@ function fetchMaintenancereq() {
             let tr = document.createElement("tr");
             tr.innerHTML = `
                 <td>${row.maintenance_id}</td>
-                <td>${row.technician_name || " N/A"}</td>
+                <td>${row.technician_name || "N/A"}</td>
                 <td>${row.full_name}</td>
                 <td>${row.contact_number}</td>
                 <td>${row.issue_type}</td>
@@ -54,6 +54,9 @@ function attachMaintenanceRowClickEvent() {
         row.getAttribute("data-maintenance_request")
       );
 
+      const isAssigned =
+        maintenance_request.status.toLowerCase() === "assigned";
+
       Swal.fire({
         title: `Maintenance ID: ${maintenance_request.maintenance_id}`,
         html: `
@@ -68,12 +71,14 @@ function attachMaintenanceRowClickEvent() {
               <strong>Evidence:</strong><br>
               <img src="frontend/assets/images/uploads/issue_evidence/${maintenance_request.evidence_filename}" width="100%" style="cursor: pointer;" 
                   onclick="viewImage(this.src)" onerror="this.onerror=null;this.src='frontend/assets/images/uploads/default_id_photo.jpg';"><br>
-                <strong>Request Date:</strong> ${maintenance_request.submitted_at}<br>
+              <strong>Request Date:</strong> ${maintenance_request.submitted_at}<br>
+              <strong>Status:</strong> ${maintenance_request.status}<br>
           </div>
           `,
         icon: "info",
         showCancelButton: true,
-        showDenyButton: true,
+        showConfirmButton: !isAssigned, // Disable Approve button if assigned
+        showDenyButton: !isAssigned, // Disable Deny button if assigned
         confirmButtonText: "Approve",
         denyButtonText: "Deny",
         cancelButtonText: "Close",

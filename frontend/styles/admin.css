@@ -106,6 +106,7 @@ body {
   display: flex;
   align-items: center;
   gap: 10px; /* Adds spacing between the button and text */
+  z-index: 1000; /* Ensure it stays above */
 }
 
 /* Hamburger Button */

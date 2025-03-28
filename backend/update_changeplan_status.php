@@ -28,7 +28,7 @@ if (isset($data['id'], $data['user_id'], $data['status'])) {
     if ($stmt->execute()) {
         // If approved, update the user's plan in approved_user
         if ($status === 'Approved' && $new_plan) {
-            $updateUserPlan = "UPDATE approved_user SET subscription_plan = ?, currentBill = ?, registration_date = ? WHERE user_id = ?";
+            $updateUserPlan = "UPDATE approved_user SET subscription_plan = ?, currentBill = ?, installation_date = ? WHERE user_id = ?";
             $stmt2 = $conn->prepare($updateUserPlan);
             $stmt2->bind_param("siss", $new_plan, $price, $current_date, $user_id);
             $stmt2->execute();

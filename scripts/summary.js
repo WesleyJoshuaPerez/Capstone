@@ -8,6 +8,8 @@ async function fetchTotals() {
     document.getElementById("totalSubscribers").innerText = data.subscribers;
     document.getElementById("totalTechnicians").innerText = data.technicians;
     document.getElementById("totalChangePlan").innerText = data.changeplan;
+    document.getElementById("totalMaintenance").innerText =
+      data.maintenancerequest;
   } catch (error) {
     console.error("Error fetching totals:", error);
   }
