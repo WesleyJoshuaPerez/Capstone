@@ -436,15 +436,20 @@ document.addEventListener("DOMContentLoaded", async () => {
                 if (dueDateEl) dueDateEl.textContent = "Unavailable";
             }
 
-            // Set current subscription input and hide it in dropdown
-            if (subscriptionField) {
-                subscriptionField.value = data.subscription_plan;
-                const currentPlan = data.subscription_plan.toLowerCase();
+            // Set current subscription input (hidden field if you have it)
+            subscriptionField.value = data.subscription_plan;
+            const currentPlan = data.subscription_plan.toLowerCase();
 
-                Array.from(selectDropdown.options).forEach(option => {
-                    option.style.display = option.value === currentPlan ? "none" : "block";
-                });
+            // Hide the user’s current plan from the dropdown
+            Array.from(selectDropdown.options).forEach(option => {
+            if (option.value === currentPlan) {
+                option.style.display = "none";
             }
+            });
+
+            // Force the dropdown to select the placeholder
+            selectDropdown.value = "";
+
         } else {
             const fallback = "0.00";
             if (planPriceEl) planPriceEl.textContent = fallback;
