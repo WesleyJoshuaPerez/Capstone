@@ -14,29 +14,36 @@ function fetchMaintenancereq() {
     if (xhr.readyState === 4) {
       Swal.close();
       if (xhr.status === 200) {
-        let response = JSON.parse(xhr.responseText);
-        if (response.success) {
-          let tableBody = document.querySelector("#maintenance_reqTable tbody");
-          tableBody.innerHTML = ""; // Clear previous data
+        try {
+          let response = JSON.parse(xhr.responseText);
+          if (response.success) {
+            let tableBody = document.querySelector(
+              "#maintenance_reqTable tbody"
+            );
+            tableBody.innerHTML = ""; // Clear previous data
 
-          response.data.forEach((row) => {
-            let tr = document.createElement("tr");
-            tr.innerHTML = `
-              <td>${row.maintenance_id}</td>
-              <td>${row.technician_name || "N/A"}</td>
-              <td>${row.full_name}</td>
-              <td>${row.contact_number}</td>
-              <td>${row.issue_type}</td>
-              <td>${row.submitted_at}</td>
-              <td>${row.status}</td>
-            `;
-            tr.setAttribute("data-maintenance_request", JSON.stringify(row));
-            tableBody.appendChild(tr);
-          });
+            response.data.forEach((row) => {
+              let tr = document.createElement("tr");
+              tr.innerHTML = `
+                <td>${row.maintenance_id}</td>
+                <td>${row.technician_name || "N/A"}</td>
+                <td>${row.full_name}</td>
+                <td>${row.contact_number}</td>
+                <td>${row.issue_type}</td>
+                <td>${row.submitted_at}</td>
+                <td>${row.status}</td>
+              `;
+              tr.setAttribute("data-maintenance_request", JSON.stringify(row));
+              tableBody.appendChild(tr);
+            });
 
-          attachMaintenanceRowClickEvent();
-        } else {
-          Swal.fire("Error!", response.error, "error");
+            attachMaintenanceRowClickEvent();
+          } else {
+            Swal.fire("Error!", response.error, "error");
+          }
+        } catch (e) {
+          console.error("JSON Parsing Error:", e);
+          Swal.fire("Error!", "Invalid server response.", "error");
         }
       } else {
         Swal.fire("Error!", "Failed to load data.", "error");
@@ -53,7 +60,6 @@ function attachMaintenanceRowClickEvent() {
       const maintenance_request = JSON.parse(
         row.getAttribute("data-maintenance_request")
       );
-
       Swal.fire({
         title: `Maintenance ID: ${maintenance_request.maintenance_id}`,
         html: `
@@ -79,9 +85,12 @@ function attachMaintenanceRowClickEvent() {
         cancelButtonText: "Close",
       }).then((result) => {
         if (result.isConfirmed) {
-          approveApplication(maintenance_request.maintenance_id);
+          updateMaintenanceStatus(
+            maintenance_request.maintenance_id,
+            "Ongoing"
+          );
         } else if (result.isDenied) {
-          denyApplication(maintenance_request.maintenance_id);
+          updateMaintenanceStatus(maintenance_request.maintenance_id, "Denied");
         }
       });
     });
@@ -98,18 +107,10 @@ function viewImage(src) {
   });
 }
 
-function approveApplication(maintenanceId) {
-  updateApplicationStatus(maintenanceId, "ongoing");
-}
-
-function denyApplication(maintenanceId) {
-  updateApplicationStatus(maintenanceId, "denied");
-}
-
-function updateApplicationStatus(maintenanceId, status) {
+function updateMaintenanceStatus(maintenanceId, status) {
   Swal.fire({
     title: `Processing ${status}...`,
-    text: "Please wait while we update the application status.",
+    text: "Please wait while we update the maintenance status.",
     allowOutsideClick: false,
     didOpen: () => {
       Swal.showLoading();
@@ -129,7 +130,7 @@ function updateApplicationStatus(maintenanceId, status) {
           if (data.success) {
             Swal.fire(
               "Success!",
-              `Application ${status.toLowerCase()} successfully.`,
+              `Maintenance request ${status.toLowerCase()} successfully.`,
               "success"
             ).then(() => {
               setTimeout(fetchMaintenancereq, 500);
@@ -137,7 +138,7 @@ function updateApplicationStatus(maintenanceId, status) {
           } else {
             Swal.fire(
               "Error!",
-              data.error || "Failed to update application status.",
+              data.error || "Failed to update maintenance status.",
               "error"
             );
           }
