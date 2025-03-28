@@ -17,6 +17,7 @@ $sqlMaint = "SELECT
     issue_type,
     issue_description,
     contact_time,
+    evidence_filename,
     submitted_at,
     technician_name,
     'maintenance' AS type

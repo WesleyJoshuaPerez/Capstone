@@ -26,22 +26,22 @@ switch ($contactTime) {
         $contactTime = 'Evening (4PM - 8PM)';
         break;
     default:
-        // If the user didn’t pick anything valid, you can handle it here
-        // For now, just leave it as-is or set an error message
         break;
 }
 
 // Handle optional file upload
 $evidence = '';
 if (!empty($_FILES['uploadEvidence']['name']) && $_FILES['uploadEvidence']['error'] === UPLOAD_ERR_OK) {
-    $targetDir  = "../uploads/issue_evidence/";
+    // Define a target directory accessible from your web root.
+    $targetDir = "../uploads/issue_evidence/";  
+    // Use the original file name without a timestamp prefix.
     $fileName   = basename($_FILES["uploadEvidence"]["name"]);
-    $evidence   = time() . "_" . $fileName;
+    $evidence   = $fileName; 
     $targetFile = $targetDir . $evidence;
 
-    // Make sure the directory exists and is writable
+    // Create the directory if it doesn't exist.
     if (!is_dir($targetDir)) {
-        mkdir($targetDir, 0777, true); // Attempt to create if missing
+        mkdir($targetDir, 0777, true);
     }
 
     if (!move_uploaded_file($_FILES["uploadEvidence"]["tmp_name"], $targetFile)) {

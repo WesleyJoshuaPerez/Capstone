@@ -650,6 +650,21 @@ function loadNotifications() {
             // Build an HTML string for the details
             let detailHtml = "";
             if (data.type === "maintenance") {
+              let imageHtml = "";
+              if (data.evidence_filename) {
+                // Use the exact filename stored in the database.
+                // Make sure the path "uploads/issue_evidence/" is correct relative to your HTML page.
+                imageHtml = `
+                  <div style="margin-top:10px;">
+                    <strong>Uploaded Evidence:</strong><br/>
+                    <img 
+                      src="uploads/issue_evidence/${data.evidence_filename}" 
+                      alt="Evidence" 
+                      style="max-width: 100%; height: auto; border:1px solid #ccc; margin-top:5px;"
+                    />
+                  </div>`;
+              }
+    
               detailHtml = `
                 <p><strong>Request ID:</strong> ${data.request_id}</p>
                 <p><strong>Status:</strong> ${data.status}</p>
@@ -658,7 +673,10 @@ function loadNotifications() {
                 <p><strong>Preferred Contact Time:</strong> ${data.contact_time}</p>
                 <p><strong>Technician:</strong> ${data.technician_name || "N/A"}</p>
                 <p><strong>Submitted At:</strong> ${data.submitted_at}</p>
-                <p style="margin-top:10px;color:red;"><em>Important note: Please wait for the assigned technician to contact you after the approval of this request.</em></p>
+                ${imageHtml}
+                <p style="margin-top:10px;color:red;"><em>
+                  Important note: Please wait for the assigned technician to contact you after the approval of this request.
+                </em></p>
               `;
             } else {
               detailHtml = `
@@ -668,18 +686,23 @@ function loadNotifications() {
                 <p><strong>New Plan:</strong> ${data.new_plan}</p>
                 <p><strong>Price:</strong> ${data.price}</p>
                 <p><strong>Changed At:</strong> ${data.changed_at}</p>
-                <p style="margin-top:10px; color:red;"><em>Important note: Approval date serves as the new billing date, but not settling your payment to the last billing will hinder the start of new plan and billing date.</em></p>
+                <p style="margin-top:10px; color:red;"><em>
+                  Important note: Approval date serves as the new billing date, but not settling your payment 
+                  to the last billing will hinder the start of new plan and billing date.
+                </em></p>
               `;
             }
-  
+    
             Swal.fire({
               title: "Request Details",
-              html: detailHtml,
+              html: `<div style="max-height:400px; overflow-y:auto;">
+                ${detailHtml}
+                </div>`,
               icon: "info",
               confirmButtonText: "Close"
             });
           });
-  
+    
           notificationTableBody.appendChild(row);
         });
       })
@@ -688,6 +711,8 @@ function loadNotifications() {
         Swal.fire("Error", "Unable to fetch notifications.", "error");
       });
   }
+  
+  
   
   
 
