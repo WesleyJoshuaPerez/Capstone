@@ -32,27 +32,31 @@
         <ul>
           <li>
             <a href="#" id="homeLink">
-                <i class="fa-regular fa-credit-card"></i></i> Home </a>
+                <i class="fa-regular fa-credit-card"></i> Home </a>
           </li>
           <li>
             <a href="#" id="billingHistoryLink">
-                <i class="fa-solid fa-clock-rotate-left"></i></i> View Billing History </a>
+                <i class="fa-solid fa-clock-rotate-left"></i> View Billing History </a>
           </li>
           <li>
             <a href="#" id="applicationLink">
-                <i class="fa-solid fa-bolt"></i></i> Change Subscription Plan</a>
+                <i class="fa-solid fa-bolt"></i> Change Subscription Plan</a>
           </li>
           <li>
             <a href="#" id="maintenanceLink">
                 <i class="fas fa-project-diagram"></i> Request Maintenance</a>
           </li>
           <li>
+            <a href="#" id="notificationLink">
+              <i class="fa-solid fa-bell"></i> Notifications</a>
+          </li>
+          <li>
             <a href="#" id="viewProfileLink">
-                <i class="fa-solid fa-user"></i></i> View Profile</a>
+                <i class="fa-solid fa-user"></i> View Profile</a>
           </li>
           <li>
             <a href="#" id="changePasswordLink">
-            <i class="fa-solid fa-unlock-keyhole"></i></i> Change Password</a>
+            <i class="fa-solid fa-unlock-keyhole"></i> Change Password</a>
           </li>
         </ul>
       </div>
@@ -244,6 +248,27 @@
             </div>
         </div> 
         <!-- end of maintenance request div-->
+
+        <!-- start of notification div-->
+        <div id="notificationDiv">
+          <h2>Notifications</h2>
+          <!-- Add a wrapper div with class "table-container" -->
+          <div class="table-container">
+            <table id="notificationTable">
+              <thead>
+                <tr>
+                  <th>user ID</th>
+                  <th>First Name</th>
+                  <th>Requests</th>                
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Data will be inserted here dynamically -->
+              </tbody>
+            </table>
+          </div>
+      </div>
+      <!-- end of notification div-->
 
         <!-- start of view profile div-->
         <div id="profileDiv">

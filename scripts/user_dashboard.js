@@ -15,6 +15,10 @@ document.addEventListener("DOMContentLoaded", function () {
     var maintenanceLink = document.getElementById("maintenanceLink");
     var maintenanceDiv = document.getElementById("maintenanceDiv");
 
+    // Get elements for notification section
+    var notificationLink = document.getElementById("notificationLink");
+    var notificationDiv = document.getElementById("notificationDiv");
+
     // Get elements for View Profile section
     var viewProfileLink = document.getElementById("viewProfileLink");
     var profileDiv = document.getElementById("profileDiv");
@@ -29,6 +33,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (homeSection) homeSection.style.display = "none"; // Hide Home section initially
         if (historyDiv) historyDiv.style.display = "none";
         if (maintenanceDiv) maintenanceDiv.style.display = "none";
+        if (notificationDiv) notificationDiv.style.display = "none";
         if (profileDiv) profileDiv.style.display = "none";
         if (changePasswordDiv) changePasswordDiv.style.display = "none";
     }
@@ -70,6 +75,16 @@ document.addEventListener("DOMContentLoaded", function () {
             event.preventDefault();
             hideAllSections();
             maintenanceDiv.style.display = "block";
+        });
+    }
+
+    // Toggle Notification section
+    if (notificationLink) {
+        notificationLink.addEventListener("click", function (event) {
+            event.preventDefault();
+            hideAllSections();
+            notificationDiv.style.display = "block";
+            loadNotifications();
         });
     }
 
@@ -570,6 +585,106 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
 
+// handles notification displaying
+function loadNotifications() {
+    const notificationTableBody = document.querySelector("#notificationTable tbody");
+    const userId = document.getElementById("userId")?.value || 0;
+  
+    // Fetch notifications from your backend
+    fetch(`backend/get_notifications.php?user_id=${userId}`)
+      .then(res => res.json())
+      .then(result => {
+        if (result.status !== "success") {
+          Swal.fire("Error", result.message, "error");
+          return;
+        }
+  
+        const notifications = result.data || [];
+        // Clear any existing rows
+        notificationTableBody.innerHTML = "";
+  
+        if (notifications.length === 0) {
+          // If no data, insert a single row with a placeholder message
+          const row = document.createElement("tr");
+          const cell = document.createElement("td");
+          cell.colSpan = 3; // Match the number of <th> columns
+          cell.textContent = "No notifications available.";
+          row.appendChild(cell);
+          notificationTableBody.appendChild(row);
+          return;
+        }
+  
+        // Otherwise, build rows for each notification
+        notifications.forEach(notif => {
+          const row = document.createElement("tr");
+  
+          // 1) user_id cell
+          const userIdCell = document.createElement("td");
+          userIdCell.textContent = notif.user_id;
+          row.appendChild(userIdCell);
+  
+          // 2) full_name cell
+          const fullNameCell = document.createElement("td");
+          fullNameCell.textContent = notif.full_name;
+          row.appendChild(fullNameCell);
+  
+          // 3) requests cell (Maintenance or Change Plan)
+          const requestsCell = document.createElement("td");
+          requestsCell.textContent = (notif.type === "maintenance")
+            ? "Maintenance Request"
+            : "Change Plan Request";
+          row.appendChild(requestsCell);
+  
+          // Store full notification object in a data attribute
+          row.dataset.notif = JSON.stringify(notif);
+  
+          // On row click, show a SweetAlert with full details
+          row.addEventListener("click", function() {
+            const data = JSON.parse(this.dataset.notif);
+  
+            // Build an HTML string for the details
+            let detailHtml = "";
+            if (data.type === "maintenance") {
+              detailHtml = `
+                <p><strong>Request ID:</strong> ${data.request_id}</p>
+                <p><strong>Status:</strong> ${data.status}</p>
+                <p><strong>Issue Type:</strong> ${data.issue_type}</p>
+                <p><strong>Description:</strong> ${data.issue_description}</p>
+                <p><strong>Preferred Contact Time:</strong> ${data.contact_time}</p>
+                <p><strong>Technician:</strong> ${data.technician_name || "N/A"}</p>
+                <p><strong>Submitted At:</strong> ${data.submitted_at}</p>
+                <p style="margin-top:10px;color:red;"><em>Important note: Please wait for the assigned technician to contact you after the approval of this request.</em></p>
+              `;
+            } else {
+              detailHtml = `
+                <p><strong>Request ID:</strong> ${data.request_id}</p>
+                <p><strong>Status:</strong> ${data.status}</p>
+                <p><strong>Current Plan:</strong> ${data.current_plan}</p>
+                <p><strong>New Plan:</strong> ${data.new_plan}</p>
+                <p><strong>Price:</strong> ${data.price}</p>
+                <p><strong>Changed At:</strong> ${data.changed_at}</p>
+                <p style="margin-top:10px; color:red;"><em>Important note: Approval date serves as the new billing date, but not settling your payment to the last billing will hinder the start of new plan and billing date.</em></p>
+              `;
+            }
+  
+            Swal.fire({
+              title: "Request Details",
+              html: detailHtml,
+              icon: "info",
+              confirmButtonText: "Close"
+            });
+          });
+  
+          notificationTableBody.appendChild(row);
+        });
+      })
+      .catch(err => {
+        console.error("Error fetching notifications:", err);
+        Swal.fire("Error", "Unable to fetch notifications.", "error");
+      });
+  }
+  
+  
 
 
 
