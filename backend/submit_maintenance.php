@@ -33,7 +33,7 @@ switch ($contactTime) {
 $evidence = '';
 if (!empty($_FILES['uploadEvidence']['name']) && $_FILES['uploadEvidence']['error'] === UPLOAD_ERR_OK) {
     // Define a target directory accessible from your web root.
-    $targetDir = "../uploads/issue_evidence/";  
+    $targetDir = "../frontend/assets/images/uploads/issue_evidence/";  
     // Use the original file name without a timestamp prefix.
     $fileName   = basename($_FILES["uploadEvidence"]["name"]);
     $evidence   = $fileName; 

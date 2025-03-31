@@ -20,14 +20,16 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (subscriptionSelect) {
     const urlParams = new URLSearchParams(window.location.search);
-    const selectedPlan = urlParams.get("subscription_plan");
-
+    let selectedPlan = urlParams.get("subscription_plan");
+  
     if (selectedPlan) {
-      // Set the dropdown value based on the selected plan
+      // Convert first letter to uppercase and rest to lowercase
+      selectedPlan = selectedPlan.charAt(0).toUpperCase() + selectedPlan.slice(1).toLowerCase();
+      // Now "bronze" becomes "Bronze", "silver" becomes "Silver", etc.
       subscriptionSelect.value = selectedPlan;
-
+  
       // Trigger change event to update the UI
       subscriptionSelect.dispatchEvent(new Event("change"));
     }
-  }
+  }  
 });

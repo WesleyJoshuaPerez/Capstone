@@ -25,19 +25,19 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   // Subscription plan data
   const planData = {
-    bronze: {
+    Bronze: {
       title: "BRONZE",
       price: "PHP 1199<br /><strong>per month</strong>",
       details: "Up to 50 Mbps<br />Unlimited Bandwidth<br />24/7 Support",
       color: "linear-gradient(to right, #ec202a, #ff7676)", //use to apply red gradient
     },
-    silver: {
+    Silver: {
       title: "SILVER",
       price: "PHP 1499<br /><strong>per month</strong>",
       details: "Up to 100 Mbps<br />Unlimited Bandwidth<br />24/7 Support",
       color: "linear-gradient(to right, #36a13a, #7ed957)", //use to apply green gradient
     },
-    gold: {
+    Gold: {
       title: "GOLD",
       price: "PHP 1799<br /><strong>per month</strong>",
       details: "Up to 150 Mbps<br />Unlimited Bandwidth<br />24/7 Support",
@@ -61,7 +61,6 @@ document.addEventListener("DOMContentLoaded", function () {
     !planDetails
   ) {
     console.error(
-      "🚨 One or more required elements not found. Check your IDs."
     );
     return;
   }
@@ -122,20 +121,19 @@ document.addEventListener("DOMContentLoaded", function () {
   // Ensure elements exist before proceeding
   if (!municipalitySelect || !barangaySelect) {
     console.error(
-      "🚨 Municipality or Barangay dropdown not found. Check HTML IDs."
     );
     return;
   }
-
+  
   // Function to update barangay dropdown based on municipality selection
   function updateBarangays() {
-    const selectedMunicipality = municipalitySelect.value;
-    console.log(`🏠 Municipality selected: ${selectedMunicipality}`);
-
+    const selectedMunicipality = municipalitySelect.value.toLowerCase(); // Convert to lowercase
+    console.log(`Municipality selected: ${selectedMunicipality}`);
+  
     // Clear previous options
     barangaySelect.innerHTML =
       '<option value="" disabled selected>Select a barangay</option>';
-
+  
     // Check if selected municipality exists in barangayData
     if (barangayData[selectedMunicipality]) {
       barangayData[selectedMunicipality].forEach((barangay) => {
