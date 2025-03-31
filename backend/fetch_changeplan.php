@@ -36,6 +36,7 @@ while ($row = $result->fetch_assoc()) {
         "new_plan" => $row["new_plan"],
         "price" => $row["price"],
         "changed_at" => $row["changed_at"],   
+        "status" => $row["status"] 
     ];
 }
 

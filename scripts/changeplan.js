@@ -16,27 +16,40 @@ function fetchChangeplanReq() {
       Swal.close(); // Close loading Swal when request is complete
       if (xhr.status === 200) {
         let response = JSON.parse(xhr.responseText);
-        if (response.success) {
-          let tableBody = document.querySelector("#changePlanTable tbody");
-          tableBody.innerHTML = ""; // Clear previous data
+        let tableBody = document.querySelector("#changePlanTable tbody");
+        tableBody.innerHTML = ""; // Clear previous data
+
+        if (response.success && response.data.length > 0) {
+          let hasPending = false;
 
           response.data.forEach((row) => {
-            let tr = document.createElement("tr");
-            tr.innerHTML = `
-                  <td>${row.change_plan_id}</td> 
-                  <td>${row.user_id || "N/A"}</td>
-                  <td>${row.full_name}</td>
-                  <td>${row.current_plan}</td>
-                  <td>${row.new_plan}</td>
-                  <td>${row.price}</td>
-                `;
-            tr.setAttribute("data-changeplan", JSON.stringify(row));
-            tableBody.appendChild(tr);
+            if (row.status === "pending") {
+              hasPending = true;
+              let tr = document.createElement("tr");
+              tr.innerHTML = `
+                <td>${row.change_plan_id}</td> 
+                <td>${row.user_id || "N/A"}</td>
+                <td>${row.full_name}</td>
+                <td>${row.current_plan}</td>
+                <td>${row.new_plan}</td>
+                <td>${row.price}</td>
+              `;
+              tr.setAttribute("data-changeplan", JSON.stringify(row));
+              tableBody.appendChild(tr);
+            }
           });
+
+          if (!hasPending) {
+            let tr = document.createElement("tr");
+            tr.innerHTML = `<td colspan="7" style="text-align:center;">No pending change plan requests.</td>`;
+            tableBody.appendChild(tr);
+          }
 
           attachChangeRowClickEvent(); // Attach event listener to rows
         } else {
-          Swal.fire("Error!", response.error, "error");
+          let tr = document.createElement("tr");
+          tr.innerHTML = `<td colspan="7" style="text-align:center;">No change plan requests found.</td>`;
+          tableBody.appendChild(tr);
         }
       } else {
         Swal.fire("Error!", "Failed to load data.", "error");

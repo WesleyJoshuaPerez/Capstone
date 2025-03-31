@@ -60,6 +60,10 @@ function attachMaintenanceRowClickEvent() {
       const maintenance_request = JSON.parse(
         row.getAttribute("data-maintenance_request")
       );
+      const isDisabled =
+        maintenance_request.status === "Assigned" ||
+        maintenance_request.status === "Ongoing";
+
       Swal.fire({
         title: `Maintenance ID: ${maintenance_request.maintenance_id}`,
         html: `
@@ -79,18 +83,24 @@ function attachMaintenanceRowClickEvent() {
         `,
         icon: "info",
         showCancelButton: true,
-        showDenyButton: true,
+        showDenyButton: !isDisabled, // Disable Deny button if Assigned or Ongoing
         confirmButtonText: "Approve",
         denyButtonText: "Deny",
         cancelButtonText: "Close",
+        showConfirmButton: !isDisabled, // Disable Approve button if Assigned or Ongoing
       }).then((result) => {
-        if (result.isConfirmed) {
-          updateMaintenanceStatus(
-            maintenance_request.maintenance_id,
-            "Ongoing"
-          );
-        } else if (result.isDenied) {
-          updateMaintenanceStatus(maintenance_request.maintenance_id, "Denied");
+        if (!isDisabled) {
+          if (result.isConfirmed) {
+            updateMaintenanceStatus(
+              maintenance_request.maintenance_id,
+              "Ongoing"
+            );
+          } else if (result.isDenied) {
+            updateMaintenanceStatus(
+              maintenance_request.maintenance_id,
+              "Denied"
+            );
+          }
         }
       });
     });

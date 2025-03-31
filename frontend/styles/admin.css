@@ -308,31 +308,38 @@ body {
   background-color: #f1f1f1;
   cursor: pointer;
 }
-/*For technican assign and delete button*/
-.assign-btn {
-  background-color: green;
-  color: white;
-  padding: 5px 10px;
+/*For technican action buttons*/
+.btn-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px; /* space between buttons */
+}
+
+/* Style for each button */
+.btn-group button {
+  flex: 1 1 auto; /* Grow equally */
+  padding: 8px 10px;
+  font-size: 14px;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
   cursor: pointer;
 }
 
-.assign-btn:hover {
-  background-color: darkgreen;
+/* Example button colors */
+.assign-btn {
+  background-color: #4caf50;
+  color: white;
 }
 
 .delete-btn {
-  background-color: red;
+  background-color: #f44336;
   color: white;
-  padding: 5px 10px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
 }
 
-.delete-btn:hover {
-  background-color: darkred;
+.view-clients-btn,
+.view-info-btn {
+  background-color: #3775b9;
+  color: white;
 }
 
 /* Responsive Sidebar */
@@ -375,8 +382,11 @@ body {
 
   #applicationTable,
   #subscriberTable,
-  #maintenace_reqTable {
-    min-width: 400px;
+  #maintenance_reqTable,
+  #technicianTable,
+  #changePlanTable {
+    min-width: 300px;
+    width: auto;
     font-size: 14px;
   }
 
@@ -385,7 +395,11 @@ body {
   #subscriberTable th,
   #subscriberTable td,
   #maintenace_reqTable th,
-  #maintenace_reqTable td {
+  #maintenace_reqTable td,
+  #technicianTable th,
+  #technicianTable td,
+  #changePlanTable th,
+  #changePlanTable td {
     padding: 5px;
     font-size: 12px;
   }
@@ -393,6 +407,9 @@ body {
   /* Show Hamburger Button */
   #hamburgerBtn {
     display: none;
+  }
+  .btn-group {
+    flex-direction: column; /* Stack buttons on mobile for better readability */
   }
 }
 
@@ -416,12 +433,13 @@ body {
     width: 100%;
     margin-left: 65px;
   }
-
   #applicationTable,
   #subscriberTable,
-  #maintenace_reqTable,
-  #technicianTable {
+  #maintenance_reqTable,
+  #technicianTable,
+  #changePlanTable {
     min-width: 300px;
+    width: auto;
     font-size: 12px;
   }
 
@@ -430,7 +448,11 @@ body {
   #subscriberTable th,
   #subscriberTable td,
   #maintenace_reqTable th,
-  #maintenace_reqTable td {
+  #maintenace_reqTable td,
+  #technicianTable th,
+  #technicianTable td,
+  #changePlanTable th,
+  #changePlanTable td {
     padding: 3px;
     font-size: 10px;
   }
