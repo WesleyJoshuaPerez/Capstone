@@ -59,6 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const changePlanLink = document.querySelector("#changePlanLink");
   const maintenanceLink = document.querySelector("#maintenanceLink");
   const technicianLink = document.querySelector("#technicianLink");
+  const mapLink = document.querySelector("#mapLink");
 
   //for clicking summary boxes
   const applicantsBox = document.querySelector("#applicantsBox");
@@ -73,6 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
   changePlanDiv.style.display = "none";
   maintenance_reqDiv.style.display = "none";
   technicianDiv.style.display = "none";
+  mapContainer.style.display = "none";
 
   // Show Home and hide other section
   homeLink.addEventListener("click", function (event) {
@@ -83,6 +85,7 @@ document.addEventListener("DOMContentLoaded", function () {
     changePlanDiv.style.display = "none";
     subscriberDiv.style.display = "none";
     technicianDiv.style.display = "none";
+    mapContainer.style.display = "none";
   });
 
   // Show Subscribers and hide other section
@@ -94,6 +97,7 @@ document.addEventListener("DOMContentLoaded", function () {
     changePlanDiv.style.display = "none";
     summary_container.style.display = "none";
     technicianDiv.style.display = "none";
+    mapContainer.style.display = "none";
     fetchSubscribers();
   });
   subscribersBox.addEventListener("click", function (event) {
@@ -104,6 +108,7 @@ document.addEventListener("DOMContentLoaded", function () {
     changePlanDiv.style.display = "none";
     summary_container.style.display = "none";
     technicianDiv.style.display = "none";
+    mapContainer.style.display = "none";
     fetchSubscribers();
   });
 
@@ -116,6 +121,7 @@ document.addEventListener("DOMContentLoaded", function () {
     changePlanDiv.style.display = "none";
     summary_container.style.display = "none";
     technicianDiv.style.display = "none";
+    mapContainer.style.display = "none";
     fetchApplications();
   });
   applicantsBox.addEventListener("click", function (event) {
@@ -126,6 +132,7 @@ document.addEventListener("DOMContentLoaded", function () {
     changePlanDiv.style.display = "none";
     summary_container.style.display = "none";
     technicianDiv.style.display = "none";
+    mapContainer.style.display = "none";
     fetchApplications();
   });
 
@@ -138,6 +145,7 @@ document.addEventListener("DOMContentLoaded", function () {
     summary_container.style.display = "none";
     changePlanDiv.style.display = "none";
     technicianDiv.style.display = "none";
+    mapContainer.style.display = "none";
     fetchMaintenancereq();
   });
   maintenanceBox.addEventListener("click", function (event) {
@@ -147,6 +155,7 @@ document.addEventListener("DOMContentLoaded", function () {
     applicationDiv.style.display = "none";
     summary_container.style.display = "none";
     technicianDiv.style.display = "none";
+    mapContainer.style.display = "none";
     fetchMaintenancereq();
   });
 
@@ -159,6 +168,7 @@ document.addEventListener("DOMContentLoaded", function () {
     changePlanDiv.style.display = "none";
     applicationDiv.style.display = "none";
     summary_container.style.display = "none";
+    mapContainer.style.display = "none";
     fetchTechnicians();
   });
   techniciansBox.addEventListener("click", function (event) {
@@ -169,6 +179,7 @@ document.addEventListener("DOMContentLoaded", function () {
     changePlanDiv.style.display = "none";
     applicationDiv.style.display = "none";
     summary_container.style.display = "none";
+    mapContainer.style.display = "none";
     fetchTechnicians();
   });
 
@@ -181,6 +192,7 @@ document.addEventListener("DOMContentLoaded", function () {
     technicianDiv.style.display = "none";
     applicationDiv.style.display = "none";
     summary_container.style.display = "none";
+    mapContainer.style.display = "none";
     fetchChangeplanReq();
   });
   ChangePlanBox.addEventListener("click", function (event) {
@@ -191,6 +203,17 @@ document.addEventListener("DOMContentLoaded", function () {
     technicianDiv.style.display = "none";
     applicationDiv.style.display = "none";
     summary_container.style.display = "none";
+    mapContainer.style.display = "none";
     fetchChangeplanReq();
+  });
+  //show the 2d map
+  mapLink.addEventListener("click", function (event) {
+    changePlanDiv.style.display = "none";
+    maintenance_reqDiv.style.display = "none";
+    subscriberDiv.style.display = "none";
+    technicianDiv.style.display = "none";
+    applicationDiv.style.display = "none";
+    summary_container.style.display = "none";
+    mapContainer.style.display = "block";
   });
 });

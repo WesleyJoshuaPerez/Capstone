@@ -19,6 +19,13 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!--For ajax functions-->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- Leaflet CSS (No Integrity Attribute) -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css"
+    />
+    <!-- Leaflet JS (No Integrity Attribute) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
   </head>
   <body>
     <div class="wrapper">
@@ -64,7 +71,7 @@
             <a href="#"><i class="fa-solid fa-box"></i> Box slots</a>
           </li>
           <li>
-            <a href="#"><i class="fas fa-map"></i> 2D Map</a>
+            <a href="#" id="mapLink"><i class="fas fa-map"></i> 2D Map</a>
           </li>
           <li>
             <a href="login.html"><i class="fa fa-sign-out"></i> Log out</a>
@@ -235,9 +242,16 @@
               </table>
             </div>
           </div>
+          <!--For 2d mapping-->
+          <!-- Add this div inside .main_content where you want the map to be displayed -->
+          <div id="mapContainer" style="display: none">
+            <div id="map" style="width: 100%; height: 100%"></div>
+          </div>
         </div>
       </div>
     </div>
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <!--For approving applicants-->
     <script src="scripts/approve.js"></script>
     <!--For subscriber-->
@@ -252,5 +266,7 @@
     <script src="scripts/maintenance_req.js" defer></script>
     <!--For change plan request-->
     <script src="scripts/changeplan.js" defer></script>
+    <!--For leaflet custom script-->
+    <script src="scripts/leaflet.js" defer></script>
   </body>
 </html>

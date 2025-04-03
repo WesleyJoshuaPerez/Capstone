@@ -341,6 +341,22 @@ body {
   background-color: #3775b9;
   color: white;
 }
+/** Use for 2D map */
+#mapContainer {
+  position: fixed; /* Fix map in place */
+  top: auto;
+  left: 200px; /* Adjust according to sidebar width */
+  height: 100vh; /* Full viewport height */
+  width: 100%;
+  z-index: 999; /* Ensure map stays behind the sidebar */
+  display: none; /* Initially hidden */
+  background-color: #f0f0f0; /* Add background color for better visibility */
+}
+
+#map {
+  height: 100%; /* Full height of the container */
+  width: 100%; /* Full width of the container */
+}
 
 /* Responsive Sidebar */
 @media screen and (max-width: 768px) {
@@ -410,6 +426,12 @@ body {
   }
   .btn-group {
     flex-direction: column; /* Stack buttons on mobile for better readability */
+  }
+  #mapContainer {
+    left: auto; /* Adjust according to smaller sidebar width on mobile */
+    height: calc(
+      100vh - 50px
+    ); /* Adjust height for mobile screens, considering header */
   }
 }
 
