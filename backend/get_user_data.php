@@ -1,7 +1,7 @@
 <?php
 // getting of data from approved_user table for user dashboard
 session_start();
-header('Content-Type: application/json'); // Ensure JSON output
+header('Content-Type: application/json'); 
 
 require 'connectdb.php';
 

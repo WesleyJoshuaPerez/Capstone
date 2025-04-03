@@ -12,7 +12,6 @@ if (!isset($_SESSION['user_id'])) {
 
 $tech_id = $_SESSION['user_id'];
 
-// Prepare SQL query to fetch technician data from your technician table (e.g., lynx_technicians)
 $stmt = $conn->prepare("SELECT id, name FROM lynx_technicians WHERE id = ?");
 if (!$stmt) {
     echo json_encode(["status" => "error", "message" => "Database error: " . $conn->error]);

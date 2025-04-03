@@ -35,7 +35,6 @@ if ($result->num_rows > 0) {
         $output .= "<td>" . htmlspecialchars($row['issue_description']) . "</td>";
         $output .= "<td>" . htmlspecialchars($row['contact_time']) . "</td>";
 
-        // Instead of just "Submit Report," add 2 buttons in one column:
         $output .= "<td>
                       <div class='btn-group'>
                         <button class='progress-report-btn' data-userid='" . htmlspecialchars($row['user_id']) . "'>Progress Report</button>
@@ -45,7 +44,6 @@ if ($result->num_rows > 0) {
         $output .= "</tr>";
     }
 } else {
-    // Update colspan to match your columns (8 or 9 total)
     $output .= "<tr><td colspan='8'>No assigned tasks found.</td></tr>";
 }
 

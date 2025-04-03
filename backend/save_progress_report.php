@@ -3,21 +3,19 @@ session_start();
 require 'connectdb.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Retrieve and sanitize data from POST (additional validation can be added)
+    // Retrieve and sanitize data from POST 
     $client_name       = trim($_POST['client_name']);
     $contact_number    = trim($_POST['contact_number']);
     $issue_type        = trim($_POST['issue_type']);
     $issue_description = trim($_POST['issue_description']);
     $progress_update   = trim($_POST['progress_update']);
     $work_done         = trim($_POST['work_done']);
-    // Cast time_spent to float to ensure it matches the DECIMAL type (binds as a double)
+
     $time_spent        = (float) $_POST['time_spent'];
 
     // Get the technician's name from the session
     $submitted_by = isset($_SESSION['techName']) ? trim($_SESSION['techName']) : 'Unknown';
 
-    // Prepare the SQL INSERT statement.
-    // Note: Here we insert into "time_spent_in_hour" (the column expected in the union query).
     $sql = "INSERT INTO progress_reports (
                 client_name,
                 contact_number,
@@ -37,8 +35,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Bind the parameters:
-    // "ssssssds" means: 6 strings, 1 double, and 1 string.
     $stmt->bind_param("ssssssds", 
         $client_name,
         $contact_number,

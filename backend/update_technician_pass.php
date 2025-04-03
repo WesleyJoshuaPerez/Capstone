@@ -27,7 +27,7 @@ if (empty($currentPassword) || empty($newPassword)) {
 
 $user_id = $_SESSION['user_id'];
 
-// 1. Fetch the current password from lynx_technicians
+// Fetch the current password from lynx_technicians
 $sql = "SELECT password FROM lynx_technicians WHERE id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
@@ -40,13 +40,13 @@ if ($result->num_rows === 0) {
 $row = $result->fetch_assoc();
 $stmt->close();
 
-// 2. Compare the current password with what's in DB (plain text in this example)
+// Compare the current password with what's in DB
 if ($row['password'] !== $currentPassword) {
     echo json_encode(["status" => "error", "message" => "Current password is incorrect."]);
     exit;
 }
 
-// 3. Update the password in lynx_technicians
+// Update the password in lynx_technicians
 $updateSql = "UPDATE lynx_technicians SET password = ? WHERE id = ?";
 $updateStmt = $conn->prepare($updateSql);
 if (!$updateStmt) {

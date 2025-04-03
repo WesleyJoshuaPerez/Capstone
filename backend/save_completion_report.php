@@ -3,7 +3,7 @@ session_start();
 require 'connectdb.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Retrieve data from POST (add further validation/sanitization as needed)
+    // Retrieve data from POST 
     $client_name         = $_POST['client_name'];
     $contact_number      = $_POST['contact_number'];
     $issue_type          = $_POST['issue_type'];
@@ -14,10 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $issues_encountered  = $_POST['issues_encountered'];
     $technician_comments = $_POST['technician_comments'];
 
-    // Get the technician's name from the session as submitted_by (if available)
+    // Get the technician's name from the session as submitted_by
     $submitted_by = isset($_SESSION['techName']) ? $_SESSION['techName'] : 'Unknown';
 
-    // Prepare the SQL INSERT statement.
     $sql = "INSERT INTO completion_report (
                 client_name,
                 contact_number,
@@ -38,9 +37,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     }
 
-    // Bind the parameters.
-    // We now have 10 placeholders (for 10 fields) followed by NOW() for submitted_at.
-    // "ssssssssss" represents 10 strings.
     $stmt->bind_param("ssssssssss",
         $client_name,
         $contact_number,
@@ -54,7 +50,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $submitted_by
     );
 
-    // Execute the statement and send the JSON response.
     if ($stmt->execute()) {
         echo json_encode(["status" => "success", "message" => "Completion form saved."]);
     } else {
