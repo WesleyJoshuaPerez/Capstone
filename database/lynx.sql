@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 28, 2025 at 04:44 AM
+-- Generation Time: Apr 03, 2025 at 06:40 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.2.4
 
@@ -108,12 +108,45 @@ INSERT INTO `change_plan_application` (`change_plan_id`, `user_id`, `full_name`,
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `completion_report`
+--
+
+CREATE TABLE `completion_report` (
+  `completion_id` int(11) NOT NULL,
+  `client_name` varchar(255) NOT NULL,
+  `contact_number` varchar(50) NOT NULL,
+  `issue_type` varchar(100) NOT NULL,
+  `issue_description` text NOT NULL,
+  `completion_datetime` datetime NOT NULL,
+  `work_description` text NOT NULL,
+  `parts_used` text DEFAULT NULL,
+  `issues_encountered` text DEFAULT NULL,
+  `technician_comments` text DEFAULT NULL,
+  `submitted_by` varchar(255) NOT NULL,
+  `submitted_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `completion_report`
+--
+
+INSERT INTO `completion_report` (`completion_id`, `client_name`, `contact_number`, `issue_type`, `issue_description`, `completion_datetime`, `work_description`, `parts_used`, `issues_encountered`, `technician_comments`, `submitted_by`, `submitted_at`) VALUES
+(1, 'KATE REZADA', '09961680320', 'Frequent Disconnections', 'dsfsdf', '2025-04-30 10:47:00', 'asdasd', 'asdad', 'asda', 'asdasd', 'John Doe', '2025-04-03 11:47:24'),
+(2, 'KATE REZADA', '09961680320', 'Frequent Disconnections', 'dsfsdf', '2025-04-24 19:56:00', 'sdad', 'asda', 'asda', 'asd', 'John Doe', '2025-04-03 11:53:25'),
+(3, 'KATE REZADA', '09961680320', 'Frequent Disconnections', 'dsfsdf', '0000-00-00 00:00:00', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 'John Doe', '2025-04-03 14:15:25'),
+(4, 'KATE REZADA', '09961680320', 'Frequent Disconnections', 'dsfsdf', '2025-04-22 11:05:00', 'mejo final test', 'mejo final test', 'mejo final test', 'mejo final test', 'John Doe', '2025-04-03 15:02:18');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `lynx_technicians`
 --
 
 CREATE TABLE `lynx_technicians` (
   `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
+  `username` varchar(50) NOT NULL,
+  `password` varchar(50) NOT NULL,
   `role` enum('Installer','Repair Technician') NOT NULL,
   `contact` varchar(20) NOT NULL,
   `status` enum('Available','Busy','On Leave') DEFAULT 'Available',
@@ -125,12 +158,12 @@ CREATE TABLE `lynx_technicians` (
 -- Dumping data for table `lynx_technicians`
 --
 
-INSERT INTO `lynx_technicians` (`id`, `name`, `role`, `contact`, `status`, `profile_image`, `created_at`) VALUES
-(1, 'John Doe', 'Installer', '09123456789', 'Available', 'john_doe.png', '2025-03-19 06:47:27'),
-(2, 'Jane Smith', 'Repair Technician', '09234567890', 'Busy', 'jane_smith.png', '2025-03-19 06:47:27'),
-(3, 'Michael Johnson', 'Installer', '09345678901', 'On Leave', 'michael_johnson.png', '2025-03-19 06:47:27'),
-(4, 'Emily Davis', 'Repair Technician', '09456789012', 'Available', 'emily_davis.png', '2025-03-19 06:47:27'),
-(5, 'Robert Brown', 'Installer', '09567890123', 'Available', 'robert_brown.png', '2025-03-19 06:47:27');
+INSERT INTO `lynx_technicians` (`id`, `name`, `username`, `password`, `role`, `contact`, `status`, `profile_image`, `created_at`) VALUES
+(1, 'John Doe', 'johndoe', 'newpass123', 'Installer', '09123456789', 'Available', 'john_doe.png', '2025-03-19 06:47:27'),
+(2, 'Jane Smith', 'janesmith', 'janesmith123', 'Repair Technician', '09234567890', 'Available', 'jane_smith.png', '2025-03-19 06:47:27'),
+(3, 'Michael Johnson', 'michaeljohnson', 'michaeljohnson123', 'Installer', '09345678901', 'Available', 'michael_johnson.png', '2025-03-19 06:47:27'),
+(4, 'Emily Davis', 'emilydavis', 'emilydavis123', 'Repair Technician', '09456789012', 'Available', 'emily_davis.png', '2025-03-19 06:47:27'),
+(5, 'Robert Brown', 'robertbrown', 'robertbrown123', 'Installer', '09567890123', 'Available', 'robert_brown.png', '2025-03-19 06:47:27');
 
 -- --------------------------------------------------------
 
@@ -158,9 +191,39 @@ CREATE TABLE `maintenance_requests` (
 --
 
 INSERT INTO `maintenance_requests` (`maintenance_id`, `user_id`, `full_name`, `contact_number`, `address`, `issue_type`, `issue_description`, `contact_time`, `evidence_filename`, `submitted_at`, `status`, `technician_name`) VALUES
-(1, 19, 'KATE REZADA', '09961680320', 'duale, limay, bataan', 'disconnect', 'dsadasda', 'Afternoon (12PM - 4PM)', '1743131944_black.jpg', '2025-03-28 03:19:04', 'ongoing', NULL),
-(2, 19, 'KATE REZADA', '09961680320', 'duale, limay, bataan', 'other', 'dasdas', 'Evening (4PM - 8PM)', '1743131960_black.jpg', '2025-03-28 03:19:20', 'ongoing', NULL),
-(3, 19, 'KATE REZADA', '09961680320', 'duale, limay, bataan', 'disconnect', 'dsdasda', 'Afternoon (12PM - 4PM)', '1743131989_black.jpg', '2025-03-28 03:19:49', 'ongoing', NULL);
+(1, 19, 'KATE REZADA', '09961680320', 'duale, limay, bataan', 'Frequent Disconnections', 'dsfsdf', 'Afternoon (12PM - 4PM)', 'Level0Diagram.png', '2025-03-28 10:44:58', 'Assigned', 'John Doe'),
+(2, 19, 'KATE REZADA', '09961680320', 'duale, limay, bataan', 'Billing Concerns', 'asdasdas', 'Afternoon (12PM - 4PM)', 'REZADA_Badge.png', '2025-03-28 10:45:55', 'Assigned', 'John Doe'),
+(6, 19, 'KATE REZADA', '09961680320', 'duale, limay, bataan', 'Frequent Disconnections', 'asdasd', 'Afternoon (12PM - 4PM)', 'ref.png', '2025-03-28 12:15:15', 'Assigned', 'Emily Davis');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `progress_reports`
+--
+
+CREATE TABLE `progress_reports` (
+  `progress_id` int(11) NOT NULL,
+  `client_name` varchar(255) NOT NULL,
+  `contact_number` varchar(50) NOT NULL,
+  `issue_type` varchar(100) NOT NULL,
+  `issue_description` text NOT NULL,
+  `progress_update` text NOT NULL,
+  `work_done` text NOT NULL,
+  `time_spent_in_hour` decimal(5,2) NOT NULL,
+  `submitted_by` varchar(255) NOT NULL,
+  `submitted_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `progress_reports`
+--
+
+INSERT INTO `progress_reports` (`progress_id`, `client_name`, `contact_number`, `issue_type`, `issue_description`, `progress_update`, `work_done`, `time_spent_in_hour`, `submitted_by`, `submitted_at`) VALUES
+(1, 'KATE REZADA', '09961680320', 'Frequent Disconnections', 'dsfsdf', 'asd', 'sadsa', 2.00, 'John Doe', '2025-04-03 11:31:59'),
+(2, 'KATE REZADA', '09961680320', 'Frequent Disconnections', 'dsfsdf', 'asdas', 'asdas', 2.00, 'John Doe', '2025-04-03 14:35:57'),
+(3, 'KATE REZADA', '09961680320', 'Billing Concerns', 'asdasdas', 'sample', 'sample', 2.00, 'John Doe', '2025-04-03 14:55:47'),
+(4, 'KATE REZADA', '09961680320', 'Frequent Disconnections', 'dsfsdf', 'mejo final test', 'mejo final test', 2.00, 'John Doe', '2025-04-03 15:01:40'),
+(5, 'KATE REZADA', '09961680320', 'Frequent Disconnections', 'dsfsdf', 'mejo mejo final', 'mejo mejo final', 2.00, 'John Doe', '2025-04-03 15:04:20');
 
 -- --------------------------------------------------------
 
@@ -202,7 +265,8 @@ INSERT INTO `registration_acc` (`id`, `subscription_plan`, `first_name`, `last_n
 (17, 'gold', 'SEBASTIAN', 'PACLAON', '09380868921', 'wesleyjoshuaperez.iskolar@gmail.com', '2007-03-01', 'passport', '', 'davidid.jfif', 'Rented', 'bataan', 'limay', 'duale', 'por.jpg', '2025-03-17', '2025-03-04 04:14:44', 'Checked', 'Checked', 'Checked', 'Approved'),
 (18, 'silver', 'TROY', 'MENDOZA', '09300864398', 'troymendoza@gmail.com', '2007-03-04', 'drivers-license', '', 'davidid.jfif', 'Rented', 'bataan', 'orion', 'sto.-domingo', 'residency.png', '2025-03-24', '2025-03-19 01:49:58', 'Checked', 'Checked', 'Checked', 'Denied'),
 (19, 'silver', 'KATE', 'REZADA', '09054627399', 'katerezada0120@gmail.com', '2003-11-20', 'philhealth-id', '', 'Paps Valid ID.jpg', 'Rented', 'bataan', 'limay', 'duale', 'cat.png', '2025-03-25', '2025-03-20 10:35:35', 'Checked', 'Checked', 'Checked', 'Approved'),
-(20, 'silver', 'RODRIGO', 'RODRIGUEZ', '09817687460', 'ogirdor1016@gmail.com', '2003-01-10', 'passport', '', '6085900.jpg', 'Rented', 'bataan', 'orion', 'sto.-domingo', '6496648.jpg', '2025-04-04', '2025-03-27 01:57:20', 'Checked', 'Checked', 'Checked', 'Pending');
+(20, 'silver', 'RODRIGO', 'RODRIGUEZ', '09817687460', 'ogirdor1016@gmail.com', '2003-01-10', 'passport', '', '6085900.jpg', 'Rented', 'bataan', 'orion', 'sto.-domingo', '6496648.jpg', '2025-04-04', '2025-03-27 01:57:20', 'Checked', 'Checked', 'Checked', 'Pending'),
+(24, 'Gold', 'DEAN', 'JARVIS', '09054627399', 'katerezada0120@gmail.com', '2007-03-13', 'UMID', '', 'boss_baby.jfif', 'Owned', 'Bataan', 'Orion', 'sto.-domingo', 'boss_baby.jfif', '2025-04-28', '2025-03-28 11:42:54', 'Checked', 'Checked', 'Checked', 'Pending');
 
 -- --------------------------------------------------------
 
@@ -266,6 +330,12 @@ ALTER TABLE `change_plan_application`
   ADD PRIMARY KEY (`change_plan_id`);
 
 --
+-- Indexes for table `completion_report`
+--
+ALTER TABLE `completion_report`
+  ADD PRIMARY KEY (`completion_id`);
+
+--
 -- Indexes for table `lynx_technicians`
 --
 ALTER TABLE `lynx_technicians`
@@ -276,6 +346,12 @@ ALTER TABLE `lynx_technicians`
 --
 ALTER TABLE `maintenance_requests`
   ADD PRIMARY KEY (`maintenance_id`);
+
+--
+-- Indexes for table `progress_reports`
+--
+ALTER TABLE `progress_reports`
+  ADD PRIMARY KEY (`progress_id`);
 
 --
 -- Indexes for table `registration_acc`
@@ -307,6 +383,12 @@ ALTER TABLE `change_plan_application`
   MODIFY `change_plan_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
+-- AUTO_INCREMENT for table `completion_report`
+--
+ALTER TABLE `completion_report`
+  MODIFY `completion_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
 -- AUTO_INCREMENT for table `lynx_technicians`
 --
 ALTER TABLE `lynx_technicians`
@@ -316,13 +398,19 @@ ALTER TABLE `lynx_technicians`
 -- AUTO_INCREMENT for table `maintenance_requests`
 --
 ALTER TABLE `maintenance_requests`
-  MODIFY `maintenance_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `maintenance_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `progress_reports`
+--
+ALTER TABLE `progress_reports`
+  MODIFY `progress_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `registration_acc`
 --
 ALTER TABLE `registration_acc`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT for table `resetpass_request`
