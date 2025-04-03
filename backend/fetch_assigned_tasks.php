@@ -1,0 +1,56 @@
+<?php
+session_start();
+require 'connectdb.php';
+
+if (!isset($_SESSION['techName'])) {
+    echo "<tr><td colspan='8'>You are not logged in.</td></tr>";
+    exit;
+}
+
+$techName = trim($_SESSION['techName']);
+$techName = $conn->real_escape_string($techName);
+
+$sql = "SELECT user_id, full_name, contact_number, address, issue_type, issue_description, contact_time 
+        FROM maintenance_requests 
+        WHERE TRIM(technician_name) = ?";
+
+$stmt = $conn->prepare($sql);
+if (!$stmt) {
+    echo "<tr><td colspan='8'>Database error: " . $conn->error . "</td></tr>";
+    exit;
+}
+$stmt->bind_param("s", $techName);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$output = "";
+if ($result->num_rows > 0) {
+    while ($row = $result->fetch_assoc()) {
+        $output .= "<tr>";
+        $output .= "<td>" . htmlspecialchars($row['user_id']) . "</td>";
+        $output .= "<td>" . htmlspecialchars($row['full_name']) . "</td>";
+        $output .= "<td>" . htmlspecialchars($row['contact_number']) . "</td>";
+        $output .= "<td>" . htmlspecialchars($row['address']) . "</td>";
+        $output .= "<td>" . htmlspecialchars($row['issue_type']) . "</td>";
+        $output .= "<td>" . htmlspecialchars($row['issue_description']) . "</td>";
+        $output .= "<td>" . htmlspecialchars($row['contact_time']) . "</td>";
+
+        // Instead of just "Submit Report," add 2 buttons in one column:
+        $output .= "<td>
+                      <div class='btn-group'>
+                        <button class='progress-report-btn' data-userid='" . htmlspecialchars($row['user_id']) . "'>Progress Report</button>
+                        <button class='completion-form-btn' data-userid='" . htmlspecialchars($row['user_id']) . "'>Completion Report</button>
+                      </div>
+                    </td>";
+        $output .= "</tr>";
+    }
+} else {
+    // Update colspan to match your columns (8 or 9 total)
+    $output .= "<tr><td colspan='8'>No assigned tasks found.</td></tr>";
+}
+
+echo $output;
+
+$stmt->close();
+$conn->close();
+?>

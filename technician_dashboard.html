@@ -3,8 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Admin</title>
-    <link rel="stylesheet" href="frontend/styles/admin.css" />
+    <title>Technician</title>
+    <link rel="stylesheet" href="frontend/styles/technician_dashboard.css" />
     <!-- Change the default icon of the xampp -->
     <link
       rel="icon"
@@ -17,6 +17,8 @@
     />
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!--For ajax functions-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   </head>
   <body>
     <div class="wrapper">
@@ -34,184 +36,142 @@
             <a href="#" id="homeLink"><i class="fas fa-home"></i> Home</a>
           </li>
           <li>
-            <a href="#" id="subscriberLink"
-              ><i class="fas fa-user"></i> Subscriber</a
+            <a href="#" id="assignedTaskLink"
+              ><i class="fas fa-user"></i> Assigned Tasks</a
             >
           </li>
           <li>
-            <a href="#" id="applicationLink"
-              ><i class="fas fa-address-card"></i> Application</a
+            <a href="#" id="trackTaskLink"
+              ><i class="fas fa-address-card"></i> Track Tasks</a
             >
           </li>
           <li>
-            <a href="#" id="changePlanLink"
-              ><i class="fas fa-exchange"></i> Change Plan Requests</a
+            <a href="#" id="changePassLink"
+              ><i class="fas fa-exchange"></i> Change Password</a
             >
-          </li>
-          <li>
-            <a href="#" id="technicianLink"
-              ><i class="fas fa-project-diagram"></i> Technician</a
-            >
-          </li>
-          <li>
-            <a href="#" id="maintenanceLink"
-              ><i class="fas fa-exclamation-circle"></i> Maintenance Request</a
-            >
-          </li>
-          <li>
-            <a href="#"><i class="fa-solid fa-box"></i> Box slots</a>
-          </li>
-          <li>
-            <a href="#"><i class="fas fa-map"></i> 2D Map</a>
           </li>
           <li>
             <a href="login.html"><i class="fa fa-sign-out"></i> Log out</a>
           </li>
         </ul>
       </div>
+      
       <!--Contain all the elements need in admin-->
       <div class="main_content">
         <div class="header">
-          <button id="hamburgerBtn">
-            <i class="fas fa-bars"></i>
-          </button>
-          L.Y.N.X Admin Dashboard.
+        <button id="hamburgerBtn">
+          <i class="fas fa-bars"></i>
+        </button>
+        <p>L.Y.N.X Technician Dashboard.</p>
+        <h2><span id="techName"></span></h2>  
+      </div>
+
+      <!-- Summary Container -->
+      <div class="summary-container" id="summary-container">
+        <div class="summary-box" id="assignedTaskBox">
+          <i class="fas fa-address-card fa-3x" style="color: #3775b9"></i>
+          <h3>Assigned Tasks</h3>
+          <p id="totalApplicants">0</p>
+        </div>
+      </div>
+
+      <!--For assigned tasks-->
+      <div class="info">
+        <div id="assignedTaskDiv">
+        <h2>Assigned Tasks Details</h2>
+          <!-- Add a wrapper div with class "table-container" -->
+          <div class="table-container">
+            <table id="assignedTaskTable">
+              <thead>
+                <tr>
+                  <th>user ID</th>
+                  <th>Client Name</th>
+                  <th>Contact Number</th>
+                  <th>Address</th>
+                  <th>Issue Type</th>
+                  <th>Issue Description</th>
+                  <th>Contact Time</th>
+                  <th>Submit Report</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Data will be inserted here dynamically -->
+              </tbody>
+            </table>
+          </div>
         </div>
 
-        <!-- Summary Container -->
-        <div class="summary-container" id="summary-container">
-          <div class="summary-box" id="applicantsBox">
-            <i class="fas fa-address-card fa-3x" style="color: #3775b9"></i>
-            <h3>Applicants</h3>
-            <p id="totalApplicants">0</p>
-          </div>
-          <div class="summary-box" id="subscribersBox">
-            <i class="fas fa-user fa-3x" style="color: #3775b9"></i>
-            <h3>Subscribers</h3>
-            <p id="totalSubscribers">0</p>
-          </div>
-          <div class="summary-box" id="ChangePlanBox">
-            <i class="fas fa-exchange fa-3x" style="color: #3775b9"></i>
-            <h3>Change Plan Request</h3>
-            <p id="totalChangePlan">0</p>
-          </div>
-          <div class="summary-box" id="techniciansBox">
-            <i class="fas fa-project-diagram fa-3x" style="color: #3775b9"></i>
-            <h3>Technicians</h3>
-            <p id="totalTechnicians">0</p>
-          </div>
-          <div class="summary-box" id="maintenanceBox">
-            <i
-              class="fas fa-exclamation-circle fa-3x"
-              style="color: #3775b9"
-            ></i>
-            <h3>Maintenance Requests</h3>
-            <p id="totalMaintenance">0</p>
-          </div>
-          <div class="summary-box" id="boxSlotsBox">
-            <i class="fa-solid fa-box fa-3x" style="color: #3775b9"></i>
-            <h3>Box slots</h3>
-            <p id="totalBoxslots">0</p>
+        <!--For track tasks-->
+        <div id="trackTaskDiv">
+          <h2>Track Tasks</h2>
+          <!-- Add a wrapper div with class "table-container" -->
+          <div class="table-container">
+            <table id="trackTaskTable">
+              <thead>
+                <tr>
+                  <th>Technician ID</th>
+                  <th>Assigned Technician</th>
+                  <th>Client Name</th>
+                  <th>Issue</th>
+                  <th>Submitted Report</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Data will be inserted here dynamically -->
+              </tbody>
+            </table>
           </div>
         </div>
 
-        <!--For applications of plan-->
-        <div class="info">
-          <div id="applicationDiv">
-            <h2>Applicants</h2>
-            <!-- Add a wrapper div with class "table-container" -->
-            <div class="table-container">
-              <table id="applicationTable">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Subscription Plan</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Contact Number</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- Data will be inserted here dynamically -->
-                </tbody>
-              </table>
+        <!--For Changing Password-->
+        <div id="changePassDiv" class="change-password-section">
+        <h2>Change Password</h2>
+        <div class="password-form-container">
+        <form id="changePasswordForm">
+          <!-- Current Password -->
+          <div class="password-form-group">
+            <label for="currentPassword">Current Password</label>
+            <div class="input-group">
+              <input type="password" id="currentPassword" name="currentPassword" placeholder="Type current password">
+              <button type="button" class="toggle-btn" data-target="currentPassword">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+              </button>
             </div>
           </div>
 
-          <!--For subscribers-->
-          <div id="subscriberDiv">
-            <h2>Subscriber</h2>
-            <!-- Add a wrapper div with class "table-container" -->
-            <div class="table-container">
-              <table id="subscriberTable">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Subscription Plan</th>
-                    <th>Current Bill</th>
-                    <th>Due date</th>
-                    <th>First Name</th>
-                    <th>Last Name</th>
-                    <th>Contact Number</th>
-                    <th>Address</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- Data will be inserted here dynamically -->
-                </tbody>
-              </table>
+          <!-- New Password -->
+          <div class="password-form-group">
+            <label for="newPassword">New Password</label>
+            <div class="input-group">
+              <input type="password" id="newPassword" name="newPassword" placeholder="Type new password" required>
+              <button type="button" class="toggle-btn" data-target="newPassword">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+              </button>
             </div>
+            <p class="validation-msg" id="newPasswordMsg"></p>
           </div>
 
-          <!--For Changing Plan-->
-          <div id="changePlanDiv">
-            <h2>Change Plan Request</h2>
-            <!-- Add a wrapper div with class "table-container" -->
-            <div class="table-container">
-              <table id="changePlanTable">
-                <thead>
-                  <tr>
-                    <th>Change Plan ID</th>
-                    <th>User ID</th>
-                    <th>Name</th>
-                    <th>Current Plan</th>
-                    <th>New Plan</th>
-                    <th>Price</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- Data will be inserted here dynamically -->
-                </tbody>
-              </table>
+          <!-- Confirm Password -->
+          <div class="password-form-group">
+            <label for="confirmPassword">Confirm New Password</label>
+            <div class="input-group">
+              <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
+              <button type="button" class="toggle-btn" data-target="confirmPassword">
+                <i class="fa fa-eye" aria-hidden="true"></i>
+              </button>
             </div>
+            <p class="validation-msg" id="confirmPasswordMsg"></p>
           </div>
 
-          <!---For technician-->
-          <div id="technicianDiv">
-            <h2>Technicians</h2>
-            <!-- Add a wrapper div with class "table-container" -->
-            <div class="table-container">
-              <table id="technicianTable">
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Contact</th>
-                    <th>Role</th>
-                    <th>Status</th>
-                    <th>Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <!-- Data will be inserted here dynamically -->
-                </tbody>
-              </table>
-            </div>
-          </div>
-          
+          <button type="submit" class="change-password-btn">Change Password</button>
+        </form>
+        </div>
+        </div>       
         </div>
       </div>
     </div>
-
+    
+    <!--For sidebar-->
+    <script src="scripts/technician_sidebar.js"></script>
   </body>
 </html>
