@@ -2,6 +2,7 @@
 session_start();
 require 'connectdb.php';
 
+// Check if technician is logged in
 if (!isset($_SESSION['techName'])) {
     echo "<tr><td colspan='8'>You are not logged in.</td></tr>";
     exit;
@@ -10,6 +11,18 @@ if (!isset($_SESSION['techName'])) {
 $techName = trim($_SESSION['techName']);
 $techName = $conn->real_escape_string($techName);
 
+// Count the total number of assigned maintenance tasks for the logged-in technician
+$assignedTasksQuery = $conn->prepare("
+    SELECT COUNT(*) as total 
+    FROM maintenance_requests 
+    WHERE TRIM(technician_name) = ? AND status = 'assigned'
+");
+
+$assignedTasksQuery->bind_param("s", $techName);
+$assignedTasksQuery->execute();
+$response["assignedtasks"] = $assignedTasksQuery->get_result()->fetch_assoc()["total"]; // Added assigned tasks count
+
+// Now, let's fetch the maintenance requests for the technician
 $sql = "SELECT user_id, full_name, contact_number, address, issue_type, issue_description, contact_time 
         FROM maintenance_requests 
         WHERE TRIM(technician_name) = ?";
@@ -48,6 +61,11 @@ if ($result->num_rows > 0) {
 }
 
 echo $output;
+
+// Output the assigned tasks count
+echo "<div id='assignedTaskBox'>
+        <h3>Assigned Tasks: <span>" . $response["assignedtasks"] . "</span></h3>
+      </div>";
 
 $stmt->close();
 $conn->close();

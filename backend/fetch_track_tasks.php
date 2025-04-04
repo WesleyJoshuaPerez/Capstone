@@ -3,6 +3,10 @@ session_start();
 header('Content-Type: application/json');
 require 'connectdb.php';
 
+// Enable error reporting for debugging purposes
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 if (!isset($_SESSION['techName'])) {
     echo json_encode(["status" => "error", "message" => "Technician not logged in."]);
     exit;
@@ -24,10 +28,14 @@ $sql = "
     NULL AS work_description,
     NULL AS parts_used,
     NULL AS issues_encountered,
-    NULL AS technician_comments
+    NULL AS technician_comments,
+    COALESCE(mr.status, 'No Status') AS maintenance_status  -- Use full_name to join with maintenance_requests
   FROM progress_reports pr
+  LEFT JOIN maintenance_requests mr ON pr.client_name = mr.full_name  -- Join using full_name
   WHERE pr.submitted_by = ?)
-  UNION ALL
+
+  UNION
+
   (SELECT
     'completion' AS report_type,
     cf.completion_id AS report_id,
@@ -41,8 +49,10 @@ $sql = "
     cf.work_description,
     cf.parts_used,
     cf.issues_encountered,
-    cf.technician_comments
+    cf.technician_comments,
+    COALESCE(mr.status, 'No Status') AS maintenance_status  -- Use full_name to join with maintenance_requests
   FROM completion_report cf
+  LEFT JOIN maintenance_requests mr ON cf.client_name = mr.full_name  -- Join using full_name
   WHERE cf.submitted_by = ?)
   ORDER BY submitted_at DESC
 ";
@@ -52,6 +62,7 @@ if (!$stmt) {
     echo json_encode(["status" => "error", "message" => "Prepare failed: " . $conn->error]);
     exit;
 }
+
 $stmt->bind_param("ss", $techName, $techName);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -65,3 +76,4 @@ $stmt->close();
 $conn->close();
 
 echo json_encode(["status" => "success", "data" => $rows]);
+?>
