@@ -53,7 +53,7 @@ if (!$user) {
 
 if (!$user) {
     // Try technician login (lynx_technicians table) with an extended query to get the name as well.
-    $query = "SELECT id, name, password FROM lynx_technicians WHERE username = ?";
+    $query = "SELECT technician_id, name, password FROM lynx_technicians WHERE username = ?";
     $stmt = $conn->prepare($query);
     if ($stmt) {
         $stmt->bind_param("s", $username);
@@ -77,7 +77,7 @@ if ($user) {
     // For production, replace this plaintext comparison with password_verify() if passwords are hashed.
     if ($password === $user['password']) {
         // Store the appropriate ID in session. The operator '??' picks the first non-null value.
-        $_SESSION['user_id'] = $user['user_id'] ?? $user['admin_id'] ?? $user['id'];
+        $_SESSION['user_id'] = $user['user_id'] ?? $user['admin_id'] ?? $user['technician_id'];
         $_SESSION['username'] = $username;
         
         // Choose redirect based on role.

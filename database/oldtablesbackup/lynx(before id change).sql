@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 06, 2025 at 08:34 AM
--- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- Generation Time: Apr 03, 2025 at 06:40 PM
+-- Server version: 10.4.28-MariaDB
+-- PHP Version: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -42,7 +42,7 @@ CREATE TABLE `admin_lynx` (
 --
 
 INSERT INTO `admin_lynx` (`admin_id`, `username`, `password`, `full_name`, `email_address`, `phone`, `created_at`) VALUES
-(1, 'wesleyperez', '2004wesley', 'Wesley Joshua Perez', 'wjhperez@bpsu.edu.ph', '09300864398', '2025-03-10 03:54:22');
+(1, 'wesleyperez', 'superadmin17', 'Wesley Joshua Perez', 'wjhperez@bpsu.edu.ph', '09300864398', '2025-03-10 03:54:22');
 
 -- --------------------------------------------------------
 
@@ -77,7 +77,7 @@ CREATE TABLE `approved_user` (
 INSERT INTO `approved_user` (`user_id`, `username`, `password`, `subscription_plan`, `currentBill`, `fullname`, `birth_date`, `address`, `contact_number`, `email_address`, `id_type`, `id_number`, `id_photo`, `proof_of_residency`, `home_ownership_type`, `installation_date`, `registration_date`) VALUES
 (15, 'WJperez01', 'wesperez17', 'silver', 1499, 'WESLEY JOSHUA PEREZ', '2007-03-01', 'duale, limay, bataan', '09380868921', 'wesleyjoshuaperez@gmail.com', 'passport', '', 'idexample.jfif', 'por.jpg', 'Owned', '2025-03-28', '2025-03-27'),
 (16, 'Wperez jr14', 'Znx!lh9E', 'bronze', 1199, 'WILFREDO PEREZ JR', '1970-12-14', 'bilolo, orion, bataan', '09389234373', 'wilfredoperez@gmail.com', 'drivers-license', '', 'davidid.jfif', 'residency.png', 'Owned', '2025-03-16', '2025-03-28'),
-(17, 'Spaclaon01', 'sebastianpaclaon23', 'silver', 1499, 'SEBASTIAN PACLAON', '2007-03-01', 'duale, limay, bataan', '09380868921', 'wesleyjoshuaperez.iskolar@gmail.com', 'passport', '', 'davidid.jfif', 'por.jpg', 'Rented', '2025-03-28', '2025-03-09'),
+(17, 'Spaclaon01', 'sebastian12', 'silver', 1499, 'SEBASTIAN PACLAON', '2007-03-01', 'duale, limay, bataan', '09380868921', 'wesleyjoshuaperez.iskolar@gmail.com', 'passport', '', 'davidid.jfif', 'por.jpg', 'Rented', '2025-03-28', '2025-03-09'),
 (19, 'Krezada20', 'Rezada20', 'gold', 1799, 'KATE REZADA', '2003-11-20', 'duale, limay, bataan', '09961680320', 'katerezada0120@gmail.com', 'philhealth-id', '', 'Paps Valid ID.jpg', 'cat.png', 'Rented', '2025-03-28', '2025-03-27');
 
 -- --------------------------------------------------------
@@ -134,8 +134,7 @@ INSERT INTO `completion_report` (`completion_id`, `client_name`, `contact_number
 (1, 'KATE REZADA', '09961680320', 'Frequent Disconnections', 'dsfsdf', '2025-04-30 10:47:00', 'asdasd', 'asdad', 'asda', 'asdasd', 'John Doe', '2025-04-03 11:47:24'),
 (2, 'KATE REZADA', '09961680320', 'Frequent Disconnections', 'dsfsdf', '2025-04-24 19:56:00', 'sdad', 'asda', 'asda', 'asd', 'John Doe', '2025-04-03 11:53:25'),
 (3, 'KATE REZADA', '09961680320', 'Frequent Disconnections', 'dsfsdf', '0000-00-00 00:00:00', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.', 'John Doe', '2025-04-03 14:15:25'),
-(4, 'KATE REZADA', '09961680320', 'Frequent Disconnections', 'dsfsdf', '2025-04-22 11:05:00', 'mejo final test', 'mejo final test', 'mejo final test', 'mejo final test', 'John Doe', '2025-04-03 15:02:18'),
-(5, 'KATE REZADA', '09961680320', 'Frequent Disconnections', 'asdasd', '2025-04-04 19:15:00', 'Done', 'none', 'sds', 'sdsdsd', 'Emily Davis', '2025-04-04 11:15:40');
+(4, 'KATE REZADA', '09961680320', 'Frequent Disconnections', 'dsfsdf', '2025-04-22 11:05:00', 'mejo final test', 'mejo final test', 'mejo final test', 'mejo final test', 'John Doe', '2025-04-03 15:02:18');
 
 -- --------------------------------------------------------
 
@@ -144,7 +143,7 @@ INSERT INTO `completion_report` (`completion_id`, `client_name`, `contact_number
 --
 
 CREATE TABLE `lynx_technicians` (
-  `technician_id` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
   `name` varchar(100) NOT NULL,
   `username` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
@@ -159,7 +158,7 @@ CREATE TABLE `lynx_technicians` (
 -- Dumping data for table `lynx_technicians`
 --
 
-INSERT INTO `lynx_technicians` (`technician_id`, `name`, `username`, `password`, `role`, `contact`, `status`, `profile_image`, `created_at`) VALUES
+INSERT INTO `lynx_technicians` (`id`, `name`, `username`, `password`, `role`, `contact`, `status`, `profile_image`, `created_at`) VALUES
 (1, 'John Doe', 'johndoe', 'newpass123', 'Installer', '09123456789', 'Available', 'john_doe.png', '2025-03-19 06:47:27'),
 (2, 'Jane Smith', 'janesmith', 'janesmith123', 'Repair Technician', '09234567890', 'Available', 'jane_smith.png', '2025-03-19 06:47:27'),
 (3, 'Michael Johnson', 'michaeljohnson', 'michaeljohnson123', 'Installer', '09345678901', 'Available', 'michael_johnson.png', '2025-03-19 06:47:27'),
@@ -194,9 +193,7 @@ CREATE TABLE `maintenance_requests` (
 INSERT INTO `maintenance_requests` (`maintenance_id`, `user_id`, `full_name`, `contact_number`, `address`, `issue_type`, `issue_description`, `contact_time`, `evidence_filename`, `submitted_at`, `status`, `technician_name`) VALUES
 (1, 19, 'KATE REZADA', '09961680320', 'duale, limay, bataan', 'Frequent Disconnections', 'dsfsdf', 'Afternoon (12PM - 4PM)', 'Level0Diagram.png', '2025-03-28 10:44:58', 'Assigned', 'John Doe'),
 (2, 19, 'KATE REZADA', '09961680320', 'duale, limay, bataan', 'Billing Concerns', 'asdasdas', 'Afternoon (12PM - 4PM)', 'REZADA_Badge.png', '2025-03-28 10:45:55', 'Assigned', 'John Doe'),
-(6, 19, 'KATE REZADA', '09961680320', 'duale, limay, bataan', 'Frequent Disconnections', 'asdasd', 'Afternoon (12PM - 4PM)', 'ref.png', '2025-03-28 12:15:15', 'Assigned', 'Emily Davis'),
-(7, 17, 'SEBASTIAN PACLAON', '09380868921', 'duale, limay, bataan', 'No Internet Connection', 'sebastian12', 'Evening (4PM - 8PM)', 'gundam.png', '2025-04-04 11:04:36', 'Assigned', 'John Doe'),
-(8, 16, 'WILFREDO PEREZ JR', '09389234373', 'bilolo, orion, bataan', 'Router/Modem Issues', 'mahina net', 'Afternoon (12PM - 4PM)', 'Screenshot (76).png', '2025-04-06 06:22:27', 'Assigned', 'John Doe');
+(6, 19, 'KATE REZADA', '09961680320', 'duale, limay, bataan', 'Frequent Disconnections', 'asdasd', 'Afternoon (12PM - 4PM)', 'ref.png', '2025-03-28 12:15:15', 'Assigned', 'Emily Davis');
 
 -- --------------------------------------------------------
 
@@ -226,13 +223,7 @@ INSERT INTO `progress_reports` (`progress_id`, `client_name`, `contact_number`, 
 (2, 'KATE REZADA', '09961680320', 'Frequent Disconnections', 'dsfsdf', 'asdas', 'asdas', 2.00, 'John Doe', '2025-04-03 14:35:57'),
 (3, 'KATE REZADA', '09961680320', 'Billing Concerns', 'asdasdas', 'sample', 'sample', 2.00, 'John Doe', '2025-04-03 14:55:47'),
 (4, 'KATE REZADA', '09961680320', 'Frequent Disconnections', 'dsfsdf', 'mejo final test', 'mejo final test', 2.00, 'John Doe', '2025-04-03 15:01:40'),
-(5, 'KATE REZADA', '09961680320', 'Frequent Disconnections', 'dsfsdf', 'mejo mejo final', 'mejo mejo final', 2.00, 'John Doe', '2025-04-03 15:04:20'),
-(6, 'KATE REZADA', '09961680320', 'Frequent Disconnections', 'asdasd', 'sdsd', 'sdsdsd', 2.50, 'Emily Davis', '2025-04-04 09:11:52'),
-(7, 'KATE REZADA', '09961680320', 'Frequent Disconnections', 'asdasd', 'this is the update', 'can be done', 1.00, 'Emily Davis', '2025-04-04 09:46:29'),
-(8, 'SEBASTIAN PACLAON', '09380868921', 'No Internet Connection', 'sebastian12', 'pcket loss net to chnge modem', 'note finish witing for order of modem', 0.50, 'John Doe', '2025-04-04 11:06:56'),
-(9, 'SEBASTIAN PACLAON', '09380868921', 'No Internet Connection', 'sebastian12', 'sdsdsdsdsd', 'sdsd', 0.50, 'John Doe', '2025-04-04 11:07:40'),
-(10, 'KATE REZADA', '09961680320', 'Frequent Disconnections', 'asdasd', 'none', 'sdsd', 0.50, 'Emily Davis', '2025-04-04 11:12:02'),
-(11, 'WILFREDO PEREZ JR', '09389234373', 'Router/Modem Issues', 'mahina net', 'checking the modem', 'will go back tomorrow for replacing the modem', 1.00, 'John Doe', '2025-04-06 06:27:00');
+(5, 'KATE REZADA', '09961680320', 'Frequent Disconnections', 'dsfsdf', 'mejo mejo final', 'mejo mejo final', 2.00, 'John Doe', '2025-04-03 15:04:20');
 
 -- --------------------------------------------------------
 
@@ -284,7 +275,7 @@ INSERT INTO `registration_acc` (`id`, `subscription_plan`, `first_name`, `last_n
 --
 
 CREATE TABLE `resetpass_request` (
-  `resetpass_request_id` int(11) NOT NULL,
+  `id` int(11) NOT NULL,
   `reset_token` varchar(255) NOT NULL,
   `email_address` varchar(100) NOT NULL,
   `request_date` timestamp NOT NULL DEFAULT current_timestamp(),
@@ -296,7 +287,7 @@ CREATE TABLE `resetpass_request` (
 -- Dumping data for table `resetpass_request`
 --
 
-INSERT INTO `resetpass_request` (`resetpass_request_id`, `reset_token`, `email_address`, `request_date`, `user_id`, `role`) VALUES
+INSERT INTO `resetpass_request` (`id`, `reset_token`, `email_address`, `request_date`, `user_id`, `role`) VALUES
 (1, '9SV0TCD1LF', 'wesleyjoshuaperez@gmail.com', '2025-03-05 05:59:29', 15, 'user'),
 (2, '8A3Y49B5QK', 'wesleyjoshuaperez@gmail.com', '2025-03-09 02:08:02', 15, 'user'),
 (3, 'M70BN2Z5VR', 'wesleyjoshuaperez@gmail.com', '2025-03-09 02:08:38', 15, 'user'),
@@ -348,7 +339,7 @@ ALTER TABLE `completion_report`
 -- Indexes for table `lynx_technicians`
 --
 ALTER TABLE `lynx_technicians`
-  ADD PRIMARY KEY (`technician_id`);
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `maintenance_requests`
@@ -372,7 +363,7 @@ ALTER TABLE `registration_acc`
 -- Indexes for table `resetpass_request`
 --
 ALTER TABLE `resetpass_request`
-  ADD PRIMARY KEY (`resetpass_request_id`),
+  ADD PRIMARY KEY (`id`),
   ADD KEY `user_id` (`user_id`);
 
 --
@@ -395,25 +386,25 @@ ALTER TABLE `change_plan_application`
 -- AUTO_INCREMENT for table `completion_report`
 --
 ALTER TABLE `completion_report`
-  MODIFY `completion_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `completion_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `lynx_technicians`
 --
 ALTER TABLE `lynx_technicians`
-  MODIFY `technician_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `maintenance_requests`
 --
 ALTER TABLE `maintenance_requests`
-  MODIFY `maintenance_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `maintenance_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `progress_reports`
 --
 ALTER TABLE `progress_reports`
-  MODIFY `progress_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `progress_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `registration_acc`
@@ -425,7 +416,7 @@ ALTER TABLE `registration_acc`
 -- AUTO_INCREMENT for table `resetpass_request`
 --
 ALTER TABLE `resetpass_request`
-  MODIFY `resetpass_request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

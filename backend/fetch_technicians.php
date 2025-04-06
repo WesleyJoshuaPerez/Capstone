@@ -24,7 +24,7 @@ $technicians = [];
 
 while ($row = $result->fetch_assoc()) {
     $technicians[] = [
-        "id" => $row["id"],
+        "id" => $row["technician_id"],
         "name" => $row["name"],
         "role" => $row["role"],
         "contact" => $row["contact"],

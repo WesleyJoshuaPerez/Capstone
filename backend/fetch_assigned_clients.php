@@ -15,7 +15,7 @@ $technician_id = intval($_GET['technician_id']);
 $countOnly = isset($_GET['count']) && $_GET['count'] === 'true';
 
 // Retrieve technician name from lynx_technicians table
-$stmt = $conn->prepare("SELECT name FROM lynx_technicians WHERE id = ?");
+$stmt = $conn->prepare("SELECT name FROM lynx_technicians WHERE technician_id = ?");
 if (!$stmt) {
     echo json_encode(['success' => false, 'error' => 'Failed to prepare statement: ' . $conn->error]);
     exit;

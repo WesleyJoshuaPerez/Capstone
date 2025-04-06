@@ -12,7 +12,7 @@ if (!isset($_SESSION['user_id'])) {
 
 $tech_id = $_SESSION['user_id'];
 
-$stmt = $conn->prepare("SELECT id, name FROM lynx_technicians WHERE id = ?");
+$stmt = $conn->prepare("SELECT technician_id, name FROM lynx_technicians WHERE technician_id = ?");
 if (!$stmt) {
     echo json_encode(["status" => "error", "message" => "Database error: " . $conn->error]);
     exit;
@@ -26,12 +26,12 @@ if ($result->num_rows > 0) {
     $tech = $result->fetch_assoc();
 
     // Store technician ID and name in session for future use
-    $_SESSION['tech_id'] = $tech['id'];
+    $_SESSION['tech_id'] = $tech['technician_id'];
     $_SESSION['techName'] = $tech['name'];
 
     echo json_encode([
         "status" => "success",
-        "id" => $tech['id'],
+        "technician_id" => $tech['technician_id'],
         "name" => $tech['name']
     ]);
 } else {

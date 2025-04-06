@@ -5,15 +5,15 @@ header('Content-Type: application/json');
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-if (!isset($data['id']) || !isset($data['status'])) {
+if (!isset($data['technician_id']) || !isset($data['status'])) {
     echo json_encode(["success" => false, "error" => "Missing parameters"]);
     exit;
 }
 
-$technicianId = intval($data['id']);
+$technicianId = intval($data['technician_id']);
 $status = $data['status'];
 
-$stmt = $conn->prepare("UPDATE lynx_technicians SET status = ? WHERE id = ?");
+$stmt = $conn->prepare("UPDATE lynx_technicians SET status = ? WHERE technician_id = ?");
 if (!$stmt) {
     echo json_encode(["success" => false, "error" => $conn->error]);
     exit;
