@@ -60,12 +60,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const maintenanceLink = document.querySelector("#maintenanceLink");
   const technicianLink = document.querySelector("#technicianLink");
   const mapLink = document.querySelector("#mapLink");
+  const boxslotLink = document.querySelector("#boxslotLink");
 
   //for clicking summary boxes
   const applicantsBox = document.querySelector("#applicantsBox");
   const subscribersBox = document.querySelector("#subscribersBox");
   const techniciansBox = document.querySelector("#techniciansBox");
   const maintenanceBox = document.querySelector("#maintenanceBox");
+  const boxSlotsBox = document.querySelector("#boxSlotsBox");
 
   // Hide sections initially
   summary_container.style.display = "flex";
@@ -75,6 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
   maintenance_reqDiv.style.display = "none";
   technicianDiv.style.display = "none";
   mapContainer.style.display = "none";
+  BoxslotsDiv.style.display = "none";
 
   // Show Home and hide other section
   homeLink.addEventListener("click", function (event) {
@@ -86,6 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
     subscriberDiv.style.display = "none";
     technicianDiv.style.display = "none";
     mapContainer.style.display = "none";
+    BoxslotsDiv.style.display = "none";
   });
 
   // Show Subscribers and hide other section
@@ -98,6 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
     summary_container.style.display = "none";
     technicianDiv.style.display = "none";
     mapContainer.style.display = "none";
+    BoxslotsDiv.style.display = "none";
     fetchSubscribers();
   });
   subscribersBox.addEventListener("click", function (event) {
@@ -109,6 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
     summary_container.style.display = "none";
     technicianDiv.style.display = "none";
     mapContainer.style.display = "none";
+    BoxslotsDiv.style.display = "none";
     fetchSubscribers();
   });
 
@@ -122,6 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
     summary_container.style.display = "none";
     technicianDiv.style.display = "none";
     mapContainer.style.display = "none";
+    BoxslotsDiv.style.display = "none";
     fetchApplications();
   });
   applicantsBox.addEventListener("click", function (event) {
@@ -133,6 +140,7 @@ document.addEventListener("DOMContentLoaded", function () {
     summary_container.style.display = "none";
     technicianDiv.style.display = "none";
     mapContainer.style.display = "none";
+    BoxslotsDiv.style.display = "none";
     fetchApplications();
   });
 
@@ -146,6 +154,7 @@ document.addEventListener("DOMContentLoaded", function () {
     changePlanDiv.style.display = "none";
     technicianDiv.style.display = "none";
     mapContainer.style.display = "none";
+    BoxslotsDiv.style.display = "none";
     fetchMaintenancereq();
   });
   maintenanceBox.addEventListener("click", function (event) {
@@ -156,6 +165,7 @@ document.addEventListener("DOMContentLoaded", function () {
     summary_container.style.display = "none";
     technicianDiv.style.display = "none";
     mapContainer.style.display = "none";
+    BoxslotsDiv.style.display = "none";
     fetchMaintenancereq();
   });
 
@@ -169,6 +179,7 @@ document.addEventListener("DOMContentLoaded", function () {
     applicationDiv.style.display = "none";
     summary_container.style.display = "none";
     mapContainer.style.display = "none";
+    BoxslotsDiv.style.display = "none";
     fetchTechnicians();
   });
   techniciansBox.addEventListener("click", function (event) {
@@ -180,6 +191,7 @@ document.addEventListener("DOMContentLoaded", function () {
     applicationDiv.style.display = "none";
     summary_container.style.display = "none";
     mapContainer.style.display = "none";
+    BoxslotsDiv.style.display = "none";
     fetchTechnicians();
   });
 
@@ -193,6 +205,7 @@ document.addEventListener("DOMContentLoaded", function () {
     applicationDiv.style.display = "none";
     summary_container.style.display = "none";
     mapContainer.style.display = "none";
+    BoxslotsDiv.style.display = "none";
     fetchChangeplanReq();
   });
   ChangePlanBox.addEventListener("click", function (event) {
@@ -204,6 +217,7 @@ document.addEventListener("DOMContentLoaded", function () {
     applicationDiv.style.display = "none";
     summary_container.style.display = "none";
     mapContainer.style.display = "none";
+    BoxslotsDiv.style.display = "none";
     fetchChangeplanReq();
   });
   //show the 2d map
@@ -215,5 +229,30 @@ document.addEventListener("DOMContentLoaded", function () {
     applicationDiv.style.display = "none";
     summary_container.style.display = "none";
     mapContainer.style.display = "block";
+    BoxslotsDiv.style.display = "none";
+  });
+
+  //Show Box slot div and hide other section
+  boxslotLink.addEventListener("click", function (event) {
+    event.preventDefault();
+    BoxslotsDiv.style.display = "block";
+    changePlanDiv.style.display = "none";
+    maintenance_reqDiv.style.display = "none";
+    subscriberDiv.style.display = "none";
+    technicianDiv.style.display = "none";
+    applicationDiv.style.display = "none";
+    summary_container.style.display = "none";
+    mapContainer.style.display = "none";
+  });
+  boxSlotsBox.addEventListener("click", function (event) {
+    event.preventDefault();
+    BoxslotsDiv.style.display = "block";
+    changePlanDiv.style.display = "none";
+    maintenance_reqDiv.style.display = "none";
+    subscriberDiv.style.display = "none";
+    technicianDiv.style.display = "none";
+    applicationDiv.style.display = "none";
+    summary_container.style.display = "none";
+    mapContainer.style.display = "none";
   });
 });

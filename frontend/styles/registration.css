@@ -52,7 +52,7 @@ p {
   width: 30px;
   height: 30px;
   border-radius: 50%;
-  background-color: #0EA5E9;
+  background-color: #0ea5e9;
   color: white;
   display: flex;
   justify-content: center;
@@ -62,7 +62,7 @@ p {
 }
 
 .step.active .circle {
-  background-color: #1E3A8A;
+  background-color: #1e3a8a;
 }
 
 /* Main Grid Layout */
@@ -87,7 +87,11 @@ p {
   font-weight: bold;
   text-align: center;
   border: 10px solid transparent;
-  border-image-source: linear-gradient(to right, #0073ffb7, #00c6ff); /* Gradient border */
+  border-image-source: linear-gradient(
+    to right,
+    #0073ffb7,
+    #00c6ff
+  ); /* Gradient border */
   border-image-slice: 1; /* Ensure full coverage */
   width: 100%; /* Adjust width for responsiveness */
   max-width: 400px;
@@ -341,7 +345,6 @@ button:hover {
   width: 100%;
   border: 1px solid #ccc;
 }
-
 
 .submit {
   border-radius: 5px;

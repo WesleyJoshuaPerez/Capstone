@@ -250,7 +250,8 @@ body {
 #subscriberDiv,
 #maintenance_reqDiv,
 #technicianDiv,
-#changePlanDiv {
+#changePlanDiv,
+#BoxslotsDiv {
   display: none;
   padding: 20px;
   background: white;
@@ -270,7 +271,8 @@ body {
 #subscriberTable,
 #maintenance_reqTable,
 #technicianTable,
-#changePlanTable {
+#changePlanTable,
+#boxslotTable {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
@@ -281,11 +283,13 @@ body {
 #maintenance_reqTable th,
 #technicianTable th,
 #changePlanTable th,
+#boxslotTable th,
 #applicationTable td,
 #subscriberTable td,
 #maintenance_reqTable td,
 #technicianTable td,
-#changePlanTable td {
+#changePlanTable td,
+#boxslotTable td {
   border: 1px solid #ddd;
   text-align: left;
   padding: 10px;
@@ -295,7 +299,8 @@ body {
 #subscriberTable th,
 #maintenance_reqTable th,
 #technicianTable th,
-#changePlanTable th {
+#changePlanTable th,
+#boxslotTable th {
   background-color: #3775b9;
   color: white;
 }
@@ -304,7 +309,8 @@ body {
 #subscriberTable tr:hover,
 #maintenance_reqTable tr:hover,
 #technicianTable tr:hover,
-#changePlanTable tr:hover {
+#changePlanTable tr:hover,
+#boxslotTable tr:hover {
   background-color: #f1f1f1;
   cursor: pointer;
 }
@@ -400,7 +406,8 @@ body {
   #subscriberTable,
   #maintenance_reqTable,
   #technicianTable,
-  #changePlanTable {
+  #changePlanTable,
+  #boxslotTable {
     min-width: 300px;
     width: auto;
     font-size: 14px;
@@ -415,7 +422,9 @@ body {
   #technicianTable th,
   #technicianTable td,
   #changePlanTable th,
-  #changePlanTable td {
+  #changePlanTable td,
+  #boxslotTable th,
+  #boxslotTable td {
     padding: 5px;
     font-size: 12px;
   }
@@ -459,7 +468,8 @@ body {
   #subscriberTable,
   #maintenance_reqTable,
   #technicianTable,
-  #changePlanTable {
+  #changePlanTable,
+  #boxslotTable {
     min-width: 300px;
     width: auto;
     font-size: 12px;
@@ -474,8 +484,32 @@ body {
   #technicianTable th,
   #technicianTable td,
   #changePlanTable th,
-  #changePlanTable td {
+  #changePlanTable td,
+  #boxslotTable th,
+  #boxslotTable td {
     padding: 3px;
     font-size: 10px;
   }
+}
+
+/* 👇👇👇 NEW BUTTON STYLE FOR "Add Technician" 👇👇👇 */
+#addTechnicianBtn,
+#addNapboxBtn {
+  background-color: #3775b9;
+  color: white;
+  padding: 10px 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#addTechnicianBtn:hover,
+#addNapboxBtn:hover {
+  background-color: #2a5c92;
+  transform: scale(1.03);
 }
