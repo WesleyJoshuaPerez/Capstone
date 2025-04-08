@@ -37,7 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($role === 'user') {
                 $updateStmt = $conn->prepare("UPDATE approved_user SET password = ? WHERE email_address = ?");
             } elseif ($role === 'admin') {
-                $updateStmt = $conn->prepare("UPDATE admin_lynx SET password = ? WHERE email_address = ?");
+                $updateStmt = $conn->prepare("UPDATE lynx_admin SET password = ? WHERE email_address = ?");
             } else {
                 $response["message"] = "Invalid user role.";
                 echo json_encode($response);

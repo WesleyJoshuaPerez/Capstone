@@ -23,11 +23,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['email'])) {
     $user_id = null;
     $role = null;
 
-    // Check if email exists in approved_user or admin_lynx
+    // Check if email exists in approved_user or lynx_admin
     $stmt = $conn->prepare("
         SELECT user_id, 'user' AS role FROM approved_user WHERE email_address = ? 
         UNION 
-        SELECT admin_id AS user_id, 'admin' AS role FROM admin_lynx WHERE email_address = ?
+        SELECT admin_id AS user_id, 'admin' AS role FROM lynx_admin WHERE email_address = ?
     ");
     if (!$stmt) {
         echo json_encode(["status" => "error", "title" => "Database Error", "message" => "Query preparation failed: " . $conn->error]);

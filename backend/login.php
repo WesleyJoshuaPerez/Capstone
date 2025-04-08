@@ -44,8 +44,8 @@ $is_technician = false;
 $user = checkLogin($conn, "approved_user", "user_id", $username);
 
 if (!$user) {
-    // Try admin login (admin_lynx table)
-    $user = checkLogin($conn, "admin_lynx", "admin_id", $username);
+    // Try admin login (lynx_admin table)
+    $user = checkLogin($conn, "lynx_admin", "admin_id", $username);
     if ($user) {
         $is_admin = true;
     }
