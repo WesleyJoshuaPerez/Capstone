@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 10, 2025 at 12:41 PM
+-- Generation Time: Apr 08, 2025 at 10:49 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -52,7 +52,7 @@ CREATE TABLE `approved_user` (
 --
 
 INSERT INTO `approved_user` (`user_id`, `username`, `password`, `subscription_plan`, `currentBill`, `fullname`, `birth_date`, `address`, `contact_number`, `email_address`, `id_type`, `id_number`, `id_photo`, `proof_of_residency`, `home_ownership_type`, `installation_date`, `registration_date`) VALUES
-(15, 'WJperez01', 'wesleyperez17', 'silver', 1499, 'WESLEY JOSHUA PEREZ', '2007-03-01', 'duale, limay, bataan', '09380868921', 'wesleyjoshuaperez@gmail.com', 'passport', '', 'idexample.jfif', 'por.jpg', 'Owned', '2025-03-28', '2025-03-27'),
+(15, 'WJperez01', ' wesperez17', 'silver', 1499, 'WESLEY JOSHUA PEREZ', '2007-03-01', 'duale, limay, bataan', '09380868921', 'wesleyjoshuaperez@gmail.com', 'passport', '', 'idexample.jfif', 'por.jpg', 'Owned', '2025-03-28', '2025-03-27'),
 (16, 'Wperez jr14', 'Znx!lh9E', 'bronze', 1199, 'WILFREDO PEREZ JR', '1970-12-14', 'bilolo, orion, bataan', '09389234373', 'wilfredoperez@gmail.com', 'drivers-license', '', 'davidid.jfif', 'residency.png', 'Owned', '2025-03-16', '2025-03-28'),
 (17, 'Spaclaon01', 'sebastianpaclaon23', 'silver', 1499, 'SEBASTIAN PACLAON', '2007-03-01', 'duale, limay, bataan', '09380868921', 'wesleyjoshuaperez.iskolar@gmail.com', 'passport', '', 'davidid.jfif', 'por.jpg', 'Rented', '2025-03-28', '2025-03-09'),
 (19, 'Krezada20', 'Rezada20', 'gold', 1799, 'KATE REZADA', '2003-11-20', 'duale, limay, bataan', '09961680320', 'katerezada0120@gmail.com', 'philhealth-id', '', 'Paps Valid ID.jpg', 'cat.png', 'Rented', '2025-03-28', '2025-03-27');
@@ -426,7 +426,7 @@ ALTER TABLE `registration_acc`
 -- AUTO_INCREMENT for table `resetpass_request`
 --
 ALTER TABLE `resetpass_request`
-  MODIFY `resetpass_request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `resetpass_request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
