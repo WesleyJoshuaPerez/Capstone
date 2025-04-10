@@ -182,7 +182,7 @@ document.addEventListener("DOMContentLoaded", function () {
   mapLink.addEventListener("click", function (event) {
     event.preventDefault();
     Swal.fire({
-      title: "Pin Location", // Changed title as requested
+      title: "Pin My Location", 
       html: '<div id="mapInSwal" style="width: 100%; height: 400px;"></div>',
       showCancelButton: true,
       confirmButtonText: "Save Location",
@@ -190,7 +190,7 @@ document.addEventListener("DOMContentLoaded", function () {
       didOpen: () => {
         const mapInSwal = document.getElementById("mapInSwal");
 
-        // Create a custom RED marker icon
+        // RED marker icon
         const redIcon = new L.Icon({
           iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
           shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
@@ -230,7 +230,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         let marker;
-        // On map click, create or move the red marker and update coordinates dynamically
+        // Update coordinates dynamically
         map.on("click", function (e) {
           const lat = e.latlng.lat;
           const lng = e.latlng.lng;

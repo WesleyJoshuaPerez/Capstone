@@ -38,7 +38,7 @@ $municipality = $_POST['municipality'];
 $barangay = $_POST['barangay'];
 $installation_date = !empty($_POST['installation-date']) ? date('Y-m-d', strtotime($_POST['installation-date'])) : NULL; // Convert date
 
-// Retrieve the address details (e.g., house number and street) if needed
+// Retrieve the address details if needed
 $address_details = $_POST['address_details'] ?? "";
 
 // Retrieve pinned coordinates from hidden fields, if provided
@@ -88,7 +88,7 @@ $stmt->bind_param(
     $latitude, $longitude
 );
 
-// ✅ Execute Query and Show SweetAlert Message
+// Execute Query and Show SweetAlert Message
 if ($stmt->execute()) {
     echo '<!DOCTYPE html>
           <html lang="en">
@@ -152,6 +152,5 @@ if ($stmt->execute()) {
 $stmt->close();
 $conn->close();
 
-// Flush output to prevent blank page
 ob_end_flush();
 ?>

@@ -465,20 +465,14 @@ button:hover {
   }
 }
 
-/* ===========================
-   Stylish Text Fields 
-   (after your existing rules)
-=========================== */
-
-/* Make labels stand out a bit more */
+/** stying of fields**/
 .form-step label {
   display: block;
   margin-bottom: 2px;
-  font-weight: 600; /* Slightly bolder font */
-  color: #333;       /* Dark text color for good contrast */
+  font-weight: 600; 
+  color: #333;      
 }
 
-/* Uniform style for all text-based inputs, email, password, select, and file uploads */
 .form-step input[type="text"],
 .form-step input[type="email"],
 .form-step input[type="password"],
@@ -490,13 +484,12 @@ button:hover {
   font-size: 14px;
   color: #333;
   background-color: #fff;
-  border: 1px solid #ccc;  /* Subtle border */
+  border: 1px solid #ccc;  
   border-radius: 4px;
   transition: border-color 0.3s ease, box-shadow 0.3s ease;
   box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
 }
 
-/* Hover and Focus states for better user feedback */
 .form-step input[type="text"]:hover,
 .form-step input[type="email"]:hover,
 .form-step input[type="password"]:hover,
@@ -511,36 +504,20 @@ button:hover {
 .form-step select:focus,
 .form-step input[type="file"]:focus {
   outline: none; 
-  border-color: #0487c4; /* matches your button color */
+  border-color: #0487c4;
   box-shadow: 0 0 0 1px #0487c4;
 }
 
-/* 
-  If you want a consistent look for file inputs specifically, 
-  you can add a bit more style to them:
-*/
 .form-step input[type="file"] {
   cursor: pointer;
-  /* Possibly hide the default file input style (optional) */
-  /* 
-  &::-webkit-file-upload-button {
-    display: none;
-  }
-  content: 'Upload File';
-  */
 }
 
-/* For the next/prev/submit buttons, 
-   we keep your existing style but can add 
-   a bit more spacing or box-shadow if desired
-*/
 button {
   font-weight: 600;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* optional subtle shadow */
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
   transition: background 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Hover effect on buttons */
 button:hover {
   box-shadow: 0 3px 6px rgba(0,0,0,0.15);
 }
