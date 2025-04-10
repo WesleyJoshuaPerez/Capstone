@@ -38,12 +38,18 @@ $municipality = $_POST['municipality'];
 $barangay = $_POST['barangay'];
 $installation_date = !empty($_POST['installation-date']) ? date('Y-m-d', strtotime($_POST['installation-date'])) : NULL; // Convert date
 
+// Retrieve the address details (e.g., house number and street) if needed
+$address_details = $_POST['address_details'] ?? "";
+
+// Retrieve pinned coordinates from hidden fields, if provided
+$latitude = $_POST['latitude'] ?? "";
+$longitude = $_POST['longitude'] ?? "";
+
 // Handle checkboxes (store "Checked" or "Unchecked")
 $terms_agreed = isset($_POST['terms']) ? "Checked" : "Unchecked";
 $data_processing_consent = isset($_POST['data-processing']) ? "Checked" : "Unchecked";
 $id_photo_consent = isset($_POST['id-photo-consent']) ? "Checked" : "Unchecked";
 
-// Handle file uploads
 // Handle file uploads
 $target_dir1 = "../frontend/assets/images/uploads/Id_Photo/";
 if (!is_dir($target_dir1)) { mkdir($target_dir1, 0777, true); }
@@ -62,21 +68,24 @@ $proof_of_residency_path = $target_dir2 . $proof_of_residency_filename;
 // Move uploaded files
 move_uploaded_file($_FILES["id_photo"]["tmp_name"], $id_photo_path);
 move_uploaded_file($_FILES["proof_of_residency"]["tmp_name"], $proof_of_residency_path);
-// Insert into database
+
+// Update the INSERT query to include the pinned coordinates columns (address_latitude, address_longitude)
 $sql = "INSERT INTO registration_acc (
     subscription_plan, first_name, last_name, contact_number, email_address, 
     birth_date, id_type, id_number, id_photo, home_ownership_type, 
     province, municipality, barangay, proof_of_residency,
-    installation_date, terms_agreed, data_processing_consent, id_photo_consent
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    installation_date, terms_agreed, data_processing_consent, id_photo_consent,
+    address_latitude, address_longitude
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 $stmt = $conn->prepare($sql);
 $stmt->bind_param(
-    "ssssssssssssssssss",
+    "ssssssssssssssssssss", 
     $subscription_plan, $first_name, $last_name, $contact_number, $email_address, 
     $birth_date, $id_type, $id_number, $id_photo_filename, $home_ownership_type, 
     $province, $municipality, $barangay, $proof_of_residency_filename, 
-    $installation_date, $terms_agreed, $data_processing_consent, $id_photo_consent
+    $installation_date, $terms_agreed, $data_processing_consent, $id_photo_consent, 
+    $latitude, $longitude
 );
 
 // ✅ Execute Query and Show SweetAlert Message
@@ -140,11 +149,9 @@ if ($stmt->execute()) {
           </html>';
 }
 
-// Close connection
 $stmt->close();
 $conn->close();
 
 // Flush output to prevent blank page
-// initial code of php w/o duplication validation
 ob_end_flush();
 ?>

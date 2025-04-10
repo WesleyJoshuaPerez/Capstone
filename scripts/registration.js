@@ -147,7 +147,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Add event listener to update barangay dropdown when municipality is changed
+// Add event listener to update barangay dropdown when municipality is changed
   municipalitySelect.addEventListener("change", updateBarangays);
 });
 
@@ -174,3 +174,107 @@ document.addEventListener("DOMContentLoaded", function () {
     disableMobile: true, // Prevent native date picker on mobile
   });
 });
+
+
+// 2d map
+document.addEventListener("DOMContentLoaded", function () {
+  const mapLink = document.getElementById("mapLink");
+  mapLink.addEventListener("click", function (event) {
+    event.preventDefault();
+    Swal.fire({
+      title: "Pin Location", // Changed title as requested
+      html: '<div id="mapInSwal" style="width: 100%; height: 400px;"></div>',
+      showCancelButton: true,
+      confirmButtonText: "Save Location",
+      cancelButtonText: "Cancel",
+      didOpen: () => {
+        const mapInSwal = document.getElementById("mapInSwal");
+
+        // Create a custom RED marker icon
+        const redIcon = new L.Icon({
+          iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
+          shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+          iconSize: [25, 41],
+          iconAnchor: [12, 41],
+          popupAnchor: [1, -34],
+          shadowSize: [41, 41],
+        });
+
+        // Initialize the map inside the SweetAlert popup
+        const map = L.map(mapInSwal).setView([14.6717, 120.5487], 14);
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution: "&copy; OpenStreetMap contributors",
+        }).addTo(map);
+
+        // Force the map to recalculate its size after the modal opens
+        setTimeout(() => {
+          map.invalidateSize();
+        }, 100);
+
+        // Attempt to use geolocation if available
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            function (position) {
+              const userLat = position.coords.latitude;
+              const userLng = position.coords.longitude;
+              map.setView([userLat, userLng], 14);
+              L.marker([userLat, userLng], { icon: redIcon })
+                .addTo(map)
+                .bindPopup("You are here!")
+                .openPopup();
+            },
+            function (error) {
+              console.error("Geolocation error:", error.message);
+            }
+          );
+        }
+
+        let marker;
+        // On map click, create or move the red marker and update coordinates dynamically
+        map.on("click", function (e) {
+          const lat = e.latlng.lat;
+          const lng = e.latlng.lng;
+
+          if (marker) {
+            marker.setLatLng(e.latlng);
+          } else {
+            marker = L.marker(e.latlng, { draggable: true, icon: redIcon })
+              .addTo(map)
+              .bindPopup("Your selected location")
+              .openPopup();
+
+            // When dragging finishes, update hidden fields and coordinate display
+            marker.on("dragend", function (ev) {
+              const newPos = ev.target.getLatLng();
+              document.getElementById("latitude").value = newPos.lat;
+              document.getElementById("longitude").value = newPos.lng;
+              document.getElementById("dynamicCoords").textContent =
+                `Coordinates: ${newPos.lat.toFixed(5)}, ${newPos.lng.toFixed(5)}`;
+            });
+          }
+          // Update hidden fields and dynamic coordinate display
+          document.getElementById("latitude").value = lat;
+          document.getElementById("longitude").value = lng;
+          document.getElementById("dynamicCoords").textContent =
+            `Coordinates: ${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+        });
+      },
+      preConfirm: () => {
+        // Get the coordinate values from the hidden fields
+        const lat = document.getElementById("latitude").value;
+        const lng = document.getElementById("longitude").value;
+        // If coordinates are not set, display a validation message and prevent closing the modal
+        if (!lat || !lng) {
+          Swal.showValidationMessage("Please select a location on the map.");
+          return false;
+        }
+        return { latitude: lat, longitude: lng };
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire("Location Saved!", "Your coordinates have been saved.", "success");
+      }
+    });
+  });
+});
+

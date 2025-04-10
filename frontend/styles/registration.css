@@ -367,6 +367,42 @@ button:hover {
   background-color: #27b2f3;
 }
 
+/* for 2d map */
+#mapLink {
+  width: 50rem;
+  padding: 10px 15px;
+  background: linear-gradient(135deg, #ff6b6b, #ff8787);
+  color: white;
+  text-decoration: none;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  margin-top: 20px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+#mapLink:hover {
+  background: linear-gradient(135deg, #ff4d4d, #ff6969);
+}
+#mapLink i {
+  margin-right: 8px;
+}
+
+/* Map container styling */
+#mapContainer {
+  display: none;  /* Initially hidden */
+  width: 100%;
+  height: 600px;  /* Define a fixed height */
+  position: relative;
+}
+#map {
+  width: 100%;
+  height: 100%;
+}
 /* Responsive Design */
 @media (max-width: 950px) {
   .grid-container {
@@ -427,4 +463,84 @@ button:hover {
   h3 {
     text-align: left;
   }
+}
+
+/* ===========================
+   Stylish Text Fields 
+   (after your existing rules)
+=========================== */
+
+/* Make labels stand out a bit more */
+.form-step label {
+  display: block;
+  margin-bottom: 2px;
+  font-weight: 600; /* Slightly bolder font */
+  color: #333;       /* Dark text color for good contrast */
+}
+
+/* Uniform style for all text-based inputs, email, password, select, and file uploads */
+.form-step input[type="text"],
+.form-step input[type="email"],
+.form-step input[type="password"],
+.form-step select,
+.form-step input[type="file"] {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  font-size: 14px;
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #ccc;  /* Subtle border */
+  border-radius: 4px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* Hover and Focus states for better user feedback */
+.form-step input[type="text"]:hover,
+.form-step input[type="email"]:hover,
+.form-step input[type="password"]:hover,
+.form-step select:hover,
+.form-step input[type="file"]:hover {
+  border-color: #bbb;
+}
+
+.form-step input[type="text"]:focus,
+.form-step input[type="email"]:focus,
+.form-step input[type="password"]:focus,
+.form-step select:focus,
+.form-step input[type="file"]:focus {
+  outline: none; 
+  border-color: #0487c4; /* matches your button color */
+  box-shadow: 0 0 0 1px #0487c4;
+}
+
+/* 
+  If you want a consistent look for file inputs specifically, 
+  you can add a bit more style to them:
+*/
+.form-step input[type="file"] {
+  cursor: pointer;
+  /* Possibly hide the default file input style (optional) */
+  /* 
+  &::-webkit-file-upload-button {
+    display: none;
+  }
+  content: 'Upload File';
+  */
+}
+
+/* For the next/prev/submit buttons, 
+   we keep your existing style but can add 
+   a bit more spacing or box-shadow if desired
+*/
+button {
+  font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* optional subtle shadow */
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Hover effect on buttons */
+button:hover {
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
 }

@@ -16,7 +16,7 @@
     <!-- CSS -->
     <link rel="stylesheet" href="frontend/styles/registration.css" />
 
-    <!--Change the default icon of the xampp-->
+    <!-- Change the default icon -->
     <link
       rel="icon"
       type="image/x-icon"
@@ -30,15 +30,25 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/flatpickr" defer></script>
 
-    <!-- external js -->
+    <!-- Leaflet CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css"
+    />
+    <!-- Leaflet JS -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"
+      defer
+    ></script>
+
+    <!-- External JS -->
     <script src="scripts/registration.js" defer></script>
-
-    <!-- use to get the value from index.html -->
+    <!-- Use to get the value from index.html -->
     <script src="scripts/apply.js" defer></script>
-
-    <!-- Function for multi-stepform-->
+    <!-- Function for multi-stepform -->
     <script src="scripts/multi-stepform.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
   </head>
   <body>
     <h1>
@@ -50,8 +60,7 @@
       LYNX Fiber Internet Application Form
     </h1>
     <p>
-      Processing of your application only starts upon the submission of one
-      valid ID.
+      Processing of your application only starts upon the submission of one valid ID.
     </p>
 
     <!-- Progress Bar -->
@@ -215,6 +224,17 @@
             <option value="" disabled selected>Select a barangay</option>
           </select>
 
+          <label for="address_details">House No. and Street</label>
+          <input type="text" id="address_details" name="address_details" placeholder="Enter your house number and street name" required />
+
+          <!-- Container to display coordinates dynamically -->
+          <div id="dynamicCoords" style="margin-bottom: 5px; color: #333; font-size: 13px;"></div>
+
+          <button type="button" id="mapLink">Pin My Location</button>
+
+          <input type="hidden" id="latitude" name="latitude" />
+          <input type="hidden" id="longitude" name="longitude" />
+
           <label for="residency-photo">Upload Proof of Residency</label>
           <input
             type="file"
@@ -254,5 +274,10 @@
         </div>
       </form>
     </div>
+
+    <script src="scripts/registration.js" defer></script>
+    <script src="scripts/apply.js" defer></script>
+    <script src="scripts/multi-stepform.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </body>
 </html>

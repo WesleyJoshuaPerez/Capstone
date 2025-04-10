@@ -15,6 +15,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const residencyPhoto = document.getElementById("residency-photo");
     const installationDate = document.getElementById("installation-date");
 
+    const houseNumber_street = document.getElementById("address_details");
+
     let currentStep = 0;
 
     function updateSteps() {
@@ -37,6 +39,15 @@ document.addEventListener("DOMContentLoaded", function () {
     // Apply uppercase restriction & prevent numbers for name fields
     enforceUppercaseNoNumbers(firstName);
     enforceUppercaseNoNumbers(lastName);
+
+    function enforceUppercase(inputField) {
+        inputField.addEventListener("input", function () {
+            this.value = this.value.toUpperCase().slice(0, 30);
+        });
+    }
+
+    enforceUppercase(houseNumber_street);
+    
 
     // Function to restrict input to numbers only
     function restrictToNumbers(inputField, maxLength) {
@@ -74,72 +85,71 @@ document.addEventListener("DOMContentLoaded", function () {
     validateFileUpload(residencyPhoto);
 
     // Function to validate form fields before proceeding (Steps 1 & 2)
-    // Function to validate form fields before proceeding (Steps 1 & 2)
-function validateStep(stepIndex) {
-    const currentInputs = steps[stepIndex].querySelectorAll("input, select");
+    function validateStep(stepIndex) {
+        const currentInputs = steps[stepIndex].querySelectorAll("input, select");
 
-    for (let input of currentInputs) {
-        if (input.hasAttribute("required") && !input.value.trim()) {
-            Swal.fire({
-                icon: "error",
-                title: "Almost there!",
-                text: "Please fill in all required fields before proceeding.",
-            });
-            return false;
-        }
-
-        // Ensure dropdowns are properly validated
-        if (input.tagName === "SELECT" && input.hasAttribute("required") && input.value === "") {
-            Swal.fire({
-                icon: "error",
-                title: "Selection Required",
-                text: "Please select a Government ID before proceeding.",
-            });
-            return false;
-        }
-
-        // First & Last Name Validation (No Numbers)
-        if (input.id === "first-name" || input.id === "last-name") {
-            if (/\d/.test(input.value)) {
+        for (let input of currentInputs) {
+            if (input.hasAttribute("required") && !input.value.trim()) {
                 Swal.fire({
                     icon: "error",
-                    title: "Invalid Name",
-                    text: "Names cannot contain numbers.",
+                    title: "Almost there!",
+                    text: "Please fill in all required fields before proceeding.",
                 });
                 return false;
             }
-        }
 
-        // Contact Number Validation (Only Numbers, Must be 11 digits)
-        if (input.id === "contact-number") {
-            if (!/^\d{11}$/.test(input.value)) {
+            // Ensure dropdowns are properly validated
+            if (input.tagName === "SELECT" && input.hasAttribute("required") && input.value === "") {
                 Swal.fire({
                     icon: "error",
-                    title: "Invalid Contact Number",
-                    text: "Contact number must be exactly 11 digits.",
+                    title: "Selection Required",
+                    text: "Please select a Government ID before proceeding.",
                 });
                 return false;
             }
-        }
 
-        // ID Number Validation (Optional, But If Filled, Must Be 10-15 Digits)
-        if (input.id === "id-number" && input.value.trim() !== "") {
-            if (!/^\d{10,15}$/.test(input.value)) {
-                Swal.fire({
-                    icon: "error",
-                    title: "Invalid ID Number",
-                    text: "ID number must be between 10 to 15 digits if entered.",
-                });
-                return false;
+            // First & Last Name Validation (No Numbers)
+            if (input.id === "first-name" || input.id === "last-name") {
+                if (/\d/.test(input.value)) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Invalid Name",
+                        text: "Names cannot contain numbers.",
+                    });
+                    return false;
+                }
+            }
+
+            // Contact Number Validation (Only Numbers, Must be 11 digits)
+            if (input.id === "contact-number") {
+                if (!/^\d{11}$/.test(input.value)) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Invalid Contact Number",
+                        text: "Contact number must be exactly 11 digits.",
+                    });
+                    return false;
+                }
+            }
+
+            // ID Number Validation (Optional, But If Filled, Must Be 10-15 Digits)
+            if (input.id === "id-number" && input.value.trim() !== "") {
+                if (!/^\d{10,15}$/.test(input.value)) {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Invalid ID Number",
+                        text: "ID number must be between 10 to 15 digits if entered.",
+                    });
+                    return false;
+                }
             }
         }
+        return true;
     }
-    return true;
-}
 
-
-    // Function to validate installation date ONLY on Submit button
+    // Function to validate installation date and pinned location before submission
     function validateFinalStep(event) {
+        // Validate installation date field
         if (installationDate && installationDate.value.trim() === "") {
             event.preventDefault();
             Swal.fire({
@@ -149,10 +159,22 @@ function validateStep(stepIndex) {
             });
             return false;
         }
+        // Validate that the user has pinned a location by checking the hidden latitude and longitude fields
+        const latField = document.getElementById("latitude");
+        const lonField = document.getElementById("longitude");
+        if (!latField.value.trim() || !lonField.value.trim()) {
+            event.preventDefault();
+            Swal.fire({
+                icon: "error",
+                title: "Location Not Set",
+                text: "Please pin your location on the map before submitting.",
+            });
+            return false;
+        }
         return true;
     }
 
-    // Validate installation date when clicking Submit button
+    // Validate installation date and coordinates when clicking the Submit button
     submitBtn.addEventListener("click", (event) => {
         validateFinalStep(event);
     });
@@ -180,5 +202,3 @@ function validateStep(stepIndex) {
 
     updateSteps();
 });
-
-// orig code w/o duplication validation
