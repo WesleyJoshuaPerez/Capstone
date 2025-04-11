@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 11, 2025 at 08:35 AM
+-- Generation Time: Apr 11, 2025 at 09:32 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -44,19 +44,22 @@ CREATE TABLE `approved_user` (
   `proof_of_residency` varchar(255) NOT NULL,
   `home_ownership_type` varchar(100) NOT NULL,
   `installation_date` date NOT NULL,
-  `registration_date` date NOT NULL
+  `registration_date` date NOT NULL,
+  `address_latitude` decimal(10,6) DEFAULT NULL,
+  `address_longitude` decimal(10,6) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `approved_user`
 --
 
-INSERT INTO `approved_user` (`user_id`, `username`, `password`, `subscription_plan`, `currentBill`, `fullname`, `birth_date`, `address`, `contact_number`, `email_address`, `id_type`, `id_number`, `id_photo`, `proof_of_residency`, `home_ownership_type`, `installation_date`, `registration_date`) VALUES
-(15, 'WJperez01', 'wesleyperez17', 'silver', 1499, 'WESLEY JOSHUA PEREZ', '2007-03-01', 'duale, limay, bataan', '09380868921', 'wesleyjoshuaperez@gmail.com', 'passport', '', 'idexample.jfif', 'por.jpg', 'Owned', '2025-03-28', '2025-03-27'),
-(16, 'Wperez jr14', 'Znx!lh9E', 'bronze', 1199, 'WILFREDO PEREZ JR', '1970-12-14', 'bilolo, orion, bataan', '09389234373', 'wilfredoperez@gmail.com', 'drivers-license', '', 'davidid.jfif', 'residency.png', 'Owned', '2025-03-16', '2025-03-28'),
-(17, 'Spaclaon01', 'sebastianpaclaon23', 'silver', 1499, 'SEBASTIAN PACLAON', '2007-03-01', 'duale, limay, bataan', '09380868921', 'wesleyjoshuaperez.iskolar@gmail.com', 'passport', '', 'davidid.jfif', 'por.jpg', 'Rented', '2025-03-28', '2025-03-09'),
-(19, 'Krezada20', 'Rezada20', 'gold', 1799, 'KATE REZADA', '2003-11-20', 'duale, limay, bataan', '09961680320', 'katerezada0120@gmail.com', 'philhealth-id', '', 'Paps Valid ID.jpg', 'cat.png', 'Rented', '2025-03-28', '2025-03-27'),
-(26, 'MAbarion06', 'LHPQ%a^6', 'Silver', 1499, 'MEL ALLAN BARION', '2006-11-06', 'bilolo, Orion, Bataan', '09129832786', 'gajef51277@naobk.com', 'Drivers-License', '', 'Screenshot (76).png', 'Screenshot (80).png', 'Owned', '2025-04-25', '2025-04-11');
+INSERT INTO `approved_user` (`user_id`, `username`, `password`, `subscription_plan`, `currentBill`, `fullname`, `birth_date`, `address`, `contact_number`, `email_address`, `id_type`, `id_number`, `id_photo`, `proof_of_residency`, `home_ownership_type`, `installation_date`, `registration_date`, `address_latitude`, `address_longitude`) VALUES
+(15, 'WJperez01', 'wesleyperez17', 'silver', 1499, 'WESLEY JOSHUA PEREZ', '2007-03-01', 'duale, limay, bataan', '09380868921', 'wesleyjoshuaperez@gmail.com', 'passport', '', 'idexample.jfif', 'por.jpg', 'Owned', '2025-03-28', '2025-03-27', 14.544300, 120.545200),
+(16, 'Wperez jr14', 'Znx!lh9E', 'bronze', 1199, 'WILFREDO PEREZ JR', '1970-12-14', 'bilolo, orion, bataan', '09389234373', 'wilfredoperez@gmail.com', 'drivers-license', '', 'davidid.jfif', 'residency.png', 'Owned', '2025-03-16', '2025-03-28', 14.616900, 120.561000),
+(17, 'Spaclaon01', 'sebastianpaclaon23', 'silver', 1499, 'SEBASTIAN PACLAON', '2007-03-01', 'duale, limay, bataan', '09380868921', 'wesleyjoshuaperez.iskolar@gmail.com', 'passport', '', 'davidid.jfif', 'por.jpg', 'Rented', '2025-03-28', '2025-03-09', 14.546690, 120.582590),
+(19, 'Krezada20', 'Rezada20', 'gold', 1799, 'KATE REZADA', '2003-11-20', 'duale, limay, bataan', '09961680320', 'katerezada0120@gmail.com', 'philhealth-id', '', 'Paps Valid ID.jpg', 'cat.png', 'Rented', '2025-03-28', '2025-03-27', 14.544800, 120.573900),
+(26, 'MAbarion06', 'LHPQ%a^6', 'Silver', 1499, 'MEL ALLAN BARION', '2006-11-06', 'bilolo, Orion, Bataan', '09129832786', 'gajef51277@naobk.com', 'Drivers-License', '', 'Screenshot (76).png', 'Screenshot (80).png', 'Owned', '2025-04-25', '2025-04-11', 14.602200, 120.544300),
+(28, 'Kdiaz09', 'rIb#Ux79', 'Silver', 1499, 'KAREN DIAZ', '2007-04-09', 'bilolo, Orion, Bataan', '09230290392', 'gajef51277@naobk.com', 'Drivers-License', '', 'Screenshot (76).png', 'Screenshot (93).png', 'Owned', '2025-04-22', '2025-04-11', 14.612218, 120.561804);
 
 -- --------------------------------------------------------
 
@@ -272,15 +275,13 @@ CREATE TABLE `registration_acc` (
 --
 
 INSERT INTO `registration_acc` (`id`, `subscription_plan`, `first_name`, `last_name`, `contact_number`, `email_address`, `birth_date`, `id_type`, `id_number`, `id_photo`, `home_ownership_type`, `province`, `municipality`, `barangay`, `proof_of_residency`, `installation_date`, `registration_date`, `terms_agreed`, `data_processing_consent`, `id_photo_consent`, `address_latitude`, `address_longitude`, `status`) VALUES
-(15, 'bronze', 'WESLEY JOSHUA', 'PEREZ', '09380868921', 'wesleyjoshuaperez@gmail.com', '2007-03-01', 'passport', '', 'idexample.jfif', 'Owned', 'bataan', 'limay', 'duale', 'por.jpg', '2025-03-23', '2025-03-02 11:05:58', 'Checked', 'Checked', 'Checked', NULL, NULL, 'Approved'),
-(16, 'silver', 'WILFREDO', 'PEREZ JR', '09389234373', 'wilfredoperez@gmail.com', '1970-12-14', 'drivers-license', '', 'davidid.jfif', 'Owned', 'bataan', 'orion', 'bilolo', 'residency.png', '2025-03-16', '2025-03-02 12:57:33', 'Checked', 'Checked', 'Checked', NULL, NULL, 'Approved'),
-(17, 'gold', 'SEBASTIAN', 'PACLAON', '09380868921', 'wesleyjoshuaperez.iskolar@gmail.com', '2007-03-01', 'passport', '', 'davidid.jfif', 'Rented', 'bataan', 'limay', 'duale', 'por.jpg', '2025-03-17', '2025-03-04 04:14:44', 'Checked', 'Checked', 'Checked', NULL, NULL, 'Approved'),
-(18, 'silver', 'TROY', 'MENDOZA', '09300864398', 'troymendoza@gmail.com', '2007-03-04', 'drivers-license', '', 'davidid.jfif', 'Rented', 'bataan', 'orion', 'sto.-domingo', 'residency.png', '2025-03-24', '2025-03-19 01:49:58', 'Checked', 'Checked', 'Checked', NULL, NULL, 'Denied'),
-(19, 'silver', 'KATE', 'REZADA', '09054627399', 'katerezada0120@gmail.com', '2003-11-20', 'philhealth-id', '', 'Paps Valid ID.jpg', 'Rented', 'bataan', 'limay', 'duale', 'cat.png', '2025-03-25', '2025-03-20 10:35:35', 'Checked', 'Checked', 'Checked', NULL, NULL, 'Approved'),
-(20, 'silver', 'RODRIGO', 'RODRIGUEZ', '09817687460', 'ogirdor1016@gmail.com', '2003-01-10', 'passport', '', '6085900.jpg', 'Rented', 'bataan', 'orion', 'sto.-domingo', '6496648.jpg', '2025-04-04', '2025-03-27 01:57:20', 'Checked', 'Checked', 'Checked', NULL, NULL, 'Pending'),
-(24, 'Gold', 'DEAN', 'JARVIS', '09054627399', 'katerezada0120@gmail.com', '2007-03-13', 'UMID', '', 'boss_baby.jfif', 'Owned', 'Bataan', 'Orion', 'sto.-domingo', 'boss_baby.jfif', '2025-04-28', '2025-03-28 11:42:54', 'Checked', 'Checked', 'Checked', NULL, NULL, 'Pending'),
-(25, 'Gold', 'EDJJWJQ', 'WERWQDR', '09123152612', 'barahec285@noroasis.com', '2007-04-03', 'Postal-ID', '', 'Fitness starts with putting an effort and believing that a better you is already inside_ Push your limits and train.jpeg', 'Owned', 'Bataan', 'Orion', 'bilolo', 'Screenshot_2025-04-06-18-36-00-72_3bb53944894d9646ec5754b62cc2584b.jpg', '2025-04-22', '2025-04-07 01:45:00', 'Checked', 'Checked', 'Checked', NULL, NULL, 'Pending'),
-(28, 'Silver', 'KAREN', 'DIAZ', '09230290392', 'gajef51277@naobk.com', '2007-04-09', 'Drivers-License', '', 'Screenshot (76).png', 'Owned', 'Bataan', 'Orion', 'bilolo', 'Screenshot (93).png', '2025-04-22', '2025-04-11 06:34:28', 'Checked', 'Checked', 'Checked', 14.612218, 120.561804, 'Pending');
+(15, 'bronze', 'WESLEY JOSHUA', 'PEREZ', '09380868921', 'wesleyjoshuaperez@gmail.com', '2007-03-01', 'passport', '', 'idexample.jfif', 'Owned', 'bataan', 'limay', 'duale', 'por.jpg', '2025-03-23', '2025-03-02 11:05:58', 'Checked', 'Checked', 'Checked', 14.544300, 120.545200, 'Approved'),
+(16, 'silver', 'WILFREDO', 'PEREZ JR', '09389234373', 'wilfredoperez@gmail.com', '1970-12-14', 'drivers-license', '', 'davidid.jfif', 'Owned', 'bataan', 'orion', 'bilolo', 'residency.png', '2025-03-16', '2025-03-02 12:57:33', 'Checked', 'Checked', 'Checked', 14.616900, 120.561000, 'Approved'),
+(17, 'gold', 'SEBASTIAN', 'PACLAON', '09380868921', 'wesleyjoshuaperez.iskolar@gmail.com', '2007-03-01', 'passport', '', 'davidid.jfif', 'Rented', 'bataan', 'limay', 'duale', 'por.jpg', '2025-03-17', '2025-03-04 04:14:44', 'Checked', 'Checked', 'Checked', 14.546690, 120.582590, 'Approved'),
+(19, 'silver', 'KATE', 'REZADA', '09054627399', 'katerezada0120@gmail.com', '2003-11-20', 'philhealth-id', '', 'Paps Valid ID.jpg', 'Rented', 'bataan', 'limay', 'duale', 'cat.png', '2025-03-25', '2025-03-20 10:35:35', 'Checked', 'Checked', 'Checked', 14.544800, 120.573900, 'Approved'),
+(20, 'silver', 'RODRIGO', 'RODRIGUEZ', '09817687460', 'ogirdor1016@gmail.com', '2003-01-10', 'passport', '', '6085900.jpg', 'Rented', 'bataan', 'orion', 'sto.-domingo', '6496648.jpg', '2025-04-04', '2025-03-27 01:57:20', 'Checked', 'Checked', 'Checked', 14.635700, 120.574200, 'Pending'),
+(25, 'Gold', 'EDJJWJQ', 'WERWQDR', '09123152612', 'barahec285@noroasis.com', '2007-04-03', 'Postal-ID', '', 'Fitness starts with putting an effort and believing that a better you is already inside_ Push your limits and train.jpeg', 'Owned', 'Bataan', 'Orion', 'bilolo', 'Screenshot_2025-04-06-18-36-00-72_3bb53944894d9646ec5754b62cc2584b.jpg', '2025-04-22', '2025-04-07 01:45:00', 'Checked', 'Checked', 'Checked', 14.616200, 120.562200, 'Pending'),
+(28, 'Silver', 'KAREN', 'DIAZ', '09230290392', 'gajef51277@naobk.com', '2007-04-09', 'Drivers-License', '', 'Screenshot (76).png', 'Owned', 'Bataan', 'Orion', 'bilolo', 'Screenshot (93).png', '2025-04-22', '2025-04-11 06:34:28', 'Checked', 'Checked', 'Checked', 14.612218, 120.561804, 'Approved');
 
 -- --------------------------------------------------------
 

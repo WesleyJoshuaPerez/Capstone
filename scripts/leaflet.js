@@ -27,6 +27,37 @@ document.addEventListener("DOMContentLoaded", function () {
         attribution: "&copy; OpenStreetMap contributors",
       }).addTo(map);
 
+      // Define a custom icon for markers
+      const userIcon = L.icon({
+        iconUrl: "frontend/assets/images/icons/user_icon_marker.png", // Replace with your custom icon path
+        iconSize: [64, 64], // Size of the icon (make it bigger)
+        iconAnchor: [32, 64], // Adjust anchor point (centered for larger icon)
+        popupAnchor: [0, -64], // Adjust the popup position relative to the larger icon
+      });
+
+      // Fetch coordinates from PHP backend and plot them on the map
+      fetch("backend/fetch_map_coordinates.php")
+        .then((response) => response.json())
+        .then((users) => {
+          users.forEach((user) => {
+            const lat = parseFloat(user.address_latitude);
+            const lng = parseFloat(user.address_longitude);
+            const name = user.fullname;
+            const subscriptionPlan = user.subscription_plan;
+
+            if (!isNaN(lat) && !isNaN(lng)) {
+              // Use the custom icon for each marker
+              L.marker([lat, lng], { icon: userIcon }).addTo(map).bindPopup(`
+                  <b>${name}</b><br>
+                  Subscription Plan: ${subscriptionPlan}
+                `);
+            }
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching user coordinates:", error);
+        });
+
       // Optional: Get the user's current position and update map
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
@@ -36,12 +67,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // Update map view to user's location
             map.setView([userLat, userLng], 12);
-
-            // Add a marker at the user's location
-            L.marker([userLat, userLng])
-              .addTo(map)
-              .bindPopup("You are here!")
-              .openPopup();
           },
           function (error) {
             console.error("Error fetching geolocation:", error.message);
