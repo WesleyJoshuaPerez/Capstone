@@ -60,8 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
     !planPrice ||
     !planDetails
   ) {
-    console.error(
-    );
+    console.error();
     return;
   }
 
@@ -120,20 +119,19 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Ensure elements exist before proceeding
   if (!municipalitySelect || !barangaySelect) {
-    console.error(
-    );
+    console.error();
     return;
   }
-  
+
   // Function to update barangay dropdown based on municipality selection
   function updateBarangays() {
     const selectedMunicipality = municipalitySelect.value.toLowerCase(); // Convert to lowercase
     console.log(`Municipality selected: ${selectedMunicipality}`);
-  
+
     // Clear previous options
     barangaySelect.innerHTML =
       '<option value="" disabled selected>Select a barangay</option>';
-  
+
     // Check if selected municipality exists in barangayData
     if (barangayData[selectedMunicipality]) {
       barangayData[selectedMunicipality].forEach((barangay) => {
@@ -147,7 +145,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-// Add event listener to update barangay dropdown when municipality is changed
+  // Add event listener to update barangay dropdown when municipality is changed
   municipalitySelect.addEventListener("change", updateBarangays);
 });
 
@@ -175,15 +173,24 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-
 // 2d map
 document.addEventListener("DOMContentLoaded", function () {
   const mapLink = document.getElementById("mapLink");
   mapLink.addEventListener("click", function (event) {
     event.preventDefault();
     Swal.fire({
-      title: "Pin My Location", 
-      html: '<div id="mapInSwal" style="width: 100%; height: 400px;"></div>',
+      title: "Pin My Location",
+      html: `
+        <div id="mapInSwal" style="width: 100%; height: 400px;"></div>
+        <button
+          id="pinLocationBtn"
+          type="button"
+          class="swal2-styled"
+          style="display: block; margin: 10px auto;"
+        >
+          Pin Current Location
+        </button>
+      `,
       showCancelButton: true,
       confirmButtonText: "Save Location",
       cancelButtonText: "Cancel",
@@ -192,46 +199,77 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // RED marker icon
         const redIcon = new L.Icon({
-          iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
-          shadowUrl: "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+          iconUrl:
+            "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
+          shadowUrl:
+            "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
           iconSize: [25, 41],
           iconAnchor: [12, 41],
           popupAnchor: [1, -34],
           shadowSize: [41, 41],
         });
 
-        // Initialize the map inside the SweetAlert popup
-        const map = L.map(mapInSwal).setView([14.6717, 120.5487], 14);
+        // Initialize map
+        const map = L.map(mapInSwal).setView([14.66667, 120.41667], 10); //orion bataan coordinates
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
           attribution: "&copy; OpenStreetMap contributors",
         }).addTo(map);
 
-        // Force the map to recalculate its size after the modal opens
-        setTimeout(() => {
-          map.invalidateSize();
-        }, 100);
+        // Fix size
+        setTimeout(() => map.invalidateSize(), 100);
 
-        // Attempt to use geolocation if available
-        if (navigator.geolocation) {
+        let marker;
+
+        // Grab our inline “Pin Current Location” button
+        const pinBtn = document.getElementById("pinLocationBtn");
+        pinBtn.addEventListener("click", () => {
+          if (!navigator.geolocation) return;
           navigator.geolocation.getCurrentPosition(
-            function (position) {
-              const userLat = position.coords.latitude;
-              const userLng = position.coords.longitude;
-              map.setView([userLat, userLng], 14);
-              L.marker([userLat, userLng], { icon: redIcon })
-                .addTo(map)
-                .bindPopup("You are here!")
-                .openPopup();
+            (position) => {
+              const lat = position.coords.latitude;
+              const lng = position.coords.longitude;
+              map.setView([lat, lng], 14);
+
+              if (marker) {
+                marker.setLatLng([lat, lng]);
+              } else {
+                marker = L.marker([lat, lng], {
+                  draggable: true,
+                  icon: redIcon,
+                })
+                  .addTo(map)
+                  .bindPopup("Your selected location")
+                  .openPopup();
+
+                marker.on("dragend", (ev) => {
+                  const newPos = ev.target.getLatLng();
+                  document.getElementById("latitude").value = newPos.lat;
+                  document.getElementById("longitude").value = newPos.lng;
+                  document.getElementById(
+                    "dynamicCoords"
+                  ).textContent = `Coordinates: ${newPos.lat.toFixed(
+                    5
+                  )}, ${newPos.lng.toFixed(5)}`;
+                });
+              }
+
+              // Update hidden fields & display
+              document.getElementById("latitude").value = lat;
+              document.getElementById("longitude").value = lng;
+              document.getElementById(
+                "dynamicCoords"
+              ).textContent = `Coordinates: ${lat.toFixed(5)}, ${lng.toFixed(
+                5
+              )}`;
             },
-            function (error) {
+            (error) => {
               console.error("Geolocation error:", error.message);
             }
           );
-        }
+        });
 
-        let marker;
-        // Update coordinates dynamically
-        map.on("click", function (e) {
+        // Also allow manual-click placement
+        map.on("click", (e) => {
           const lat = e.latlng.lat;
           const lng = e.latlng.lng;
 
@@ -243,27 +281,28 @@ document.addEventListener("DOMContentLoaded", function () {
               .bindPopup("Your selected location")
               .openPopup();
 
-            // When dragging finishes, update hidden fields and coordinate display
-            marker.on("dragend", function (ev) {
+            marker.on("dragend", (ev) => {
               const newPos = ev.target.getLatLng();
               document.getElementById("latitude").value = newPos.lat;
               document.getElementById("longitude").value = newPos.lng;
-              document.getElementById("dynamicCoords").textContent =
-                `Coordinates: ${newPos.lat.toFixed(5)}, ${newPos.lng.toFixed(5)}`;
+              document.getElementById(
+                "dynamicCoords"
+              ).textContent = `Coordinates: ${newPos.lat.toFixed(
+                5
+              )}, ${newPos.lng.toFixed(5)}`;
             });
           }
-          // Update hidden fields and dynamic coordinate display
+
           document.getElementById("latitude").value = lat;
           document.getElementById("longitude").value = lng;
-          document.getElementById("dynamicCoords").textContent =
-            `Coordinates: ${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+          document.getElementById(
+            "dynamicCoords"
+          ).textContent = `Coordinates: ${lat.toFixed(5)}, ${lng.toFixed(5)}`;
         });
       },
       preConfirm: () => {
-        // Get the coordinate values from the hidden fields
         const lat = document.getElementById("latitude").value;
         const lng = document.getElementById("longitude").value;
-        // If coordinates are not set, display a validation message and prevent closing the modal
         if (!lat || !lng) {
           Swal.showValidationMessage("Please select a location on the map.");
           return false;
@@ -272,9 +311,12 @@ document.addEventListener("DOMContentLoaded", function () {
       },
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire("Location Saved!", "Your coordinates have been saved.", "success");
+        Swal.fire(
+          "Location Saved!",
+          "Your coordinates have been saved.",
+          "success"
+        );
       }
     });
   });
 });
-

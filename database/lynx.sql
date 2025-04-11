@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 11, 2025 at 07:45 AM
+-- Generation Time: Apr 11, 2025 at 08:35 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -262,8 +262,8 @@ CREATE TABLE `registration_acc` (
   `terms_agreed` varchar(10) NOT NULL DEFAULT 'Unchecked',
   `data_processing_consent` varchar(10) NOT NULL DEFAULT 'Unchecked',
   `id_photo_consent` varchar(10) NOT NULL DEFAULT 'Unchecked',
-  `address_latitude` int(11) DEFAULT NULL,
-  `address_longitude` int(11) DEFAULT NULL,
+  `address_latitude` decimal(10,6) DEFAULT NULL,
+  `address_longitude` decimal(10,6) DEFAULT NULL,
   `status` varchar(20) NOT NULL DEFAULT 'Pending'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -280,7 +280,7 @@ INSERT INTO `registration_acc` (`id`, `subscription_plan`, `first_name`, `last_n
 (20, 'silver', 'RODRIGO', 'RODRIGUEZ', '09817687460', 'ogirdor1016@gmail.com', '2003-01-10', 'passport', '', '6085900.jpg', 'Rented', 'bataan', 'orion', 'sto.-domingo', '6496648.jpg', '2025-04-04', '2025-03-27 01:57:20', 'Checked', 'Checked', 'Checked', NULL, NULL, 'Pending'),
 (24, 'Gold', 'DEAN', 'JARVIS', '09054627399', 'katerezada0120@gmail.com', '2007-03-13', 'UMID', '', 'boss_baby.jfif', 'Owned', 'Bataan', 'Orion', 'sto.-domingo', 'boss_baby.jfif', '2025-04-28', '2025-03-28 11:42:54', 'Checked', 'Checked', 'Checked', NULL, NULL, 'Pending'),
 (25, 'Gold', 'EDJJWJQ', 'WERWQDR', '09123152612', 'barahec285@noroasis.com', '2007-04-03', 'Postal-ID', '', 'Fitness starts with putting an effort and believing that a better you is already inside_ Push your limits and train.jpeg', 'Owned', 'Bataan', 'Orion', 'bilolo', 'Screenshot_2025-04-06-18-36-00-72_3bb53944894d9646ec5754b62cc2584b.jpg', '2025-04-22', '2025-04-07 01:45:00', 'Checked', 'Checked', 'Checked', NULL, NULL, 'Pending'),
-(26, 'Silver', 'MEL ALLAN', 'BARION', '09129832786', 'gajef51277@naobk.com', '2006-11-06', 'Drivers-License', '', 'Screenshot (76).png', 'Owned', 'Bataan', 'Orion', 'bilolo', 'Screenshot (80).png', '2025-04-25', '2025-04-11 05:42:16', 'Checked', 'Checked', 'Checked', 15, 121, 'Approved');
+(28, 'Silver', 'KAREN', 'DIAZ', '09230290392', 'gajef51277@naobk.com', '2007-04-09', 'Drivers-License', '', 'Screenshot (76).png', 'Owned', 'Bataan', 'Orion', 'bilolo', 'Screenshot (93).png', '2025-04-22', '2025-04-11 06:34:28', 'Checked', 'Checked', 'Checked', 14.612218, 120.561804, 'Pending');
 
 -- --------------------------------------------------------
 
@@ -424,7 +424,7 @@ ALTER TABLE `progress_reports`
 -- AUTO_INCREMENT for table `registration_acc`
 --
 ALTER TABLE `registration_acc`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT for table `resetpass_request`
