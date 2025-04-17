@@ -64,14 +64,17 @@ if (isset($decodedData['id']) && isset($decodedData['status'])) {
                 $fullname = $user['first_name'] . " " . $user['last_name'];
                 $address = $user['barangay'] . ", " . $user['municipality'] . ", " . $user['province'];
 
-                // Modify the insert query to include currentbill
+                // Format the user_id to always be 10 digits
+                $formattedUserId = str_pad($id, 10, '0', STR_PAD_LEFT);
+
+                // Modify the insert query to include formatted user_id
                 $insertQuery = "INSERT INTO approved_user (
                     user_id, username, password, subscription_plan, currentbill, fullname, birth_date, address,
                     address_latitude, address_longitude,
                     contact_number, email_address, id_type, id_number, id_photo, proof_of_residency, 
                     home_ownership_type, installation_date, registration_date
                 ) VALUES (
-                    '$id', '$username', '$plainPassword', '{$user['subscription_plan']}', '$currentBill', '$fullname', 
+                    '$formattedUserId', '$username', '$plainPassword', '{$user['subscription_plan']}', '$currentBill', '$fullname', 
                     '{$user['birth_date']}', '$address',
                     '{$user['address_latitude']}', '{$user['address_longitude']}',
                     '{$user['contact_number']}', '{$user['email_address']}', '{$user['id_type']}', '{$user['id_number']}', 

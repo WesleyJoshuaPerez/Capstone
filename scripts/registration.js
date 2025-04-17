@@ -29,19 +29,19 @@ document.addEventListener("DOMContentLoaded", function () {
       title: "BRONZE",
       price: "PHP 1199<br /><strong>per month</strong>",
       details: "Up to 50 Mbps<br />Unlimited Bandwidth<br />24/7 Support",
-      color: "linear-gradient(to right, #ec202a, #ff7676)", //use to apply red gradient
+      color: "linear-gradient(to right, #ec202a, #ff7676)", // use to apply red gradient
     },
     Silver: {
       title: "SILVER",
       price: "PHP 1499<br /><strong>per month</strong>",
       details: "Up to 100 Mbps<br />Unlimited Bandwidth<br />24/7 Support",
-      color: "linear-gradient(to right, #36a13a, #7ed957)", //use to apply green gradient
+      color: "linear-gradient(to right, #36a13a, #7ed957)", // use to apply green gradient
     },
     Gold: {
       title: "GOLD",
       price: "PHP 1799<br /><strong>per month</strong>",
       details: "Up to 150 Mbps<br />Unlimited Bandwidth<br />24/7 Support",
-      color: "linear-gradient(to right,#fcbf06,#ff9900)", //use to apply yellow-orange gradient
+      color: "linear-gradient(to right, #fcbf06, #ff9900)", // use to apply yellow-orange gradient
     },
   };
 
@@ -51,6 +51,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const planTitle = document.getElementById("plan-title");
   const planPrice = document.getElementById("plan-price");
   const planDetails = document.getElementById("plan-details");
+  // Get the map button element to update its style as well
+  const mapLink = document.getElementById("mapLink");
 
   // Ensure elements exist before proceeding
   if (
@@ -58,13 +60,14 @@ document.addEventListener("DOMContentLoaded", function () {
     !pricingBox ||
     !planTitle ||
     !planPrice ||
-    !planDetails
+    !planDetails ||
+    !mapLink
   ) {
-    console.error();
+    console.error("One or more required elements not found.");
     return;
   }
 
-  // Function to update the pricing box
+  // Function to update the pricing box and map button styling based on the selected plan
   function updatePlanUI() {
     const selectedPlan = subscriptionSelect.value;
     console.log(`🔄 Updating UI for: ${selectedPlan}`);
@@ -92,6 +95,9 @@ document.addEventListener("DOMContentLoaded", function () {
           button.style.background = planData[selectedPlan].color;
           button.style.borderColor = planData[selectedPlan].color;
         });
+      
+      // *** NEW: Update the mapLink button's background based on the selected plan ***
+      mapLink.style.background = planData[selectedPlan].color;
     } else {
       console.warn("⚠ Selected plan not found in planData.");
     }
@@ -103,6 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initialize the UI with the default selected plan
   updatePlanUI();
 });
+
 
 document.addEventListener("DOMContentLoaded", function () {
   console.log("registration.js loaded");
@@ -154,22 +161,18 @@ document.addEventListener("DOMContentLoaded", function () {
   const today = new Date();
 
   // Minimum allowed date (5 days after today)
-  const minInstallDate = new Date();
+  const minInstallDate = new Date(today);
   minInstallDate.setDate(today.getDate() + 5);
 
-  // Maximum allowed date (End of the current month)
-  let maxInstallDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
-
-  // If minDate is greater than maxDate, extend maxDate to next month
-  if (minInstallDate > maxInstallDate) {
-    maxInstallDate = new Date(today.getFullYear(), today.getMonth() + 2, 0);
-  }
+  // Maximum allowed date: 3 months from today
+  const maxInstallDate = new Date(today);
+  maxInstallDate.setMonth(today.getMonth() + 3);
 
   flatpickr("#installation-date", {
     minDate: minInstallDate, // Disable past dates + set min 5 days ahead
-    maxDate: maxInstallDate, // Ensure maxDate is always valid
+    maxDate: maxInstallDate, // Set max date to 3 months from today
     dateFormat: "m/d/Y", // Format: MM/DD/YYYY
-    disableMobile: true, // Prevent native date picker on mobile
+    disableMobile: true,  // Prevent native date picker on mobile
   });
 });
 
@@ -179,25 +182,15 @@ document.addEventListener("DOMContentLoaded", function () {
   mapLink.addEventListener("click", function (event) {
     event.preventDefault();
     Swal.fire({
-      title: "Pin My Location",
-      html: `
-        <div id="mapInSwal" style="width: 100%; height: 400px;"></div>
-        <button
-          id="pinLocationBtn"
-          type="button"
-          class="swal2-styled"
-          style="display: block; margin: 10px auto;"
-        >
-          Pin Current Location
-        </button>
-      `,
+      title: "Pin Location", // Changed title to "Pin Location"
+      html: '<div id="mapInSwal" style="width: 100%; height: 400px;"></div>',
       showCancelButton: true,
       confirmButtonText: "Save Location",
       cancelButtonText: "Cancel",
       didOpen: () => {
         const mapInSwal = document.getElementById("mapInSwal");
 
-        // RED marker icon
+        // Create a custom RED marker icon
         const redIcon = new L.Icon({
           iconUrl:
             "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
@@ -209,114 +202,107 @@ document.addEventListener("DOMContentLoaded", function () {
           shadowSize: [41, 41],
         });
 
-        // Initialize map
-        const map = L.map(mapInSwal).setView([14.66667, 120.41667], 10); //orion bataan coordinates
+        // Initialize the map inside the SweetAlert popup
+        const map = L.map(mapInSwal).setView([14.6717, 120.5487], 14);
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
           attribution: "&copy; OpenStreetMap contributors",
         }).addTo(map);
 
-        // Fix size
-        setTimeout(() => map.invalidateSize(), 100);
+        // Force the map to recalc its size after the modal opens
+        setTimeout(() => {
+          map.invalidateSize();
+        }, 100);
 
-        let marker;
+        let marker; // We'll store the current marker in this variable
 
-        // Grab our inline “Pin Current Location” button
-        const pinBtn = document.getElementById("pinLocationBtn");
-        pinBtn.addEventListener("click", () => {
-          if (!navigator.geolocation) return;
+        // Attempt geolocation if available — place first marker in user’s current location
+        if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
-            (position) => {
-              const lat = position.coords.latitude;
-              const lng = position.coords.longitude;
-              map.setView([lat, lng], 14);
+            function (position) {
+              const userLat = position.coords.latitude;
+              const userLng = position.coords.longitude;
 
+              // If a marker already exists, remove it from the map
               if (marker) {
-                marker.setLatLng([lat, lng]);
-              } else {
-                marker = L.marker([lat, lng], {
-                  draggable: true,
-                  icon: redIcon,
-                })
-                  .addTo(map)
-                  .bindPopup("Your selected location")
-                  .openPopup();
-
-                marker.on("dragend", (ev) => {
-                  const newPos = ev.target.getLatLng();
-                  document.getElementById("latitude").value = newPos.lat;
-                  document.getElementById("longitude").value = newPos.lng;
-                  document.getElementById(
-                    "dynamicCoords"
-                  ).textContent = `Coordinates: ${newPos.lat.toFixed(
-                    5
-                  )}, ${newPos.lng.toFixed(5)}`;
-                });
+                map.removeLayer(marker);
               }
 
-              // Update hidden fields & display
-              document.getElementById("latitude").value = lat;
-              document.getElementById("longitude").value = lng;
-              document.getElementById(
-                "dynamicCoords"
-              ).textContent = `Coordinates: ${lat.toFixed(5)}, ${lng.toFixed(
-                5
-              )}`;
+              // Place initial marker at user’s current location
+              marker = L.marker([userLat, userLng], { icon: redIcon, draggable: true })
+                .addTo(map)
+                .bindPopup("You are here!")
+                .openPopup();
+
+              // Update hidden fields
+              document.getElementById("latitude").value = userLat;
+              document.getElementById("longitude").value = userLng;
+
+              // Recenter map
+              map.setView([userLat, userLng], 14);
+
+              // If user drags the marker, update the hidden fields
+              marker.on("dragend", function (ev) {
+                const newPos = ev.target.getLatLng();
+                document.getElementById("latitude").value = newPos.lat;
+                document.getElementById("longitude").value = newPos.lng;
+              });
             },
-            (error) => {
+            function (error) {
               console.error("Geolocation error:", error.message);
             }
           );
-        });
+        }
 
-        // Also allow manual-click placement
-        map.on("click", (e) => {
+        // Listen for user clicks on the map to set a new marker
+        map.on("click", function (e) {
           const lat = e.latlng.lat;
           const lng = e.latlng.lng;
 
+          // If a marker already exists, remove it
           if (marker) {
-            marker.setLatLng(e.latlng);
-          } else {
-            marker = L.marker(e.latlng, { draggable: true, icon: redIcon })
-              .addTo(map)
-              .bindPopup("Your selected location")
-              .openPopup();
-
-            marker.on("dragend", (ev) => {
-              const newPos = ev.target.getLatLng();
-              document.getElementById("latitude").value = newPos.lat;
-              document.getElementById("longitude").value = newPos.lng;
-              document.getElementById(
-                "dynamicCoords"
-              ).textContent = `Coordinates: ${newPos.lat.toFixed(
-                5
-              )}, ${newPos.lng.toFixed(5)}`;
-            });
+            map.removeLayer(marker);
           }
 
+          // Create a new marker at the clicked location
+          marker = L.marker([lat, lng], { draggable: true, icon: redIcon })
+            .addTo(map)
+            .bindPopup("Your selected location")
+            .openPopup();
+
+          // Update hidden fields
           document.getElementById("latitude").value = lat;
           document.getElementById("longitude").value = lng;
-          document.getElementById(
-            "dynamicCoords"
-          ).textContent = `Coordinates: ${lat.toFixed(5)}, ${lng.toFixed(5)}`;
+
+          // Update hidden fields again if user drags the newly placed marker
+          marker.on("dragend", function (ev) {
+            const newPos = ev.target.getLatLng();
+            document.getElementById("latitude").value = newPos.lat;
+            document.getElementById("longitude").value = newPos.lng;
+          });
         });
       },
       preConfirm: () => {
-        const lat = document.getElementById("latitude").value;
-        const lng = document.getElementById("longitude").value;
-        if (!lat || !lng) {
-          Swal.showValidationMessage("Please select a location on the map.");
-          return false;
-        }
-        return { latitude: lat, longitude: lng };
+        return new Promise((resolve, reject) => {
+          const lat = document.getElementById("latitude").value;
+          const lng = document.getElementById("longitude").value;
+          if (!lat || !lng) {
+            reject("Please select a location on the map.");
+          } else {
+            resolve({ latitude: lat, longitude: lng });
+          }
+        });
       },
-    }).then((result) => {
-      if (result.isConfirmed) {
-        Swal.fire(
-          "Location Saved!",
-          "Your coordinates have been saved.",
-          "success"
-        );
-      }
-    });
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          Swal.fire("Location Saved!", "Your coordinates have been saved.", "success");
+        }
+      })
+      .catch((error) => {
+        // This catch block handles the rejection from preConfirm.
+        Swal.showValidationMessage(error);
+      });
   });
 });
+
+

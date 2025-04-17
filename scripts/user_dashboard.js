@@ -754,3 +754,23 @@ function loadNotifications() {
       Swal.fire("Error", "Unable to fetch notifications.", "error");
     });
 }
+
+// get the account number
+document.addEventListener("DOMContentLoaded", function() {
+  // Fetch user data from the server
+  fetch('backend/get_user_data.php')  // Ensure this path is correct
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            // Display user information in the UI
+            document.getElementById('userName').textContent = data.fullname;
+            document.getElementById('accountNumber').textContent = `Account: ${data.user_id}`;  // Format as desired
+        } else {
+            console.log("Error fetching user data:", data.message);
+        }
+    })
+    .catch(error => console.log('Error:', error));
+});
+
+
+

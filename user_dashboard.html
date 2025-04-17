@@ -65,7 +65,7 @@
         <div class="header"> <button id="hamburgerBtn">
             <i class="fas fa-bars"></i>
           </button>
-            <span>User Dashboard </span>
+            <span>LYNX User Dashboard </span>
             <a href="index.html" class="logout-btn">
                 <i class="fas fa-sign-out-alt"></i> Logout
             </a>
@@ -78,6 +78,10 @@
         <div id="homeSection">
         <div class="home-content">
             <h1>Hi, <span id="userName"></span></h1>
+
+            <div class="account-info">
+              <span id="accountNumber"></span> <!-- This is where the account number will be displayed -->
+            </div>
             
             <!-- Status Section -->
             <div class="status">
@@ -163,9 +167,9 @@
                 <label for="selectSubscription">Choose Subscription Plan</label>
                 <select id="selectSubscription" name="selectSubscription">
                     <option value="" disabled selected>Select a new plan</option>
-                    <option value="Bronze">Bronze - ₱1199/mo, 50 Mbps, 24/7 Support</option>
-                    <option value="Silver">Silver - ₱1499/mo, 100 Mbps, 24/7 Support</option>
-                    <option value="Gold">Gold - ₱1799/mo, 150 Mbps, 24/7 Support</option>
+                    <option value="bronze">Bronze - ₱1199/mo, 50 Mbps, 24/7 Support</option>
+                    <option value="silver">Silver - ₱1499/mo, 100 Mbps, 24/7 Support</option>
+                    <option value="gold">Gold - ₱1799/mo, 150 Mbps, 24/7 Support</option>
                 </select>
             </div>
             
@@ -215,7 +219,6 @@
                       <option value="No Internet Connection">No Internet Connection</option>
                       <option value="Frequent Disconnections">Frequent Disconnections</option>
                       <option value="Router/Modem Issues">Router/Modem Issues</option>
-                      <option value="Billing Concerns">Billing Concerns</option>
                       <option value="Other (Specify)">Other (Specify)</option>
                     </select>
                   </div>

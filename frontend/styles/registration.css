@@ -371,7 +371,7 @@ button:hover {
 #mapLink {
   width: 50rem;
   padding: 10px 15px;
-  background: linear-gradient(135deg, #ff6b6b, #ff8787);
+  background: #333;
   color: white;
   text-decoration: none;
   border: none;
@@ -379,18 +379,20 @@ button:hover {
   font-size: 16px;
   text-align: center;
   cursor: pointer;
-  transition: background 0.3s ease;
+  transition: background 0.3s ease, box-shadow 0.3s ease; /* Added transition for shadow */
   margin-top: 20px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  position: relative;
+  bottom: 1.4rem;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Added box shadow */
 }
-#mapLink:hover {
-  background: linear-gradient(135deg, #ff4d4d, #ff6969);
-}
+
 #mapLink i {
   margin-right: 8px;
 }
+
 
 /* Map container styling */
 #mapContainer {

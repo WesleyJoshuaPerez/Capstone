@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const mainContent = document.querySelector(".main_content");
   const toggleButton = document.getElementById("hamburgerBtn");
   fetchTotals();
+
   function toggleSidebar() {
     sidebar.classList.toggle("collapsed");
     mainContent.classList.toggle("expanded");
@@ -57,10 +58,16 @@ document.addEventListener("DOMContentLoaded", function () {
   const changePassDiv = document.getElementById("changePassDiv");
   const assignedTaskBox = document.getElementById("assignedTaskBox");
 
-  if (summaryContainer) summaryContainer.style.display = "block";
-  if (assignedTaskDiv) assignedTaskDiv.style.display = "none";
+  if (summaryContainer) summaryContainer.style.display = "none";
+  if (assignedTaskDiv) assignedTaskDiv.style.display = "block";
   if (trackTaskDiv) trackTaskDiv.style.display = "none";
   if (changePassDiv) changePassDiv.style.display = "none";
+
+  // ** Immediately load the assigned tasks table when the page loads **
+  $("#assignedTaskTable tbody").load("backend/fetch_assigned_tasks.php");
+
+  // ** Immediately load the track task table when the page loads **
+  $("#trackTaskTable tbody").load("backend/fetch_track_tasks.php");
 
   if (homeLink) {
     homeLink.addEventListener("click", function (event) {
@@ -80,8 +87,10 @@ document.addEventListener("DOMContentLoaded", function () {
       if (trackTaskDiv) trackTaskDiv.style.display = "none";
       if (changePassDiv) changePassDiv.style.display = "none";
 
-      // Load the tasks into the assignedTaskTable when clicked
-      $("#assignedTaskTable tbody").load("backend/fetch_assigned_tasks.php");
+      // Load the tasks into the assignedTaskTable when clicked (if not already loaded)
+      if ($("#assignedTaskTable tbody").is(":empty")) {
+        $("#assignedTaskTable tbody").load("backend/fetch_assigned_tasks.php");
+      }
     });
   }
 
@@ -92,6 +101,11 @@ document.addEventListener("DOMContentLoaded", function () {
       if (assignedTaskDiv) assignedTaskDiv.style.display = "none";
       if (trackTaskDiv) trackTaskDiv.style.display = "block";
       if (changePassDiv) changePassDiv.style.display = "none";
+
+      // Load the tasks into the trackTaskTable when clicked (if not already loaded)
+      if ($("#trackTaskTable tbody").is(":empty")) {
+        $("#trackTaskTable tbody").load("backend/fetch_track_tasks.php");
+      }
     });
   }
 
@@ -118,6 +132,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
+
 
 document.addEventListener("DOMContentLoaded", function () {
   // Toggle password visibility
@@ -321,21 +337,156 @@ document.addEventListener("DOMContentLoaded", function () {
       btnView.style.cursor = "pointer";
       btnView.dataset.report = JSON.stringify(report);
       tdReport.appendChild(btnView);
+      
+      const btnSavePDF = document.createElement("button");
+      btnSavePDF.textContent = "Save PDF File";
+      btnSavePDF.classList.add("save-pdf-btn");
+      btnSavePDF.dataset.report = JSON.stringify(report);
+      // match the same styling you used for btnView:
+      btnSavePDF.style.backgroundColor = "#007bff";
+      btnSavePDF.style.color = "#fff";
+      btnSavePDF.style.padding = "8px 16px";
+      btnSavePDF.style.border = "none";
+      btnSavePDF.style.borderRadius = "4px";
+      btnSavePDF.style.cursor = "pointer";
+      btnSavePDF.style.marginLeft = "4px";
+
+      tdReport.appendChild(btnSavePDF);
       tr.appendChild(tdReport);
 
       tbody.appendChild(tr);
     });
   }
 
-  document
-    .querySelector("#trackTaskTable")
-    .addEventListener("click", function (e) {
-      if (e.target && e.target.classList.contains("view-report-btn")) {
-        const reportStr = e.target.dataset.report;
-        const reportObj = JSON.parse(reportStr);
-        showReportDetails(reportObj);
+// 1) globally above the listener:
+let previewWindow = null;
+
+const trackTable = document.getElementById("trackTaskTable");
+  if (trackTable) {
+    trackTable.addEventListener("click", function (e) {
+      const btn = e.target;
+
+      // 1) VIEW
+      if (btn.classList.contains("view-report-btn")) {
+        showReportDetails(JSON.parse(btn.dataset.report));
+
+        // 2) SAVE AS PDF
+      } else if (btn.classList.contains("save-pdf-btn")) {
+        const report = JSON.parse(btn.dataset.report);
+        const content = buildReportHtml(report);
+
+        // single‐instance popup:
+        if (previewWindow && !previewWindow.closed) {
+          previewWindow.focus();
+          return;
+        }
+
+        // open new one:
+        const w = 800, h = 600;
+        const left = (screen.width - w) / 2;
+        const top = (screen.height - h) / 2;
+        previewWindow = window.open(
+          "",
+          "_blank",
+          `width=${w},height=${h},left=${left},top=${top}`
+        );
+
+        previewWindow.document.write(`
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+        <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>LYNX Fiber Internet Report</title>
+          <style>
+            body {
+              font-family: Arial, sans-serif;
+              padding: 40px;
+              color: #333;
+            }
+            header {
+              display: flex;
+              align-items: center;
+              border-bottom: 2px solid #007bff;
+              padding-bottom: 10px;
+              margin-bottom: 30px;
+            }
+            header img {
+              height: 60px;
+              margin-right: 20px;
+            }
+            header .company-info h1 {
+              margin: 0;
+              font-size: 24px;
+              color: #007bff;
+            }
+            header .company-info p {
+              margin: 2px 0 0;
+              font-size: 14px;
+              color: #666;
+            }
+            .report-details {
+              display: flex;
+              flex-wrap: wrap;
+            }
+            .report-details .half {
+              width: 45%;
+              margin: 0 5% 20px 0;
+            }
+            .report-details .full {
+              width: 100%;
+              margin-bottom: 20px;
+            }
+            .report-details strong {
+              color: #007bff;
+            }
+            .print-btn {
+              display: inline-block;
+              margin: 40px auto 0;
+              padding: 10px 20px;
+              background: #007bff;
+              color: #fff;
+              border: none;
+              border-radius: 4px;
+              cursor: pointer;
+              font-size: 16px;
+            }
+    
+            /* ——— Responsive tweaks ——— */
+            @media (max-width: 600px) {
+              header {
+                flex-direction: column;
+                text-align: center;
+              }
+              header img {
+                margin: 0 0 10px;
+              }
+              .report-details .half {
+                width: 100%;
+                margin-right: 0;
+              }
+            }
+          </style>
+          </head>
+        <body>
+        <header>
+            <img src="frontend/assets/images/logos/lynxlogoicon.png" alt="LYNX Logo">
+            <div class="company-info">
+              <h1>LYNX Fiber Internet</h1>
+              <p>Your Trusted ISP</p>
+            </div>
+          </header>
+          ${content}
+          <button class="print-btn" onclick="window.print()">Print / Save as PDF</button>
+        </body>
+        </html>
+      `);
+        previewWindow.document.close();
+        previewWindow.focus();
       }
     });
+  }
+
 
   function showReportDetails(report) {
     const submittedAt =
@@ -421,7 +572,7 @@ document.addEventListener("DOMContentLoaded", function () {
           report.work_description || "N/A"
         }</textarea>
         
-        <div style="font-weight: bold;">Parts/Materials:</div>
+        <div style="font-weight: bold;">Parts/Materials Used:</div>
         <textarea readonly style="width:100%; border: none; background: #f5f5f5; resize: none; height: 60px;">${
           report.parts_used || "N/A"
         }</textarea>
@@ -634,7 +785,7 @@ document.addEventListener("DOMContentLoaded", function () {
         <textarea id="workDescription" class="swal2-textarea" style="font-size: 15px; width: 90%; resize: none;" placeholder="Describe the work performed"></textarea>
 
         <!-- Parts/Materials Used -->
-        <label for="partsUsed" style="margin: 0;">Parts/Materials:</label>
+        <label for="partsUsed" style="margin: 0;">Parts/Materials Used:</label>
         <textarea id="partsUsed" class="swal2-textarea" style="font-size: 15px; width: 90%; resize: none;" placeholder="List parts/materials used"></textarea>
 
         <!-- Issues Encountered -->
@@ -782,3 +933,61 @@ document
       },
     });
   });
+
+  // 1) Replace your old buildReportHtml() with this:
+function buildReportHtml(report) {
+  const niceType = report.report_type.charAt(0).toUpperCase() 
+    + report.report_type.slice(1);
+  
+  let rows = [
+    { label: "Report Type",   value: niceType },         
+    { label: "Technician", value: report.submitted_by },
+    { label: "Status",     value: report.maintenance_status || "—" },
+    { label: "Client",     value: report.client_name },
+    { label: "Issue",      value: report.issue_type },
+    { label: "Submitted At", value: report.report_submitted_at || report.submitted_at || "—" },
+  ];
+
+  // add the report‑type specific rows
+  if (report.report_type === "progress") {
+    rows.push(
+      { label: "Progress Update", value: report.progress_update || "—", fullWidth: true },
+      { label: "Work Done",       value: report.work_done       || "—", fullWidth: true },
+      { label: "Time Spent (hrs)", value: report.time_spent_in_hour || "—" }
+    );
+  } else {
+    rows.push(
+      { label: "Work Description",   value: report.work_description   || "—", fullWidth: true },
+      { label: "Parts / Materials Used",   value: report.parts_used         || "—", fullWidth: true },
+      { label: "Issues Encountered",  value: report.issues_encountered  || "—", fullWidth: true },
+      { label: "Technician Comments", value: report.technician_comments || "—", fullWidth: true }
+    );
+  }
+
+  // build a grid: two columns unless fullWidth
+  return `
+    <div class="report-details">
+      ${rows.map(r => `
+        <div class="${r.fullWidth ? "full" : "half"}">
+          <strong>${r.label}:</strong><br>${r.value}
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+document.querySelector("#trackTaskTable").addEventListener("click", e => {
+  const btn = e.target;
+
+  if (btn.classList.contains("view-report-btn")) {
+    showReportDetails(JSON.parse(btn.dataset.report));
+  }
+
+  if (btn.classList.contains("save-pdf-btn")) {
+    const report = JSON.parse(btn.dataset.report);
+    const content = buildReportHtml(report);
+  }
+});
+
+
+  

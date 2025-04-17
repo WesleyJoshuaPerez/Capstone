@@ -119,14 +119,30 @@ function updateChangePlanStatus(
     return;
   }
 
+let planPrice = 0;
+switch (newPlan) {
+  case 'Bronze':
+    planPrice = 1199;
+    break;
+  case 'Silver':
+    planPrice = 1499;
+    break;
+  case 'Gold':
+    planPrice = 1799;
+    break;
+  default:
+    planPrice = 0;
+    break;
+}
+
+
   let requestData = {
     change_plan_id: changePlanId,
     user_id: userId,
     status: status,
+    new_plan: newPlan,
+    price: planPrice // Send the correct price
   };
-
-  if (newPlan) requestData.new_plan = newPlan;
-  if (price !== null) requestData.price = price;
 
   console.log("Sending request data:", requestData); // Debugging
 

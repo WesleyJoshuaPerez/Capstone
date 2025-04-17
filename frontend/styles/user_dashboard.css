@@ -256,6 +256,16 @@ ul li:hover {
   margin-right: 8px;
 }
 
+#homeSection .account-info {
+  margin-top: 10px; /* Add space between the name and account number */
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #ffffff; /* Dark purple */
+  margin: 0;
+  position: relative;
+  left: 1rem;
+}
+
 .card-container {
   display: flex;
   flex-wrap: wrap;

@@ -151,6 +151,10 @@
             placeholder="YYYY-MM-DD"
             required
           />
+          <small style="display: block; color: #d70101; font-size: 0.85em;">
+            Note: Only users aged 18 and above can register or apply for a subscription.
+          </small>
+
 
           <button type="button" class="next-btn">Next</button>
         </div>
@@ -176,8 +180,11 @@
             placeholder="ID Number"
           />
 
-          <label for="id-photo">Upload ID Photo</label>
+          <label for="id-photo">Upload Valid ID Photo</label>
           <input type="file" id="id-photo" name="id_photo" required />
+          <small style="display: block; color: #d70101; font-size: 0.85em;">
+            Note: Only files in JPG or PNG format are accepted.
+          </small>
 
           <button type="button" class="prev-btn">Previous</button>
           <button type="button" class="next-btn2">Next</button>
@@ -227,9 +234,6 @@
           <label for="address_details">House No. and Street</label>
           <input type="text" id="address_details" name="address_details" placeholder="Enter your house number and street name" required />
 
-          <!-- Container to display coordinates dynamically -->
-          <div id="dynamicCoords" style="margin-bottom: 5px; color: #333; font-size: 13px;"></div>
-
           <button type="button" id="mapLink">Pin My Location</button>
 
           <input type="hidden" id="latitude" name="latitude" />
@@ -242,6 +246,9 @@
             name="proof_of_residency"
             required
           />
+          <small style="display: block; color: #d70101; font-size: 0.85em;">
+            Note: Only files in JPG or PNG format are accepted.
+          </small>
 
           <label for="installation-date">Installation Date</label>
           <input

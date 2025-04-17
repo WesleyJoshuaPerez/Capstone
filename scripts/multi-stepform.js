@@ -14,8 +14,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const idPhoto = document.getElementById("id-photo");
     const residencyPhoto = document.getElementById("residency-photo");
     const installationDate = document.getElementById("installation-date");
-
     const houseNumber_street = document.getElementById("address_details");
+    const emailField = document.getElementById("email");
 
     let currentStep = 0;
 
@@ -23,7 +23,6 @@ document.addEventListener("DOMContentLoaded", function () {
         steps.forEach((step, index) => {
             step.classList.toggle("active", index === currentStep);
         });
-
         progressSteps.forEach((step, index) => {
             step.classList.toggle("active", index <= currentStep);
         });
@@ -35,29 +34,48 @@ document.addEventListener("DOMContentLoaded", function () {
             this.value = this.value.toUpperCase().replace(/\d/g, "").slice(0, 30);
         });
     }
-
     // Apply uppercase restriction & prevent numbers for name fields
     enforceUppercaseNoNumbers(firstName);
     enforceUppercaseNoNumbers(lastName);
 
+    // Function to force uppercase (used for address details)
     function enforceUppercase(inputField) {
         inputField.addEventListener("input", function () {
             this.value = this.value.toUpperCase().slice(0, 30);
         });
     }
-
     enforceUppercase(houseNumber_street);
-    
 
-    // Function to restrict input to numbers only
+    // --- New code for Contact Number field with format 0000-000-0000 ---
+    // Remove any previous event listeners on contactNumber if present.
+    if (contactNumber) {
+        // On input, allow only digits and then add hyphens at defined positions
+        contactNumber.addEventListener("input", function () {
+            // Remove all non-digit characters.
+            let digits = this.value.replace(/\D/g, "");
+            // Limit to a maximum of 11 digits total.
+            digits = digits.slice(0, 11);
+            // Format the digits into 0000-000-0000.
+            if (digits.length > 7) {
+                // 4 digits, hyphen, 3 digits, hyphen, up to 4 digits.
+                this.value = digits.slice(0, 4) + "-" + digits.slice(4, 7) + "-" + digits.slice(7);
+            } else if (digits.length > 4) {
+                // 4 digits, hyphen, remaining digits.
+                this.value = digits.slice(0, 4) + "-" + digits.slice(4);
+            } else {
+                this.value = digits;
+            }
+        });
+    }
+    // --- End new code for Contact Number field ---
+
+    // Function to restrict input to numbers only (for other numeric fields)
     function restrictToNumbers(inputField, maxLength) {
         inputField.addEventListener("input", function () {
             this.value = this.value.replace(/\D/g, "").slice(0, maxLength);
         });
     }
-
-    // Apply number-only restriction
-    restrictToNumbers(contactNumber, 11); // Contact number (11 digits max)
+    // Apply number-only restriction to idNumber
     restrictToNumbers(idNumber, 15); // ID number (15 digits max)
 
     // Function to validate file upload for images (JPG/PNG only)
@@ -67,7 +85,6 @@ document.addEventListener("DOMContentLoaded", function () {
             if (file) {
                 const fileType = file.type;
                 const validTypes = ["image/jpeg", "image/png"];
-
                 if (!validTypes.includes(fileType)) {
                     Swal.fire({
                         icon: "error",
@@ -79,16 +96,78 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-
-    // Apply file validation to ID and proof of residency
+    // Apply file validation to ID photo and proof of residency
     validateFileUpload(idPhoto);
     validateFileUpload(residencyPhoto);
 
-    // Function to validate form fields before proceeding (Steps 1 & 2)
+    // Async function to check if contact number or email already exist in the database
+    async function checkUserExistence(contactVal, emailVal) {
+        try {
+            const response = await fetch("backend/check_user_existence.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    contact_number: contactVal,
+                    email_address: emailVal,
+                }),
+            });
+            const data = await response.json();
+            // Expecting a response with a status of "exists" if data is found.
+            return data.status === "exists";
+        } catch (error) {
+            console.error("Error checking user existence:", error);
+            // In case of error, to be safe, prevent proceeding.
+            return true;
+        }
+    }
+
+    // ** New email validation function (Modified for username length) **
+    function validateEmail(emailInput) {
+        const emailValue = emailInput.value.trim();
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})$/;
+
+        // Split email into username and domain parts
+        const [username, domain] = emailValue.split('@');
+        
+        // Check if the username part is at least 5 characters
+        if (username.length < 5) {
+            Swal.fire({
+                icon: "error",
+                title: "Invalid Email Format",
+                text: "The username part of the email must be at least 5 characters long.",
+            });
+            return false;
+        }
+
+        // Must match the regex
+        if (!emailRegex.test(emailValue)) {
+            Swal.fire({
+                icon: "error",
+                title: "Invalid Email Format",
+                text: "Please enter a valid email address (e.g., user@gmail.com).",
+            });
+            return false;
+        }
+
+        // Check for restricted domains or additional text after domain
+        if (/\.(com|org|ph)$/.test(domain) === false) {
+            Swal.fire({
+                icon: "error",
+                title: "Invalid Email Domain",
+                text: "Only .com, .org, or .ph domains are allowed.",
+            });
+            return false;
+        }
+
+        return true;
+    }
+
+    // Validate form fields (Steps 1 & 2)
     function validateStep(stepIndex) {
         const currentInputs = steps[stepIndex].querySelectorAll("input, select");
 
         for (let input of currentInputs) {
+            // Check required fields
             if (input.hasAttribute("required") && !input.value.trim()) {
                 Swal.fire({
                     icon: "error",
@@ -97,8 +176,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
                 return false;
             }
-
-            // Ensure dropdowns are properly validated
+            // Validate SELECT elements
             if (input.tagName === "SELECT" && input.hasAttribute("required") && input.value === "") {
                 Swal.fire({
                     icon: "error",
@@ -107,8 +185,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
                 return false;
             }
-
-            // First & Last Name Validation (No Numbers)
+            // First & Last Name: No numbers allowed
             if (input.id === "first-name" || input.id === "last-name") {
                 if (/\d/.test(input.value)) {
                     Swal.fire({
@@ -119,20 +196,24 @@ document.addEventListener("DOMContentLoaded", function () {
                     return false;
                 }
             }
-
-            // Contact Number Validation (Only Numbers, Must be 11 digits)
+            // Contact Number must match format 0000-000-0000
             if (input.id === "contact-number") {
-                if (!/^\d{11}$/.test(input.value)) {
+                if (!/^\d{4}-\d{3}-\d{4}$/.test(input.value.trim())) {
                     Swal.fire({
                         icon: "error",
                         title: "Invalid Contact Number",
-                        text: "Contact number must be exactly 11 digits.",
+                        text: "Contact number must be in the format 0000-000-0000.",
                     });
                     return false;
                 }
             }
-
-            // ID Number Validation (Optional, But If Filled, Must Be 10-15 Digits)
+            // ** Validate Email Format **
+            if (input.id === "email") {
+                if (!validateEmail(input)) {
+                    return false;  // Exit early if email is invalid
+                }
+            }
+            // ID Number: If filled, must be between 10 and 15 digits.
             if (input.id === "id-number" && input.value.trim() !== "") {
                 if (!/^\d{10,15}$/.test(input.value)) {
                     Swal.fire({
@@ -149,7 +230,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Function to validate installation date and pinned location before submission
     function validateFinalStep(event) {
-        // Validate installation date field
         if (installationDate && installationDate.value.trim() === "") {
             event.preventDefault();
             Swal.fire({
@@ -159,7 +239,6 @@ document.addEventListener("DOMContentLoaded", function () {
             });
             return false;
         }
-        // Validate that the user has pinned a location by checking the hidden latitude and longitude fields
         const latField = document.getElementById("latitude");
         const lonField = document.getElementById("longitude");
         if (!latField.value.trim() || !lonField.value.trim()) {
@@ -174,16 +253,30 @@ document.addEventListener("DOMContentLoaded", function () {
         return true;
     }
 
-    // Validate installation date and coordinates when clicking the Submit button
+    // Validate installation date and pinned location when clicking the Submit button
     submitBtn.addEventListener("click", (event) => {
         validateFinalStep(event);
     });
 
     // Validate inputs on next button click (Steps 1 & 2)
     nextBtns.forEach((btn) => {
-        btn.addEventListener("click", () => {
+        btn.addEventListener("click", async () => {
             if (currentStep < steps.length - 1) {
                 if (validateStep(currentStep)) {
+                    // When moving from Step 0 to Step 1, check for existing user
+                    if (currentStep === 0) {
+                        const contactVal = contactNumber.value.trim();
+                        const emailVal = emailField.value.trim();
+                        const userExists = await checkUserExistence(contactVal, emailVal);
+                        if (userExists) {
+                            Swal.fire({
+                                icon: "error",
+                                title: "User Already Exists",
+                                text: "This contact number or email address is already registered. Please use different credentials.",
+                            });
+                            return;
+                        }
+                    }
                     currentStep++;
                     updateSteps();
                 }

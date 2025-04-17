@@ -1,5 +1,4 @@
 <?php
-// getting of data from approved_user table for user dashboard
 session_start();
 header('Content-Type: application/json'); 
 
@@ -11,7 +10,7 @@ if (!isset($_SESSION['user_id'])) {
     exit;
 }
 
-$user_id = $_SESSION['user_id'];
+$user_id = $_SESSION['user_id']; // The current logged-in user's ID
 
 // Check database connection
 if (!$conn) {
@@ -25,6 +24,7 @@ $stmt = $conn->prepare("
            contact_number, address, birth_date, email_address, installation_date, registration_date
     FROM approved_user WHERE user_id = ?
 ");
+
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -36,7 +36,7 @@ if ($result->num_rows > 0) {
     // Return all user details including subscription info
     echo json_encode([
         "status" => "success",
-        "user_id" => $user['user_id'],
+        "user_id" => str_pad($user['user_id'], 10, '0', STR_PAD_LEFT), // Format the user ID to 10 digits
         "fullname" => $user['fullname'],
         "subscription_plan" => $user['subscription_plan'],
         "currentBill" => floatval($user['currentBill']), // ensure number type
