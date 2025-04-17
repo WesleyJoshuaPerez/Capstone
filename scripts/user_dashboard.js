@@ -764,7 +764,7 @@ document.addEventListener("DOMContentLoaded", function() {
         if (data.status === 'success') {
             // Display user information in the UI
             document.getElementById('userName').textContent = data.fullname;
-            document.getElementById('accountNumber').textContent = `Account: ${data.user_id}`;  // Format as desired
+            document.getElementById('accountNumber').textContent = `Account Number: ${data.user_id}`;  // Format as desired
         } else {
             console.log("Error fetching user data:", data.message);
         }
