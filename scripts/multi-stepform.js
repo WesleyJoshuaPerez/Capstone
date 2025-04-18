@@ -46,8 +46,6 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     enforceUppercase(houseNumber_street);
 
-    // --- New code for Contact Number field with format 0000-000-0000 ---
-    // Remove any previous event listeners on contactNumber if present.
     if (contactNumber) {
         // On input, allow only digits and then add hyphens at defined positions
         contactNumber.addEventListener("input", function () {
@@ -67,7 +65,6 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-    // --- End new code for Contact Number field ---
 
     // Function to restrict input to numbers only (for other numeric fields)
     function restrictToNumbers(inputField, maxLength) {
@@ -121,7 +118,6 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     }
 
-    // ** New email validation function (Modified for username length) **
     function validateEmail(emailInput) {
         const emailValue = emailInput.value.trim();
         const emailRegex = /^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})$/;

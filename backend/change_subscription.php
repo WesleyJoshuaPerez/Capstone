@@ -20,7 +20,7 @@ if (!$user_id || !$full_name || !$current_plan || !$new_plan) {
 $user_id = str_pad($user_id, 10, '0', STR_PAD_LEFT);  // Ensure user_id is 10 digits
 
 // Capitalize the first letter of the new plan
-$new_plan = ucwords(strtolower(trim($new_plan))); // Capitalize first letter of each word
+$new_plan = ucwords(strtolower(trim($new_plan))); 
 
 // Price map based on selected plan
 $planPrices = [

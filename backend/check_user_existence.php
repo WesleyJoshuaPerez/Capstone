@@ -1,8 +1,7 @@
 <?php
 header('Content-Type: application/json');
-require 'connectdb.php'; // Your database connection
+require 'connectdb.php'; 
 
-// Read JSON input from fetch
 $input = json_decode(file_get_contents("php://input"), true);
 
 $contact_number = $input['contact_number'] ?? '';

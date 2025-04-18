@@ -309,7 +309,6 @@ function attachDelegatedEvents() {
           denyButtonText: "Assign Task",
         }).then(function (result) {
           if (result.isDenied) {
-            // Optionally, call assignTechnicianToRequest(technician.name);
           }
         });
       }
@@ -367,7 +366,6 @@ function viewTechnicianInfo(technicianId) {
   });
 }
 
-// (Optional) Function to assign a technician to a maintenance request
 function assignTechnicianToRequest(technicianName) {
   fetchOngoingMaintenanceRequests()
     .then(function (requests) {

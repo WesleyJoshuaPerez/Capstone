@@ -3,7 +3,6 @@ require 'connectdb.php';
 
 header('Content-Type: application/json');
 
-// In real usage, get user ID from session or a GET/POST param
 $userId = isset($_GET['user_id']) ? (int) $_GET['user_id'] : 0;
 
 $notifications = [];

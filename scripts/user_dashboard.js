@@ -102,13 +102,12 @@ document.addEventListener("DOMContentLoaded", function () {
     changePasswordLink.addEventListener("click", function (event) {
       event.preventDefault();
       hideAllSections();
-      changePasswordDiv.style.display = "block"; // Show Change Password section
+      changePasswordDiv.style.display = "block"; 
     });
   }
 });
 
 // edit contact number and email address function
-
 function makeEditable(fieldId) {
   setTimeout(() => {
     let field = document.getElementById(fieldId);
@@ -140,9 +139,9 @@ function makeEditable(fieldId) {
       },
     }).then((result) => {
       if (result.isConfirmed) {
-        field.value = result.value; // Updates the field
+        field.value = result.value; 
         field.setAttribute("value", result.value);
-        field.dispatchEvent(new Event("change")); // Triggers update event
+        field.dispatchEvent(new Event("change")); 
 
         Swal.fire(
           "Updated!",
@@ -154,7 +153,7 @@ function makeEditable(fieldId) {
   }, 500);
 }
 
-// Ensure the field remains readonly at all times
+// ensure the field remains readonly at all times
 document.addEventListener("DOMContentLoaded", () => {
   let contactField = document.getElementById("contactNumber_view");
   let emailField = document.getElementById("emailAddress_view");
@@ -182,7 +181,7 @@ document.addEventListener("DOMContentLoaded", function () {
         ? emailAddressField.value.trim()
         : null;
 
-      // Validate fields before sending request
+      // validate fields before sending request
       if (!contactNumber && !emailAddress) {
         Swal.fire("Error", "No changes detected.", "error");
         return;
@@ -192,7 +191,7 @@ document.addEventListener("DOMContentLoaded", function () {
       if (contactNumber) updateData.contact_number = contactNumber;
       if (emailAddress) updateData.email_address = emailAddress;
 
-      // Send the data via Fetch API
+      // send the data via Fetch API
       fetch("backend/update_user_data.php", {
         method: "POST",
         headers: {
@@ -225,7 +224,7 @@ function makeEditable(fieldId) {
       return;
     }
 
-    // Determine if this is an email or contact number for the prompt title
+    // determine if this is an email or contact number for the prompt title
     let fieldLabel = fieldId.includes("contact")
       ? "Contact Number"
       : "Email Address";
@@ -238,12 +237,12 @@ function makeEditable(fieldId) {
       confirmButtonText: "Save",
       cancelButtonText: "Cancel",
       inputValidator: (value) => {
-        // Check for empty value
+        // check for empty value
         if (!value) {
           return "This field cannot be empty!";
         }
 
-        //contact validation
+        // contact validation
         if (fieldId.includes("contact")) {
           if (!/^\d{11}$/.test(value)) {
             return "Enter a valid 11-digit contact number (e.g., 09123456789).";
@@ -254,29 +253,20 @@ function makeEditable(fieldId) {
         // If it's the email field, require only certain characters before '@'
         // and force the domain to be @gmail.com or @yahoo.com
         if (fieldId.includes("email")) {
-          // Optional: Check length to avoid overly long addresses
           if (value.length > 254) {
             return "Email address must be 254 characters or less!";
           }
 
-          // Regex Explanation:
-          // ^[A-Za-z0-9._-]+  => One or more letters, digits, underscores, dots, or hyphens
-          // @                 => Exactly one '@'
-          // (gmail|yahoo)     => Domain must be 'gmail' or 'yahoo'
-          // \.com             => Followed by '.com'
-          // $                 => End of string
-          // 'i' flag          => Case-insensitive (so 'GMAIL.com' is also valid)
           const pattern = /^[A-Za-z0-9._-]+@(gmail|yahoo)\.com$/i;
           if (!pattern.test(value)) {
             return "Invalid email! Only letters/digits/._- are allowed before '@', and it must end with @gmail.com or @yahoo.com.";
           }
         }
-        // If all checks pass, no error message
         return null;
       },
     }).then((result) => {
       if (result.isConfirmed) {
-        // Update the field with the validated input
+        // update the field with the validated input
         field.value = result.value;
         field.setAttribute("value", result.value);
         field.dispatchEvent(new Event("change"));
@@ -298,23 +288,23 @@ document.addEventListener("DOMContentLoaded", function () {
   const newPasswordField = document.getElementById("newPassword");
   const confirmPasswordField = document.getElementById("confirmPassword");
 
-  // Create validation messages
+  // create validation messages
   const newPasswordMessage = document.createElement("p");
   newPasswordMessage.style.color = "red";
   newPasswordMessage.style.fontSize = "13px";
-  newPasswordMessage.style.display = "none"; // Hide initially
+  newPasswordMessage.style.display = "none"; 
   newPasswordField.parentNode.appendChild(newPasswordMessage);
 
   const confirmPasswordMessage = document.createElement("p");
   confirmPasswordMessage.style.color = "red";
   confirmPasswordMessage.style.fontSize = "13px";
-  confirmPasswordMessage.style.display = "none"; // Hide initially
+  confirmPasswordMessage.style.display = "none"; 
   confirmPasswordField.parentNode.appendChild(confirmPasswordMessage);
 
-  // Password validation regex: At least 8 characters & 1 number
+  // password validation regex: At least 8 characters & 1 number
   let passwordRegex = /^(?=.*\d)[A-Za-z\d]{8,}$/;
 
-  // Live validation for New Password field
+  // live validation for new password field
   newPasswordField.addEventListener("input", function () {
     if (!passwordRegex.test(newPasswordField.value)) {
       newPasswordMessage.textContent =
@@ -327,7 +317,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Live validation for Confirm Password field
+  // live validation for confirm password field
   confirmPasswordField.addEventListener("input", function () {
     if (confirmPasswordField.value !== newPasswordField.value) {
       confirmPasswordMessage.textContent = "Passwords do not match.";
@@ -339,7 +329,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 
-  // Handle Change Password button click
+  // handle change password button click
   document
     .querySelector(".change-password-btn")
     .addEventListener("click", function (event) {
@@ -349,13 +339,13 @@ document.addEventListener("DOMContentLoaded", function () {
       let newPassword = newPasswordField.value.trim();
       let confirmPassword = confirmPasswordField.value.trim();
 
-      // Check if all fields are filled
+      // check if all fields are filled
       if (!currentPassword || !newPassword || !confirmPassword) {
         Swal.fire("Error!", "All fields are required.", "error");
         return;
       }
 
-      // Check if new password meets security standards
+      // check if new password meets security standards
       if (!passwordRegex.test(newPassword)) {
         Swal.fire(
           "Weak Password!",
@@ -365,7 +355,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      // Check if new password matches confirm password
+      // check if new password matches confirm password
       if (newPassword !== confirmPassword) {
         Swal.fire(
           "Mismatch!",
@@ -375,7 +365,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      // Send request to check current password and update new password
+      // send request to check current password and update new password
       fetch("backend/changepass_dashboard.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -394,11 +384,10 @@ document.addEventListener("DOMContentLoaded", function () {
               "Password updated successfully.",
               "success"
             ).then(() => {
-              // Clear input fields
               currentPasswordField.value = "";
               newPasswordField.value = "";
               confirmPasswordField.value = "";
-              newPasswordMessage.style.display = "none"; // Hide messages after success
+              newPasswordMessage.style.display = "none";
               confirmPasswordMessage.style.display = "none";
             });
           }
@@ -416,18 +405,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // toggle button to view password
 document.addEventListener("DOMContentLoaded", function () {
-  // Select all toggle buttons
   document.querySelectorAll(".password-form-group button").forEach((button) => {
     button.addEventListener("click", function () {
-      let inputField = this.previousElementSibling; // Get the input field before the button
-      let icon = this.querySelector("i"); // Get the eye icon inside the button
+      let inputField = this.previousElementSibling; 
+      let icon = this.querySelector("i"); 
 
       if (inputField.type === "password") {
-        inputField.type = "text"; // Show password
+        inputField.type = "text";
         icon.classList.remove("fa-eye");
-        icon.classList.add("fa-eye-slash"); // Change icon
+        icon.classList.add("fa-eye-slash"); 
       } else {
-        inputField.type = "password"; // Hide password
+        inputField.type = "password"; 
         icon.classList.remove("fa-eye-slash");
         icon.classList.add("fa-eye");
       }
@@ -469,18 +457,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (dueDateEl) dueDateEl.textContent = "Unavailable";
       }
 
-      // Set current subscription input (hidden field if you have it)
+      // set current subscription input (hidden field if you have it)
       subscriptionField.value = data.subscription_plan;
       const currentPlan = data.subscription_plan.toLowerCase();
 
-      // Hide the user’s current plan from the dropdown
+      // hide the user’s current plan from the dropdown
       Array.from(selectDropdown.options).forEach((option) => {
         if (option.value === currentPlan) {
           option.style.display = "none";
         }
       });
 
-      // Force the dropdown to select the placeholder
+      // force the dropdown to select the placeholder
       selectDropdown.value = "";
     } else {
       const fallback = "0.00";
@@ -489,7 +477,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (dueDateEl) dueDateEl.textContent = "Unavailable";
     }
 
-    // Check plan change restriction
+    // check plan change restriction
     const restrictionRes = await fetch("backend/check_plan_change_limit.php");
     const restrictionData = await restrictionRes.json();
 
@@ -509,7 +497,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 });
 
-// Handle Plan Change Form Submission
+// handle plan change form submission
 document.addEventListener("DOMContentLoaded", function () {
   const form = document.getElementById("changeSubscriptionForm");
   const changeBtn = document.querySelector(".newSub_btn");
@@ -570,7 +558,7 @@ document.addEventListener("DOMContentLoaded", function () {
     maintenanceForm.addEventListener("submit", function (event) {
       event.preventDefault();
 
-      // List all required field IDs
+      // list all required field IDs
       const requiredFields = [
         "userId_request",
         "fullName_request",
@@ -595,7 +583,7 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      // Proceed with form submission if validation passed
+      // proceed with form submission if validation passed
       const formData = new FormData(maintenanceForm);
 
       fetch("backend/submit_maintenance.php", {
@@ -607,7 +595,7 @@ document.addEventListener("DOMContentLoaded", function () {
           if (data.status === "success") {
             Swal.fire("Success!", data.message, "success");
 
-            // Reset only the specific fields
+            // reset only the specific fields
             document.getElementById("issueType").selectedIndex = 0;
             document.getElementById("issueDescription").value = "";
             document.getElementById("contactTime").selectedIndex = 0;
@@ -633,7 +621,7 @@ function loadNotifications() {
   );
   const userId = document.getElementById("userId")?.value || 0;
 
-  // Fetch notifications from your backend
+  // fetch notifications from backend
   fetch(`backend/get_notifications.php?user_id=${userId}`)
     .then((res) => res.json())
     .then((result) => {
@@ -643,35 +631,29 @@ function loadNotifications() {
       }
 
       const notifications = result.data || [];
-      // Clear any existing rows
       notificationTableBody.innerHTML = "";
 
       if (notifications.length === 0) {
-        // If no data, insert a single row with a placeholder message
         const row = document.createElement("tr");
         const cell = document.createElement("td");
-        cell.colSpan = 3; // Match the number of <th> columns
+        cell.colSpan = 3;
         cell.textContent = "No notifications available.";
         row.appendChild(cell);
         notificationTableBody.appendChild(row);
         return;
       }
 
-      // Otherwise, build rows for each notification
       notifications.forEach((notif) => {
         const row = document.createElement("tr");
 
-        // 1) user_id cell
         const userIdCell = document.createElement("td");
         userIdCell.textContent = notif.user_id;
         row.appendChild(userIdCell);
 
-        // 2) full_name cell
         const fullNameCell = document.createElement("td");
         fullNameCell.textContent = notif.full_name;
         row.appendChild(fullNameCell);
 
-        // 3) requests cell (Maintenance or Change Plan)
         const requestsCell = document.createElement("td");
         requestsCell.textContent =
           notif.type === "maintenance"
@@ -679,20 +661,15 @@ function loadNotifications() {
             : "Change Plan Request";
         row.appendChild(requestsCell);
 
-        // Store full notification object in a data attribute
         row.dataset.notif = JSON.stringify(notif);
 
-        // On row click, show a SweetAlert with full details
         row.addEventListener("click", function () {
           const data = JSON.parse(this.dataset.notif);
 
-          // Build an HTML string for the details
           let detailHtml = "";
           if (data.type === "maintenance") {
             let imageHtml = "";
             if (data.evidence_filename) {
-              // Use the exact filename stored in the database.
-              // Make sure the path "uploads/issue_evidence/" is correct relative to your HTML page.
               imageHtml = `
                   <div style="margin-top:10px;">
                     <strong>Uploaded Evidence:</strong><br/>
@@ -757,14 +734,14 @@ function loadNotifications() {
 
 // get the account number
 document.addEventListener("DOMContentLoaded", function() {
-  // Fetch user data from the server
-  fetch('backend/get_user_data.php')  // Ensure this path is correct
+  // fetch user data from the server
+  fetch('backend/get_user_data.php')  
     .then(response => response.json())
     .then(data => {
         if (data.status === 'success') {
-            // Display user information in the UI
+            // display user information in UI
             document.getElementById('userName').textContent = data.fullname;
-            document.getElementById('accountNumber').textContent = `Account Number: ${data.user_id}`;  // Format as desired
+            document.getElementById('accountNumber').textContent = `Account Number: ${data.user_id}`;  
         } else {
             console.log("Error fetching user data:", data.message);
         }
