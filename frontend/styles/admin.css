@@ -244,6 +244,29 @@ body {
   font-weight: bold;
   margin: 5px 0 0;
 }
+.toggle-status-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.toggle-status-btn[data-status="Enabled"] {
+  background-color: #ff4d4f;
+  color: #fff;
+}
+
+.toggle-status-btn[data-status="Disabled"] {
+  background-color: #4caf50;
+  color: #fff;
+}
+
+.toggle-status-btn:hover {
+  opacity: 0.9;
+}
 
 /* Hide application section initially */
 #applicationDiv,

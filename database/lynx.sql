@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 17, 2025 at 03:11 PM
--- Server version: 10.4.28-MariaDB
--- PHP Version: 8.2.4
+-- Generation Time: Apr 19, 2025 at 11:21 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -55,7 +55,8 @@ CREATE TABLE `approved_user` (
 
 INSERT INTO `approved_user` (`user_id`, `username`, `password`, `subscription_plan`, `currentBill`, `fullname`, `birth_date`, `address`, `contact_number`, `email_address`, `id_type`, `id_number`, `id_photo`, `proof_of_residency`, `home_ownership_type`, `installation_date`, `registration_date`, `address_latitude`, `address_longitude`) VALUES
 ('0000000001', 'AKrezada20', 'kyotcapybara20', 'Bronze', 1199, 'ANGELINE KATE REZADA', '2003-11-20', 'sto.-domingo, Orion, Bataan', '0905-462-7399', 'katerezada0120@gmail.com', 'UMID', '', 'erd lynx.jpg', 'erd lynx.jpg', 'Owned', '2025-07-09', '2025-04-17', 14.676538, 120.546253),
-('0000000002', 'Karki11', 'kokoarki11', 'Gold', 1799, 'KOKO ARKI', '2007-04-11', 'townsite, Limay, Bataan', '0922-222-2222', 'akerezada@bpsu.edu.ph', 'UMID', '', 'erd lynx.jpg', 'erd lynx.jpg', 'Rented', '2025-04-22', '2025-04-17', 14.672054, 120.548230);
+('0000000002', 'Karki11', 'kokoarki11', 'Gold', 1799, 'KOKO ARKI', '2007-04-11', 'townsite, Limay, Bataan', '0922-222-2222', 'akerezada@bpsu.edu.ph', 'UMID', '', 'erd lynx.jpg', 'erd lynx.jpg', 'Rented', '2025-04-22', '2025-04-17', 14.672054, 120.548230),
+('0000000003', 'Wperez173', 'wesley17', 'Silver', 1499, 'WESLEYJOSHUA PEREZ', '2004-03-17', 'bilolo, Orion, Bataan', '0938-086-8921', 'wesleyjoshuaperez@gmail.com', 'Drivers-License', '0312123456', 'wesley id.jpg', 'residency.png', 'Owned', '2025-04-25', '2025-04-19', 14.612406, 120.561927);
 
 -- --------------------------------------------------------
 
@@ -157,7 +158,7 @@ CREATE TABLE `lynx_technicians` (
 
 INSERT INTO `lynx_technicians` (`technician_id`, `name`, `username`, `password`, `role`, `contact`, `status`, `profile_image`, `created_at`) VALUES
 (1, 'John Doe', 'johndoe', 'newpass123', 'Installer', '09123456789', 'Available', 'john_doe.png', '2025-03-19 06:47:27'),
-(2, 'Jane Smith', 'janesmith', 'janesmith123', 'Repair Technician', '09234567890', 'Available', 'jane_smith.png', '2025-03-19 06:47:27'),
+(2, 'Jane Smith', 'janesmith', 'janesmith12', 'Repair Technician', '09234567890', 'Available', 'jane_smith.png', '2025-03-19 06:47:27'),
 (3, 'Michael Johnson', 'michaeljohnson', 'michaeljohnson123', 'Installer', '09345678901', 'Available', 'michael_johnson.png', '2025-03-19 06:47:27'),
 (4, 'Emily Davis', 'emilydavis', 'emilydavis123', 'Repair Technician', '09456789012', 'Available', 'emily_davis.png', '2025-03-19 06:47:27'),
 (5, 'Robert Brown', 'robertbrown', 'robertbrown123', 'Installer', '09567890123', 'Available', 'robert_brown.png', '2025-03-19 06:47:27');
@@ -190,6 +191,29 @@ CREATE TABLE `maintenance_requests` (
 INSERT INTO `maintenance_requests` (`maintenance_id`, `user_id`, `full_name`, `contact_number`, `address`, `issue_type`, `issue_description`, `contact_time`, `evidence_filename`, `submitted_at`, `status`, `technician_name`) VALUES
 (1, '0000000002', 'KOKO ARKI', '0922-222-2222', 'townsite, Limay, Bataan', 'Frequent Disconnections', 'frequent disconnections', 'Afternoon (12PM - 4PM)', 'erd lynx.jpg', '2025-04-17 11:22:28', 'Assigned', 'John Doe'),
 (2, '0000000001', 'ANGELINE KATE REZADA', '0905-462-7399', 'sto.-domingo, Orion, Bataan', 'Frequent Disconnections', 'sample', 'Morning (8AM - 12PM)', '', '2025-04-17 12:46:13', 'Pending', NULL);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `nap_box_availability`
+--
+
+CREATE TABLE `nap_box_availability` (
+  `nap_box_id` varchar(11) NOT NULL,
+  `nap_box_brgy` varchar(100) NOT NULL,
+  `available_slots` int(11) NOT NULL,
+  `nap_box_longitude` decimal(10,6) NOT NULL,
+  `nap_box_latitude` decimal(10,6) NOT NULL,
+  `nap_box_status` enum('Enabled','Disabled') NOT NULL DEFAULT 'Enabled'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `nap_box_availability`
+--
+
+INSERT INTO `nap_box_availability` (`nap_box_id`, `nap_box_brgy`, `available_slots`, `nap_box_longitude`, `nap_box_latitude`, `nap_box_status`) VALUES
+('0000000001', 'BILOLO-POST1', 15, 120.558045, 14.619323, 'Enabled'),
+('0000000002', 'BILOLO-POST2', 14, 120.562506, 14.616986, 'Disabled');
 
 -- --------------------------------------------------------
 
@@ -256,7 +280,8 @@ CREATE TABLE `registration_acc` (
 
 INSERT INTO `registration_acc` (`id`, `subscription_plan`, `first_name`, `last_name`, `contact_number`, `email_address`, `birth_date`, `id_type`, `id_number`, `id_photo`, `home_ownership_type`, `province`, `municipality`, `barangay`, `proof_of_residency`, `installation_date`, `registration_date`, `terms_agreed`, `data_processing_consent`, `id_photo_consent`, `address_latitude`, `address_longitude`, `status`) VALUES
 (1, 'Bronze', 'ANGELINE KATE', 'REZADA', '0905-462-7399', 'katerezada0120@gmail.com', '2003-11-20', 'UMID', '', 'erd lynx.jpg', 'Owned', 'Bataan', 'Orion', 'sto.-domingo', 'erd lynx.jpg', '2025-07-09', '2025-04-17 08:20:50', 'Checked', 'Checked', 'Checked', 14.676538, 120.546253, 'Approved'),
-(2, 'Gold', 'KOKO', 'ARKI', '0922-222-2222', 'akerezada@bpsu.edu.ph', '2007-04-11', 'UMID', '', 'erd lynx.jpg', 'Rented', 'Bataan', 'Limay', 'townsite', 'erd lynx.jpg', '2025-04-22', '2025-04-17 09:08:52', 'Checked', 'Checked', 'Checked', 14.672054, 120.548230, 'Approved');
+(2, 'Gold', 'KOKO', 'ARKI', '0922-222-2222', 'akerezada@bpsu.edu.ph', '2007-04-11', 'UMID', '', 'erd lynx.jpg', 'Rented', 'Bataan', 'Limay', 'townsite', 'erd lynx.jpg', '2025-04-22', '2025-04-17 09:08:52', 'Checked', 'Checked', 'Checked', 14.672054, 120.548230, 'Approved'),
+(3, 'Silver', 'WESLEYJOSHUA', 'PEREZ', '0938-086-8921', 'wesleyjoshuaperez@gmail.com', '2004-03-17', 'Drivers-License', '0312123456', 'wesley id.jpg', 'Owned', 'Bataan', 'Orion', 'bilolo', 'residency.png', '2025-04-25', '2025-04-19 05:34:49', 'Checked', 'Checked', 'Checked', 14.612406, 120.561927, 'Approved');
 
 -- --------------------------------------------------------
 
@@ -269,7 +294,7 @@ CREATE TABLE `resetpass_request` (
   `reset_token` varchar(255) NOT NULL,
   `email_address` varchar(100) NOT NULL,
   `request_date` timestamp NOT NULL DEFAULT current_timestamp(),
-  `user_id` int(11) DEFAULT NULL,
+  `user_id` varchar(11) DEFAULT NULL,
   `role` enum('user','admin') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
@@ -314,6 +339,12 @@ ALTER TABLE `lynx_technicians`
 --
 ALTER TABLE `maintenance_requests`
   ADD PRIMARY KEY (`maintenance_id`);
+
+--
+-- Indexes for table `nap_box_availability`
+--
+ALTER TABLE `nap_box_availability`
+  ADD PRIMARY KEY (`nap_box_id`);
 
 --
 -- Indexes for table `progress_reports`
@@ -378,13 +409,13 @@ ALTER TABLE `progress_reports`
 -- AUTO_INCREMENT for table `registration_acc`
 --
 ALTER TABLE `registration_acc`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `resetpass_request`
 --
 ALTER TABLE `resetpass_request`
-  MODIFY `resetpass_request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `resetpass_request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

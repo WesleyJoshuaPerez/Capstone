@@ -1,13 +1,81 @@
 document.addEventListener("DOMContentLoaded", function () {
   const mapContainer = document.getElementById("mapContainer");
-  const mapLink = document.getElementById("mapLink"); // Select the map link
+  const mapLink = document.getElementById("mapLink");
   let mapInitialized = false;
   let map;
+  let markerLayer = L.layerGroup();
+
+  // Define custom icons globally
+  const userIcon = L.icon({
+    iconUrl: "frontend/assets/images/icons/user_icon_marker.png",
+    iconSize: [64, 64],
+    iconAnchor: [32, 64],
+    popupAnchor: [0, -64],
+  });
+
+  const enabledIcon = L.icon({
+    iconUrl: "frontend/assets/images/icons/napbox_enabled.png",
+    iconSize: [64, 40],
+    iconAnchor: [32, 40],
+    popupAnchor: [0, -40],
+  });
+
+  const disabledIcon = L.icon({
+    iconUrl: "frontend/assets/images/icons/napbox_disabled.png",
+    iconSize: [64, 40],
+    iconAnchor: [32, 40],
+    popupAnchor: [0, -40],
+  });
+
+  // Function to fetch and update map markers
+  function updateMarkers(map) {
+    markerLayer.clearLayers(); // Clear old markers
+
+    fetch("backend/fetch_map_coordinates.php")
+      .then((response) => response.json())
+      .then((locations) => {
+        locations.forEach((location) => {
+          const lat = parseFloat(location.latitude);
+          const lng = parseFloat(location.longitude);
+
+          if (!isNaN(lat) && !isNaN(lng)) {
+            let icon;
+            let popupContent = "";
+
+            if (location.type === "user") {
+              icon = userIcon;
+              popupContent = `
+                Username: <b>${location.username}</b><br>
+                Fullname: <b>${location.fullname}</b><br>
+                Subscription Plan: ${location.subscription_plan}
+              `;
+            } else if (location.type === "napbox") {
+              icon = location.status === "Enabled" ? enabledIcon : disabledIcon;
+              popupContent = `
+               <b>Barangay: </b>${location.barangay}<br>
+                <b>Status: </b>${location.status}<br>
+                <b>Available Slots: </b>${location.available_slots}
+              `;
+            }
+
+            const marker = L.marker([lat, lng], { icon: icon }).bindPopup(
+              popupContent
+            );
+            markerLayer.addLayer(marker);
+          }
+        });
+
+        markerLayer.addTo(map); // Add all markers to map at once
+      })
+      .catch((error) => {
+        console.error("Error fetching location data:", error);
+      });
+  }
 
   mapLink.addEventListener("click", function (event) {
     event.preventDefault();
 
-    // Hide all sections except the map
+    // Hide other sections
     document
       .querySelectorAll(".summary-container, .info > div")
       .forEach((div) => {
@@ -17,69 +85,46 @@ document.addEventListener("DOMContentLoaded", function () {
     // Show the map container
     mapContainer.style.display = "block";
 
-    // Initialize the map only once
     if (!mapInitialized) {
-      // Set initial view to Orion, Bataan's coordinates with zoom level 14 (or adjust as needed)
-      map = L.map("map").setView([14.6717, 120.5487], 14);
+      // Create the map
+      map = L.map("map");
+      mapInitialized = true;
 
-      // Add OpenStreetMap tiles
+      // Add tile layer
       L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
         attribution: "&copy; OpenStreetMap contributors",
       }).addTo(map);
 
-      // Define a custom icon for markers
-      const userIcon = L.icon({
-        iconUrl: "frontend/assets/images/icons/user_icon_marker.png", // Replace with your custom icon path
-        iconSize: [64, 64], // Size of the icon (make it bigger)
-        iconAnchor: [32, 64], // Adjust anchor point (centered for larger icon)
-        popupAnchor: [0, -64], // Adjust the popup position relative to the larger icon
-      });
-
-      // Fetch coordinates from PHP backend and plot them on the map
-      fetch("backend/fetch_map_coordinates.php")
-        .then((response) => response.json())
-        .then((users) => {
-          users.forEach((user) => {
-            const lat = parseFloat(user.address_latitude);
-            const lng = parseFloat(user.address_longitude);
-            const name = user.fullname;
-            const username = user.username;
-            const subscriptionPlan = user.subscription_plan;
-
-            if (!isNaN(lat) && !isNaN(lng)) {
-              // Use the custom icon for each marker
-              L.marker([lat, lng], { icon: userIcon }).addTo(map).bindPopup(`
-                 <b>${username}</b><br>
-                 <b>${name}</b><br>
-                  Subscription Plan: ${subscriptionPlan}
-                `);
-            }
-          });
-        })
-        .catch((error) => {
-          console.error("Error fetching user coordinates:", error);
-        });
-
-      // Optional: Get the user's current position and update map
+      // Try to use geolocation
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
-          function (position) {
-            const userLat = position.coords.latitude;
-            const userLng = position.coords.longitude;
+          (position) => {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            map.setView([lat, lng], 14);
 
-            // Update map view to user's location
-            map.setView([userLat, userLng], 12);
+            // Add user marker
+            L.marker([lat, lng], { icon: userIcon })
+              .addTo(map)
+              .bindPopup("You are here");
+
+            // Load markers
+            updateMarkers(map);
           },
-          function (error) {
-            console.error("Error fetching geolocation:", error.message);
-            alert("Unable to retrieve your location.");
+          (error) => {
+            console.error("Geolocation error:", error);
+            map.setView([14.6717, 120.5487], 14);
+            updateMarkers(map);
           }
         );
       } else {
-        alert("Geolocation is not supported by your browser.");
+        console.error("Geolocation not supported.");
+        map.setView([14.6717, 120.5487], 14);
+        updateMarkers(map);
       }
-
-      mapInitialized = true; // Mark map as initialized
+    } else {
+      // Just refresh markers if map is already initialized
+      updateMarkers(map);
     }
   });
 });
