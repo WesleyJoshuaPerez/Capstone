@@ -43,12 +43,14 @@ document.addEventListener("DOMContentLoaded", function () {
             const lat = parseFloat(user.address_latitude);
             const lng = parseFloat(user.address_longitude);
             const name = user.fullname;
+            const username = user.username;
             const subscriptionPlan = user.subscription_plan;
 
             if (!isNaN(lat) && !isNaN(lng)) {
               // Use the custom icon for each marker
               L.marker([lat, lng], { icon: userIcon }).addTo(map).bindPopup(`
-                  <b>${name}</b><br>
+                 <b>${username}</b><br>
+                 <b>${name}</b><br>
                   Subscription Plan: ${subscriptionPlan}
                 `);
             }

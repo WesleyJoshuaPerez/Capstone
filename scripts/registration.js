@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", function () {
           button.style.background = planData[selectedPlan].color;
           button.style.borderColor = planData[selectedPlan].color;
         });
-      
+
       // *** NEW: Update the mapLink button's background based on the selected plan ***
       mapLink.style.background = planData[selectedPlan].color;
     } else {
@@ -109,7 +109,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // Initialize the UI with the default selected plan
   updatePlanUI();
 });
-
 
 document.addEventListener("DOMContentLoaded", function () {
   console.log("registration.js loaded");
@@ -172,7 +171,7 @@ document.addEventListener("DOMContentLoaded", function () {
     minDate: minInstallDate, // Disable past dates + set min 5 days ahead
     maxDate: maxInstallDate, // Set max date to 3 months from today
     dateFormat: "m/d/Y", // Format: MM/DD/YYYY
-    disableMobile: true,  // Prevent native date picker on mobile
+    disableMobile: true, // Prevent native date picker on mobile
   });
 });
 
@@ -182,15 +181,25 @@ document.addEventListener("DOMContentLoaded", function () {
   mapLink.addEventListener("click", function (event) {
     event.preventDefault();
     Swal.fire({
-      title: "Pin Location", // Changed title to "Pin Location"
-      html: '<div id="mapInSwal" style="width: 100%; height: 400px;"></div>',
+      title: "Pin My Location",
+      html: `
+        <div id="mapInSwal" style="width: 100%; height: 400px;"></div>
+        <button
+          id="pinLocationBtn"
+          type="button"
+          class="swal2-styled"
+          style="display: block; margin: 10px auto;"
+        >
+          Pin Current Location
+        </button>
+      `,
       showCancelButton: true,
       confirmButtonText: "Save Location",
       cancelButtonText: "Cancel",
       didOpen: () => {
         const mapInSwal = document.getElementById("mapInSwal");
 
-        // Create a custom RED marker icon
+        // RED marker icon
         const redIcon = new L.Icon({
           iconUrl:
             "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
@@ -202,107 +211,114 @@ document.addEventListener("DOMContentLoaded", function () {
           shadowSize: [41, 41],
         });
 
-        // Initialize the map inside the SweetAlert popup
-        const map = L.map(mapInSwal).setView([14.6717, 120.5487], 14);
+        // Initialize map
+        const map = L.map(mapInSwal).setView([14.66667, 120.41667], 10); //orion bataan coordinates
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
           attribution: "&copy; OpenStreetMap contributors",
         }).addTo(map);
 
-        // Force the map to recalc its size after the modal opens
-        setTimeout(() => {
-          map.invalidateSize();
-        }, 100);
+        // Fix size
+        setTimeout(() => map.invalidateSize(), 100);
 
-        let marker; // We'll store the current marker in this variable
+        let marker;
 
-        // Attempt geolocation if available — place first marker in user’s current location
-        if (navigator.geolocation) {
+        // Grab our inline “Pin Current Location” button
+        const pinBtn = document.getElementById("pinLocationBtn");
+        pinBtn.addEventListener("click", () => {
+          if (!navigator.geolocation) return;
           navigator.geolocation.getCurrentPosition(
-            function (position) {
-              const userLat = position.coords.latitude;
-              const userLng = position.coords.longitude;
+            (position) => {
+              const lat = position.coords.latitude;
+              const lng = position.coords.longitude;
+              map.setView([lat, lng], 14);
 
-              // If a marker already exists, remove it from the map
               if (marker) {
-                map.removeLayer(marker);
+                marker.setLatLng([lat, lng]);
+              } else {
+                marker = L.marker([lat, lng], {
+                  draggable: true,
+                  icon: redIcon,
+                })
+                  .addTo(map)
+                  .bindPopup("Your selected location")
+                  .openPopup();
+
+                marker.on("dragend", (ev) => {
+                  const newPos = ev.target.getLatLng();
+                  document.getElementById("latitude").value = newPos.lat;
+                  document.getElementById("longitude").value = newPos.lng;
+                  document.getElementById(
+                    "dynamicCoords"
+                  ).textContent = `Coordinates: ${newPos.lat.toFixed(
+                    5
+                  )}, ${newPos.lng.toFixed(5)}`;
+                });
               }
 
-              // Place initial marker at user’s current location
-              marker = L.marker([userLat, userLng], { icon: redIcon, draggable: true })
-                .addTo(map)
-                .bindPopup("You are here!")
-                .openPopup();
-
-              // Update hidden fields
-              document.getElementById("latitude").value = userLat;
-              document.getElementById("longitude").value = userLng;
-
-              // Recenter map
-              map.setView([userLat, userLng], 14);
-
-              // If user drags the marker, update the hidden fields
-              marker.on("dragend", function (ev) {
-                const newPos = ev.target.getLatLng();
-                document.getElementById("latitude").value = newPos.lat;
-                document.getElementById("longitude").value = newPos.lng;
-              });
+              // Update hidden fields & display
+              document.getElementById("latitude").value = lat;
+              document.getElementById("longitude").value = lng;
+              document.getElementById(
+                "dynamicCoords"
+              ).textContent = `Coordinates: ${lat.toFixed(5)}, ${lng.toFixed(
+                5
+              )}`;
             },
-            function (error) {
+            (error) => {
               console.error("Geolocation error:", error.message);
             }
           );
-        }
+        });
 
-        // Listen for user clicks on the map to set a new marker
-        map.on("click", function (e) {
+        // Also allow manual-click placement
+        map.on("click", (e) => {
           const lat = e.latlng.lat;
           const lng = e.latlng.lng;
 
-          // If a marker already exists, remove it
           if (marker) {
-            map.removeLayer(marker);
+            marker.setLatLng(e.latlng);
+          } else {
+            marker = L.marker(e.latlng, { draggable: true, icon: redIcon })
+              .addTo(map)
+              .bindPopup("Your selected location")
+              .openPopup();
+
+            marker.on("dragend", (ev) => {
+              const newPos = ev.target.getLatLng();
+              document.getElementById("latitude").value = newPos.lat;
+              document.getElementById("longitude").value = newPos.lng;
+              document.getElementById(
+                "dynamicCoords"
+              ).textContent = `Coordinates: ${newPos.lat.toFixed(
+                5
+              )}, ${newPos.lng.toFixed(5)}`;
+            });
           }
 
-          // Create a new marker at the clicked location
-          marker = L.marker([lat, lng], { draggable: true, icon: redIcon })
-            .addTo(map)
-            .bindPopup("Your selected location")
-            .openPopup();
-
-          // Update hidden fields
           document.getElementById("latitude").value = lat;
           document.getElementById("longitude").value = lng;
-
-          // Update hidden fields again if user drags the newly placed marker
-          marker.on("dragend", function (ev) {
-            const newPos = ev.target.getLatLng();
-            document.getElementById("latitude").value = newPos.lat;
-            document.getElementById("longitude").value = newPos.lng;
-          });
+          document.getElementById(
+            "dynamicCoords"
+          ).textContent = `Coordinates: ${lat.toFixed(5)}, ${lng.toFixed(5)}`;
         });
       },
       preConfirm: () => {
-        return new Promise((resolve, reject) => {
-          const lat = document.getElementById("latitude").value;
-          const lng = document.getElementById("longitude").value;
-          if (!lat || !lng) {
-            reject("Please select a location on the map.");
-          } else {
-            resolve({ latitude: lat, longitude: lng });
-          }
-        });
-      },
-    })
-      .then((result) => {
-        if (result.isConfirmed) {
-          Swal.fire("Location Saved!", "Your coordinates have been saved.", "success");
+        const lat = document.getElementById("latitude").value;
+        const lng = document.getElementById("longitude").value;
+        if (!lat || !lng) {
+          Swal.showValidationMessage("Please select a location on the map.");
+          return false;
         }
-      })
-      .catch((error) => {
-        // This catch block handles the rejection from preConfirm.
-        Swal.showValidationMessage(error);
-      });
+        return { latitude: lat, longitude: lng };
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire(
+          "Location Saved!",
+          "Your coordinates have been saved.",
+          "success"
+        );
+      }
+    });
   });
 });
-
-

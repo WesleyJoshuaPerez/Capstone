@@ -52,18 +52,25 @@ function attachRowClickEvent() {
               <strong>Contact:</strong> ${user.contact_number}<br>
               <strong>Email:</strong> ${user.email_address}<br>
               <strong>Birth Date:</strong> ${user.birth_date}<br>
-              <strong>ID Type:</strong> ${user.id_type} (${user.id_number})<br>
+              <strong>ID Type:</strong> ${user.id_type}<br>
+               <strong>ID number: </strong> ${user.id_number || "N/A"}<br>
               <strong>Home Ownership:</strong> ${user.home_ownership_type}<br>
-              <strong>Address:</strong> ${user.barangay}, ${user.municipality}, ${user.province}<br>
+              <strong>Address:</strong> ${user.barangay}, ${
+          user.municipality
+        }, ${user.province}<br>
               <strong>Installation Date:</strong> ${user.installation_date}<br>
               <strong>Registration Date:</strong> ${user.registration_date}<br>
 
-              <strong>ID Photo:</strong><br>
-              <img src="frontend/assets/images/uploads/Id_Photo/${user.id_photo}" width="100%" style="cursor: pointer;" 
+              <strong>Valid ID:</strong><br>
+              <img src="frontend/assets/images/uploads/Id_Photo/${
+                user.id_photo
+              }" width="100%" style="cursor: pointer;" 
                   onclick="viewImage(this.src)" onerror="this.onerror=null;this.src='frontend/assets/images/uploads/default_id_photo.jpg';"><br>
 
               <strong>Proof of Residency:</strong><br>
-              <img src="frontend/assets/images/uploads/Proof_of_Residency/${user.proof_of_residency}" width="100%" style="cursor: pointer;" 
+              <img src="frontend/assets/images/uploads/Proof_of_Residency/${
+                user.proof_of_residency
+              }" width="100%" style="cursor: pointer;" 
                   onclick="viewImage(this.src)" onerror="this.onerror=null;this.src='frontend/assets/images/uploads/default_proof_of_residency.jpg';">
           </div>
           `,

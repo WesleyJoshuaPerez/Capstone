@@ -133,8 +133,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
-
-
 document.addEventListener("DOMContentLoaded", function () {
   // Toggle password visibility
   document.querySelectorAll(".toggle-btn").forEach((btn) => {
@@ -325,43 +323,97 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Submitted Report (button to view report)
       const tdReport = document.createElement("td");
+      tdReport.className = "action-buttons";
+
+      // Create button container for responsive layout
+      const buttonContainer = document.createElement("div");
+      buttonContainer.className = "button-container";
+      buttonContainer.style.display = "flex";
+      buttonContainer.style.flexWrap = "wrap";
+      buttonContainer.style.gap = "8px";
+
+      // View Report button
       const btnView = document.createElement("button");
       btnView.textContent = "View Report";
       btnView.classList.add("view-report-btn");
-
       btnView.style.backgroundColor = "#28a745";
       btnView.style.color = "#fff";
       btnView.style.padding = "8px 16px";
       btnView.style.border = "none";
       btnView.style.borderRadius = "4px";
       btnView.style.cursor = "pointer";
+      btnView.style.flex = "1";
+      btnView.style.minWidth = "120px";
+      btnView.style.textAlign = "center";
+      btnView.style.fontSize = "14px";
       btnView.dataset.report = JSON.stringify(report);
-      tdReport.appendChild(btnView);
-      
+
+      // Save PDF File button
       const btnSavePDF = document.createElement("button");
       btnSavePDF.textContent = "Save PDF File";
       btnSavePDF.classList.add("save-pdf-btn");
-      btnSavePDF.dataset.report = JSON.stringify(report);
-      // match the same styling you used for btnView:
       btnSavePDF.style.backgroundColor = "#007bff";
       btnSavePDF.style.color = "#fff";
       btnSavePDF.style.padding = "8px 16px";
       btnSavePDF.style.border = "none";
       btnSavePDF.style.borderRadius = "4px";
       btnSavePDF.style.cursor = "pointer";
-      btnSavePDF.style.marginLeft = "4px";
+      btnSavePDF.style.flex = "1";
+      btnSavePDF.style.minWidth = "120px";
+      btnSavePDF.style.textAlign = "center";
+      btnSavePDF.style.fontSize = "14px";
+      btnSavePDF.dataset.report = JSON.stringify(report);
 
-      tdReport.appendChild(btnSavePDF);
+      // Add buttons to container
+      buttonContainer.appendChild(btnView);
+      buttonContainer.appendChild(btnSavePDF);
+
+      // Add container to table cell
+      tdReport.appendChild(buttonContainer);
       tr.appendChild(tdReport);
 
       tbody.appendChild(tr);
     });
+
+    // Add responsive styles to handle different screen sizes
+    addResponsiveStyles();
   }
 
-// 1) globally above the listener:
-let previewWindow = null;
+  // Function to add responsive styles
+  function addResponsiveStyles() {
+    // Check if style already exists
+    if (!document.getElementById("responsive-button-styles")) {
+      const style = document.createElement("style");
+      style.id = "responsive-button-styles";
+      style.textContent = `
+        @media screen and (max-width: 768px) {
+          .button-container {
+            flex-direction: column;
+          }
+          
+          .view-report-btn, .save-pdf-btn {
+            width: 100%;
+          }
+          
+          #trackTaskTable td {
+            padding: 8px 4px;
+          }
+        }
+        
+        @media screen and (max-width: 480px) {
+          .button-container button {
+            font-size: 12px;
+            padding: 6px 10px;
+          }
+        }
+      `;
+      document.head.appendChild(style);
+    }
+  }
+  // 1) globally above the listener:
+  let previewWindow = null;
 
-const trackTable = document.getElementById("trackTaskTable");
+  const trackTable = document.getElementById("trackTaskTable");
   if (trackTable) {
     trackTable.addEventListener("click", function (e) {
       const btn = e.target;
@@ -382,7 +434,8 @@ const trackTable = document.getElementById("trackTaskTable");
         }
 
         // open new one:
-        const w = 800, h = 600;
+        const w = 800,
+          h = 600;
         const left = (screen.width - w) / 2;
         const top = (screen.height - h) / 2;
         previewWindow = window.open(
@@ -486,7 +539,6 @@ const trackTable = document.getElementById("trackTaskTable");
       }
     });
   }
-
 
   function showReportDetails(report) {
     const submittedAt =
@@ -934,49 +986,76 @@ document
     });
   });
 
-  // 1) Replace your old buildReportHtml() with this:
+// 1) Replace your old buildReportHtml() with this:
 function buildReportHtml(report) {
-  const niceType = report.report_type.charAt(0).toUpperCase() 
-    + report.report_type.slice(1);
-  
+  const niceType =
+    report.report_type.charAt(0).toUpperCase() + report.report_type.slice(1);
+
   let rows = [
-    { label: "Report Type",   value: niceType },         
+    { label: "Report Type", value: niceType },
     { label: "Technician", value: report.submitted_by },
-    { label: "Status",     value: report.maintenance_status || "—" },
-    { label: "Client",     value: report.client_name },
-    { label: "Issue",      value: report.issue_type },
-    { label: "Submitted At", value: report.report_submitted_at || report.submitted_at || "—" },
+    { label: "Status", value: report.maintenance_status || "—" },
+    { label: "Client", value: report.client_name },
+    { label: "Issue", value: report.issue_type },
+    {
+      label: "Submitted At",
+      value: report.report_submitted_at || report.submitted_at || "—",
+    },
   ];
 
   // add the report‑type specific rows
   if (report.report_type === "progress") {
     rows.push(
-      { label: "Progress Update", value: report.progress_update || "—", fullWidth: true },
-      { label: "Work Done",       value: report.work_done       || "—", fullWidth: true },
+      {
+        label: "Progress Update",
+        value: report.progress_update || "—",
+        fullWidth: true,
+      },
+      { label: "Work Done", value: report.work_done || "—", fullWidth: true },
       { label: "Time Spent (hrs)", value: report.time_spent_in_hour || "—" }
     );
   } else {
     rows.push(
-      { label: "Work Description",   value: report.work_description   || "—", fullWidth: true },
-      { label: "Parts / Materials Used",   value: report.parts_used         || "—", fullWidth: true },
-      { label: "Issues Encountered",  value: report.issues_encountered  || "—", fullWidth: true },
-      { label: "Technician Comments", value: report.technician_comments || "—", fullWidth: true }
+      {
+        label: "Work Description",
+        value: report.work_description || "—",
+        fullWidth: true,
+      },
+      {
+        label: "Parts / Materials Used",
+        value: report.parts_used || "—",
+        fullWidth: true,
+      },
+      {
+        label: "Issues Encountered",
+        value: report.issues_encountered || "—",
+        fullWidth: true,
+      },
+      {
+        label: "Technician Comments",
+        value: report.technician_comments || "—",
+        fullWidth: true,
+      }
     );
   }
 
   // build a grid: two columns unless fullWidth
   return `
     <div class="report-details">
-      ${rows.map(r => `
+      ${rows
+        .map(
+          (r) => `
         <div class="${r.fullWidth ? "full" : "half"}">
           <strong>${r.label}:</strong><br>${r.value}
         </div>
-      `).join("")}
+      `
+        )
+        .join("")}
     </div>
   `;
 }
 
-document.querySelector("#trackTaskTable").addEventListener("click", e => {
+document.querySelector("#trackTaskTable").addEventListener("click", (e) => {
   const btn = e.target;
 
   if (btn.classList.contains("view-report-btn")) {
@@ -988,6 +1067,3 @@ document.querySelector("#trackTaskTable").addEventListener("click", e => {
     const content = buildReportHtml(report);
   }
 });
-
-
-  

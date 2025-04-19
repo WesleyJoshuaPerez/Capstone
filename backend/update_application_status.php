@@ -52,7 +52,7 @@ if (isset($decodedData['id']) && isset($decodedData['status'])) {
                 $secondLetters = strpos($user['first_name'], ' ') !== false ? strtoupper(substr(explode(' ', $user['first_name'])[1], 0, 1)) : "";
                 $surname = strtolower($user['last_name']);
                 $birthDay = date('d', strtotime($user['birth_date']));
-                $username = $firstLetters . $secondLetters . $surname . $birthDay;
+                $username = $firstLetters . $secondLetters . $surname . $birthDay . $user['id'];  //use to Append user ID so if their the same name it has a uniques username
 
                 // Generate random password
                 function generateRandomPassword($length = 8) {

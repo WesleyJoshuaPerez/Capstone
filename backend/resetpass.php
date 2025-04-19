@@ -67,10 +67,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['email'])) {
     // Insert reset token into database
     if ($role_exists) {
         $insertStmt = $conn->prepare("INSERT INTO resetpass_request (reset_token, email_address, request_date, user_id, role) VALUES (?, ?, ?, ?, ?)");
-        $insertStmt->bind_param("sssis", $reset_token, $email, $request_date, $user_id, $role);
+        $insertStmt->bind_param("sssss", $reset_token, $email, $request_date, $user_id, $role);
     } else {
         $insertStmt = $conn->prepare("INSERT INTO resetpass_request (reset_token, email_address, request_date, user_id) VALUES (?, ?, ?, ?)");
-        $insertStmt->bind_param("sssi", $reset_token, $email, $request_date, $user_id);
+        $insertStmt->bind_param("ssss", $reset_token, $email, $request_date, $user_id);
     }
 
     if (!$insertStmt->execute()) {

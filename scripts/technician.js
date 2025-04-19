@@ -36,11 +36,11 @@ function fetchTechnicians() {
               // Determine computed status:
               let computedStatus = technician.status;
               if (clientCount >= 5) {
-                computedStatus = "Busy";
-                if (technician.status !== "Busy") {
-                  updateTechnicianStatus(technician.id, "Busy")
+                computedStatus = "Not-Available";
+                if (technician.status !== "Not-Available") {
+                  updateTechnicianStatus(technician.id, "Not-Available")
                     .then(function () {
-                      technician.status = "Busy";
+                      technician.status = "Not-Available";
                     })
                     .fail(function (err) {
                       console.error("Error updating technician status:", err);
@@ -190,14 +190,26 @@ function fetchAssignedClientsCount(technicianId) {
 }
 
 // Update Technician Status in the Database using AJAX
+// Update Technician Status in the Database using AJAX
 function updateTechnicianStatus(technicianId, newStatus) {
   return $.ajax({
     url: "backend/update_technician_status.php",
     type: "POST",
     contentType: "application/json",
-    data: JSON.stringify({ id: technicianId, status: newStatus }),
+    data: JSON.stringify({ technician_id: technicianId, status: newStatus }), // ✅ FIXED HERE
     dataType: "json",
-  });
+  })
+    .done(function (data) {
+      if (data.success) {
+        console.log("Technician status updated successfully:", data);
+      } else {
+        console.error("Failed to update technician status:", data.error);
+      }
+    })
+    .fail(function (jqXHR, textStatus, errorThrown) {
+      console.error("Error updating technician status:", errorThrown);
+      Swal.fire("Error!", "Failed to update technician status.", "error");
+    });
 }
 
 // Fetch Assigned Clients for a Technician using AJAX
@@ -220,11 +232,12 @@ function fetchAssignedClients(technicianId) {
         let clientList = data.clients
           .map(function (client) {
             return `
-            <div style="padding: 10px; border-bottom: 1px solid #ccc;">
-              <strong>Name:</strong> ${client.full_name} <br>
-              <strong>Issue:</strong> ${client.issue_type} <br>
-              <strong>Status:</strong> ${client.status}
-            </div>`;
+           <div style="padding: 10px; border-bottom: 1px solid #ccc; text-align: left;">
+           <strong>Name:</strong> ${client.full_name} <br>
+           <strong>Issue:</strong> ${client.issue_type} <br>
+           <strong>Status:</strong> ${client.status}
+           </div>
+             `;
           })
           .join("");
 
@@ -287,7 +300,7 @@ function attachDelegatedEvents() {
           title: `Technician: ${technician.name}`,
           html: `
             <div style="text-align: left; max-height: 400px; overflow-y: auto;">
-              <strong>ID Photo:</strong><br>
+              <strong>Valid ID::</strong><br>
               <img src="frontend/assets/images/technicians/${
                 technician.profile_image
               }" 
@@ -338,19 +351,22 @@ function viewTechnicianInfo(technicianId) {
         Swal.fire({
           title: "Technician Information",
           html: `
-            <img src="frontend/assets/images/technicians/${
-              technician.profile_image
-            }" 
-                 alt="Profile Image" 
-                 style="width:100%; height:auto; object-fit:cover; margin-bottom:10px; cursor: pointer;" 
-                 onerror="this.onerror=null; this.src='frontend/assets/images/uploads/default_profile.jpg';"
-                 onclick="viewImage(this.src)">
-            <p><strong>Name:</strong> ${technician.name}</p>
-            <p><strong>Contact:</strong> ${technician.contact}</p>
-            <p><strong>Role:</strong> ${technician.role}</p>
-            <p><strong>Status:</strong> <span style="color:${
-              technician.status === "Available" ? "green" : "red"
-            };">${technician.status}</span></p>
+            <div style="text-align: left;">
+              <p><strong>Valid ID: </strong></p>
+              <img src="frontend/assets/images/technicians/${
+                technician.profile_image
+              }" 
+                   alt="Profile Image" 
+                   style="width:100%; height:auto; object-fit:cover; margin-bottom:10px; cursor: pointer;" 
+                   onerror="this.onerror=null; this.src='frontend/assets/images/uploads/default_profile.jpg';"
+                   onclick="viewImage(this.src)">
+              <p><strong>Name:</strong> ${technician.name}</p>
+              <p><strong>Contact:</strong> ${technician.contact}</p>
+              <p><strong>Role:</strong> ${technician.role}</p>
+              <p><strong>Status:</strong> <span style="color:${
+                technician.status === "Available" ? "green" : "red"
+              };">${technician.status}</span></p>
+            </div>
           `,
           icon: "info",
         });
@@ -384,7 +400,13 @@ function assignTechnicianToRequest(technicianName) {
         .join("");
       Swal.fire({
         title: "Assign Maintenance Request",
-        html: `<select id="maintenanceRequestSelect" class="swal2-select">${requestOptions}</select>`,
+        html: `
+        <div style="display: flex; justify-content: center; align-items: center; flex-direction: column; width: 100%;">
+          <select id="maintenanceRequestSelect" class="swal2-select" style="width: 100%; max-width: 100%; box-sizing: border-box; overflow-y: auto;">
+            ${requestOptions}
+          </select>
+        </div>
+      `,
         showCancelButton: true,
         confirmButtonText: "Assign",
         preConfirm: function () {
@@ -448,7 +470,7 @@ function updateTechnicianClientCount(technicianId, immediate = false) {
         // Update status if needed
         const statusCell = row.find(".technician-status");
         const statusColor = clientCount >= 5 ? "red" : "green";
-        const computedStatus = clientCount >= 5 ? "Busy" : "Available";
+        const computedStatus = clientCount >= 5 ? "Not-Available" : "Available";
         statusCell.css("color", statusColor).text(computedStatus);
         if (computedStatus !== JSON.parse(row.attr("data-technician")).status) {
           updateTechnicianStatus(technicianId, computedStatus).then(() => {

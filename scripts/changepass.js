@@ -9,7 +9,7 @@ $(document).ready(function () {
 
   // Error messages
   const passwordError = $(
-    "<span id='passwordError' style='color: red; font-size: 12px; display: none;'>Password must be at least 8 characters and contain at least 1 special character.</span>"
+    "<span id='passwordError' style='color: red; font-size: 12px; display: none;'>Password must be at least 8 characters and contain at least 1 number.</span>"
   );
   const matchError = $(
     "<span id='matchError' style='color: red; font-size: 12px; display: none;'>Passwords do not match.</span>"
