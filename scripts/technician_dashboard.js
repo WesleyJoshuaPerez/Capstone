@@ -192,9 +192,18 @@ document.addEventListener("DOMContentLoaded", function () {
     .querySelector("#changePasswordForm")
     .addEventListener("submit", function (e) {
       e.preventDefault();
+
+      // Debug: Log when the submit event is triggered
+      console.log("Submit event triggered");
+
       const currentPassword = currentPasswordField.value.trim();
       const newPassword = newPasswordField.value.trim();
       const confirmPassword = confirmPasswordField.value.trim();
+
+      // Debug: Log the values of the fields
+      console.log("Current Password:", currentPassword);
+      console.log("New Password:", newPassword);
+      console.log("Confirm Password:", confirmPassword);
 
       // Check if all fields are filled
       if (!currentPassword || !newPassword || !confirmPassword) {
@@ -222,7 +231,10 @@ document.addEventListener("DOMContentLoaded", function () {
         return;
       }
 
-      fetch("backend/changepass_dashboard.php", {
+      // Debug: Log before sending the fetch request
+      console.log("Sending fetch request to update password");
+
+      fetch("backend/update_technician_pass.php", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -230,8 +242,18 @@ document.addEventListener("DOMContentLoaded", function () {
           newPassword: newPassword,
         }),
       })
-        .then((res) => res.json())
+        .then((res) => {
+          // Debug: Log the response status
+          console.log("Response Status:", res.status);
+          if (!res.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return res.json();
+        })
         .then((data) => {
+          // Debug: Log the server response
+          console.log("Server Response:", data);
+
           if (data.status === "error") {
             Swal.fire("Error!", data.message, "error");
           } else {
@@ -247,10 +269,14 @@ document.addEventListener("DOMContentLoaded", function () {
               currentPasswordMsg.textContent = "";
               newPasswordMsg.textContent = "";
               confirmPasswordMsg.textContent = "";
+
+              // Debug: Log after resetting fields
+              console.log("Fields and messages have been reset");
             });
           }
         })
         .catch((err) => {
+          // Debug: Log any errors
           console.error("Error:", err);
           Swal.fire(
             "Error!",
@@ -925,66 +951,66 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 });
 
-// for changing of password
-document
-  .getElementById("changePasswordForm")
-  .addEventListener("submit", function (e) {
-    e.preventDefault();
+// // for changing of password
+// document
+//   .getElementById("changePasswordForm")
+//   .addEventListener("submit", function (e) {
+//     e.preventDefault();
 
-    // Get the password values
-    const currentPassword = document
-      .getElementById("currentPassword")
-      .value.trim();
-    const newPassword = document.getElementById("newPassword").value.trim();
-    const confirmPassword = document
-      .getElementById("confirmPassword")
-      .value.trim();
+//     // Get the password values
+//     const currentPassword = document
+//       .getElementById("currentPassword")
+//       .value.trim();
+//     const newPassword = document.getElementById("newPassword").value.trim();
+//     const confirmPassword = document
+//       .getElementById("confirmPassword")
+//       .value.trim();
 
-    // Basic validation
-    if (!currentPassword || !newPassword || !confirmPassword) {
-      Swal.fire("Error!", "All fields are required.", "error");
-      return;
-    }
+//     // Basic validation
+//     if (!currentPassword || !newPassword || !confirmPassword) {
+//       Swal.fire("Error!", "All fields are required.", "error");
+//       return;
+//     }
 
-    if (newPassword !== confirmPassword) {
-      Swal.fire(
-        "Error!",
-        "New password and confirm password do not match.",
-        "error"
-      );
-      return;
-    }
+//     if (newPassword !== confirmPassword) {
+//       Swal.fire(
+//         "Error!",
+//         "New password and confirm password do not match.",
+//         "error"
+//       );
+//       return;
+//     }
 
-    // Optionally, add more password validation (e.g., minimum length, complexity)
+//     // Optionally, add more password validation (e.g., minimum length, complexity)
 
-    // Send AJAX request to update_password.php
-    $.ajax({
-      url: "backend/update_technician_pass.php",
-      method: "POST",
-      data: JSON.stringify({
-        currentPassword: currentPassword,
-        newPassword: newPassword,
-      }),
-      contentType: "application/json",
-      dataType: "json",
-      success: function (response) {
-        if (response.status === "success") {
-          Swal.fire("Success!", response.message, "success");
-          // Optionally reset the form
-          document.getElementById("changePasswordForm").reset();
-        } else {
-          Swal.fire("Error!", response.message, "error");
-        }
-      },
-      error: function (xhr, status, error) {
-        Swal.fire(
-          "Error!",
-          "An error occurred while updating the password.",
-          "error"
-        );
-      },
-    });
-  });
+//     // Send AJAX request to update_password.php
+//     $.ajax({
+//       url: "backend/update_technician_pass.php",
+//       method: "POST",
+//       data: JSON.stringify({
+//         currentPassword: currentPassword,
+//         newPassword: newPassword,
+//       }),
+//       contentType: "application/json",
+//       dataType: "json",
+//       success: function (response) {
+//         if (response.status === "success") {
+//           Swal.fire("Success!", response.message, "success");
+//           // Optionally reset the form
+//           document.getElementById("changePasswordForm").reset();
+//         } else {
+//           Swal.fire("Error!", response.message, "error");
+//         }
+//       },
+//       error: function (xhr, status, error) {
+//         Swal.fire(
+//           "Error!",
+//           "An error occurred while updating the password.",
+//           "error"
+//         );
+//       },
+//     });
+//   });
 
 // 1) Replace your old buildReportHtml() with this:
 function buildReportHtml(report) {
