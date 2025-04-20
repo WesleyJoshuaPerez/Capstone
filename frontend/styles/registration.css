@@ -150,6 +150,7 @@ p {
   position: relative;
   left: 25px;
   top: 5px;
+  margin: 0 auto; /* Center the form */
 }
 
 /* Form Step 2 (ID Details) */
@@ -162,6 +163,7 @@ p {
   position: relative;
   left: 25px;
   top: 70px;
+  margin: 0 auto; /* Center the form */
 }
 
 /* Form Step 3 (Address & Consent) */
@@ -174,13 +176,10 @@ p {
   position: relative;
   left: 25px;
   top: 20px;
+  margin: 0 auto; /* Center the form */
 }
 
 /* Active Step */
-.form-step.active {
-  display: flex;
-}
-
 .form-step.active {
   display: flex;
 }
@@ -314,10 +313,9 @@ button:hover {
   width: 100%;
   max-width: 200px;
   text-align: center;
-  position: relative;
-  bottom: 99px;
+  margin-top: 20px;
   margin-bottom: 30px;
-  left: 248px;
+  /* Removed position properties to fix button alignment */
 }
 
 .prev-btn {
@@ -358,9 +356,9 @@ button:hover {
   width: 100%;
   max-width: 200px;
   text-align: center;
-  position: relative;
-  bottom: 99px;
-  left: 248px;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  /* Removed position properties to fix button visibility */
 }
 
 .submit:hover {
@@ -393,12 +391,11 @@ button:hover {
   margin-right: 8px;
 }
 
-
 /* Map container styling */
 #mapContainer {
-  display: none;  /* Initially hidden */
+  display: none; /* Initially hidden */
   width: 100%;
-  height: 600px;  /* Define a fixed height */
+  height: 600px; /* Define a fixed height */
   position: relative;
 }
 #map {
@@ -439,87 +436,108 @@ button:hover {
   h3 {
     text-align: left;
   }
-}
-
-@media (max-width: 760px) {
-  .grid-container {
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-  }
-
-  .pricing-box {
-    width: 100%;
+  /* Make all steps responsive */
+  .form-step.step-2,
+  .form-step.step-3 {
+    width: 90%; /* Adjust width for smaller screens */
     max-width: 90%;
+    margin-left: auto;
+    margin-right: auto;
+    left: 0; /* Remove any offset left */
+    top: 0; /* Remove top offset */
   }
 
-  .form-step {
+  @media (max-width: 760px) {
+    .grid-container {
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .pricing-box {
+      width: 100%;
+      max-width: 90%;
+    }
+
+    .form-step {
+      width: 100%;
+      max-width: 90%;
+    }
+
+    .ownership-options label {
+      text-align: center;
+    }
+    /**For the h3 home ownership type */
+    h3 {
+      text-align: left;
+    }
+    /* Make all steps even more responsive */
+    .form-step.step-2,
+    .form-step.step-3 {
+      width: 95%; /* More responsive on very small screens */
+    }
+  }
+
+  /** stying of fields**/
+  .form-step label {
+    display: block;
+    margin-bottom: 2px;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .form-step input[type="text"],
+  .form-step input[type="email"],
+  .form-step input[type="password"],
+  .form-step select,
+  .form-step input[type="file"] {
     width: 100%;
-    max-width: 90%;
+    padding: 12px;
+    margin-bottom: 15px;
+    font-size: 14px;
+    color: #333;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
   }
 
-  .ownership-options label {
-    text-align: center;
+  .form-step input[type="text"]:hover,
+  .form-step input[type="email"]:hover,
+  .form-step input[type="password"]:hover,
+  .form-step select:hover,
+  .form-step input[type="file"]:hover {
+    border-color: #bbb;
   }
-  /**For the h3 home ownership type */
-  h3 {
-    text-align: left;
+
+  .form-step input[type="text"]:focus,
+  .form-step input[type="email"]:focus,
+  .form-step input[type="password"]:focus,
+  .form-step select:focus,
+  .form-step input[type="file"]:focus {
+    outline: none;
+    border-color: #0487c4;
+    box-shadow: 0 0 0 1px #0487c4;
   }
-}
 
-/** stying of fields**/
-.form-step label {
-  display: block;
-  margin-bottom: 2px;
-  font-weight: 600; 
-  color: #333;      
-}
+  .form-step input[type="file"] {
+    cursor: pointer;
+  }
 
-.form-step input[type="text"],
-.form-step input[type="email"],
-.form-step input[type="password"],
-.form-step select,
-.form-step input[type="file"] {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 15px;
-  font-size: 14px;
-  color: #333;
-  background-color: #fff;
-  border: 1px solid #ccc;  
-  border-radius: 4px;
-  transition: border-color 0.3s ease, box-shadow 0.3s ease;
-  box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
-}
+  button {
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+  }
 
-.form-step input[type="text"]:hover,
-.form-step input[type="email"]:hover,
-.form-step input[type="password"]:hover,
-.form-step select:hover,
-.form-step input[type="file"]:hover {
-  border-color: #bbb;
-}
-
-.form-step input[type="text"]:focus,
-.form-step input[type="email"]:focus,
-.form-step input[type="password"]:focus,
-.form-step select:focus,
-.form-step input[type="file"]:focus {
-  outline: none; 
-  border-color: #0487c4;
-  box-shadow: 0 0 0 1px #0487c4;
-}
-
-.form-step input[type="file"] {
-  cursor: pointer;
-}
-
-button {
-  font-weight: 600;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
-  transition: background 0.3s ease, box-shadow 0.3s ease;
-}
-
-button:hover {
-  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+  button:hover {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.15);
+  }
+  .button-container {
+    display: flex;
+    gap: 10px; /* Add spacing between buttons */
+    justify-content: center; /* Center buttons */
+    margin-top: 20px;
+  }
 }

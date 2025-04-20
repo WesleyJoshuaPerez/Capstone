@@ -48,7 +48,6 @@
     <!-- Function for multi-stepform -->
     <script src="scripts/multi-stepform.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
   </head>
   <body>
     <h1>
@@ -60,7 +59,8 @@
       LYNX Fiber Internet Application Form
     </h1>
     <p>
-      Processing of your application only starts upon the submission of one valid ID.
+      Processing of your application only starts upon the submission of one
+      valid ID.
     </p>
 
     <!-- Progress Bar -->
@@ -151,10 +151,10 @@
             placeholder="YYYY-MM-DD"
             required
           />
-          <small style="display: block; color: #d70101; font-size: 0.85em;">
-            Note: Only users aged 18 and above can register or apply for a subscription.
+          <small style="display: block; color: #d70101; font-size: 0.85em">
+            Note: Only users aged 18 and above can register or apply for a
+            subscription.
           </small>
-
 
           <button type="button" class="next-btn">Next</button>
         </div>
@@ -182,12 +182,13 @@
 
           <label for="id-photo">Upload Valid ID Photo</label>
           <input type="file" id="id-photo" name="id_photo" required />
-          <small style="display: block; color: #d70101; font-size: 0.85em;">
+          <small style="display: block; color: #d70101; font-size: 0.85em">
             Note: Only files in JPG or PNG format are accepted.
           </small>
-
-          <button type="button" class="prev-btn">Previous</button>
-          <button type="button" class="next-btn2">Next</button>
+          <div class="button-container">
+            <button type="button" class="prev-btn">Previous</button>
+            <button type="button" class="next-btn2">Next</button>
+          </div>
         </div>
 
         <!-- STEP 3 -->
@@ -232,7 +233,13 @@
           </select>
 
           <label for="address_details">House No. and Street</label>
-          <input type="text" id="address_details" name="address_details" placeholder="Enter your house number and street name" required />
+          <input
+            type="text"
+            id="address_details"
+            name="address_details"
+            placeholder="Enter your house number and street name"
+            required
+          />
 
           <button type="button" id="mapLink">Pin My Location</button>
 
@@ -246,7 +253,7 @@
             name="proof_of_residency"
             required
           />
-          <small style="display: block; color: #d70101; font-size: 0.85em;">
+          <small style="display: block; color: #d70101; font-size: 0.85em">
             Note: Only files in JPG or PNG format are accepted.
           </small>
 
@@ -276,8 +283,12 @@
             </label>
           </div>
 
-          <button type="button" class="prev-btn">Previous</button>
-          <button type="submit" class="submit"><strong>SUBMIT</strong></button>
+          <div class="button-container">
+            <button type="button" class="prev-btn">Previous</button>
+            <button type="submit" class="submit">
+              <strong>SUBMIT</strong>
+            </button>
+          </div>
         </div>
       </form>
     </div>
