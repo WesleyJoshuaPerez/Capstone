@@ -8,7 +8,8 @@ $response = [
     "technicians" => 0,
     "maintenancerequest" => 0,
     "changeplan" => 0,
-    "assignedtasks" => 0
+    "assignedtasks" => 0,
+    "totalBoxslots" =>0
 ];
 
 // Count the total number of approved applicants
@@ -47,6 +48,9 @@ if (isset($_SESSION['techName'])) {
 } else {
     $response["assignedtasks"] = 0;
 }
+ 
+$napBoxQuery = $conn->query("SELECT COUNT(*) as total FROM nap_box_availability");
+$response["totalBoxslots"] = $napBoxQuery->fetch_assoc()["total"] ?? 0;
 
 // Send JSON response
 header('Content-Type: application/json');

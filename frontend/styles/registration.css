@@ -437,6 +437,7 @@ button:hover {
     text-align: left;
   }
   /* Make all steps responsive */
+  .form-step,
   .form-step.step-2,
   .form-step.step-3 {
     width: 90%; /* Adjust width for smaller screens */

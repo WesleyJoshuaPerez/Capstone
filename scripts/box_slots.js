@@ -9,12 +9,19 @@ document.addEventListener("DOMContentLoaded", function () {
       Swal.fire({
         title: "Add Nap Box",
         html: `
-            <input id="barangay" class="swal2-input" placeholder="Barangay">
-            <input id="slots" class="swal2-input" placeholder="Available Slots" type="number">
-            <div id="leafletMapContainer" style="height: 300px; margin-top: 10px; border-radius: 10px;"></div>
-            <button id="pinLocationBtn" class="swal2-styled" style="margin-top: 10px;">📍 Pin My Current Location</button>
-            <p style="margin-top: 10px;">Click on the map to set location.</p>
-          `,
+          <style>
+            .swal2-input {
+              max-width: 100% !important;
+              width: 90% !important;
+              margin: 10px auto !important;
+            }
+          </style>
+          <input id="barangay" class="swal2-input" placeholder="Barangay">
+          <input id="slots" class="swal2-input" placeholder="Available Slots" type="number">
+          <div id="leafletMapContainer" style="height: 300px; margin-top: 10px; border-radius: 10px;"></div>
+          <button id="pinLocationBtn" class="swal2-styled" style="margin-top: 10px;">📍 Pin My Current Location</button>
+          <p style="margin-top: 10px;">Click on the map to set location.</p>
+        `,
         showCancelButton: true,
         confirmButtonText: "Save",
         width: 650,
