@@ -47,8 +47,7 @@ $payload = [
   ]
 ];
 
-// 4) Call PayMongo API
-$secretKey = '';
+ 
 $ch = curl_init("https://api.paymongo.com/v1/checkout_sessions");
 curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
