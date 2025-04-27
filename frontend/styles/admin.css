@@ -552,3 +552,27 @@ body {
   background-color: #2a5c92;
   transform: scale(1.03);
 }
+.password_container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.password_container input {
+  width: 100%;
+  padding: 0.8rem;
+  outline: none;
+  resize: vertical;
+}
+
+.password_container button {
+  position: absolute;
+  right: 60px;
+  padding-top: 17px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 1.2rem;
+  color: #555;
+}

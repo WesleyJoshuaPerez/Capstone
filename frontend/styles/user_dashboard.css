@@ -781,7 +781,7 @@ select:focus {
   }
 
   #homeSection {
-    height: 80px !important;
+    height: 95px !important;
     width: 100wh !important;
     position: relative;
     top: 10px;
@@ -846,7 +846,7 @@ select:focus {
   }
   .newSub_btn {
     width: 70% !important;
-  } 
+  }
   #maintenanceDiv {
     position: relative !important;
     right: 2rem !important;

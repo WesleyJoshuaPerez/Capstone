@@ -127,7 +127,133 @@ function fetchTechnicians() {
     },
   });
 }
+// Add Technician Event Listener
+$("#addTechnicianBtn").on("click", function () {
+  Swal.fire({
+    title: "Add New Technician",
+    html: `
+      <form id="addTechnicianForm" style="
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        max-width: 400px;
+        margin: auto;
+      ">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+          <label for="technicianName" style="font-weight: 600; min-width: 100px; text-align: right;">Name:</label>
+          <input type="text" id="technicianName" class="swal2-input" style="width: 200px; height: 38px;" required>
+        </div>
+  
+        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+          <label for="technicianUsername" style="font-weight: 600; min-width: 100px; text-align: right;">Username:</label>
+          <input type="text" id="technicianUsername" class="swal2-input" style="width: 200px; height: 38px;" required>
+        </div>
+  
+        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+          <label for="technicianPassword" style="font-weight: 600; min-width: 100px; text-align: right;">Password:</label>
+          <div class="password_container" style="display: flex; align-items: center; gap: 10px;">
+            <input type="password" id="technicianPassword" class="swal2-input" style="width: 200px; height: 38px;" required>
+            <button type="button" id="togglePassword" style="background: none; border: none; cursor: pointer;">
+              <i class="fa fa-eye" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+  
+        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+          <label for="technicianRole" style="font-weight: 600; min-width: 100px; text-align: left;  ">Role:</label>
+          <select id="technicianRole" class="swal2-input" style="width: 200px; height: 38px; padding: 5px;" required>
+            <option value="" disabled selected>Select a Role</option>
+            <option value="Installer">Installer</option>
+            <option value="Repair Technician">Repair Technician</option>
+          </select>
+        </div>
+  
+        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+          <label for="technicianContact" style="font-weight: 600; min-width: 100px; text-align: right;">Contact:</label>
+          <input type="text" id="technicianContact" class="swal2-input" style="width: 200px; height: 38px;" required>
+        </div>
+  
+        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+          <label for="technicianProfileImage" style="font-weight: 600; min-width: 100px; text-align: right;">Profile:</label>
+          <input type="file" id="technicianProfileImage" class="swal2-file" style="width: 200px; height: 38px;" accept="image/*">
+        </div>
+      </form>
+    `,
+    focusConfirm: false,
+    showCancelButton: true,
+    confirmButtonText: "Add Technician",
+    preConfirm: function () {
+      const name = $("#technicianName").val();
+      const username = $("#technicianUsername").val();
+      const password = $("#technicianPassword").val();
+      const role = $("#technicianRole").val();
+      const contact = $("#technicianContact").val();
+      const profileImage = $("#technicianProfileImage")[0].files[0];
 
+      if (!name || !username || !password || !role || !contact) {
+        Swal.showValidationMessage("Please fill out all required fields.");
+        return false;
+      }
+
+      return { name, username, password, role, contact, profileImage };
+    },
+    didOpen: () => {
+      const togglePasswordButton = document.getElementById("togglePassword");
+      const passwordField = document.getElementById("technicianPassword");
+
+      togglePasswordButton.addEventListener("click", () => {
+        // Toggle password visibility
+        const type = passwordField.type === "password" ? "text" : "password";
+        passwordField.type = type;
+
+        // Toggle icon
+        const icon = togglePasswordButton.querySelector("i");
+        icon.classList.toggle("fa-eye");
+        icon.classList.toggle("fa-eye-slash");
+      });
+    },
+  }).then(function (result) {
+    if (result.isConfirmed) {
+      const formData = result.value;
+      addTechnician(formData);
+    }
+  });
+});
+
+// Add Technician AJAX Function
+function addTechnician(data) {
+  const formData = new FormData();
+  formData.append("action", "add");
+  formData.append("name", data.name);
+  formData.append("username", data.username);
+  formData.append("password", data.password);
+  formData.append("role", data.role);
+  formData.append("contact", data.contact);
+  if (data.profileImage) {
+    formData.append("profileImage", data.profileImage); // Append the file
+  }
+
+  $.ajax({
+    url: "backend/fetch_technicians.php", // Use the same PHP script
+    type: "POST",
+    data: formData,
+    processData: false,
+    contentType: false,
+    dataType: "json",
+    success: function (response) {
+      if (response.success) {
+        Swal.fire("Success!", "Technician added successfully.", "success");
+        fetchTechnicians(); // Refresh the technician list
+      } else {
+        Swal.fire("Error!", response.error, "error");
+      }
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.error("Error adding technician:", errorThrown);
+      Swal.fire("Error!", "Failed to add technician.", "error");
+    },
+  });
+}
 // Fetch Ongoing Maintenance Requests using AJAX
 function fetchOngoingMaintenanceRequests() {
   return $.ajax({

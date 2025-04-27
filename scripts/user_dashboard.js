@@ -102,7 +102,7 @@ document.addEventListener("DOMContentLoaded", function () {
     changePasswordLink.addEventListener("click", function (event) {
       event.preventDefault();
       hideAllSections();
-      changePasswordDiv.style.display = "block"; 
+      changePasswordDiv.style.display = "block";
     });
   }
 });
@@ -139,9 +139,9 @@ function makeEditable(fieldId) {
       },
     }).then((result) => {
       if (result.isConfirmed) {
-        field.value = result.value; 
+        field.value = result.value;
         field.setAttribute("value", result.value);
-        field.dispatchEvent(new Event("change")); 
+        field.dispatchEvent(new Event("change"));
 
         Swal.fire(
           "Updated!",
@@ -292,13 +292,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const newPasswordMessage = document.createElement("p");
   newPasswordMessage.style.color = "red";
   newPasswordMessage.style.fontSize = "13px";
-  newPasswordMessage.style.display = "none"; 
+  newPasswordMessage.style.display = "none";
   newPasswordField.parentNode.appendChild(newPasswordMessage);
 
   const confirmPasswordMessage = document.createElement("p");
   confirmPasswordMessage.style.color = "red";
   confirmPasswordMessage.style.fontSize = "13px";
-  confirmPasswordMessage.style.display = "none"; 
+  confirmPasswordMessage.style.display = "none";
   confirmPasswordField.parentNode.appendChild(confirmPasswordMessage);
 
   // password validation regex: At least 8 characters & 1 number
@@ -407,15 +407,15 @@ document.addEventListener("DOMContentLoaded", function () {
 document.addEventListener("DOMContentLoaded", function () {
   document.querySelectorAll(".password-form-group button").forEach((button) => {
     button.addEventListener("click", function () {
-      let inputField = this.previousElementSibling; 
-      let icon = this.querySelector("i"); 
+      let inputField = this.previousElementSibling;
+      let icon = this.querySelector("i");
 
       if (inputField.type === "password") {
         inputField.type = "text";
         icon.classList.remove("fa-eye");
-        icon.classList.add("fa-eye-slash"); 
+        icon.classList.add("fa-eye-slash");
       } else {
-        inputField.type = "password"; 
+        inputField.type = "password";
         icon.classList.remove("fa-eye-slash");
         icon.classList.add("fa-eye");
       }
@@ -733,21 +733,70 @@ function loadNotifications() {
 }
 
 // get the account number
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("DOMContentLoaded", function () {
   // fetch user data from the server
-  fetch('backend/get_user_data.php')  
-    .then(response => response.json())
-    .then(data => {
-        if (data.status === 'success') {
-            // display user information in UI
-            document.getElementById('userName').textContent = data.fullname;
-            document.getElementById('accountNumber').textContent = `Account Number: ${data.user_id}`;  
-        } else {
-            console.log("Error fetching user data:", data.message);
-        }
+  fetch("backend/get_user_data.php")
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.status === "success") {
+        // display user information in UI
+        document.getElementById("userName").textContent = data.fullname;
+        document.getElementById(
+          "accountNumber"
+        ).textContent = `Account Number: ${data.user_id}`;
+      } else {
+        console.log("Error fetching user data:", data.message);
+      }
     })
-    .catch(error => console.log('Error:', error));
+    .catch((error) => console.log("Error:", error));
 });
 
+//for Gcash payment
+document.addEventListener("DOMContentLoaded", () => {
+  const payBtn = document.querySelector(".pay-btn");
+  if (!payBtn) return;
 
+  payBtn.addEventListener("click", () => {
+    fetch("backend/handle_Payment.php", { method: "POST" })
+      .then((r) => r.json())
+      .then((data) => {
+        console.log("PayMongo response:", data);
+        if (data.status === "success" && data.checkout_url) {
+          window.location.href = data.checkout_url;
+        } else {
+          Swal.fire(
+            "Oops!",
+            data.message || "Could not generate payment link.",
+            "error"
+          );
+        }
+      })
+      .catch((err) => {
+        console.error("Fetch error:", err);
+        Swal.fire("Error", "Please try again later.", "error");
+      });
+  });
+});
 
+//for swall of payment status
+document.addEventListener("DOMContentLoaded", function () {
+  const urlParams = new URLSearchParams(window.location.search);
+
+  if (urlParams.get("paid") === "true") {
+    Swal.fire({
+      icon: "success",
+      title: "Payment Successful!",
+      text: "Your payment has been recorded.",
+      confirmButtonColor: "#3085d6",
+    });
+  }
+
+  if (urlParams.get("status") === "canceled") {
+    Swal.fire({
+      icon: "info",
+      title: "Payment Canceled",
+      text: "You have canceled the payment process.",
+      confirmButtonColor: "#d33",
+    });
+  }
+});
