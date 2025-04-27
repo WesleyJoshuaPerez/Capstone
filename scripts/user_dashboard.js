@@ -215,6 +215,7 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 
+// changing of contact and email from view profile section
 function makeEditable(fieldId) {
   setTimeout(() => {
     let field = document.getElementById(fieldId);
@@ -224,7 +225,6 @@ function makeEditable(fieldId) {
       return;
     }
 
-    // determine if this is an email or contact number for the prompt title
     let fieldLabel = fieldId.includes("contact")
       ? "Contact Number"
       : "Email Address";
@@ -236,46 +236,60 @@ function makeEditable(fieldId) {
       showCancelButton: true,
       confirmButtonText: "Save",
       cancelButtonText: "Cancel",
-      inputValidator: (value) => {
-        // check for empty value
-        if (!value) {
-          return "This field cannot be empty!";
-        }
+      didOpen: () => {
+        const input = Swal.getInput();
 
-        // contact validation
         if (fieldId.includes("contact")) {
-          if (!/^\d{11}$/.test(value)) {
-            return "Enter a valid 11-digit contact number (e.g., 09123456789).";
+          input.addEventListener("input", function () {
+            let digits = this.value.replace(/\D/g, "").slice(0, 11); // Only digits, max 11
+            if (digits.length > 7) {
+              this.value =
+                digits.slice(0, 4) +
+                "-" +
+                digits.slice(4, 7) +
+                "-" +
+                digits.slice(7);
+            } else if (digits.length > 4) {
+              this.value = digits.slice(0, 4) + "-" + digits.slice(4);
+            } else {
+              this.value = digits;
+            }
+          });
+        }
+      },
+      inputValidator: (value) => {
+        if (!value) return "This field cannot be empty!";
+
+        if (fieldId.includes("contact")) {
+          const digitsOnly = value.replace(/\D/g, "");
+          if (digitsOnly.length !== 11) {
+            return "Enter a valid Philippine contact number with exactly 11 digits.";
           }
         }
 
-        // If it's the email field, require @gmail.com or @yahoo.com
-        // If it's the email field, require only certain characters before '@'
-        // and force the domain to be @gmail.com or @yahoo.com
         if (fieldId.includes("email")) {
-          if (value.length > 254) {
-            return "Email address must be 254 characters or less!";
-          }
+          const emailRegex =
+            /^[a-zA-Z0-9._%+-]+@([a-zA-Z0-9.-]+\.[a-zA-Z]{2,4})$/;
+          const [username, domain] = value.split("@") || [];
 
-          const pattern = /^[A-Za-z0-9._-]+@(gmail|yahoo)\.com$/i;
-          if (!pattern.test(value)) {
-            return "Invalid email! Only letters/digits/._- are allowed before '@', and it must end with @gmail.com or @yahoo.com.";
+          if (!username || username.length < 5) {
+            return "The username part of the email must be at least 5 characters long.";
+          }
+          if (!emailRegex.test(value)) {
+            return "Please enter a valid email address (e.g., user@gmail.com).";
+          }
+          if (!/\.(com|org|ph)$/.test(domain)) {
+            return "Only .com, .org, or .ph domains are allowed.";
           }
         }
-        return null;
       },
     }).then((result) => {
       if (result.isConfirmed) {
-        // update the field with the validated input
         field.value = result.value;
         field.setAttribute("value", result.value);
         field.dispatchEvent(new Event("change"));
 
-        Swal.fire(
-          "Updated!",
-          `${fieldLabel} has been updated successfully.`,
-          "success"
-        );
+        Swal.fire("", `${fieldLabel}`, "success");
       }
     });
   }, 500);
