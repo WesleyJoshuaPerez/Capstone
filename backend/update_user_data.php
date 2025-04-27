@@ -31,6 +31,29 @@ if (!$userExists) {
     exit;
 }
 
+// **New: Check if the new contact number or email address already exists for another user**
+if (isset($data['contact_number'])) {
+    $checkContactStmt = $conn->prepare("SELECT user_id FROM approved_user WHERE contact_number = ? AND user_id != ?");
+    $checkContactStmt->bind_param("si", $data['contact_number'], $user_id);
+    $checkContactStmt->execute();
+    if ($checkContactStmt->get_result()->num_rows > 0) {
+        echo json_encode(["status" => "error", "message" => "Contact number already in use by another user."]);
+        exit;
+    }
+    $checkContactStmt->close();
+}
+
+if (isset($data['email_address'])) {
+    $checkEmailStmt = $conn->prepare("SELECT user_id FROM approved_user WHERE email_address = ? AND user_id != ?");
+    $checkEmailStmt->bind_param("si", $data['email_address'], $user_id);
+    $checkEmailStmt->execute();
+    if ($checkEmailStmt->get_result()->num_rows > 0) {
+        echo json_encode(["status" => "error", "message" => "Email address already in use by another user."]);
+        exit;
+    }
+    $checkEmailStmt->close();
+}
+
 // Prepare SQL query based on received fields
 $fields = [];
 $params = [];
@@ -70,4 +93,3 @@ if ($success) {
 
 $stmt->close();
 $conn->close();
-?>
