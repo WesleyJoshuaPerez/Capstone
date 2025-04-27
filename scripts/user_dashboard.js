@@ -685,7 +685,7 @@ function loadNotifications() {
             let imageHtml = "";
             if (data.evidence_filename) {
               imageHtml = `
-                  <div style="margin-top:10px;">
+                  <div style="margin-top:10px; text-align:left;"><">
                     <strong>Uploaded Evidence:</strong><br/>
                     <img 
                       src="frontend/assets/images/uploads/issue_evidence/${data.evidence_filename}" 
@@ -696,17 +696,17 @@ function loadNotifications() {
             }
 
             detailHtml = `
-                <p><strong>Request ID:</strong> ${data.request_id}</p>
-                <p><strong>Status:</strong> ${data.status}</p>
-                <p><strong>Issue Type:</strong> ${data.issue_type}</p>
-                <p><strong>Description:</strong> ${data.issue_description}</p>
-                <p><strong>Preferred Contact Time:</strong> ${
+                <p style="text-align:left;"><strong>Request ID:</strong> ${data.request_id}</p>
+                <p style="text-align:left;"><strong>Status:</strong> ${data.status}</p>
+                <p style="text-align:left;"><strong>Issue Type:</strong> ${data.issue_type}</p>
+                <p style="text-align:left;"><strong>Description:</strong> ${data.issue_description}</p>
+                <p style="text-align:left;"><strong>Preferred Contact Time:</strong> ${
                   data.contact_time
                 }</p>
-                <p><strong>Technician:</strong> ${
+                <p style="text-align:left;"><strong>Technician:</strong> ${
                   data.technician_name || "N/A"
                 }</p>
-                <p><strong>Submitted At:</strong> ${data.submitted_at}</p>
+                <p style="text-align:left;"><strong>Submitted At:</strong> ${data.submitted_at}</p>
                 ${imageHtml}
                 <p style="margin-top:10px;color:red;"><em>
                   Important note: Please wait for the assigned technician to contact you after the approval of this request.
@@ -714,12 +714,12 @@ function loadNotifications() {
               `;
           } else {
             detailHtml = `
-                <p><strong>Request ID:</strong> ${data.request_id}</p>
-                <p><strong>Status:</strong> ${data.status}</p>
-                <p><strong>Current Plan:</strong> ${data.current_plan}</p>
-                <p><strong>New Plan:</strong> ${data.new_plan}</p>
-                <p><strong>Price:</strong> ${data.price}</p>
-                <p><strong>Changed At:</strong> ${data.changed_at}</p>
+                <p style="text-align:left;"><strong>Request ID:</strong> ${data.request_id}</p>
+                <p style="text-align:left;"><strong>Status:</strong> ${data.status}</p>
+                <p style="text-align:left;"><strong>Current Plan:</strong> ${data.current_plan}</p>
+                <p style="text-align:left;"><strong>New Plan:</strong> ${data.new_plan}</p>
+                <p style="text-align:left;"><strong>Price:</strong> ${data.price}</p>
+                <p style="text-align:left;"><strong>Changed At:</strong> ${data.changed_at}</p>
                 <p style="margin-top:10px; color:red;"><em>
                   Important note: Approval date serves as the new billing date, but not settling your payment 
                   to the last billing will hinder the start of new plan and billing date.

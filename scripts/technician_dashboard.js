@@ -1093,3 +1093,69 @@ document.querySelector("#trackTaskTable").addEventListener("click", (e) => {
     const content = buildReportHtml(report);
   }
 });
+
+// for displaying client's pinned coordinates
+document.addEventListener("DOMContentLoaded", function () {
+  // Handle click on client row in assigned task table
+  $('#assignedTaskTable').on('click', 'tr', function () {
+    const clientId = $(this).find('td:first').text();
+
+    // Fetch client coordinates from the server
+    fetch(`backend/fetch_client_coordinates.php?user_id=${clientId}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.status === 'success') {
+          const { client_name, latitude, longitude } = data;
+
+          Swal.fire({
+            title: ``,
+            html: `<div id="map" style="height: 350px;"></div>`, 
+            didOpen: () => {
+      
+              const swalTitle = document.querySelector('.swal2-title');
+              const swalContent = document.querySelector('.swal2-html-container');
+
+              if (swalTitle) {
+                swalTitle.style.fontSize = '18px';
+              }
+
+              if (swalContent) {
+                swalContent.style.fontSize = '10px';  
+              }
+
+              const mapElement = document.getElementById('map');
+              if (mapElement) {
+                const map = L.map(mapElement, {
+                  scrollWheelZoom: false,  
+                  dragging: false,        
+                  touchZoom: false,        
+                  doubleClickZoom: false,   
+                  boxZoom: false          
+                }).setView([latitude, longitude], 16); 
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+
+                L.marker([latitude, longitude]).addTo(map)
+                  .bindPopup(`<b>${client_name}</b>`)
+                  .openPopup();
+              }
+            },
+            willClose: () => {
+              const mapElement = document.getElementById('map');
+              if (mapElement) {
+                mapElement.innerHTML = ''; 
+              }
+            }
+          });
+        } else {
+          Swal.fire('Error', 'Failed to fetch client details', 'error');
+        }
+      })
+      .catch(error => {
+        console.error('Error fetching client coordinates:', error);
+        Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+      });
+  });
+});
