@@ -685,7 +685,7 @@ function loadNotifications() {
             let imageHtml = "";
             if (data.evidence_filename) {
               imageHtml = `
-                  <div style="margin-top:10px; text-align:left;"><">
+                  <div style="margin-top:10px; text-align:left;">
                     <strong>Uploaded Evidence:</strong><br/>
                     <img 
                       src="frontend/assets/images/uploads/issue_evidence/${data.evidence_filename}" 
