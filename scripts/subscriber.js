@@ -28,10 +28,8 @@ function fetchSubscribers() {
           row.innerHTML = `
                 <td>${subscriber.id}</td>
                 <td>${subscriber.subscription_plan}</td>
-                <td>${
-                  subscriber.currentBill
-                }</td>  <!--for current bill data  -->
-                 <td>${""}</td>  <!--for duedate  bill data  -->
+                <td>${subscriber.currentBill}</td>  <!--for current bill data  -->
+              <td>${subscriber.next_due_date}</td>   <!--for duedate  bill data  -->
                 <td>${subscriber.first_name}</td>
                 <td>${subscriber.last_name}</td>
                 <td>${subscriber.contact_number}</td>

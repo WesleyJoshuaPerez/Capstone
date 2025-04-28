@@ -5,53 +5,67 @@ ini_set('display_errors', 1);
 
 include 'connectdb.php';
 
-// Set response header
 header("Content-Type: application/json");
 
-// Validate database connection
 if ($conn->connect_error) {
     echo json_encode(["success" => false, "error" => "Database connection failed: " . $conn->connect_error]);
     exit;
 }
 
-// Query for fetching approved users
-$sql = "SELECT *  FROM approved_user";
+$planPrices = [
+    'bronze' => 1199,
+    'silver' => 1499,
+    'gold'   => 1799
+];
+
+// Query to get all approved users
+$sql = "SELECT * FROM approved_user";
 $result = $conn->query($sql);
 
-// Check for query execution errors
 if (!$result) {
     echo json_encode(["success" => false, "error" => "Query failed: " . $conn->error]);
     exit;
 }
 
 $subscribers = [];
- 
-// Define a list of known suffixes that should be part of the last name
 $suffixes = ['JR', 'SR', 'III', 'IV'];
 
-// Fetch and process results
 while ($row = $result->fetch_assoc()) {
-    // Split the fullname into parts
     $nameParts = preg_split('/\s+/', trim($row['fullname']));
-    
+
+    // Extract first and last name
     if (count($nameParts) > 1) {
-        // Check if the last word is a known suffix
-        $lastWord = strtoupper(end($nameParts)); // Convert to uppercase for comparison
+        $lastWord = strtoupper(end($nameParts));
         if (in_array($lastWord, $suffixes)) {
-            // Combine the last two words as the last name
-            $lastName = array_pop($nameParts); // Remove the suffix
-            $lastName = array_pop($nameParts) . ' ' . $lastName; // Combine with the second-to-last word
+            $lastName = array_pop($nameParts);
+            $lastName = array_pop($nameParts) . ' ' . $lastName;
         } else {
-            // The last word is the last name
             $lastName = array_pop($nameParts);
         }
-        // Combine the remaining words as the first name
         $firstName = implode(' ', $nameParts);
     } else {
-        // If there's only one part, treat it as the first name with no last name
         $firstName = $nameParts[0] ?? '';
         $lastName = '';
     }
+
+    $originalPrice = $planPrices[$row['subscription_plan']] ?? 0;
+
+    // Installation date
+    $installDate = $row['installation_date'];
+    $currentDate = new DateTime(); // Current date for comparison
+
+    // Calculate the original due date: 1 month after installation
+    $installDateTime = new DateTime($installDate);
+    $installDateTime->modify('+1 month');
+    $nextDueDate = $installDateTime;
+
+    // Roll over due date until it is in the future
+    while ($nextDueDate < $currentDate) {
+        $nextDueDate->modify('+1 month');
+    }
+
+    // Format the due date for display
+    $formattedNextDueDate = $nextDueDate->format('Y-m-d');
 
     $subscribers[] = [
         "id" => $row["user_id"],
@@ -71,12 +85,11 @@ while ($row = $result->fetch_assoc()) {
         "registration_date" => $row["registration_date"],
         "id_photo" => $row["id_photo"],
         "proof_of_residency" => $row["proof_of_residency"],
+        "next_due_date" => $formattedNextDueDate // Adjusted dynamically
     ];
 }
 
-// Return JSON response
 echo json_encode(["success" => true, "data" => $subscribers], JSON_UNESCAPED_UNICODE);
 
-// Close database connection
 $conn->close();
 ?>

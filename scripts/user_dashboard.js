@@ -459,11 +459,17 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (planNameEl) planNameEl.textContent = `${plan.toUpperCase()} PLAN`;
       if (planPriceEl) planPriceEl.textContent = bill.toFixed(2);
       if (billingAmountEl) billingAmountEl.textContent = bill.toFixed(2);
-
       if (data.installation_date && dueDateEl) {
         const installDate = new Date(data.installation_date);
-        const dueDate = new Date(installDate);
-        dueDate.setMonth(dueDate.getMonth() + 1);
+        let dueDate = new Date(installDate);
+        dueDate.setMonth(dueDate.getMonth() + 1); // Initial due date: 1 month after installation
+
+        const currentDate = new Date(); // Current date
+
+        // Roll over the due date to the next month if it has already passed
+        while (dueDate < currentDate) {
+          dueDate.setMonth(dueDate.getMonth() + 1);
+        }
 
         const options = { year: "numeric", month: "short", day: "2-digit" };
         dueDateEl.textContent = dueDate.toLocaleDateString("en-US", options);
@@ -471,11 +477,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (dueDateEl) dueDateEl.textContent = "Unavailable";
       }
 
-      // set current subscription input (hidden field if you have it)
+      // Set current subscription input (hidden field if you have it)
       subscriptionField.value = data.subscription_plan;
       const currentPlan = data.subscription_plan.toLowerCase();
 
-      // hide the user’s current plan from the dropdown
+      // Hide the user’s current plan from the dropdown
       Array.from(selectDropdown.options).forEach((option) => {
         if (option.value === currentPlan) {
           option.style.display = "none";
@@ -696,17 +702,27 @@ function loadNotifications() {
             }
 
             detailHtml = `
-                <p style="text-align:left;"><strong>Request ID:</strong> ${data.request_id}</p>
-                <p style="text-align:left;"><strong>Status:</strong> ${data.status}</p>
-                <p style="text-align:left;"><strong>Issue Type:</strong> ${data.issue_type}</p>
-                <p style="text-align:left;"><strong>Description:</strong> ${data.issue_description}</p>
+                <p style="text-align:left;"><strong>Request ID:</strong> ${
+                  data.request_id
+                }</p>
+                <p style="text-align:left;"><strong>Status:</strong> ${
+                  data.status
+                }</p>
+                <p style="text-align:left;"><strong>Issue Type:</strong> ${
+                  data.issue_type
+                }</p>
+                <p style="text-align:left;"><strong>Description:</strong> ${
+                  data.issue_description
+                }</p>
                 <p style="text-align:left;"><strong>Preferred Contact Time:</strong> ${
                   data.contact_time
                 }</p>
                 <p style="text-align:left;"><strong>Technician:</strong> ${
                   data.technician_name || "N/A"
                 }</p>
-                <p style="text-align:left;"><strong>Submitted At:</strong> ${data.submitted_at}</p>
+                <p style="text-align:left;"><strong>Submitted At:</strong> ${
+                  data.submitted_at
+                }</p>
                 ${imageHtml}
                 <p style="margin-top:10px;color:red;"><em>
                   Important note: Please wait for the assigned technician to contact you after the approval of this request.
