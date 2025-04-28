@@ -86,13 +86,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['email'])) {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
-        $mail->Username = 'noreplylynxfiber@gmail.com';
-        $mail->Password = 'pkeq usho jsfe piqw'; // Use an environment variable for security
+        $mail->Username = 'noreplylynxfiberinternet@gmail.com';
+        $mail->Password = 'xoel vjfs smnc ckjy'; // Use an environment variable for security
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
         // Recipients
-        $mail->setFrom('noreplylynxfiber@gmail.com', 'Lynx Fiber');
+        $mail->setFrom('noreplylynxfiberinternet@gmail.com', 'Lynx Fiber');
         $mail->addAddress($email);
 
         // Email content

@@ -30,8 +30,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $role = $row['role']; // Identifies if it's a "user" or "admin"
 
         if ($new_password === $confirm_password) {
-            // Hash the new password for security
-            $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+            // Hash the new password using MD5
+            $hashed_password = md5($new_password);
 
             // Update password in the correct table based on role
             if ($role === 'user') {
@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 exit();
             }
 
-            $updateStmt->bind_param("ss", $new_password, $email);
+            $updateStmt->bind_param("ss", $hashed_password, $email);
             $updateStmt->execute();
 
             if ($updateStmt->affected_rows > 0) {

@@ -18,8 +18,9 @@ if (empty($username) || empty($password)) {
     exit;
 }
 
+// Helper function to fetch user
 function checkLogin($conn, $table, $idField, $username) {
-    $query = "SELECT $idField, password FROM $table WHERE username = ?";
+    $query = "SELECT $idField, username, password FROM $table WHERE username = ?";
     $stmt = $conn->prepare($query);
     if (!$stmt) {
         error_log("Prepare failed: " . $conn->error);
@@ -52,8 +53,8 @@ if (!$user) {
 }
 
 if (!$user) {
-    // Try technician login (lynx_technicians table) with an extended query to get the name as well.
-    $query = "SELECT technician_id, name, password FROM lynx_technicians WHERE username = ?";
+    // Try technician login (lynx_technicians table)
+    $query = "SELECT technician_id, name, username, password FROM lynx_technicians WHERE username = ?";
     $stmt = $conn->prepare($query);
     if ($stmt) {
         $stmt->bind_param("s", $username);
@@ -62,43 +63,32 @@ if (!$user) {
         if ($result && $result->num_rows > 0) {
             $user = $result->fetch_assoc();
             $is_technician = true;
-            // Start session if not already started
-            if (session_status() == PHP_SESSION_NONE) {
-                session_start();
-            }
-            // Store the technician's name in session variable
+
+            // Store the technician's name in session
             $_SESSION['techName'] = $user['name'];
         }
         $stmt->close();
     }
 }
 
+// Now verify password
 if ($user) {
-    // For production, replace this plaintext comparison with password_verify() if passwords are hashed.
-    if ($password === $user['password']) {
-        // Store the appropriate ID in session. The operator '??' picks the first non-null value.
+    // Hash the entered password using MD5
+    $enteredPasswordHashed = md5($password);
+
+    // Check if the MD5 hashed password matches the one in the database
+    if ($enteredPasswordHashed === $user['password']) {
+        // Store ID in session
         $_SESSION['user_id'] = $user['user_id'] ?? $user['admin_id'] ?? $user['technician_id'];
         $_SESSION['username'] = $username;
         
-        // Choose redirect based on role.
+        // Redirect based on role
         if ($is_admin) {
-            echo json_encode([
-                "status" => "success", 
-                "message" => "Login successful.", 
-                "redirect" => "admin.html"
-            ]);
+            echo json_encode([ "status" => "success", "message" => "Login successful.", "redirect" => "admin.html" ]);
         } elseif ($is_technician) {
-            echo json_encode([
-                "status" => "success", 
-                "message" => "Login successful.", 
-                "redirect" => "technician_dashboard.html"
-            ]);
+            echo json_encode([ "status" => "success", "message" => "Login successful.", "redirect" => "technician_dashboard.html" ]);
         } else {
-            echo json_encode([
-                "status" => "success", 
-                "message" => "Login successful.", 
-                "redirect" => "user_dashboard.html"
-            ]);
+            echo json_encode([ "status" => "success", "message" => "Login successful.", "redirect" => "user_dashboard.html" ]);
         }
     } else {
         echo json_encode(["status" => "error", "message" => "Invalid username or password."]);

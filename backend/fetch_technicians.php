@@ -72,14 +72,15 @@ if ($action === 'fetch') {
     // Sanitize and prepare input data
     $name = $conn->real_escape_string($_POST['name']);
     $username = $conn->real_escape_string($_POST['username']);
-    $password = $conn->real_escape_string($_POST['password']); // Store the password as is (no hashing)
+    $password = $conn->real_escape_string($_POST['password']); // Get the raw password
+    $hashedPassword = md5($password); // MD5 hash the password
     $role = $conn->real_escape_string($_POST['role']);
     $contact = $conn->real_escape_string($_POST['contact']);
     $profileImage = $conn->real_escape_string($fileName);
 
     // Insert technician data into the database
     $sql = "INSERT INTO lynx_technicians (name, username, password, role, contact, profile_image) 
-            VALUES ('$name', '$username', '$password', '$role', '$contact', '$profileImage')";
+            VALUES ('$name', '$username', '$hashedPassword', '$role', '$contact', '$profileImage')";
 
     if ($conn->query($sql) === TRUE) {
         echo json_encode(["success" => true, "message" => "Technician added successfully."]);

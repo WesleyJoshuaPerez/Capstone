@@ -765,7 +765,7 @@ document.addEventListener("DOMContentLoaded", function () {
     .catch((error) => console.log("Error:", error));
 });
 
-//for Gcash payment
+/// for PayPal payment
 document.addEventListener("DOMContentLoaded", () => {
   const payBtn = document.querySelector(".pay-btn");
   if (!payBtn) return;
@@ -774,7 +774,7 @@ document.addEventListener("DOMContentLoaded", () => {
     fetch("backend/handle_Payment.php", { method: "POST" })
       .then((r) => r.json())
       .then((data) => {
-        console.log("PayMongo response:", data);
+        console.log("PayPal response:", data);
         if (data.status === "success" && data.checkout_url) {
           window.location.href = data.checkout_url;
         } else {
@@ -792,7 +792,7 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-//for swall of payment status
+// for Swal of payment status
 document.addEventListener("DOMContentLoaded", function () {
   const urlParams = new URLSearchParams(window.location.search);
 

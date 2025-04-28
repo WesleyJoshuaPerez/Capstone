@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 28, 2025 at 05:25 AM
+-- Generation Time: Apr 27, 2025 at 01:25 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -56,10 +56,9 @@ CREATE TABLE `approved_user` (
 --
 
 INSERT INTO `approved_user` (`user_id`, `username`, `password`, `subscription_plan`, `currentBill`, `last_payment_date`, `payment_status`, `fullname`, `birth_date`, `address`, `contact_number`, `email_address`, `id_type`, `id_number`, `id_photo`, `proof_of_residency`, `home_ownership_type`, `installation_date`, `registration_date`, `address_latitude`, `address_longitude`) VALUES
-('0000000001', 'AKrezada201', '70a061892c3eb147f8c06e95c3067899', 'Bronze', 1199, NULL, 'unpaid', 'ANGELINE KATE REZADA', '2003-11-20', 'sto.-domingo, Orion, Bataan', '0905-462-7399', 'katerezada0120@gmail.com', 'UMID', '', 'erd lynx.jpg', 'erd lynx.jpg', 'Owned', '2025-07-09', '2025-04-28', 14.676538, 120.546253),
-('0000000002', 'Karki112', 'd700b6b261f3c48708d437bbbab78ad4', 'Gold', 1799, NULL, 'unpaid', 'KOKO ARKI', '2007-04-11', 'townsite, Limay, Bataan', '0922-222-2222', 'akerezada@bpsu.edu.ph', 'UMID', '', 'erd lynx.jpg', 'erd lynx.jpg', 'Rented', '2025-04-22', '2025-04-28', 14.672054, 120.548230),
-('0000000003', 'Wperez173', '293f7df8a0c35abaff02998d94d15fd3', 'Bronze', 1199, NULL, 'unpaid', 'WESLEYJOSHUA PEREZ', '2025-04-25', 'bilolo, Orion, Bataan', '0938-086-8921', 'wesleyjoshuaperez@gmail.com', 'Drivers-License', '0312123456', 'wesley id.jpg', 'residency.png', 'Owned', '2025-04-24', '2025-04-19', 14.612406, 120.561927),
-('0000000004', 'Kperez174', 'b296426fc6c6d22e33c83efdf68af670', 'Bronze', 1199, NULL, 'unpaid', 'KAREN PEREZ', '2007-04-17', 'sto.-domingo, Orion, Bataan', '0912-183-2731', 'wesleyjoshuaperez.iskolar@gmail.com', 'Passport', '', 'wesley id.jpg', 'jesstoni.jfif', 'Owned', '2025-05-19', '2025-04-28', 14.614517, 120.568165);
+('0000000001', 'AKrezada20', 'kyotcapybara20', 'Bronze', 1199, NULL, 'unpaid', 'ANGELINE KATE REZADA', '2003-11-20', 'sto.-domingo, Orion, Bataan', '0905-462-7399', 'katerezada0120@gmail.com', 'UMID', '', 'erd lynx.jpg', 'erd lynx.jpg', 'Owned', '2025-07-09', '2025-04-17', 14.676538, 120.546253),
+('0000000002', 'Karki11', 'kokoarki11', 'Gold', 1799, NULL, 'unpaid', 'KOKO ARKI', '2007-04-11', 'townsite, Limay, Bataan', '0922-222-2222', 'akerezada@bpsu.edu.ph', 'UMID', '', 'erd lynx.jpg', 'erd lynx.jpg', 'Rented', '2025-04-22', '2025-04-17', 14.672054, 120.548230),
+('0000000003', 'Wperez173', 'wesleyjoshua1', 'Bronze', 1199, NULL, 'unpaid', 'WESLEYJOSHUA PEREZ', '2025-04-25', 'bilolo, Orion, Bataan', '0938-086-8921', 'wesleyjoshuaperez@gmail.com', 'Drivers-License', '0312123456', 'wesley id.jpg', 'residency.png', 'Owned', '2025-04-24', '2025-04-19', 14.612406, 120.561927);
 
 -- --------------------------------------------------------
 
@@ -136,7 +135,7 @@ CREATE TABLE `lynx_admin` (
 --
 
 INSERT INTO `lynx_admin` (`admin_id`, `username`, `password`, `full_name`, `email_address`, `phone`, `created_at`) VALUES
-(1, 'wesleyperez', '3cf8378495cb03a4f56565464edbed97', 'Wesley Joshua Perez', 'wjhperez@bpsu.edu.ph', '09300864398', '2025-03-10 03:54:22');
+(1, 'wesleyperez', '2004adminlynx', 'Wesley Joshua Perez', 'wjhperez@bpsu.edu.ph', '09300864398', '2025-03-10 03:54:22');
 
 -- --------------------------------------------------------
 
@@ -161,12 +160,12 @@ CREATE TABLE `lynx_technicians` (
 --
 
 INSERT INTO `lynx_technicians` (`technician_id`, `name`, `username`, `password`, `role`, `contact`, `status`, `profile_image`, `created_at`) VALUES
-(1, 'John Doe', 'johndoe', '4b2fe119d7a1f38c9827063a303bdda9', 'Installer', '09123456789', 'Available', 'john_doe.png', '2025-04-28 03:13:54'),
-(2, 'Jane Smith', 'janesmith', 'a5deda94b53ebb6a9a53c23befcf386a', 'Repair Technician', '09234567890', 'Available', 'jane_smith.png', '2025-04-28 03:15:10'),
-(3, 'Micheal Johnson', 'michealjohnson', '669df4813d1930186e49fbbc9c70a1a7', 'Installer', '09345678901', 'Available', 'michael_johnson.png', '2025-04-28 03:16:02'),
-(4, 'Emily Davis', 'emilydavis', '7670857f57c178d9df2c23cd7639392f', 'Repair Technician', '09456789012', 'Available', 'emily_davis.png', '2025-04-28 03:16:47'),
-(5, 'Robert Brown', 'robertbrown', '080c8fc68c7f949d491bd3b96b4ed2c7', 'Installer', '09567890123', 'Available', 'robert_brown.png', '2025-04-28 03:17:31'),
-(6, 'Jess Zapata', 'Jesstoni101', '56fc4c0bdb10be3fe8ca2aa826cbae41', 'Installer', '09128689551', 'Available', 'jesstoni.jfif', '2025-04-28 03:18:11');
+(1, 'John Doe', 'johndoe', 'johndoe12', 'Installer', '09123456789', 'Available', 'john_doe.png', '2025-03-19 06:47:27'),
+(2, 'Jane Smith', 'janesmith', 'janesmith44', 'Repair Technician', '09234567890', 'Available', 'jane_smith.png', '2025-03-19 06:47:27'),
+(3, 'Michael Johnson', 'michaeljohnson', 'michaeljohnson123', 'Installer', '09345678901', 'Available', 'michael_johnson.png', '2025-03-19 06:47:27'),
+(4, 'Emily Davis', 'emilydavis', 'emilydavis123', 'Repair Technician', '09456789012', 'Available', 'emily_davis.png', '2025-03-19 06:47:27'),
+(5, 'Robert Brown', 'robertbrown', 'robertbrown123', 'Installer', '09567890123', 'Available', 'robert_brown.png', '2025-03-19 06:47:27'),
+(6, 'Jess Zapata', 'Jesstoni101', 'Jestoni101', 'Installer', '09128689551', 'Available', 'jesstoni.jfif', '2025-04-27 09:15:03');
 
 -- --------------------------------------------------------
 
@@ -287,8 +286,7 @@ CREATE TABLE `registration_acc` (
 INSERT INTO `registration_acc` (`id`, `subscription_plan`, `first_name`, `last_name`, `contact_number`, `email_address`, `birth_date`, `id_type`, `id_number`, `id_photo`, `home_ownership_type`, `province`, `municipality`, `barangay`, `proof_of_residency`, `installation_date`, `registration_date`, `terms_agreed`, `data_processing_consent`, `id_photo_consent`, `address_latitude`, `address_longitude`, `status`) VALUES
 (1, 'Bronze', 'ANGELINE KATE', 'REZADA', '0905-462-7399', 'katerezada0120@gmail.com', '2003-11-20', 'UMID', '', 'erd lynx.jpg', 'Owned', 'Bataan', 'Orion', 'sto.-domingo', 'erd lynx.jpg', '2025-07-09', '2025-04-17 08:20:50', 'Checked', 'Checked', 'Checked', 14.676538, 120.546253, 'Approved'),
 (2, 'Gold', 'KOKO', 'ARKI', '0922-222-2222', 'akerezada@bpsu.edu.ph', '2007-04-11', 'UMID', '', 'erd lynx.jpg', 'Rented', 'Bataan', 'Limay', 'townsite', 'erd lynx.jpg', '2025-04-22', '2025-04-17 09:08:52', 'Checked', 'Checked', 'Checked', 14.672054, 120.548230, 'Approved'),
-(3, 'Silver', 'WESLEYJOSHUA', 'PEREZ', '0938-086-8921', 'wesleyjoshuaperez@gmail.com', '2004-03-17', 'Drivers-License', '0312123456', 'wesley id.jpg', 'Owned', 'Bataan', 'Orion', 'bilolo', 'residency.png', '2025-04-25', '2025-04-19 05:34:49', 'Checked', 'Checked', 'Checked', 14.612406, 120.561927, 'Approved'),
-(4, 'Bronze', 'KAREN', 'PEREZ', '0912-183-2731', 'wesleyjoshuaperez.iskolar@gmail.com', '2007-04-17', 'Passport', '', 'wesley id.jpg', 'Owned', 'Bataan', 'Orion', 'sto.-domingo', 'jesstoni.jfif', '2025-05-19', '2025-04-28 00:40:49', 'Checked', 'Checked', 'Checked', 14.614517, 120.568165, 'Approved');
+(3, 'Silver', 'WESLEYJOSHUA', 'PEREZ', '0938-086-8921', 'wesleyjoshuaperez@gmail.com', '2004-03-17', 'Drivers-License', '0312123456', 'wesley id.jpg', 'Owned', 'Bataan', 'Orion', 'bilolo', 'residency.png', '2025-04-25', '2025-04-19 05:34:49', 'Checked', 'Checked', 'Checked', 14.612406, 120.561927, 'Approved');
 
 -- --------------------------------------------------------
 
@@ -304,34 +302,6 @@ CREATE TABLE `resetpass_request` (
   `user_id` varchar(11) DEFAULT NULL,
   `role` enum('user','admin') NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `resetpass_request`
---
-
-INSERT INTO `resetpass_request` (`resetpass_request_id`, `reset_token`, `email_address`, `request_date`, `user_id`, `role`) VALUES
-(6, 'RCHKWAM4Q7', 'wesleyjoshuaperez@gmail.com', '2025-04-27 18:52:44', '0000000003', 'user'),
-(7, 'QYVMB53TCP', 'wesleyjoshuaperez@gmail.com', '2025-04-27 18:54:46', '0000000003', 'user'),
-(8, '54OEZQ9SIH', 'wesleyjoshuaperez@gmail.com', '2025-04-27 18:55:05', '0000000003', 'user'),
-(9, 'AXI81OM40N', 'wesleyjoshuaperez@gmail.com', '2025-04-27 18:55:17', '0000000003', 'user'),
-(10, 'B9U3I2ODTL', 'wesleyjoshuaperez@gmail.com', '2025-04-27 18:57:44', '0000000003', 'user'),
-(11, 'H780KZW3CO', 'wesleyjoshuaperez@gmail.com', '2025-04-27 19:07:00', '0000000003', 'user'),
-(12, 'G09QXE3NRU', 'wesleyjoshuaperez@gmail.com', '2025-04-27 19:07:30', '0000000003', 'user'),
-(13, 'QRJ5T1IYNV', 'wesleyjoshuaperez@gmail.com', '2025-04-27 19:07:50', '0000000003', 'user'),
-(14, '37HNV1SIJP', 'wesleyjoshuaperez@gmail.com', '2025-04-27 19:10:07', '0000000003', 'user'),
-(15, '7CN1XFBPVG', 'wesleyjoshuaperez@gmail.com', '2025-04-27 19:13:25', '0000000003', 'user'),
-(16, 'BA32E1LVSZ', 'wesleyjoshuaperez@gmail.com', '2025-04-27 19:17:10', '0000000003', 'user'),
-(17, '17D46S9TJZ', 'wesleyjoshuaperez@gmail.com', '2025-04-27 19:22:35', '0000000003', 'user'),
-(18, 'ECR7P02DSO', 'wesleyjoshuaperez@gmail.com', '2025-04-27 19:24:02', '0000000003', 'user'),
-(19, 'AVRGMS8XH9', 'wesleyjoshuaperez@gmail.com', '2025-04-27 19:24:11', '0000000003', 'user'),
-(20, '0SJIW9Q74A', 'wesleyjoshuaperez@gmail.com', '2025-04-27 19:30:06', '0000000003', 'user'),
-(21, 'HTW1BIXKOS', 'wesleyjoshuaperez@gmail.com', '2025-04-27 19:31:11', '0000000003', 'user'),
-(22, 'OVP7KL2G8I', 'wesleyjoshuaperez@gmail.com', '2025-04-27 19:47:45', '0000000003', 'user'),
-(23, 'J97LT86XQV', 'wesleyjoshuaperez@gmail.com', '2025-04-27 19:53:32', '0000000003', 'user'),
-(24, '2P0Y3NFH1I', 'wesleyjoshuaperez@gmail.com', '2025-04-27 20:00:08', '0000000003', 'user'),
-(25, 'T1F7MYRIHU', 'wesleyjoshuaperez@gmail.com', '2025-04-27 20:07:28', '0000000003', 'user'),
-(26, '7CTDEWA13O', 'wesleyjoshuaperez@gmail.com', '2025-04-27 20:09:47', '0000000003', 'user'),
-(27, 'E8DI9ZA3LC', 'wesleyjoshuaperez@gmail.com', '2025-04-27 20:14:23', '0000000003', 'user');
 
 --
 -- Indexes for dumped tables
@@ -444,13 +414,13 @@ ALTER TABLE `progress_reports`
 -- AUTO_INCREMENT for table `registration_acc`
 --
 ALTER TABLE `registration_acc`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `resetpass_request`
 --
 ALTER TABLE `resetpass_request`
-  MODIFY `resetpass_request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `resetpass_request_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

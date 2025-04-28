@@ -47,17 +47,20 @@ $stmt->close();
 // Debugging: Log fetched password
 error_log("Fetched password from database: " . $row['password']);
 
-// Compare the current password with what's in DB
-if ($row['password'] !== $currentPassword) {
+// Compare the current password with what's in DB (hashed comparison)
+if ($row['password'] !== md5($currentPassword)) {
     echo json_encode(["status" => "error", "message" => "Current password is incorrect."]);
     error_log("Error: Current password is incorrect.");
     exit;
 }
 
+// Hash the new password using MD5 before storing it
+$hashedNewPassword = md5($newPassword);
+
 // Update the password in lynx_technicians
 $updateSql = "UPDATE lynx_technicians SET password = ? WHERE technician_id = ?";
 $updateStmt = $conn->prepare($updateSql);
-$updateStmt->bind_param("si", $newPassword, $user_id);
+$updateStmt->bind_param("si", $hashedNewPassword, $user_id);
 
 if ($updateStmt->execute()) {
     error_log("Password updated successfully for technician ID $user_id.");

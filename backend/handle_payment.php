@@ -1,6 +1,6 @@
 <?php
 session_start();
-include('connectdb.php');  // your MySQLi $conn
+include('connectdb.php');
 
 // 1) Authenticate user
 $user_id = $_SESSION['user_id'] ?? null;
@@ -24,59 +24,72 @@ if ($currentBill === null) {
     exit;
 }
 
-$amountInCents = intval($currentBill * 100);
+// 3) Setup PayPal credentials
+$clientId = 'AXTLiTg8G_QhoP_G98HIpnZUOY0UdF_yB48lEv3nGbs19D9-BQ-boEEIruysg3F0ciDFNtKHj17fya2M';
+$clientSecret = 'EFfTuq_rU-m4PsOK_UN5efFt7RJRhEd5YwcrKNp2YTtuzUHEJAHdF1HAqGvipkZ4KXycDFgAlqh02dr4';
 
-// 3) Build the Checkout Session payload
-$payload = [
-  'data' => [
-    'attributes' => [
-      'line_items' => [
-        [
-          'name'        => 'LYNX Fiber Payment',
-          'description' => "User #{$user_id} subscription",
-          'amount'      => $amountInCents,
-          'currency'    => 'PHP',
-          'quantity'    => 1
-        ]
-      ],
-      'mode'                  => 'payment',
-      'payment_method_types'  => ['gcash'],
-      'success_url'           => 'http://localhost/Github/Capstone/backend/payment_success.php?status=success',
-      'cancel_url'            => 'http://localhost/Github/Capstone/user_dashboard.html?status=failed'
-    ]
-  ]
-];
-
-// 4) Call PayMongo API
-$secretKey = 'sk_test_qddXQvBcZaRki4EYkuCJg2c4';
-$ch = curl_init("https://api.paymongo.com/v1/checkout_sessions");
+// 4) Get Access Token
+$ch = curl_init();
 curl_setopt_array($ch, [
+    CURLOPT_URL => "https://api-m.sandbox.paypal.com/v1/oauth2/token",
     CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_POST           => true,
-    CURLOPT_USERPWD        => "$secretKey:",
-    CURLOPT_HTTPHEADER     => ["Content-Type: application/json","Accept: application/json"],
-    CURLOPT_POSTFIELDS     => json_encode($payload),
+    CURLOPT_USERPWD => "$clientId:$clientSecret",
+    CURLOPT_POSTFIELDS => "grant_type=client_credentials",
+    CURLOPT_HTTPHEADER => ["Accept: application/json", "Accept-Language: en_US"],
+    CURLOPT_POST => true
 ]);
 $response = curl_exec($ch);
-$error    = curl_error($ch);
-curl_close($ch);
-
-header('Content-Type: application/json');
-if ($error) {
-    echo json_encode(['status'=>'error','message'=>"cURL error: $error"]);
+if (!$response) {
+    echo json_encode(['status'=>'error','message'=>'Unable to fetch PayPal access token']);
     exit;
 }
+$data = json_decode($response, true);
+$accessToken = $data['access_token'];
+curl_close($ch);
 
-$resp        = json_decode($response, true);
-$checkoutUrl = $resp['data']['attributes']['checkout_url'] ?? null;
+// 5) Create PayPal Order
+$orderData = [
+    'intent' => 'CAPTURE',
+    'purchase_units' => [[
+        'amount' => [
+            'currency_code' => 'PHP',
+            'value' => number_format($currentBill, 2, '.', '')
+        ],
+        'description' => "User #{$user_id} subscription"
+    ]],
+    'application_context' => [
+        'brand_name' => 'LYNX Fiber',
+        'return_url' => 'http://localhost/Github/Capstone/backend/payment_success.php',
+        'cancel_url' => 'http://localhost/Github/Capstone/user_dashboard.html',
+        'user_action' => 'PAY_NOW'
+    ]
+];
 
-if ($checkoutUrl) {
-    echo json_encode(['status'=>'success','checkout_url'=>$checkoutUrl]);
+$ch = curl_init("https://api-m.sandbox.paypal.com/v2/checkout/orders");
+curl_setopt_array($ch, [
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_POST => true,
+    CURLOPT_HTTPHEADER => [
+        "Content-Type: application/json",
+        "Authorization: Bearer $accessToken"
+    ],
+    CURLOPT_POSTFIELDS => json_encode($orderData)
+]);
+$response = curl_exec($ch);
+$data = json_decode($response, true);
+curl_close($ch);
+
+$approvalUrl = null;
+foreach ($data['links'] as $link) {
+    if ($link['rel'] === 'approve') {
+        $approvalUrl = $link['href'];
+        break;
+    }
+}
+
+if ($approvalUrl) {
+    echo json_encode(['status'=>'success', 'checkout_url'=>$approvalUrl]);
 } else {
-    echo json_encode([
-        'status'   => 'error',
-        'message'  => 'Failed to create checkout session',
-        'response' => $resp
-    ]);
+    echo json_encode(['status'=>'error', 'message'=>'Could not create PayPal order', 'response'=>$data]);
 }
 ?>

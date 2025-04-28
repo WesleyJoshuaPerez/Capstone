@@ -54,40 +54,43 @@ if (isset($decodedData['id']) && isset($decodedData['status'])) {
                 $birthDay = date('d', strtotime($user['birth_date']));
                 $username = $firstLetters . $secondLetters . $surname . $birthDay . $user['id'];  //use to Append user ID so if their the same name it has a uniques username
 
-                // Generate random password
-                function generateRandomPassword($length = 8) {
-                    return substr(str_shuffle("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*"), 0, $length);
-                }
-                $plainPassword = generateRandomPassword();
-                $hashedPassword = password_hash($plainPassword, PASSWORD_DEFAULT);
+   // Generate random password
+function generateRandomPassword($length = 8) {
+    return substr(str_shuffle("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*"), 0, $length);
+}
+$plainPassword = generateRandomPassword();
 
-                $fullname = $user['first_name'] . " " . $user['last_name'];
-                $address = $user['barangay'] . ", " . $user['municipality'] . ", " . $user['province'];
+// Hash the password with MD5
+$hashedPassword = md5($plainPassword);  // Use MD5 hashing here
 
-                // Format the user_id to always be 10 digits
-                $formattedUserId = str_pad($id, 10, '0', STR_PAD_LEFT);
+$fullname = $user['first_name'] . " " . $user['last_name'];
+$address = $user['barangay'] . ", " . $user['municipality'] . ", " . $user['province'];
 
-                // Modify the insert query to include formatted user_id
-                $insertQuery = "INSERT INTO approved_user (
-                    user_id, username, password, subscription_plan, currentbill, fullname, birth_date, address,
-                    address_latitude, address_longitude,
-                    contact_number, email_address, id_type, id_number, id_photo, proof_of_residency, 
-                    home_ownership_type, installation_date, registration_date
-                ) VALUES (
-                    '$formattedUserId', '$username', '$plainPassword', '{$user['subscription_plan']}', '$currentBill', '$fullname', 
-                    '{$user['birth_date']}', '$address',
-                    '{$user['address_latitude']}', '{$user['address_longitude']}',
-                    '{$user['contact_number']}', '{$user['email_address']}', '{$user['id_type']}', '{$user['id_number']}', 
-                    '{$user['id_photo']}', '{$user['proof_of_residency']}', '{$user['home_ownership_type']}', 
-                    '{$user['installation_date']}', NOW()
-                )";
-                
-                if ($conn->query($insertQuery) === TRUE) {
-                    sendApprovalEmail($user['email_address'], $username, $plainPassword);
-                    echo json_encode(["success" => true, "message" => "User approved and email sent."]);
-                } else {
-                    echo json_encode(["success" => false, "error" => "Failed to insert into approved_user: " . $conn->error]);
-                }
+// Format the user_id to always be 10 digits
+$formattedUserId = str_pad($id, 10, '0', STR_PAD_LEFT);
+
+// Modify the insert query to include hashed password
+$insertQuery = "INSERT INTO approved_user (
+    user_id, username, password, subscription_plan, currentbill, fullname, birth_date, address,
+    address_latitude, address_longitude,
+    contact_number, email_address, id_type, id_number, id_photo, proof_of_residency, 
+    home_ownership_type, installation_date, registration_date
+) VALUES (
+    '$formattedUserId', '$username', '$hashedPassword', '{$user['subscription_plan']}', '$currentBill', '$fullname', 
+    '{$user['birth_date']}', '$address',
+    '{$user['address_latitude']}', '{$user['address_longitude']}',
+    '{$user['contact_number']}', '{$user['email_address']}', '{$user['id_type']}', '{$user['id_number']}', 
+    '{$user['id_photo']}', '{$user['proof_of_residency']}', '{$user['home_ownership_type']}', 
+    '{$user['installation_date']}', NOW()
+)";
+
+if ($conn->query($insertQuery) === TRUE) {
+    sendApprovalEmail($user['email_address'], $username, $plainPassword);  // Send plain password in email
+    echo json_encode(["success" => true, "message" => "User approved and email sent."]);
+} else {
+    echo json_encode(["success" => false, "error" => "Failed to insert into approved_user: " . $conn->error]);
+             }
+
             } else {
                 echo json_encode(["success" => false, "error" => "User not found."]);
             }
@@ -110,13 +113,13 @@ function sendApprovalEmail($email, $username, $plainPassword) {
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com'; // Replace with your mail server
         $mail->SMTPAuth = true;
-        $mail->Username = 'noreplylynxfiber@gmail.com'; // Replace with your email
-        $mail->Password = 'pkeq usho jsfe piqw'; // Replace with your email password or app password
+        $mail->Username = 'noreplylynxfiberinternet@gmail.com'; // Replace with your email
+        $mail->Password = 'xoel vjfs smnc ckjy'; // Replace with your email password or app password
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
         // Sender and recipient
-        $mail->setFrom('noreplylynxfiber@gmail.com', 'Lynx Fiber');
+        $mail->setFrom('noreplylynxfiberinternet@gmail.com', 'Lynx Fiber');
         $mail->addAddress($email);
 
         // Email content

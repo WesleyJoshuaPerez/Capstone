@@ -1,5 +1,5 @@
 <?php
-// changing of password from user dashboard
+// Changing password from user dashboard
 session_start();
 header("Content-Type: application/json");
 require "connectdb.php"; // Ensure the database connection
@@ -24,7 +24,7 @@ if (!$data) {
 $currentPassword = $data["currentPassword"] ?? "";
 $newPassword = $data["newPassword"] ?? "";
 
-// Fetch the current password from the database
+// Fetch the current hashed password from the database
 $stmt = $conn->prepare("SELECT password FROM approved_user WHERE user_id = ?");
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
@@ -37,13 +37,17 @@ if ($result->num_rows === 0) {
 
 $user = $result->fetch_assoc();
 
-if ($currentPassword !== $user["password"]) {
+// Compare the MD5 hash of the current password with the stored password
+if (md5($currentPassword) !== $user["password"]) {
     echo json_encode(["status" => "error", "message" => "Current password is incorrect."]);
     exit;
 }
 
+// Hash the new password before saving it
+$hashedNewPassword = md5($newPassword);
+
 $updateStmt = $conn->prepare("UPDATE approved_user SET password = ? WHERE user_id = ?");
-$updateStmt->bind_param("si", $newPassword, $user_id);
+$updateStmt->bind_param("si", $hashedNewPassword, $user_id);
 
 if ($updateStmt->execute()) {
     echo json_encode(["status" => "success", "message" => "Password updated successfully."]);
