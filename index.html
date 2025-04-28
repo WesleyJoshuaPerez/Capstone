@@ -272,14 +272,27 @@
           <button onclick="sendMessage()">Send</button>
         </div>
       </div>
-      <button id="chatToggle" class="chatbot-toggle" onclick="toggleChatbot()">
-        <img
-          src="frontend/assets/images/icons/chatboticon.png"
-          alt="Chat"
-          class="chat-icon"
-        />
-      </button>
-    </div>
+<!-- Button to toggle the chatbot -->
+<button id="chatToggle" class="chatbot-toggle" onclick="toggleChatbot()">
+  <img src="frontend/assets/images/icons/chatboticon.png" alt="Chat" class="chat-icon" />
+</button>
+
+<!-- Chatbot iframe popup -->
+<div id="chatbotPopup" class="chatbot-popup" style="display: none;">
+  <button id="closeChat" class="close-chat" onclick="closeChatbot()">X</button>
+  <iframe
+    id="chatbotIframe"
+    title="LYNX Chatbot"
+    src="https://LYNXChatbot-aTxXjP.ai.copilot.live"
+    style="border: none;"
+    loading="lazy"
+    allow="microphone;camera;speaker;clipboard-read;clipboard-write;geolocation;"
+    width="700px"
+    height="400px"
+  ></iframe>
+</div>
+
+
 
     <!--For ChatbotFunction-->
     <script src="scripts/chatbot.js"></script>

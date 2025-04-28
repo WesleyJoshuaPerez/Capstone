@@ -1,100 +1,87 @@
-.chatbot-container {
+/* Chatbot button */
+.chatbot-toggle {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  width: 300px;
-  z-index: 9999;
-}
-
-.chatbot-window {
-  display: none;
-  background: white;
-  border-radius: 10px;
-  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
-  width: 100%;
-  height: 400px;
-  overflow: hidden;
-  border: 1px solid #ddd;
-  position: relative;
-  z-index: 10001;
-}
-
-.chat-header {
-  background-color: #007bff;
-  color: white;
-  padding: 0.625rem;
-  text-align: center;
-  font-weight: bold;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.chatbot-icon {
-  width: 2.5rem; /* Adjust size */
-  height: 1.875rem;
-  border-radius: 50%; /* Makes it circular */
-  margin-right: 0.625rem; /* Space between icon and text */
-}
-
-#closeChatbot {
-  background: transparent; /* Make background transparent */
-  border: none; /* Remove border */
-  font-size: 18px; /* Adjust size if needed */
-  cursor: pointer; /* Add pointer effect */
-  color: white; /* Adjust color for visibility */
-  padding: 5px;
-}
-
-.chatbot-toggle {
-  background: none; /* Remove button background */
-  border: none; /* Remove border */
-  padding: 0; /* Remove padding */
-  cursor: pointer;
-  position: fixed;
-  bottom: 100px;
-  right: 20px;
-  z-index: 10002;
-}
-
-.chat-icon {
-  width: 60px; /* Adjust size as needed */
-  height: 60px;
-  object-fit: contain;
-}
-
-.chat-header {
-  background-color: #48bca6;
-  color: white;
-  padding: 10px;
-  text-align: center;
-  font-weight: bold;
-}
-
-.chat-body {
-  height: 300px;
-  padding: 10px;
-  overflow-y: auto;
-  border-bottom: 1px solid #ddd;
-}
-
-.chat-footer {
-  display: flex;
-  padding: 10px;
-}
-
-.chat-footer input {
-  flex: 1;
-  padding: 5px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-}
-
-.chat-footer button {
-  margin-left: 5px;
-  background: #14245c;
-  color: white;
+  z-index: 999;
   border: none;
-  padding: 5px 10px;
-  border-radius: 5px;
+  padding: 10px;
+  border-radius: 50%;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Chatbot icon inside button */
+.chat-icon {
+  width: 50px; /* Adjust the size of the icon */
+  height: 50px;
+}
+
+/* Chatbot iframe popup */
+.chatbot-popup {
+  position: fixed;
+  bottom: 80px; /* Adjusted to give space from button */
+  right: 20px;
+  z-index: 999;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  width: 350px; /* Default width for larger screens */
+}
+
+/* Close button inside the popup */
+.close-chat {
+  position: absolute;
+  top: 22px;
+  right: 40px;
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #000000;
+  font-weight: bold;
+}
+
+iframe {
+  display: block;
+  border: none;
+  width: 100%; /* Make iframe responsive */
+  height: 600px; /* Set height */
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+  /* Adjust button size */
+  .chatbot-toggle {
+    bottom: 15px;
+    right: 15px;
+    padding: 8px;
+  }
+
+  /* Adjust popup width and position for mobile */
+  .chatbot-popup {
+    bottom: 70px;
+    width: 90%; /* Full width with some margin on small screens */
+  }
+}
+
+/* For very small screens (e.g., mobile phones in portrait mode) */
+@media (max-width: 480px) {
+  .chatbot-toggle {
+    bottom: 10px;
+    right: 10px;
+    padding: 6px;
+  }
+
+  .chatbot-popup {
+    bottom: 60px;
+    width: 95%; /* Almost full width */
+  }
+
+  iframe {
+    height: 600px; /* Shorter height for mobile */
+  }
 }
