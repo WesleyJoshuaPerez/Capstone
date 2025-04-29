@@ -63,8 +63,11 @@ iframe {
 
   /* Adjust popup width and position for mobile */
   .chatbot-popup {
-    bottom: 70px;
+    top: 100px;
+    bottom: 80px;
     width: 90%; /* Full width with some margin on small screens */
+    right: 5px;
+    z-index: 999;
   }
 }
 
