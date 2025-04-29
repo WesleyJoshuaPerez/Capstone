@@ -1084,21 +1084,195 @@ function buildReportHtml(report) {
 document.querySelector("#trackTaskTable").addEventListener("click", (e) => {
   const btn = e.target;
 
-  if (btn.classList.contains("view-report-btn")) {
-    showReportDetails(JSON.parse(btn.dataset.report));
+  // 1) If "Progress Report" button clicked, show progress report modal
+  if (btn.classList.contains("progress-report-btn")) {
+    const userId = btn.dataset.userid;
+    // Show Progress Report Modal (fetch data if needed)
+    showProgressReportModal(userId);
+    return; // Prevent further code execution
   }
 
-  if (btn.classList.contains("save-pdf-btn")) {
-    const report = JSON.parse(btn.dataset.report);
-    const content = buildReportHtml(report);
+  // 2) If "Completion Report" button clicked, show completion report modal
+  if (btn.classList.contains("completion-form-btn")) {
+    const userId = btn.dataset.userid;
+    // Show Completion Report Modal (fetch data if needed)
+    showCompletionReportModal(userId);
+    return; // Prevent further code execution
   }
+
+  // 3) Otherwise, trigger the client location modal (for clicking other areas in the row)
+  const clientId = btn.closest("tr").querySelector("td:first-child").textContent; // Get client ID from the first column
+  fetchClientLocation(clientId);
 });
+
+// Function to show the Progress Report modal
+function showProgressReportModal(userId) {
+  // Your Swal or any custom modal code for Progress Report
+  Swal.fire({
+    title: "Progress Report",
+    html: `Progress Report Form for User ID: ${userId}`,
+    // Add form fields here...
+    confirmButtonText: "Save"
+  });
+}
+
+// Function to show the Completion Report modal
+function showCompletionReportModal(userId) {
+  // Your Swal or any custom modal code for Completion Report
+  Swal.fire({
+    title: "Completion Report",
+    html: `Completion Report Form for User ID: ${userId}`,
+    // Add form fields here...
+    confirmButtonText: "Save"
+  });
+}
+
+// Function to fetch and display the client location
+function fetchClientLocation(clientId) {
+  // Fetch client coordinates from the server (excluding "Submit Report" buttons)
+  fetch(`backend/fetch_client_coordinates.php?user_id=${clientId}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === 'success') {
+        const { client_name, latitude, longitude } = data;
+
+        Swal.fire({
+          title: `${client_name} Location`,
+          html: `<div id="map" style="height: 350px;"></div>`,
+          didOpen: () => {
+            const mapElement = document.getElementById('map');
+            const map = L.map(mapElement, {
+              scrollWheelZoom: false,
+              dragging: false,
+              touchZoom: false,
+              doubleClickZoom: false,
+              boxZoom: false
+            }).setView([latitude, longitude], 16);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            L.marker([latitude, longitude]).addTo(map)
+              .bindPopup(`<b>${client_name}</b>`)
+              .openPopup();
+          }
+        });
+      } else {
+        Swal.fire('Error', 'Failed to fetch client details', 'error');
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching client coordinates:', error);
+      Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+    });
+}
+
+
+function fetchClientLocation(clientId) {
+  // Logic to fetch and display the client's location
+  fetch(`backend/fetch_client_coordinates.php?user_id=${clientId}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === 'success') {
+        const { client_name, latitude, longitude } = data;
+
+        Swal.fire({
+          title: `${client_name} Location`,
+          html: `<div id="map" style="height: 350px;"></div>`,
+          didOpen: () => {
+            const mapElement = document.getElementById('map');
+            const map = L.map(mapElement, {
+              scrollWheelZoom: false,
+              dragging: false,
+              touchZoom: false,
+              doubleClickZoom: false,
+              boxZoom: false
+            }).setView([latitude, longitude], 16);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            L.marker([latitude, longitude]).addTo(map)
+              .bindPopup(`<b>${client_name}</b>`)
+              .openPopup();
+          },
+        });
+      } else {
+        Swal.fire('Error', 'Failed to fetch client details', 'error');
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching client coordinates:', error);
+      Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+    });
+}
+
+
+function fetchClientLocation(clientId) {
+  // Add the logic to fetch and display the client's location (same logic as you already have for showing the map)
+  fetch(`backend/fetch_client_coordinates.php?user_id=${clientId}`)
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === 'success') {
+        const { client_name, latitude, longitude } = data;
+
+        Swal.fire({
+          title: `${client_name} Location`,
+          html: `<div id="map" style="height: 350px;"></div>`,
+          didOpen: () => {
+            const mapElement = document.getElementById('map');
+            const map = L.map(mapElement, {
+              scrollWheelZoom: false,
+              dragging: false,
+              touchZoom: false,
+              doubleClickZoom: false,
+              boxZoom: false
+            }).setView([latitude, longitude], 16);
+
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }).addTo(map);
+
+            L.marker([latitude, longitude]).addTo(map)
+              .bindPopup(`<b>${client_name}</b>`)
+              .openPopup();
+          },
+        });
+      } else {
+        Swal.fire('Error', 'Failed to fetch client details', 'error');
+      }
+    })
+    .catch(error => {
+      console.error('Error fetching client coordinates:', error);
+      Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+    });
+}
+
 
 // for displaying client's pinned coordinates
 document.addEventListener("DOMContentLoaded", function () {
   // Handle click on client row in assigned task table
-  $('#assignedTaskTable').on('click', 'tr', function () {
-    const clientId = $(this).find('td:first').text();
+  $('#assignedTaskTable').on('click', 'tr', function (e) {
+    const row = $(this);
+    const clientId = row.find('td:first').text(); // Get the client ID from the first cell
+
+    // Check if the clicked target is a table header (blue header)
+    const isTableHeader = e.target.tagName === "TH";
+    if (isTableHeader) {
+      // Prevent fetching the location if the header is clicked
+      return;
+    }
+
+    // Check if a report button (Progress or Completion) was clicked
+    const isReportButtonClicked = e.target.classList.contains("progress-report-btn") || 
+                                  e.target.classList.contains("completion-form-btn");
+
+    if (isReportButtonClicked) {
+      // Prevent triggering the location modal when clicking on report buttons
+      return;
+    }
 
     // Fetch client coordinates from the server
     fetch(`backend/fetch_client_coordinates.php?user_id=${clientId}`)
@@ -1107,45 +1281,32 @@ document.addEventListener("DOMContentLoaded", function () {
         if (data.status === 'success') {
           const { client_name, latitude, longitude } = data;
 
+          // Show the client location on a map in a Swal modal
           Swal.fire({
             title: ``,
-            html: `<div id="map" style="height: 350px;"></div>`, 
+            html: `<div id="map" style="height: 350px; font-size: 14px;"></div>`,
             didOpen: () => {
-      
-              const swalTitle = document.querySelector('.swal2-title');
-              const swalContent = document.querySelector('.swal2-html-container');
-
-              if (swalTitle) {
-                swalTitle.style.fontSize = '18px';
-              }
-
-              if (swalContent) {
-                swalContent.style.fontSize = '10px';  
-              }
-
               const mapElement = document.getElementById('map');
-              if (mapElement) {
-                const map = L.map(mapElement, {
-                  scrollWheelZoom: false,  
-                  dragging: false,        
-                  touchZoom: false,        
-                  doubleClickZoom: false,   
-                  boxZoom: false          
-                }).setView([latitude, longitude], 16); 
+              const map = L.map(mapElement, {
+                scrollWheelZoom: false,
+                dragging: false,
+                touchZoom: false,
+                doubleClickZoom: false,
+                boxZoom: false
+              }).setView([latitude, longitude], 16);
 
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-                }).addTo(map);
+              L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              }).addTo(map);
 
-                L.marker([latitude, longitude]).addTo(map)
-                  .bindPopup(`<b>${client_name}</b>`)
-                  .openPopup();
-              }
+              L.marker([latitude, longitude]).addTo(map)
+                .bindPopup(`<b>${client_name}</b>`)
+                .openPopup();
             },
             willClose: () => {
               const mapElement = document.getElementById('map');
               if (mapElement) {
-                mapElement.innerHTML = ''; 
+                mapElement.innerHTML = ''; // Clean up the map element on close
               }
             }
           });
@@ -1158,4 +1319,92 @@ document.addEventListener("DOMContentLoaded", function () {
         Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
       });
   });
+
+  // Handle click on Progress Report button
+  $('#assignedTaskTable').on('click', '.progress-report-btn', function () {
+    const userId = $(this).data('userid');
+    // Show Progress Report Modal
+    showProgressReportModal(userId);
+  });
+
+  // Handle click on Completion Report button
+  $('#assignedTaskTable').on('click', '.completion-form-btn', function () {
+    const userId = $(this).data('userid');
+    // Show Completion Report Modal
+    showCompletionReportModal(userId);
+  });
 });
+
+
+// Function to show Progress Report modal
+function showProgressReportModal(userId) {
+  Swal.fire({
+    title: "Progress Report",
+    html: `Progress Report Form for User ID: ${userId}`,
+    // Add form fields here...
+    confirmButtonText: "Save"
+  });
+}
+
+// Function to show Completion Report modal
+function showCompletionReportModal(userId) {
+  Swal.fire({
+    title: "Completion Report",
+    html: `Completion Report Form for User ID: ${userId}`,
+    // Add form fields here...
+    confirmButtonText: "Save"
+  });
+}
+
+
+// for updating status when completion report is submitted
+function submitCompletionReport(maintenanceId) {
+  Swal.fire({
+    title: "Submitting Completion Report...",
+    text: "Please wait while the report is being submitted.",
+    allowOutsideClick: false,
+    didOpen: () => {
+      Swal.showLoading();
+    },
+  });
+
+  let xhr = new XMLHttpRequest();
+  xhr.open("POST", "backend/save_completion_report.php", true);
+  xhr.setRequestHeader("Content-Type", "application/json");
+
+  let reportData = {
+    maintenance_id: maintenanceId,  // Maintenance ID to be passed
+    work_description: document.getElementById("work_description").value,
+    parts_used: document.getElementById("parts_used").value,
+    issues_encountered: document.getElementById("issues_encountered").value,
+    technician_comments: document.getElementById("technician_comments").value,
+    completion_datetime: document.getElementById("completion_datetime").value,
+  };
+
+  xhr.onreadystatechange = function () {
+    if (xhr.readyState === 4) {
+      Swal.close(); // Close loading Swal after request completion
+      if (xhr.status === 200) {
+        try {
+          let response = JSON.parse(xhr.responseText);
+          if (response.status === "success") {
+            Swal.fire("Success!", "Completion report submitted successfully.", "success").then(() => {
+              // Now update the maintenance status to 'Completed'
+              updateMaintenanceStatus(maintenanceId, "Completed");
+            });
+          } else {
+            Swal.fire("Error!", "Failed to submit the report.", "error");
+          }
+        } catch (e) {
+          console.error("JSON Parsing Error:", e);
+          Swal.fire("Error!", "Invalid response from server.", "error");
+        }
+      } else {
+        Swal.fire("Error!", "Server communication failed.", "error");
+      }
+    }
+  };
+
+  xhr.send(JSON.stringify(reportData));
+}
+
