@@ -11,7 +11,8 @@ if ($conn->connect_error) {
     exit;
 }
 
-$sql = "SELECT *  FROM maintenance_requests";
+// Only select maintenance requests that are NOT completed
+$sql = "SELECT * FROM maintenance_requests WHERE status != 'Completed'";
 $result = $conn->query($sql);
 
 if (!$result) {
@@ -29,13 +30,13 @@ while ($row = $result->fetch_assoc()) {
         "full_name" => $row["full_name"],
         "contact_number" => $row["contact_number"],
         "address" => $row["address"],
-         "issue_type" => $row["issue_type"],
-         "issue_description" => $row["issue_description"],
-         "contact_time" => $row["contact_time"],
-         "evidence_filename" => $row["evidence_filename"],
-         "submitted_at" => $row["submitted_at"],
-         "status" => $row["status"],
-         "technician_name" => $row["technician_name"]
+        "issue_type" => $row["issue_type"],
+        "issue_description" => $row["issue_description"],
+        "contact_time" => $row["contact_time"],
+        "evidence_filename" => $row["evidence_filename"],
+        "submitted_at" => $row["submitted_at"],
+        "status" => $row["status"],
+        "technician_name" => $row["technician_name"]
     ];
 }
 
