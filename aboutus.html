@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>About Us - Lynx Fiber Internet</title>
+    <!-- Google Fonts Link For Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&family=Sigmar&display=swap"
+      rel="stylesheet"
+    />
+    <!--For icons link hamburger-->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded"
+      rel="stylesheet"
+    />
+
+    <!--Change the default icon of the xampp-->
+    <link
+      rel="icon"
+      type="image/x-icon"
+      href="frontend/assets/images/icons/lynxicon.ico"
+    />
+    <link rel="stylesheet" href="frontend/styles/aboutus.css" />
+    <!--For hamburger menu-->
+    <script src="scripts/hamburger.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <nav class="navbar">
+        <span class="hamburger-btn material-symbols-rounded">menu</span>
+        <a href="index.html" class="logo">
+          <img src="frontend/assets/images/logos/Lynx_logo.png" alt="logo" />
+          <h2>
+            <span style="color: #36a13a">L.</span>
+            <span style="color: #3775b9">Y.</span>
+            <span style="color: #fcbf06">N.</span>
+            <span style="color: #ec202a">X</span>
+          </h2>
+        </a>
+        <ul class="links">
+          <span class="close-btn material-symbols-rounded">close</span>
+          <li><a href="aboutus.html" class="aboutus-link">ABOUT US </a></li>
+          <li>
+            <a
+              href="contactus.html"
+              class="contactus-link"
+              >CONTACT US
+            </a>
+          </li>
+          <li>
+            <a href="https://www.facebook.com/LYNXFIBR1" class="facebook-link"
+              >FACEBOOK PAGE
+            </a>
+          </li>
+        </ul>
+        <button class="login-btn" onclick="window.location.href='login.html'">
+          LOGIN
+        </button>
+      </nav>
+    </header>
+
+    <!-- for hamburger menu-->
+    <div class="blur-bg-overlay"></div>
+    <div class="form-popup">
+      <span class="close-btn material-symbolws-rounded">close</span>
+    </div>
+
+    <!-- About LYNX Section - Now First Section -->
+    <section class="our-story">
+      <div class="section-container">
+        <h2>About LYNX</h2>
+        <div class="story-content">
+          <div class="story-image">
+            <img src="frontend/assets/images/aboutus/lynx_whitebghd.png" alt="About LYNX" />
+          </div>
+          <div class="story-text">
+            <p>LYNX Fiber Internet is a private internet company providing fast and reliable fiber network services to far-flung areas in and around Orion, Bataan. Founded in 2020 during the COVID-19 pandemic, we recognized the critical need for strong and stable internet connections in locations often unreachable by traditional cell towers and major internet providers.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Our Team Section - Now before Services -->
+    <section class="our-team">
+      <div class="section-container">
+        <h2>OUR TEAM</h2>
+        <div class="team-grid">
+          <!-- Team member cards - placeholders -->
+          <div class="team-card">
+            <div class="team-image">
+              <img src="frontend/assets/images/aboutus/team 1.png" alt="Team Member 1" />
+            </div>
+            <h3>Jestoni Cervales</h3>
+            <p>Technician</p>
+          </div>
+          <div class="team-card">
+            <div class="team-image">
+              <img src="frontend/assets/images/aboutus/team 1.png" alt="Team Member 2" />
+            </div>
+            <h3>Jestoni Cervales2</h3>
+            <p>Technician</p>
+          </div>
+          <div class="team-card">
+            <div class="team-image">
+              <img src="frontend/assets/images/aboutus/team 1.png" alt="Team Member 3" />
+            </div>
+            <h3>Jestoni Cervales3</h3>
+            <p>Technician</p>
+          </div>
+          <div class="team-card">
+            <div class="team-image">
+              <img src="frontend/assets/images/aboutus/team 1.png" alt="Team Member 4" />
+            </div>
+            <h3>Jestoni Cervales4</h3>
+            <p>Technician</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Our Services Section - Now after Team -->
+    <section class="our-services">
+      <div class="section-container">
+        <h2>OUR SERVICES</h2>
+        <div class="services-grid">
+          <div class="service-card">
+            <div class="service-icon">
+              <img src="frontend/assets/images/logos/fiber_internet.png" alt="Fiber Internet" />
+            </div>
+            <h3>Fiber Internet Installation</h3>
+            <p>High-speed fiber internet setup for homes and businesses.</p>
+          </div>
+          <div class="service-card">
+            <div class="service-icon">
+              <img src="frontend/assets/images/logos/bandwith_logo.png" alt="Affordable Plans" />
+            </div>
+            <h3>Affordable Subscription Plans</h3>
+            <p>Flexible packages to suit various needs and budgets.</p>
+          </div>
+          <div class="service-card">
+            <div class="service-icon">
+              <img src="frontend/assets/images/logos/customer_support.png" alt="Support" />
+            </div>
+            <h3>Maintenance and Support</h3>
+            <p>Dedicated technical support and regular service maintenance.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chatbot -->
+    <!-- Button to toggle the chatbot -->
+    <button id="chatToggle" class="chatbot-toggle" onclick="toggleChatbot()">
+      <img src="frontend/assets/images/icons/chatboticon.png" alt="Chat" class="chat-icon" />
+    </button>
+
+    <!-- Chatbot iframe popup -->
+    <div id="chatbotPopup" class="chatbot-popup" style="display: none;">
+      <button id="closeChat" class="close-chat" onclick="closeChatbot()">X</button>
+      <iframe
+        id="chatbotIframe"
+        title="LYNX Chatbot"
+        src="https://LYNXChatbot-aTxXjP.ai.copilot.live"
+        loading="lazy"
+        allow="microphone;camera;speaker;clipboard-read;clipboard-write;geolocation;"
+      ></iframe>
+    </div>
+
+    <!--For ChatbotFunction-->
+    <script src="scripts/chatbot.js"></script>
+    <footer>
+      <div class="footer">
+        <img
+          src="frontend/assets/images/logos/lynxlogo.png"
+          alt="lynx footer"
+        />
+      </div>
+    </footer>
+  </body>
+</html>

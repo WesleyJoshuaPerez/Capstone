@@ -1,0 +1,529 @@
+/* Importing Google font - Oswald */
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Open Sans", sans-serif;
+}
+body {
+  width: 100%;
+  background-color: white;
+  overflow-x: hidden;
+}
+header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  padding: 0 0.625rem;
+  background-color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+.navbar {
+  display: flex;
+  padding: 0.625rem 0; /* Reduce padding size */
+  align-items: center;
+  max-width: 75rem;
+  margin: 0 auto;
+  justify-content: space-between;
+}
+.navbar .hamburger-btn {
+  display: none;
+  color: #36a13a;
+  cursor: pointer;
+  font-size: 24px;
+}
+.navbar .logo {
+  gap: 0.625rem;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+.navbar .logo img {
+  width: 1.875rem; /* Reduce logo size */
+  border-radius: 50%;
+}
+.navbar .logo h2 {
+  font-weight: 600;
+  font-size: 19.2px; /* Reduce font size */
+}
+.navbar .links {
+  display: flex;
+  gap: 1.25rem; /* Reduce gap size */
+  list-style: none;
+  align-items: center;
+}
+.navbar .close-btn {
+  position: absolute;
+  right: 1.25rem;
+  top: 1.25rem;
+  display: none;
+  color: #000000;
+  cursor: pointer;
+}
+/*for navigating link to make them different color */
+.navbar .links a {
+  font-size: 16px; /* Adjust font size */
+  font-weight: 500;
+  text-decoration: none;
+  transition: 0.1s ease;
+}
+.navbar .links .aboutus-link {
+  color: #2e8b57;
+  font-size: small;
+  font-weight: bolder;
+}
+.navbar .links .contactus-link {
+  color: #2e8b57;
+  font-size: small;
+  font-weight: bolder;
+}
+.navbar .links .facebook-link {
+  color: #2e8b57;
+  font-size: small;
+  font-weight: bolder;
+}
+/*change color when hover */
+.navbar .links a:hover {
+  color: #d63b3b;
+}
+.navbar .login-btn {
+  border: none;
+  outline: none;
+  background: #36a13a;
+  color: #fff;
+  font-size: 14.4px; /* Adjust font size */
+  font-weight: 600;
+  padding: 0.5rem 1rem; /* Adjust padding */
+  border-radius: 0.1875rem;
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+.navbar .login-btn:hover {
+  background: #ec202a;
+  color: white;
+}
+
+/* For hamburger menu overlay */
+.blur-bg-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  z-index: 5;
+  transition: 0.2s ease;
+}
+.blur-bg-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Section Container */
+.section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+/* Section Headings */
+section h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #302f2f;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+section h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(to right, #ec202a, #36a13a, #fcbf06);
+}
+
+/* About LYNX Section*/
+.our-story {
+  padding-top: 0; 
+  margin-top: 60px; 
+}
+
+.our-story .section-container {
+  padding-top: 15px;
+}
+
+.story-content {
+  display: flex;
+  gap: 40px;
+  align-items: center;
+}
+
+.story-image {
+  flex: 1;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.story-image img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.story-text {
+  flex: 1;
+}
+
+.story-text p {
+  margin-bottom: 20px;
+  line-height: 1.6;
+  color: #444;
+}
+
+/* Our Services Section */
+.our-services {
+  background-color: #f9f9f9;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.service-card {
+  background: white;
+  border-radius: 10px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+}
+
+.service-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+}
+
+.service-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.service-card h3 {
+  font-size: 22px;
+  margin-bottom: 15px;
+  color: #36a13a;
+}
+
+.service-card p {
+  color: #666;
+  line-height: 1.6;
+}
+
+/* Our Team Section */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.team-card {
+  background: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.team-card:hover {
+  transform: translateY(-10px);
+}
+
+.team-image {
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+}
+
+.team-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.team-card h3 {
+  margin-top: 20px;
+  font-size: 20px;
+  color: #333;
+}
+
+.team-card p {
+  color: #666;
+  margin: 5px 0 20px;
+}
+
+/* Contact Info Section */
+.contact-info {
+  background-color: #f9f9f9;
+}
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 30px;
+}
+
+.contact-item {
+  background: white;
+  border-radius: 10px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.contact-icon {
+  font-size: 40px;
+  color: #36a13a;
+  margin-bottom: 15px;
+}
+
+.contact-icon span {
+  font-size: 48px;
+}
+
+.contact-item h3 {
+  font-size: 20px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.contact-item p {
+  color: #666;
+}
+
+/* Footer */
+footer {
+  width: 100%;
+  padding: 20px 0;
+  text-align: center;
+  background-color: #f9f9f9;
+}
+
+.footer img {
+  width: 150px;
+  max-width: 100%;
+  height: 50px;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Media Queries */
+@media (max-width: 950px) {
+  .navbar :is(.hamburger-btn, .close-btn) {
+    display: block;
+  }
+  .navbar {
+    padding: 0.625rem 0;
+  }
+  .navbar .logo img {
+    display: none;
+  }
+  .navbar .logo h2 {
+    font-size: 16px;
+  }
+  .navbar .links {
+    position: fixed;
+    top: 0;
+    z-index: 10;
+    left: -100%;
+    display: block;
+    height: 100vh;
+    width: 100%;
+    padding-top: 3.75rem;
+    text-align: center;
+    background: #fff;
+    transition: 0.2s ease;
+  }
+  .navbar .links.show-menu {
+    left: 0;
+  }
+  .navbar .links a {
+    display: inline-flex;
+    margin: 1.25rem 0;
+    font-size: 19.2px;
+  }
+  .navbar .links a:hover {
+    color: #6f6f6f;
+  }
+  .navbar .login-btn {
+    font-size: 12.8px;
+    padding: 0.4375rem 0.625rem;
+  }
+  
+  .story-content {
+    flex-direction: column;
+  }
+  
+  .story-image, .story-text {
+    flex: 1 1 100%;
+  }
+  
+  .services-grid, .team-grid, .contact-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .our-story {
+    margin-top: 50px;
+  }
+  
+  .section-container {
+    padding: 60px 20px;
+  }
+  
+  section h2 {
+    font-size: 28px;
+  }
+  
+  .services-grid, .team-grid, .contact-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .service-card, .team-card, .contact-item {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .our-story {
+    margin-top: 40px;
+  }
+  
+  .section-container {
+    padding: 40px 15px;
+  }
+  
+  section h2 {
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+  
+  .service-card, .team-card, .contact-item {
+    padding: 20px;
+  }
+  
+  .service-icon {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .team-image {
+    height: 200px;
+  }
+  
+  .story-content {
+    gap: 20px;
+  }
+  
+  footer {
+    padding: 15px 0;
+    display: none; 
+  }
+}
+
+/* Chatbot Styles */
+.chatbot-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    z-index: 999;
+    padding: 0;
+  }
+  
+  .chat-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+  
+  /* Chatbot Popup */
+  .chatbot-popup {
+    position: fixed;
+    bottom: 90px;
+    right: 20px;
+    z-index: 1000;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    width: 350px; 
+    height: 400px;
+  }
+  
+  /* Close Button */
+  .close-chat {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+    cursor: pointer;
+    z-index: 1001;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  /* Iframe */
+  #chatbotIframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  
+  /* Mobile Responsive Adjustments */
+  @media (max-width: 480px) {
+    .chatbot-popup {
+      width: 300px;
+      height: 350px;
+      right: 10px;
+      bottom: 80px;
+    }
+    
+    .chatbot-toggle {
+      width: 50px;
+      height: 50px;
+    }
+  }
