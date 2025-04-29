@@ -44,11 +44,7 @@
           <span class="close-btn material-symbols-rounded">close</span>
           <li><a href="aboutus.html" class="aboutus-link">ABOUT US </a></li>
           <li>
-            <a
-              href="contactus.html"
-              class="contactus-link"
-              >CONTACT US
-            </a>
+            <a href="index.html" class="contactus-link">HOME </a>
           </li>
           <li>
             <a href="https://www.facebook.com/LYNXFIBR1" class="facebook-link"
@@ -118,7 +114,10 @@
                 <span class="toggle-icon">+</span>
               </div>
               <div class="faq-answer">
-                <p>Please contact our support team to verify if your location is within our current service coverage.</p>
+                <p>
+                  Please contact our support team to verify if your location is
+                  within our current service coverage.
+                </p>
               </div>
             </div>
             <div class="faq-item">
@@ -127,7 +126,10 @@
                 <span class="toggle-icon">+</span>
               </div>
               <div class="faq-answer">
-                <p>A valid government-issued ID and a proof of residency (e.g., utility bill) are usually required.</p>
+                <p>
+                  A valid government-issued ID and a proof of residency (e.g.,
+                  utility bill) are usually required.
+                </p>
               </div>
             </div>
             <div class="faq-item">
@@ -136,7 +138,11 @@
                 <span class="toggle-icon">+</span>
               </div>
               <div class="faq-answer">
-                <p>Installation fees vary depending on the selected plan. Please request the latest pricing from our team or check our plan details online.</p>
+                <p>
+                  Installation fees vary depending on the selected plan. Please
+                  request the latest pricing from our team or check our plan
+                  details online.
+                </p>
               </div>
             </div>
             <div class="faq-item">
@@ -145,12 +151,18 @@
                 <span class="toggle-icon">+</span>
               </div>
               <div class="faq-answer">
-                <p>You can contact our support team anytime at support@lynxfiber.com.</p>
+                <p>
+                  You can contact our support team anytime at
+                  support@lynxfiber.com.
+                </p>
               </div>
             </div>
             <div class="faq-item">
               <div class="faq-question">
-                <h3>What are the available payment methods for paying bills on LYNX?</h3>
+                <h3>
+                  What are the available payment methods for paying bills on
+                  LYNX?
+                </h3>
                 <span class="toggle-icon">+</span>
               </div>
               <div class="faq-answer">
@@ -159,11 +171,16 @@
             </div>
             <div class="faq-item">
               <div class="faq-question">
-                <h3>Does LYNX provide any other services other than the internet?</h3>
+                <h3>
+                  Does LYNX provide any other services other than the internet?
+                </h3>
                 <span class="toggle-icon">+</span>
               </div>
               <div class="faq-answer">
-                <p>No, we currently focus exclusively on providing high-quality fiber internet service.</p>
+                <p>
+                  No, we currently focus exclusively on providing high-quality
+                  fiber internet service.
+                </p>
               </div>
             </div>
             <div class="faq-item">
@@ -183,12 +200,18 @@
     <!-- Chatbot -->
     <!-- Button to toggle the chatbot -->
     <button id="chatToggle" class="chatbot-toggle" onclick="toggleChatbot()">
-      <img src="frontend/assets/images/icons/chatboticon.png" alt="Chat" class="chat-icon" />
+      <img
+        src="frontend/assets/images/icons/chatboticon.png"
+        alt="Chat"
+        class="chat-icon"
+      />
     </button>
 
     <!-- Chatbot iframe popup -->
-    <div id="chatbotPopup" class="chatbot-popup" style="display: none;">
-      <button id="closeChat" class="close-chat" onclick="closeChatbot()">X</button>
+    <div id="chatbotPopup" class="chatbot-popup" style="display: none">
+      <button id="closeChat" class="close-chat" onclick="closeChatbot()">
+        X
+      </button>
       <iframe
         id="chatbotIframe"
         title="LYNX Chatbot"
@@ -203,25 +226,25 @@
 
     <!-- FAQ Toggle Script -->
     <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const faqItems = document.querySelectorAll('.faq-question');
-        
-        faqItems.forEach(item => {
-          item.addEventListener('click', function() {
+      document.addEventListener("DOMContentLoaded", function () {
+        const faqItems = document.querySelectorAll(".faq-question");
+
+        faqItems.forEach((item) => {
+          item.addEventListener("click", function () {
             const parent = this.parentElement;
-            parent.classList.toggle('active');
-            
-            const icon = this.querySelector('.toggle-icon');
-            if (parent.classList.contains('active')) {
-              icon.textContent = '-';
+            parent.classList.toggle("active");
+
+            const icon = this.querySelector(".toggle-icon");
+            if (parent.classList.contains("active")) {
+              icon.textContent = "-";
             } else {
-              icon.textContent = '+';
+              icon.textContent = "+";
             }
           });
         });
       });
     </script>
-    
+
     <footer>
       <div class="footer">
         <img
