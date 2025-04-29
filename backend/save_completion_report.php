@@ -41,7 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             throw new Exception("Prepare failed: " . $conn->error);
         }
 
-        $stmt->bind_param("ssssssssss",
+        $stmt->bind_param(
+            "ssssssssss",
             $client_name,
             $contact_number,
             $issue_type,
@@ -54,6 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $submitted_by
         );
 
+        // Debugging: Check if bind_param is correct and if execute is successful
         if (!$stmt->execute()) {
             throw new Exception("Execution failed: " . $stmt->error);
         }
@@ -98,4 +100,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 } else {
     echo json_encode(["status" => "error", "message" => "Invalid request method."]);
 }
-?>

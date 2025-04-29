@@ -1081,41 +1081,6 @@ function buildReportHtml(report) {
   `;
 }
 
-document.querySelector("#trackTaskTable").addEventListener("click", (e) => {
-  const btn = e.target;
-
-  // 1) If "Progress Report" button clicked, show progress report modal
-  if (btn.classList.contains("progress-report-btn")) {
-    const userId = btn.dataset.userid;
-    // Show Progress Report Modal (fetch data if needed)
-    showProgressReportModal(userId);
-    return; // Prevent further code execution
-  }
-
-  // 2) If "Completion Report" button clicked, show completion report modal
-  if (btn.classList.contains("completion-form-btn")) {
-    const userId = btn.dataset.userid;
-    // Show Completion Report Modal (fetch data if needed)
-    showCompletionReportModal(userId);
-    return; // Prevent further code execution
-  }
-
-  // 3) Otherwise, trigger the client location modal (for clicking other areas in the row)
-  const clientId = btn.closest("tr").querySelector("td:first-child").textContent; // Get client ID from the first column
-  fetchClientLocation(clientId);
-});
-
-// Function to show the Progress Report modal
-function showProgressReportModal(userId) {
-  // Your Swal or any custom modal code for Progress Report
-  Swal.fire({
-    title: "Progress Report",
-    html: `Progress Report Form for User ID: ${userId}`,
-    // Add form fields here...
-    confirmButtonText: "Save"
-  });
-}
-
 // Function to show the Completion Report modal
 function showCompletionReportModal(userId) {
   // Your Swal or any custom modal code for Completion Report
@@ -1126,130 +1091,6 @@ function showCompletionReportModal(userId) {
     confirmButtonText: "Save"
   });
 }
-
-// Function to fetch and display the client location
-function fetchClientLocation(clientId) {
-  // Fetch client coordinates from the server (excluding "Submit Report" buttons)
-  fetch(`backend/fetch_client_coordinates.php?user_id=${clientId}`)
-    .then(response => response.json())
-    .then(data => {
-      if (data.status === 'success') {
-        const { client_name, latitude, longitude } = data;
-
-        Swal.fire({
-          title: `${client_name} Location`,
-          html: `<div id="map" style="height: 350px;"></div>`,
-          didOpen: () => {
-            const mapElement = document.getElementById('map');
-            const map = L.map(mapElement, {
-              scrollWheelZoom: false,
-              dragging: false,
-              touchZoom: false,
-              doubleClickZoom: false,
-              boxZoom: false
-            }).setView([latitude, longitude], 16);
-
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-              attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
-
-            L.marker([latitude, longitude]).addTo(map)
-              .bindPopup(`<b>${client_name}</b>`)
-              .openPopup();
-          }
-        });
-      } else {
-        Swal.fire('Error', 'Failed to fetch client details', 'error');
-      }
-    })
-    .catch(error => {
-      console.error('Error fetching client coordinates:', error);
-      Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-    });
-}
-
-
-function fetchClientLocation(clientId) {
-  // Logic to fetch and display the client's location
-  fetch(`backend/fetch_client_coordinates.php?user_id=${clientId}`)
-    .then(response => response.json())
-    .then(data => {
-      if (data.status === 'success') {
-        const { client_name, latitude, longitude } = data;
-
-        Swal.fire({
-          title: `${client_name} Location`,
-          html: `<div id="map" style="height: 350px;"></div>`,
-          didOpen: () => {
-            const mapElement = document.getElementById('map');
-            const map = L.map(mapElement, {
-              scrollWheelZoom: false,
-              dragging: false,
-              touchZoom: false,
-              doubleClickZoom: false,
-              boxZoom: false
-            }).setView([latitude, longitude], 16);
-
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-              attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
-
-            L.marker([latitude, longitude]).addTo(map)
-              .bindPopup(`<b>${client_name}</b>`)
-              .openPopup();
-          },
-        });
-      } else {
-        Swal.fire('Error', 'Failed to fetch client details', 'error');
-      }
-    })
-    .catch(error => {
-      console.error('Error fetching client coordinates:', error);
-      Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-    });
-}
-
-
-function fetchClientLocation(clientId) {
-  // Add the logic to fetch and display the client's location (same logic as you already have for showing the map)
-  fetch(`backend/fetch_client_coordinates.php?user_id=${clientId}`)
-    .then(response => response.json())
-    .then(data => {
-      if (data.status === 'success') {
-        const { client_name, latitude, longitude } = data;
-
-        Swal.fire({
-          title: `${client_name} Location`,
-          html: `<div id="map" style="height: 350px;"></div>`,
-          didOpen: () => {
-            const mapElement = document.getElementById('map');
-            const map = L.map(mapElement, {
-              scrollWheelZoom: false,
-              dragging: false,
-              touchZoom: false,
-              doubleClickZoom: false,
-              boxZoom: false
-            }).setView([latitude, longitude], 16);
-
-            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-              attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            }).addTo(map);
-
-            L.marker([latitude, longitude]).addTo(map)
-              .bindPopup(`<b>${client_name}</b>`)
-              .openPopup();
-          },
-        });
-      } else {
-        Swal.fire('Error', 'Failed to fetch client details', 'error');
-      }
-    })
-    .catch(error => {
-      console.error('Error fetching client coordinates:', error);
-      Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
-    });
-}
-
 
 // for displaying client's pinned coordinates
 document.addEventListener("DOMContentLoaded", function () {
@@ -1408,3 +1249,28 @@ function submitCompletionReport(maintenanceId) {
   xhr.send(JSON.stringify(reportData));
 }
 
+// deletion of row of clien in the assigned task table if also completed
+document.addEventListener("DOMContentLoaded", function () {
+  // Fetch completed tasks from the database (this can be done in an AJAX call)
+  fetch('backend/check_completed_tasks.php')
+      .then(response => response.json())
+      .then(completedTasks => {
+          // Loop through each completed task
+          completedTasks.forEach(task => {
+              // Get the row corresponding to the completed task
+              const rows = document.querySelectorAll('#assignedTaskTable tbody tr');
+              rows.forEach(row => {
+                  const userId = row.cells[0].textContent.trim();  // Assuming first column is the user_id
+
+                  // Debugging: Log the userId and task.user_id to compare
+                  console.log("Row User ID:", userId, "Task User ID:", task.user_id);
+
+                  // If user_id matches, and task is completed, remove the row
+                  if (userId === task.user_id) {
+                      row.remove();  // Remove the row from the DOM
+                  }
+              });
+          });
+      })
+      .catch(error => console.error('Error:', error));
+});
