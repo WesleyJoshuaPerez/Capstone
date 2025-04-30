@@ -1,11 +1,15 @@
 <?php
 session_start();
-header('Content-Type: application/json');
-require 'connectdb.php';
 
-// Enable error reporting for debugging purposes
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+// Always send JSON header
+header('Content-Type: application/json');
+
+// Prevent PHP from printing warnings/errors to output (they break JSON)
+ini_set('display_errors', 0);
+ini_set('display_startup_errors', 0);
+error_reporting(0);
+
+require 'connectdb.php';
 
 if (!isset($_SESSION['techName'])) {
     echo json_encode(["status" => "error", "message" => "Technician not logged in."]);
@@ -29,10 +33,11 @@ $sql = "
     NULL AS parts_used,
     NULL AS issues_encountered,
     NULL AS technician_comments,
-    COALESCE(mr.status, 'No Status') AS maintenance_status  -- Use full_name to join with maintenance_requests
+    COALESCE(mr.status, 'No Status') AS maintenance_status
   FROM progress_reports pr
-  LEFT JOIN maintenance_requests mr ON pr.client_name = mr.full_name  -- Join using full_name
-  WHERE pr.submitted_by = ?)
+  LEFT JOIN maintenance_requests mr 
+    ON pr.client_name = mr.full_name AND pr.issue_type = mr.issue_type
+  WHERE pr.submitted_by = ? AND COALESCE(mr.status, 'No Status') != 'Completed')
 
   UNION
 
@@ -50,12 +55,15 @@ $sql = "
     cf.parts_used,
     cf.issues_encountered,
     cf.technician_comments,
-    COALESCE(mr.status, 'No Status') AS maintenance_status  -- Use full_name to join with maintenance_requests
+    COALESCE(mr.status, 'No Status') AS maintenance_status
   FROM completion_report cf
-  LEFT JOIN maintenance_requests mr ON cf.client_name = mr.full_name  -- Join using full_name
+  LEFT JOIN maintenance_requests mr 
+    ON cf.client_name = mr.full_name AND cf.issue_type = mr.issue_type
   WHERE cf.submitted_by = ?)
+
   ORDER BY submitted_at DESC
 ";
+
 
 $stmt = $conn->prepare($sql);
 if (!$stmt) {
@@ -75,5 +83,11 @@ while ($row = $result->fetch_assoc()) {
 $stmt->close();
 $conn->close();
 
-echo json_encode(["status" => "success", "data" => $rows]);
+$response = empty($rows)
+    ? ["status" => "success", "message" => "No track tasks available"]
+    : ["status" => "success", "data" => $rows];
+
+// Output the response as JSON
+echo json_encode($response);
+exit;
 ?>

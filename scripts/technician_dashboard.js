@@ -64,10 +64,21 @@ document.addEventListener("DOMContentLoaded", function () {
   if (changePassDiv) changePassDiv.style.display = "none";
 
   // ** Immediately load the assigned tasks table when the page loads **
-  $("#assignedTaskTable tbody").load("backend/fetch_assigned_tasks.php");
+  $("#assignedTaskTable tbody").load("backend/fetch_assigned_tasks.php", function () {
+    checkAssignedTasks();  // Check if the table is empty and show message
+  });
 
   // ** Immediately load the track task table when the page loads **
   $("#trackTaskTable tbody").load("backend/fetch_track_tasks.php");
+
+  function checkAssignedTasks() {
+    const assignedTaskTable = document.querySelector("#assignedTaskTable tbody");
+    if (assignedTaskTable && assignedTaskTable.rows.length === 0) {
+      const noTaskRow = document.createElement("tr");
+      noTaskRow.innerHTML = `<td colspan="8" class="text-center">No assigned tasks found.</td>`;
+      assignedTaskTable.appendChild(noTaskRow);
+    }
+  }
 
   if (homeLink) {
     homeLink.addEventListener("click", function (event) {
@@ -89,7 +100,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Load the tasks into the assignedTaskTable when clicked (if not already loaded)
       if ($("#assignedTaskTable tbody").is(":empty")) {
-        $("#assignedTaskTable tbody").load("backend/fetch_assigned_tasks.php");
+        $("#assignedTaskTable tbody").load("backend/fetch_assigned_tasks.php", function () {
+          checkAssignedTasks();  // Check if the table is empty and show message
+        });
       }
     });
   }
@@ -128,10 +141,13 @@ document.addEventListener("DOMContentLoaded", function () {
       if (assignedTaskDiv) assignedTaskDiv.style.display = "block";
 
       // Load the tasks into the assignedTaskTable when clicked
-      $("#assignedTaskTable tbody").load("backend/fetch_assigned_tasks.php");
+      $("#assignedTaskTable tbody").load("backend/fetch_assigned_tasks.php", function () {
+        checkAssignedTasks();  // Check if the table is empty and show message
+      });
     });
   }
 });
+
 
 document.addEventListener("DOMContentLoaded", function () {
   // Toggle password visibility
@@ -299,112 +315,96 @@ document.addEventListener("DOMContentLoaded", function () {
 
 // for fetching reports
 document.addEventListener("DOMContentLoaded", function () {
-  fetch("backend/fetch_track_tasks.php")
-    .then((response) => {
-      if (!response.ok) {
-        // Handle non-OK responses
-        throw new Error("Network response was not ok");
-      }
-      return response.json();
-    })
-    .then((data) => {
-      console.log("Fetched track tasks data:", data);
-      if (data.status === "success") {
-        const reports = data.data; // Array of progress/completion rows
-        populateTrackTaskTable(reports);
-      } else {
-        console.error("Failed to fetch track tasks:", data.message);
-      }
-    })
-    .catch((error) => {
-      console.error("Error fetching track tasks:", error);
-    });
+  // Initial load
+  updateTrackTaskTable();
+
+  // Set interval to update every 10 seconds
+  setInterval(updateTrackTaskTable, 1000); // 10000ms = 10s
+
+  function updateTrackTaskTable() {
+    fetch("backend/fetch_track_tasks.php")
+      .then((res) => res.json())
+      .then((data) => {
+        const tbody = document.querySelector("#trackTaskTable tbody");
+        tbody.innerHTML = ""; // Clear any existing rows
+
+        if (data.status === "success") {
+          if (data.message) {
+            const noTaskRow = document.createElement("tr");
+            noTaskRow.innerHTML = `<td colspan="5" class="text-center">${data.message}</td>`;
+            tbody.appendChild(noTaskRow);
+          } else {
+            populateTrackTaskTable(data.data);
+          }
+        } else {
+          const errorRow = document.createElement("tr");
+          errorRow.innerHTML = `<td colspan="5" class="text-center text-danger">${data.message}</td>`;
+          tbody.appendChild(errorRow);
+        }
+      })
+      .catch((error) => {
+        console.error("Fetch error:", error);
+        const tbody = document.querySelector("#trackTaskTable tbody");
+        tbody.innerHTML = `<tr><td colspan="5" class="text-center text-danger">Failed to load tasks</td></tr>`;
+      });
+  }
 
   function populateTrackTaskTable(reports) {
     const tbody = document.querySelector("#trackTaskTable tbody");
-    tbody.innerHTML = "";
 
     reports.forEach((report) => {
       const tr = document.createElement("tr");
 
-      // Assigned Technician
       const tdTechName = document.createElement("td");
-      tdTechName.textContent = report.submitted_by; // Display submitted_by as Assigned Technician
+      tdTechName.textContent = report.submitted_by;
       tr.appendChild(tdTechName);
 
-      // Status (Display maintenance_status here)
       const tdStatus = document.createElement("td");
-      tdStatus.textContent = report.maintenance_status; // Use maintenance_status from the database
+      tdStatus.textContent = report.maintenance_status;
       tr.appendChild(tdStatus);
 
-      // Client Name
       const tdClientName = document.createElement("td");
       tdClientName.textContent = report.client_name;
       tr.appendChild(tdClientName);
 
-      // Issue Type
       const tdIssue = document.createElement("td");
       tdIssue.textContent = report.issue_type;
       tr.appendChild(tdIssue);
 
-      // Submitted Report (button to view report)
       const tdReport = document.createElement("td");
       tdReport.className = "action-buttons";
 
-      // Create button container for responsive layout
       const buttonContainer = document.createElement("div");
       buttonContainer.className = "button-container";
       buttonContainer.style.display = "flex";
       buttonContainer.style.flexWrap = "wrap";
       buttonContainer.style.gap = "8px";
 
-      // View Report button
       const btnView = document.createElement("button");
       btnView.textContent = "View Report";
       btnView.classList.add("view-report-btn");
-      btnView.style.backgroundColor = "#28a745";
-      btnView.style.color = "#fff";
-      btnView.style.padding = "8px 16px";
-      btnView.style.border = "none";
-      btnView.style.borderRadius = "4px";
-      btnView.style.cursor = "pointer";
-      btnView.style.flex = "1";
-      btnView.style.minWidth = "120px";
-      btnView.style.textAlign = "center";
-      btnView.style.fontSize = "14px";
+      btnView.style.cssText = "background-color:#28a745;color:#fff;padding:8px 16px;border:none;border-radius:4px;cursor:pointer;flex:1;min-width:120px;text-align:center;font-size:14px;";
       btnView.dataset.report = JSON.stringify(report);
 
-      // Save PDF File button
       const btnSavePDF = document.createElement("button");
       btnSavePDF.textContent = "Save PDF File";
       btnSavePDF.classList.add("save-pdf-btn");
-      btnSavePDF.style.backgroundColor = "#007bff";
-      btnSavePDF.style.color = "#fff";
-      btnSavePDF.style.padding = "8px 16px";
-      btnSavePDF.style.border = "none";
-      btnSavePDF.style.borderRadius = "4px";
-      btnSavePDF.style.cursor = "pointer";
-      btnSavePDF.style.flex = "1";
-      btnSavePDF.style.minWidth = "120px";
-      btnSavePDF.style.textAlign = "center";
-      btnSavePDF.style.fontSize = "14px";
+      btnSavePDF.style.cssText = "background-color:#007bff;color:#fff;padding:8px 16px;border:none;border-radius:4px;cursor:pointer;flex:1;min-width:120px;text-align:center;font-size:14px;";
       btnSavePDF.dataset.report = JSON.stringify(report);
 
-      // Add buttons to container
       buttonContainer.appendChild(btnView);
       buttonContainer.appendChild(btnSavePDF);
-
-      // Add container to table cell
       tdReport.appendChild(buttonContainer);
       tr.appendChild(tdReport);
 
       tbody.appendChild(tr);
     });
 
-    // Add responsive styles to handle different screen sizes
     addResponsiveStyles();
   }
 
+
+  
   // Function to add responsive styles
   function addResponsiveStyles() {
     // Check if style already exists
@@ -1249,28 +1249,47 @@ function submitCompletionReport(maintenanceId) {
   xhr.send(JSON.stringify(reportData));
 }
 
-// deletion of row of clien in the assigned task table if also completed
+// deletion of row of client in the assigned task table if completed
 document.addEventListener("DOMContentLoaded", function () {
-  // Fetch completed tasks from the database (this can be done in an AJAX call)
-  fetch('backend/check_completed_tasks.php')
+  // Function to fetch and delete completed tasks dynamically
+  function fetchAndDeleteCompletedTasks() {
+    // Fetch completed tasks from the backend
+    fetch('backend/check_completed_tasks.php')
       .then(response => response.json())
       .then(completedTasks => {
-          // Loop through each completed task
+        // Get all the rows from the assigned task table
+        const rows = document.querySelectorAll('#assignedTaskTable tbody tr');
+
+        // Loop through all the rows in the assigned task table
+        rows.forEach(row => {
+          const fullName = row.cells[1].textContent.trim(); // Assuming the 2nd column is 'Client Name'
+          const issueType = row.cells[4].textContent.trim(); // Assuming the 5th column is 'Issue Type'
+          const issueDescription = row.cells[5].textContent.trim(); // Assuming the 6th column is 'Issue Description'
+
+          // Debugging: Log the full name, issue type, and description to compare
+          console.log("Row Details - Name:", fullName, "Issue Type:", issueType, "Description:", issueDescription);
+
+          // Check if the task has "Completed" status and matches full name, issue type, and issue description
           completedTasks.forEach(task => {
-              // Get the row corresponding to the completed task
-              const rows = document.querySelectorAll('#assignedTaskTable tbody tr');
-              rows.forEach(row => {
-                  const userId = row.cells[0].textContent.trim();  // Assuming first column is the user_id
-
-                  // Debugging: Log the userId and task.user_id to compare
-                  console.log("Row User ID:", userId, "Task User ID:", task.user_id);
-
-                  // If user_id matches, and task is completed, remove the row
-                  if (userId === task.user_id) {
-                      row.remove();  // Remove the row from the DOM
-                  }
-              });
+            if (fullName === task.full_name && issueType === task.issue_type && issueDescription === task.issue_description) {
+              // If status is 'Completed' and the details match, remove the row
+              row.remove();  // Removes the row from the DOM
+            }
           });
+        });
       })
       .catch(error => console.error('Error:', error));
+  }
+
+  // Set up polling every 5 seconds (adjust the interval as needed)
+  setInterval(fetchAndDeleteCompletedTasks, 1000); // Poll every 5 seconds
 });
+
+
+
+
+
+
+
+
+

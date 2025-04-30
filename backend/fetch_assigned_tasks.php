@@ -23,7 +23,7 @@ $assignedTasksQuery->execute();
 $response["assignedtasks"] = $assignedTasksQuery->get_result()->fetch_assoc()["total"]; // Added assigned tasks count
 
 // Now, let's fetch the maintenance requests for the technician
-$sql = "SELECT user_id, full_name, contact_number, address, issue_type, issue_description, contact_time 
+$sql = "SELECT user_id, full_name, contact_number, address, issue_type, issue_description, contact_time, status 
         FROM maintenance_requests 
         WHERE TRIM(technician_name) = ?";
 
@@ -32,6 +32,7 @@ if (!$stmt) {
     echo "<tr><td colspan='8'>Database error: " . $conn->error . "</td></tr>";
     exit;
 }
+
 $stmt->bind_param("s", $techName);
 $stmt->execute();
 $result = $stmt->get_result();
