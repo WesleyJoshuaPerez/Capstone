@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const mainContent = document.querySelector(".main_content");
   const toggleButton = document.getElementById("hamburgerBtn");
   fetchTotals();
-
+  checkAssignedTasks();
   function toggleSidebar() {
     sidebar.classList.toggle("collapsed");
     mainContent.classList.toggle("expanded");
@@ -64,15 +64,20 @@ document.addEventListener("DOMContentLoaded", function () {
   if (changePassDiv) changePassDiv.style.display = "none";
 
   // ** Immediately load the assigned tasks table when the page loads **
-  $("#assignedTaskTable tbody").load("backend/fetch_assigned_tasks.php", function () {
-    checkAssignedTasks();  // Check if the table is empty and show message
-  });
+  $("#assignedTaskTable tbody").load(
+    "backend/fetch_assigned_tasks.php",
+    function () {
+      checkAssignedTasks(); // Check if the table is empty and show message
+    }
+  );
 
   // ** Immediately load the track task table when the page loads **
   $("#trackTaskTable tbody").load("backend/fetch_track_tasks.php");
 
   function checkAssignedTasks() {
-    const assignedTaskTable = document.querySelector("#assignedTaskTable tbody");
+    const assignedTaskTable = document.querySelector(
+      "#assignedTaskTable tbody"
+    );
     if (assignedTaskTable && assignedTaskTable.rows.length === 0) {
       const noTaskRow = document.createElement("tr");
       noTaskRow.innerHTML = `<td colspan="8" class="text-center">No assigned tasks found.</td>`;
@@ -100,9 +105,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // Load the tasks into the assignedTaskTable when clicked (if not already loaded)
       if ($("#assignedTaskTable tbody").is(":empty")) {
-        $("#assignedTaskTable tbody").load("backend/fetch_assigned_tasks.php", function () {
-          checkAssignedTasks();  // Check if the table is empty and show message
-        });
+        $("#assignedTaskTable tbody").load(
+          "backend/fetch_assigned_tasks.php",
+          function () {
+            checkAssignedTasks(); // Check if the table is empty and show message
+          }
+        );
       }
     });
   }
@@ -141,13 +149,15 @@ document.addEventListener("DOMContentLoaded", function () {
       if (assignedTaskDiv) assignedTaskDiv.style.display = "block";
 
       // Load the tasks into the assignedTaskTable when clicked
-      $("#assignedTaskTable tbody").load("backend/fetch_assigned_tasks.php", function () {
-        checkAssignedTasks();  // Check if the table is empty and show message
-      });
+      $("#assignedTaskTable tbody").load(
+        "backend/fetch_assigned_tasks.php",
+        function () {
+          checkAssignedTasks(); // Check if the table is empty and show message
+        }
+      );
     });
   }
 });
-
 
 document.addEventListener("DOMContentLoaded", function () {
   // Toggle password visibility
@@ -383,13 +393,15 @@ document.addEventListener("DOMContentLoaded", function () {
       const btnView = document.createElement("button");
       btnView.textContent = "View Report";
       btnView.classList.add("view-report-btn");
-      btnView.style.cssText = "background-color:#28a745;color:#fff;padding:8px 16px;border:none;border-radius:4px;cursor:pointer;flex:1;min-width:120px;text-align:center;font-size:14px;";
+      btnView.style.cssText =
+        "background-color:#28a745;color:#fff;padding:8px 16px;border:none;border-radius:4px;cursor:pointer;flex:1;min-width:120px;text-align:center;font-size:14px;";
       btnView.dataset.report = JSON.stringify(report);
 
       const btnSavePDF = document.createElement("button");
       btnSavePDF.textContent = "Save PDF File";
       btnSavePDF.classList.add("save-pdf-btn");
-      btnSavePDF.style.cssText = "background-color:#007bff;color:#fff;padding:8px 16px;border:none;border-radius:4px;cursor:pointer;flex:1;min-width:120px;text-align:center;font-size:14px;";
+      btnSavePDF.style.cssText =
+        "background-color:#007bff;color:#fff;padding:8px 16px;border:none;border-radius:4px;cursor:pointer;flex:1;min-width:120px;text-align:center;font-size:14px;";
       btnSavePDF.dataset.report = JSON.stringify(report);
 
       buttonContainer.appendChild(btnView);
@@ -403,8 +415,6 @@ document.addEventListener("DOMContentLoaded", function () {
     addResponsiveStyles();
   }
 
-
-  
   // Function to add responsive styles
   function addResponsiveStyles() {
     // Check if style already exists
@@ -940,6 +950,10 @@ document.addEventListener("DOMContentLoaded", function () {
             },
             success: function (response) {
               Swal.fire("Success!", "Completion form saved.", "success");
+              // Reload the assigned tasks table
+              $("#assignedTaskTable tbody").load(
+                "backend/fetch_assigned_tasks.php"
+              );
             },
             error: function (error) {
               Swal.fire("Error!", "Failed to save completion form.", "error");
@@ -1088,16 +1102,16 @@ function showCompletionReportModal(userId) {
     title: "Completion Report",
     html: `Completion Report Form for User ID: ${userId}`,
     // Add form fields here...
-    confirmButtonText: "Save"
+    confirmButtonText: "Save",
   });
 }
 
 // for displaying client's pinned coordinates
 document.addEventListener("DOMContentLoaded", function () {
   // Handle click on client row in assigned task table
-  $('#assignedTaskTable').on('click', 'tr', function (e) {
+  $("#assignedTaskTable").on("click", "tr", function (e) {
     const row = $(this);
-    const clientId = row.find('td:first').text(); // Get the client ID from the first cell
+    const clientId = row.find("td:first").text(); // Get the client ID from the first cell
 
     // Check if the clicked target is a table header (blue header)
     const isTableHeader = e.target.tagName === "TH";
@@ -1107,8 +1121,9 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     // Check if a report button (Progress or Completion) was clicked
-    const isReportButtonClicked = e.target.classList.contains("progress-report-btn") || 
-                                  e.target.classList.contains("completion-form-btn");
+    const isReportButtonClicked =
+      e.target.classList.contains("progress-report-btn") ||
+      e.target.classList.contains("completion-form-btn");
 
     if (isReportButtonClicked) {
       // Prevent triggering the location modal when clicking on report buttons
@@ -1117,9 +1132,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Fetch client coordinates from the server
     fetch(`backend/fetch_client_coordinates.php?user_id=${clientId}`)
-      .then(response => response.json())
-      .then(data => {
-        if (data.status === 'success') {
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.status === "success") {
           const { client_name, latitude, longitude } = data;
 
           // Show the client location on a map in a Swal modal
@@ -1127,55 +1142,59 @@ document.addEventListener("DOMContentLoaded", function () {
             title: ``,
             html: `<div id="map" style="height: 350px; font-size: 14px;"></div>`,
             didOpen: () => {
-              const mapElement = document.getElementById('map');
+              const mapElement = document.getElementById("map");
               const map = L.map(mapElement, {
                 scrollWheelZoom: false,
                 dragging: false,
                 touchZoom: false,
                 doubleClickZoom: false,
-                boxZoom: false
+                boxZoom: false,
               }).setView([latitude, longitude], 16);
 
-              L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              }).addTo(map);
+              L.tileLayer(
+                "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+                  attribution:
+                    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+                }
+              ).addTo(map);
 
-              L.marker([latitude, longitude]).addTo(map)
+              L.marker([latitude, longitude])
+                .addTo(map)
                 .bindPopup(`<b>${client_name}</b>`)
                 .openPopup();
             },
             willClose: () => {
-              const mapElement = document.getElementById('map');
+              const mapElement = document.getElementById("map");
               if (mapElement) {
-                mapElement.innerHTML = ''; // Clean up the map element on close
+                mapElement.innerHTML = ""; // Clean up the map element on close
               }
-            }
+            },
           });
         } else {
-          Swal.fire('Error', 'Failed to fetch client details', 'error');
+          Swal.fire("Error", "Failed to fetch client details", "error");
         }
       })
-      .catch(error => {
-        console.error('Error fetching client coordinates:', error);
-        Swal.fire('Error', 'Something went wrong. Please try again.', 'error');
+      .catch((error) => {
+        console.error("Error fetching client coordinates:", error);
+        Swal.fire("Error", "Something went wrong. Please try again.", "error");
       });
   });
 
   // Handle click on Progress Report button
-  $('#assignedTaskTable').on('click', '.progress-report-btn', function () {
-    const userId = $(this).data('userid');
+  $("#assignedTaskTable").on("click", ".progress-report-btn", function () {
+    const userId = $(this).data("userid");
     // Show Progress Report Modal
     showProgressReportModal(userId);
   });
 
   // Handle click on Completion Report button
-  $('#assignedTaskTable').on('click', '.completion-form-btn', function () {
-    const userId = $(this).data('userid');
+  $("#assignedTaskTable").on("click", ".completion-form-btn", function () {
+    const userId = $(this).data("userid");
     // Show Completion Report Modal
     showCompletionReportModal(userId);
   });
 });
-
 
 // Function to show Progress Report modal
 function showProgressReportModal(userId) {
@@ -1183,7 +1202,7 @@ function showProgressReportModal(userId) {
     title: "Progress Report",
     html: `Progress Report Form for User ID: ${userId}`,
     // Add form fields here...
-    confirmButtonText: "Save"
+    confirmButtonText: "Save",
   });
 }
 
@@ -1193,10 +1212,9 @@ function showCompletionReportModal(userId) {
     title: "Completion Report",
     html: `Completion Report Form for User ID: ${userId}`,
     // Add form fields here...
-    confirmButtonText: "Save"
+    confirmButtonText: "Save",
   });
 }
-
 
 // for updating status when completion report is submitted
 function submitCompletionReport(maintenanceId) {
@@ -1214,7 +1232,7 @@ function submitCompletionReport(maintenanceId) {
   xhr.setRequestHeader("Content-Type", "application/json");
 
   let reportData = {
-    maintenance_id: maintenanceId,  // Maintenance ID to be passed
+    maintenance_id: maintenanceId, // Maintenance ID to be passed
     work_description: document.getElementById("work_description").value,
     parts_used: document.getElementById("parts_used").value,
     issues_encountered: document.getElementById("issues_encountered").value,
@@ -1229,7 +1247,11 @@ function submitCompletionReport(maintenanceId) {
         try {
           let response = JSON.parse(xhr.responseText);
           if (response.status === "success") {
-            Swal.fire("Success!", "Completion report submitted successfully.", "success").then(() => {
+            Swal.fire(
+              "Success!",
+              "Completion report submitted successfully.",
+              "success"
+            ).then(() => {
               // Now update the maintenance status to 'Completed'
               updateMaintenanceStatus(maintenanceId, "Completed");
             });
@@ -1254,42 +1276,44 @@ document.addEventListener("DOMContentLoaded", function () {
   // Function to fetch and delete completed tasks dynamically
   function fetchAndDeleteCompletedTasks() {
     // Fetch completed tasks from the backend
-    fetch('backend/check_completed_tasks.php')
-      .then(response => response.json())
-      .then(completedTasks => {
+    fetch("backend/check_completed_tasks.php")
+      .then((response) => response.json())
+      .then((completedTasks) => {
         // Get all the rows from the assigned task table
-        const rows = document.querySelectorAll('#assignedTaskTable tbody tr');
+        const rows = document.querySelectorAll("#assignedTaskTable tbody tr");
 
         // Loop through all the rows in the assigned task table
-        rows.forEach(row => {
+        rows.forEach((row) => {
           const fullName = row.cells[1].textContent.trim(); // Assuming the 2nd column is 'Client Name'
           const issueType = row.cells[4].textContent.trim(); // Assuming the 5th column is 'Issue Type'
           const issueDescription = row.cells[5].textContent.trim(); // Assuming the 6th column is 'Issue Description'
 
           // Debugging: Log the full name, issue type, and description to compare
-          console.log("Row Details - Name:", fullName, "Issue Type:", issueType, "Description:", issueDescription);
+          console.log(
+            "Row Details - Name:",
+            fullName,
+            "Issue Type:",
+            issueType,
+            "Description:",
+            issueDescription
+          );
 
           // Check if the task has "Completed" status and matches full name, issue type, and issue description
-          completedTasks.forEach(task => {
-            if (fullName === task.full_name && issueType === task.issue_type && issueDescription === task.issue_description) {
+          completedTasks.forEach((task) => {
+            if (
+              fullName === task.full_name &&
+              issueType === task.issue_type &&
+              issueDescription === task.issue_description
+            ) {
               // If status is 'Completed' and the details match, remove the row
-              row.remove();  // Removes the row from the DOM
+              row.remove(); // Removes the row from the DOM
             }
           });
         });
       })
-      .catch(error => console.error('Error:', error));
+      .catch((error) => console.error("Error:", error));
   }
 
   // Set up polling every 5 seconds (adjust the interval as needed)
   setInterval(fetchAndDeleteCompletedTasks, 1000); // Poll every 5 seconds
 });
-
-
-
-
-
-
-
-
-
