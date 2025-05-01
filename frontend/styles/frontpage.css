@@ -106,6 +106,26 @@ header {
   background: #ec202a;
   color: white;
 }
+
+/* For hamburger menu overlay */
+.blur-bg-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  z-index: 5;
+  transition: 0.2s ease;
+}
+.blur-bg-overlay.show {
+  opacity: 1;
+  visibility: visible;
+}
+
 /*For sections of the pages */
 /* General Full-Screen Styling */
 .section {
@@ -317,6 +337,85 @@ ul {
   list-style-type: none; /* Hides the bullet points */
   padding-left: 0; /* Optional: Removes default padding */
 }
+
+/* Section Container */
+.section-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 30px 20px;
+}
+
+/* Section Headings */
+section h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #302f2f;
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 40px;
+  position: relative;
+}
+
+section h2::after {
+  content: '';
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: linear-gradient(to right, #ec202a, #36a13a, #fcbf06);
+}
+
+/* Our Services Section */
+.our-services {
+  background-color: #f9f9f9;
+  padding: 50px 0;
+  margin-top: -240px;
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.service-card {
+  background: white;
+  border-radius: 10px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+}
+
+.service-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 20px;
+}
+
+.service-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.service-card h3 {
+  font-size: 22px;
+  margin-bottom: 15px;
+  color: #36a13a;
+}
+
+.service-card p {
+  color: #666;
+  line-height: 1.6;
+}
+
 /* Make Footer Always Visible */
 footer {
   width: 100%;
@@ -335,43 +434,6 @@ footer {
   display: block;
   margin: 0 auto;
 }
-
-.icon-menu {
-  display: flex;
-  justify-content: center;
-  gap: 40px; /* Spacing between items */
-  margin: 30px 0;
-  position: relative;
-  bottom: 240px;
-}
-
-.icon-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  transition: transform 0.2s ease-in-out;
-}
-
-.icon-item img {
-  width: 100px; /* Adjust size */
-  height: 100px;
-  border-radius: 50%;
-  border: 2px solid red;
-  padding: 10px;
-}
-
-.icon-item p {
-  margin-top: 10px;
-  font-size: 14px;
-  font-weight: bold;
-  color: #333;
-}
-
-.icon-item:hover {
-  transform: scale(1.1); /* Hover effect */
-}
-
 
 /*For laptops */
 @media (max-width: 950px) {
@@ -452,6 +514,10 @@ footer {
     font-size: 25px;
     padding: 0;
   }
+  
+  .services-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 /*For smartphones */
 @media (max-width: 768px) {
@@ -519,19 +585,26 @@ footer {
   footer {
     display: none;
   }
-
-  .icon-menu {
-    gap: 20px; /* Reduce spacing between items */
-    flex-wrap: wrap; /* Allow items to wrap to the next line */
+  
+  .section-container {
+    padding: 60px 20px;
   }
-
-  .icon-item img {
-    width: 80px; /* Reduce icon size */
-    height: 80px;
+  
+  section h2 {
+    font-size: 28px;
   }
-
-  .icon-item p {
-    font-size: 12px; /* Reduce text size */
+  
+  .services-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .service-card {
+    max-width: 100%;
+  }
+  
+  .our-services {
+    margin-top: -230px;
   }
 }
 
@@ -586,22 +659,26 @@ footer {
   .apply-btn:hover {
     background: #807f7f;
   }
-
-  .icon-menu {
-    flex-direction: row; /* Stack icons vertically */
-    align-items: center; /* Center them */
-    gap: 15px; /* Reduce space */
-    position: relative;
-    bottom: 300px; /* Reset bottom positioning */
-    padding-bottom: 20px;
+  
+  .section-container {
+    padding: 40px 15px;
   }
-
-  .icon-item img {
-    width: 60px; /* Smaller icons */
+  
+  section h2 {
+    font-size: 24px;
+    margin-bottom: 30px;
+  }
+  
+  .service-card {
+    padding: 20px;
+  }
+  
+  .service-icon {
+    width: 60px;
     height: 60px;
   }
-
-  .icon-item p {
-    font-size: 12px; /* Adjust text size */
+  
+  .our-services {
+    margin-top: -220px;
   }
 }
