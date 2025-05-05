@@ -61,11 +61,68 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 
   // Toggle Billing History section
+  // Toggle Billing History section
   if (billingHistoryLink) {
     billingHistoryLink.addEventListener("click", function (event) {
       event.preventDefault();
       hideAllSections();
       historyDiv.style.display = "block";
+
+      // Get user ID from PHP (session-based)
+      const userId = document.getElementById("userId")?.value || null; // Ensure userId is retrieved from a hidden input field
+
+      if (!userId) {
+        console.error("User ID is missing. Cannot fetch billing history.");
+        Swal.fire(
+          "Error",
+          "User ID is required to fetch billing history.",
+          "error"
+        );
+        return;
+      }
+
+      // Fetch paid payments for this user
+      fetch(
+        `backend/fetch_billinghistory.php?user_id=${encodeURIComponent(userId)}`
+      )
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+          return response.json();
+        })
+        .then((data) => {
+          const tbody = document.querySelector("#historyTable tbody");
+          tbody.innerHTML = ""; // Clear existing rows
+
+          if (Array.isArray(data) && data.length > 0) {
+            data.forEach((payment) => {
+              const row = document.createElement("tr");
+              row.innerHTML = `
+              <td>${payment.payment_id}</td>
+              <td>${payment.fullname}</td>
+              <td>${payment.subscription_plan}</td>
+              <td>${payment.mode_of_payment}</td>
+              <td>₱${payment.paid_amount}</td>
+              <td>${payment.payment_date}</td>
+            `;
+              tbody.appendChild(row);
+            });
+          } else {
+            // Handle empty data
+            const row = document.createElement("tr");
+            row.innerHTML = `<td colspan="6" style="text-align: center;">No billing history available.</td>`;
+            tbody.appendChild(row);
+          }
+        })
+        .catch((error) => {
+          console.error("Error fetching payments:", error);
+          Swal.fire(
+            "Error",
+            "Unable to fetch billing history. Please try again later.",
+            "error"
+          );
+        });
     });
   }
 
@@ -633,15 +690,13 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
-
-// handles notification displaying
+//handles notification displaying
 function loadNotifications() {
   const notificationTableBody = document.querySelector(
     "#notificationTable tbody"
   );
   const userId = document.getElementById("userId")?.value || 0;
-
-  // fetch notifications from backend
+  //fetch notification on tables within the backend folder
   fetch(`backend/get_notifications.php?user_id=${userId}`)
     .then((res) => res.json())
     .then((result) => {
@@ -671,83 +726,127 @@ function loadNotifications() {
         row.appendChild(userIdCell);
 
         const fullNameCell = document.createElement("td");
-        fullNameCell.textContent = notif.full_name;
+        fullNameCell.textContent = notif.full_name || "N/A";
         row.appendChild(fullNameCell);
 
         const requestsCell = document.createElement("td");
         requestsCell.textContent =
           notif.type === "maintenance"
             ? "Maintenance Request"
-            : "Change Plan Request";
+            : notif.type === "change_plan"
+            ? "Change Plan Request"
+            : "Payment Record";
         row.appendChild(requestsCell);
 
         row.dataset.notif = JSON.stringify(notif);
 
         row.addEventListener("click", function () {
           const data = JSON.parse(this.dataset.notif);
-
           let detailHtml = "";
+
           if (data.type === "maintenance") {
             let imageHtml = "";
             if (data.evidence_filename) {
               imageHtml = `
-                  <div style="margin-top:10px; text-align:left;">
-                    <strong>Uploaded Evidence:</strong><br/>
-                    <img 
-                      src="frontend/assets/images/uploads/issue_evidence/${data.evidence_filename}" 
-                      alt="Evidence" 
-                      style="max-width: 100%; height: auto; border:1px solid #ccc; margin-top:5px;"
-                    />
-                  </div>`;
+                <div style="margin-top:10px; text-align:left;">
+                  <strong>Uploaded Evidence:</strong><br/>
+                  <img 
+                    src="frontend/assets/images/uploads/issue_evidence/${data.evidence_filename}" 
+                    alt="Evidence" 
+                    style="max-width: 100%; height: auto; border:1px solid #ccc; margin-top:5px;"
+                  />
+                </div>`;
             }
 
             detailHtml = `
-                <p style="text-align:left;"><strong>Request ID:</strong> ${
-                  data.request_id
-                }</p>
-                <p style="text-align:left;"><strong>Status:</strong> ${
-                  data.status
-                }</p>
-                <p style="text-align:left;"><strong>Issue Type:</strong> ${
-                  data.issue_type
-                }</p>
-                <p style="text-align:left;"><strong>Description:</strong> ${
-                  data.issue_description
-                }</p>
-                <p style="text-align:left;"><strong>Preferred Contact Time:</strong> ${
-                  data.contact_time
-                }</p>
-                <p style="text-align:left;"><strong>Technician:</strong> ${
-                  data.technician_name || "N/A"
-                }</p>
-                <p style="text-align:left;"><strong>Submitted At:</strong> ${
-                  data.submitted_at
-                }</p>
-                ${imageHtml}
-                <p style="margin-top:10px;color:red;"><em>
-                  Important note: Please wait for the assigned technician to contact you after the approval of this request.
-                </em></p>
-              `;
-          } else {
+              <p style="text-align:left;"><strong>Request ID:</strong> ${
+                data.request_id
+              }</p>
+              <p style="text-align:left;"><strong>Status:</strong> ${
+                data.status
+              }</p>
+              <p style="text-align:left;"><strong>Issue Type:</strong> ${
+                data.issue_type
+              }</p>
+              <p style="text-align:left;"><strong>Description:</strong> ${
+                data.issue_description
+              }</p>
+              <p style="text-align:left;"><strong>Preferred Contact Time:</strong> ${
+                data.contact_time
+              }</p>
+              <p style="text-align:left;"><strong>Technician:</strong> ${
+                data.technician_name || "N/A"
+              }</p>
+              <p style="text-align:left;"><strong>Submitted At:</strong> ${
+                data.submitted_at
+              }</p>
+              ${imageHtml}
+              <p style="margin-top:10px;color:red;"><em>
+                Important note: Please wait for the assigned technician to contact you after the approval of this request.
+              </em></p>
+            `;
+          } else if (data.type === "change_plan") {
             detailHtml = `
-                <p style="text-align:left;"><strong>Request ID:</strong> ${data.request_id}</p>
-                <p style="text-align:left;"><strong>Status:</strong> ${data.status}</p>
-                <p style="text-align:left;"><strong>Current Plan:</strong> ${data.current_plan}</p>
-                <p style="text-align:left;"><strong>New Plan:</strong> ${data.new_plan}</p>
-                <p style="text-align:left;"><strong>Price:</strong> ${data.price}</p>
-                <p style="text-align:left;"><strong>Changed At:</strong> ${data.changed_at}</p>
-                <p style="margin-top:10px; color:red;"><em>
-                  Important note: Approval date serves as the new billing date, but not settling your payment 
-                  to the last billing will hinder the start of new plan and billing date.
-                </em></p>
+              <p style="text-align:left;"><strong>Request ID:</strong> ${data.request_id}</p>
+              <p style="text-align:left;"><strong>Status:</strong> ${data.status}</p>
+              <p style="text-align:left;"><strong>Current Plan:</strong> ${data.current_plan}</p>
+              <p style="text-align:left;"><strong>New Plan:</strong> ${data.new_plan}</p>
+              <p style="text-align:left;"><strong>Price:</strong> ${data.price}</p>
+              <p style="text-align:left;"><strong>Changed At:</strong> ${data.changed_at}</p>
+              <p style="margin-top:10px; color:red;"><em>
+                Important note: Approval date serves as the new billing date, but not settling your payment 
+                to the last billing will hinder the start of new plan and billing date.
+              </em></p>
+            `;
+          } else if (data.type === "payment") {
+            detailHtml = `
+              <p style="text-align:left;"><strong>Payment ID:</strong> ${
+                data.request_id
+              }</p>
+              <p style="text-align:left;"><strong>Subscription Plan:</strong> ${
+                data.subscription_plan
+              }</p>
+              <p style="text-align:left;"><strong>Mode of Payment:</strong> ${
+                data.mode_of_payment
+              }</p>
+              <p style="text-align:left;"><strong>Added Miscellaneous:</strong> ₱${
+                data.added_misc
+              }</p>
+              <p style="text-align:left;"><strong>Paid Amount:</strong> ₱${
+                data.paid_amount
+              }</p>
+              <p style="text-align:left;"><strong>Payment Date:</strong> ${
+                data.payment_date
+              }</p>
+              <p style="text-align:left;"><strong>Reference Number:</strong> ${
+                data.reference_number
+              }</p>
+              ${
+                data.proof_of_payment
+                  ? `
+                <p style="text-align:left;"><strong>Proof of Payment:</strong></p>
+                <img 
+                  src="backend/uploads/gcash_proofs/${data.proof_of_payment}" 
+                  alt="Proof" 
+                  style="max-width: 100%; height: auto; border:1px solid #ccc; margin-top:5px;" />
+              `
+                  : ""
+              }
+              <p style="text-align:left;"><strong>Status:</strong> ${
+                data.status
+              }</p>
+            `;
+
+            if (data.status === "Denied" && data.admin_remarks) {
+              detailHtml += `
+                <p style="text-align:left; color:red;"><strong>Admin Remarks:</strong> ${data.admin_remarks}</p>
               `;
+            }
           }
 
           Swal.fire({
             title: "Request Details",
-            html: `<div style="max-height:400px; overflow-y:auto;">
-                ${detailHtml}
-                </div>`,
+            html: `<div style="max-height:400px; overflow-y:auto;">${detailHtml}</div>`,
             icon: "info",
             confirmButtonText: "Close",
           });
@@ -781,34 +880,244 @@ document.addEventListener("DOMContentLoaded", function () {
     .catch((error) => console.log("Error:", error));
 });
 
-/// for PayPal payment
+// /// for PayPal payment
+// document.addEventListener("DOMContentLoaded", () => {
+//   const payBtn = document.querySelector(".pay-btn");
+//   if (!payBtn) return;
+
+//   payBtn.addEventListener("click", () => {
+//     fetch("backend/handle_Payment.php", { method: "POST" })
+//       .then((r) => r.json())
+//       .then((data) => {
+//         console.log("PayPal response:", data);
+//         if (data.status === "success" && data.checkout_url) {
+//           window.location.href = data.checkout_url;
+//         } else {
+//           Swal.fire(
+//             "Oops!",
+//             data.message || "Could not generate payment link.",
+//             "error"
+//           );
+//         }
+//       })
+//       .catch((err) => {
+//         console.error("Fetch error:", err);
+//         Swal.fire("Error", "Please try again later.", "error");
+//       });
+//   });
+// });
+
+// // for Swal of payment status
+// document.addEventListener("DOMContentLoaded", function () {
+//   const urlParams = new URLSearchParams(window.location.search);
+
+//   if (urlParams.get("paid") === "true") {
+//     Swal.fire({
+//       icon: "success",
+//       title: "Payment Successful!",
+//       text: "Your payment has been recorded.",
+//       confirmButtonColor: "#3085d6",
+//     });
+//   }
+
+//   if (urlParams.get("status") === "canceled") {
+//     Swal.fire({
+//       icon: "info",
+//       title: "Payment Canceled",
+//       text: "You have canceled the payment process.",
+//       confirmButtonColor: "#d33",
+//     });
+//   }
+// });
+
+//use to integrate both paypal ang gcash payment
+// Use to integrate both PayPal and GCash payment
 document.addEventListener("DOMContentLoaded", () => {
   const payBtn = document.querySelector(".pay-btn");
   if (!payBtn) return;
 
   payBtn.addEventListener("click", () => {
-    fetch("backend/handle_Payment.php", { method: "POST" })
-      .then((r) => r.json())
-      .then((data) => {
-        console.log("PayPal response:", data);
-        if (data.status === "success" && data.checkout_url) {
-          window.location.href = data.checkout_url;
-        } else {
-          Swal.fire(
-            "Oops!",
-            data.message || "Could not generate payment link.",
-            "error"
-          );
-        }
-      })
-      .catch((err) => {
-        console.error("Fetch error:", err);
-        Swal.fire("Error", "Please try again later.", "error");
-      });
+    Swal.fire({
+      title: "Choose Payment Method",
+      showCancelButton: true,
+      showDenyButton: true,
+      confirmButtonText: "",
+      denyButtonText: "",
+      cancelButtonText: "Cancel",
+      customClass: {
+        confirmButton: "paypal-btn",
+        denyButton: "gcash-btn",
+        cancelButton: "cancel-btn",
+        popup: "payment-method-modal",
+      },
+      didOpen: () => {
+        Swal.getConfirmButton().innerHTML = `
+          <img src="frontend/assets/images/icons/paypal.png" alt="PayPal">
+        `;
+        Swal.getDenyButton().innerHTML = `
+          <img src="frontend/assets/images/icons/gcash.png" alt="GCash">
+        `;
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // PayPal Payment
+        fetch("backend/handle_Payment.php", { method: "POST" })
+          .then((r) => r.json())
+          .then((data) => {
+            if (data.status === "success" && data.checkout_url) {
+              window.location.href = data.checkout_url; // Redirect to PayPal
+            } else {
+              Swal.fire(
+                "Oops!",
+                data.message || "Could not generate PayPal link.",
+                "error"
+              );
+            }
+          })
+          .catch((err) => {
+            console.error("Fetch error:", err);
+            Swal.fire("Error", "Please try again later.", "error");
+          });
+      } else if (result.isDenied) {
+        // GCash Payment
+        fetch("backend/handle_GCash.php") // Fetch QR code and payment details
+          .then((r) => r.json())
+          .then((data) => {
+            if (data.status === "success" && data.data.qr_code_url) {
+              Swal.fire({
+                title: "Scan to Pay with GCash",
+                html: `
+                  <div style="
+                    display: flex; 
+                    flex-direction: column; 
+                    align-items: center; 
+                    justify-content: center;
+                    text-align: center;
+                  ">
+                    <p>Please scan the QR code and pay <strong>₱${data.data.amount}</strong>.</p>
+                    <img src="${data.data.qr_code_url}" alt="GCash QR" 
+                         style="max-width: 200px; height: auto; margin: 10px 0;" />
+                    <input type="text" id="reference_number" 
+                           class="swal2-input" 
+                           placeholder="Enter Reference Number (e.g., 1234 567 890123)" 
+                           required 
+                           style="width: 80%; margin-bottom: 10px;" 
+                           maxlength="16" 
+                           title="Reference number must follow the format: #### ### ######">
+                    <input type="file" id="screenshot" 
+                           class="swal2-input" 
+                           accept="image/*" 
+                           required 
+                           style="width: 80%; margin-bottom: 10px;" />
+                  </div>
+                `,
+                showCancelButton: true,
+                confirmButtonText: "Submit Proof",
+                cancelButtonText: "Cancel",
+                customClass: {
+                  popup: "no-horizontal-scroll",
+                },
+                didOpen: () => {
+                  // Add real-time formatting for the reference number input
+                  const refInput = document.getElementById("reference_number");
+                  refInput.addEventListener("input", formatReferenceNumber);
+                },
+                preConfirm: () => {
+                  const referenceNumber = document
+                    .getElementById("reference_number")
+                    .value.trim();
+                  const screenshot =
+                    document.getElementById("screenshot").files[0];
+
+                  // Regex for validation (matches the format: #### ### ######)
+                  const referenceNumberRegex = /^\d{4}\s\d{3}\s\d{6}$/;
+
+                  if (!referenceNumberRegex.test(referenceNumber)) {
+                    Swal.showValidationMessage(
+                      "Reference number must follow the format: #### ### ######"
+                    );
+                    return false;
+                  }
+                  if (!screenshot) {
+                    Swal.showValidationMessage("Screenshot is required.");
+                    return false;
+                  }
+
+                  const formData = new FormData();
+                  formData.append("reference_number", referenceNumber);
+                  formData.append("screenshot", screenshot);
+
+                  return fetch("backend/handle_GCash.php", {
+                    method: "POST",
+                    body: formData,
+                  })
+                    .then((r) => r.json())
+                    .then((resp) => {
+                      if (resp.status === "success") {
+                        Swal.fire(
+                          "Proof Submitted",
+                          "We will verify your payment shortly.",
+                          "success"
+                        );
+                      } else {
+                        Swal.fire(
+                          "Error",
+                          resp.message ||
+                            "Something went wrong while uploading your proof.",
+                          "error"
+                        );
+                      }
+                    })
+                    .catch((err) => {
+                      console.error(err);
+                      Swal.fire(
+                        "Error",
+                        "Failed to upload proof. Please try again later.",
+                        "error"
+                      );
+                    });
+                },
+              });
+            } else {
+              Swal.fire(
+                "Error",
+                data.message || "Could not load GCash QR code.",
+                "error"
+              );
+            }
+          })
+          .catch((err) => {
+            console.error("Fetch error:", err);
+            Swal.fire("Error", "Please try again later.", "error");
+          });
+      }
+    });
   });
 });
 
-// for Swal of payment status
+// Real-time formatting for reference number input
+function formatReferenceNumber(event) {
+  let input = event.target.value;
+
+  // Remove any non-digit characters and extra spaces
+  input = input.replace(/\D/g, "");
+
+  // Add spaces to format as #### ### ######
+  const formattedInput = input.replace(
+    /(\d{4})(\d{3})?(\d{0,6})?/,
+    (match, p1, p2, p3) => {
+      let formatted = p1;
+      if (p2) formatted += " " + p2;
+      if (p3) formatted += " " + p3;
+      return formatted;
+    }
+  );
+
+  // Set the formatted value back to the input field
+  event.target.value = formattedInput;
+}
+
+// Swal for payment status (PayPal callback)
 document.addEventListener("DOMContentLoaded", function () {
   const urlParams = new URLSearchParams(window.location.search);
 

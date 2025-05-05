@@ -9,7 +9,8 @@ $response = [
     "maintenancerequest" => 0,
     "changeplan" => 0,
     "assignedtasks" => 0,
-    "totalBoxslots" =>0
+    "totalBoxslots" =>0,
+    "pendingPayments" => 0 
 ];
 
 // Count the total number of approved applicants
@@ -31,6 +32,10 @@ $response["technicians"] = $techniciansQuery->fetch_assoc()["total"];
 // Count the total number of maintenance requests (pending, ongoing, or assigned)
 $maintenanceQuery = $conn->query("SELECT COUNT(*) as total FROM maintenance_requests WHERE status IN ('pending', 'ongoing', 'assigned')");
 $response["maintenancerequest"] = $maintenanceQuery->fetch_assoc()["total"];
+
+// Count the total number of payments with status 'Pending'
+$pendingPaymentsQuery = $conn->query("SELECT COUNT(*) as total FROM payments WHERE status = 'Pending'");
+$response["pendingPayments"] = $pendingPaymentsQuery->fetch_assoc()["total"];
 
 // Additionally count assigned tasks for the logged-in technician
 if (isset($_SESSION['techName'])) {

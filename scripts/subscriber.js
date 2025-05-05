@@ -28,8 +28,8 @@ function fetchSubscribers() {
           row.innerHTML = `
                 <td>${subscriber.id}</td>
                 <td>${subscriber.subscription_plan}</td>
-                <td>${subscriber.currentBill}</td>  <!--for current bill data  -->
-              <td>${subscriber.next_due_date}</td>   <!--for duedate  bill data  -->
+                <td>${subscriber.currentBill}</td>
+                <td>${subscriber.next_due_date}</td>
                 <td>${subscriber.first_name}</td>
                 <td>${subscriber.last_name}</td>
                 <td>${subscriber.contact_number}</td>
@@ -61,49 +61,27 @@ function attachSubscriberRowClickEvent() {
         html: `
         <div style="text-align: left; max-height: 400px; overflow-y: auto; padding-right: 10px;">
                   <strong>Username: </strong> ${subscriber.username}<br>
-                  <strong>Subscription Plan: </strong> ${
-                    subscriber.subscription_plan
-                  }<br>
-                  <strong>Name: </strong> ${subscriber.first_name} ${
-          subscriber.last_name
-        }<br>
+                  <strong>Subscription Plan: </strong> ${subscriber.subscription_plan}<br>
+                  <strong>Current Bill: </strong> ${subscriber.currentBill}<br>
+                  <strong>Next Due Date: </strong> ${subscriber.next_due_date}<br>
+                  <strong>Name: </strong> ${subscriber.first_name} ${subscriber.last_name}<br>
                   <strong>Birth Date: </strong> ${subscriber.birth_date}<br>
                   <strong>Address: </strong> ${subscriber.address}<br>
                   <strong>Contact: </strong> ${subscriber.contact_number}<br>
                   <strong>Email: </strong> ${subscriber.email_address}<br>
-                  <strong>ID Type: </strong> ${subscriber.id_type} <br>
-                  <strong>ID number: </strong> ${
-                    subscriber.id_number || "N/A"
-                  }<br>
-                  <strong>Home Ownership: </strong> ${
-                    subscriber.home_ownership_type
-                  }<br>
-                  <strong>Installation Date: </strong> ${
-                    subscriber.installation_date
-                  }<br>
-                  <strong>Registration Date: </strong> ${
-                    subscriber.registration_date
-                  }<br>
-                  <strong>Valid ID: </strong><br>
-                  <img src="frontend/assets/images/uploads/Id_Photo/${
-                    subscriber.id_photo
-                  }" width="100%" style="cursor: pointer;" 
-                      onclick="viewImage(this.src)" onerror="this.onerror=null;this.src='frontend/assets/images/uploads/default_id_photo.jpg';"><br>
-                  <strong>Proof of Residency: </strong><br>
-                  <img src="frontend/assets/images/uploads/Proof_of_Residency/${
-                    subscriber.proof_of_residency
-                  }" width="100%" style="cursor: pointer;" 
-                      onclick="viewImage(this.src)" onerror="this.onerror=null;this.src='frontend/assets/images/uploads/default_proof_of_residency.jpg';">
+                  <strong>Home Ownership: </strong> ${subscriber.home_ownership_type}<br>
                 </div>
         `,
         icon: "info",
         showCancelButton: true,
         showDenyButton: true,
-        cancelButtonText: "Close",
+        confirmButtonText: "Pay Current Bill",
         denyButtonText: "Add Misc Fee",
+        cancelButtonText: "Close",
       }).then((result) => {
-        if (result.isDenied) {
-          // Open a new SweetAlert with an input field for the misc fee amount
+        if (result.isConfirmed) {
+          payCurrentBill(subscriber.id, subscriber.currentBill);
+        } else if (result.isDenied) {
           Swal.fire({
             title: "Add Miscellaneous Fee",
             input: "number",
@@ -117,9 +95,7 @@ function attachSubscriberRowClickEvent() {
           }).then((feeResult) => {
             if (feeResult.isConfirmed && feeResult.value) {
               const fee = parseFloat(feeResult.value);
-              // Now process the fee value, e.g., send it to your backend
               console.log("Fee to add:", fee);
-              // Optionally show a success message
               Swal.fire(
                 "Success",
                 "Miscellaneous fee added successfully.",
@@ -130,5 +106,44 @@ function attachSubscriberRowClickEvent() {
         }
       });
     });
+  });
+}
+
+function payCurrentBill(subscriberId, currentBill) {
+  if (currentBill <= 0) {
+    Swal.fire("Info", "This subscriber has no current bill to pay.", "info");
+    return;
+  }
+
+  Swal.fire({
+    title: "Confirm Payment",
+    text: `Are you sure you want to pay the current bill of PHP ${currentBill}?`,
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, Pay Now",
+    cancelButtonText: "Cancel",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      fetch("backend/pay_onsite.php", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ subscriberId, currentBill }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.success) {
+            Swal.fire("Success", "Current bill paid successfully.", "success");
+            fetchSubscribers(); // Refresh the list
+          } else {
+            Swal.fire("Error", data.message || "Payment failed.", "error");
+          }
+        })
+        .catch((error) => {
+          console.error("Error processing payment:", error);
+          Swal.fire("Error", "Error processing payment.", "error");
+        });
+    }
   });
 }

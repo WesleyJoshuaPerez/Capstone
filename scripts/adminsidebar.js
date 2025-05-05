@@ -58,6 +58,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const applicationLink = document.querySelector("#applicationLink");
   const changePlanLink = document.querySelector("#changePlanLink");
   const maintenanceLink = document.querySelector("#maintenanceLink");
+  const gcashpaymentLink = document.querySelector("#gcashpaymentLink");
   const technicianLink = document.querySelector("#technicianLink");
   const mapLink = document.querySelector("#mapLink");
   const boxslotLink = document.querySelector("#boxslotLink");
@@ -68,6 +69,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const techniciansBox = document.querySelector("#techniciansBox");
   const maintenanceBox = document.querySelector("#maintenanceBox");
   const boxSlotsBox = document.querySelector("#boxSlotsBox");
+  const GcashBox = document.querySelector("#GcashBox");
 
   // Hide sections initially
   summary_container.style.display = "flex";
@@ -78,6 +80,7 @@ document.addEventListener("DOMContentLoaded", function () {
   technicianDiv.style.display = "none";
   mapContainer.style.display = "none";
   BoxslotsDiv.style.display = "none";
+  gcashPaymentApprovalDiv.style.display = "none";
 
   // Show Home and hide other section
   homeLink.addEventListener("click", function (event) {
@@ -90,6 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
     technicianDiv.style.display = "none";
     mapContainer.style.display = "none";
     BoxslotsDiv.style.display = "none";
+    gcashPaymentApprovalDiv.style.display = "none";
   });
 
   // Show Subscribers and hide other section
@@ -103,6 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
     technicianDiv.style.display = "none";
     mapContainer.style.display = "none";
     BoxslotsDiv.style.display = "none";
+    gcashPaymentApprovalDiv.style.display = "none";
     fetchSubscribers();
   });
   subscribersBox.addEventListener("click", function (event) {
@@ -115,6 +120,7 @@ document.addEventListener("DOMContentLoaded", function () {
     technicianDiv.style.display = "none";
     mapContainer.style.display = "none";
     BoxslotsDiv.style.display = "none";
+    gcashPaymentApprovalDiv.style.display = "none";
     fetchSubscribers();
   });
 
@@ -129,6 +135,7 @@ document.addEventListener("DOMContentLoaded", function () {
     technicianDiv.style.display = "none";
     mapContainer.style.display = "none";
     BoxslotsDiv.style.display = "none";
+    gcashPaymentApprovalDiv.style.display = "none";
     fetchApplications();
   });
   applicantsBox.addEventListener("click", function (event) {
@@ -141,9 +148,36 @@ document.addEventListener("DOMContentLoaded", function () {
     technicianDiv.style.display = "none";
     mapContainer.style.display = "none";
     BoxslotsDiv.style.display = "none";
+    gcashPaymentApprovalDiv.style.display = "none";
     fetchApplications();
   });
 
+  //Show gcash approval and hide other section
+  gcashpaymentLink.addEventListener("click", function (event) {
+    changePlanDiv.style.display = "none";
+    maintenance_reqDiv.style.display = "none";
+    subscriberDiv.style.display = "none";
+    technicianDiv.style.display = "none";
+    applicationDiv.style.display = "none";
+    summary_container.style.display = "none";
+    mapContainer.style.display = "none";
+    BoxslotsDiv.style.display = "none";
+    gcashPaymentApprovalDiv.style.display = "block";
+    fetchGcashPayments();
+  });
+  //Show gcash approval and hide other section
+  GcashBox.addEventListener("click", function (event) {
+    changePlanDiv.style.display = "none";
+    maintenance_reqDiv.style.display = "none";
+    subscriberDiv.style.display = "none";
+    technicianDiv.style.display = "none";
+    applicationDiv.style.display = "none";
+    summary_container.style.display = "none";
+    mapContainer.style.display = "none";
+    BoxslotsDiv.style.display = "none";
+    gcashPaymentApprovalDiv.style.display = "block";
+    fetchGcashPayments();
+  });
   // Show maintenance and hide other section
   maintenanceLink.addEventListener("click", function (event) {
     event.preventDefault();
@@ -155,6 +189,7 @@ document.addEventListener("DOMContentLoaded", function () {
     technicianDiv.style.display = "none";
     mapContainer.style.display = "none";
     BoxslotsDiv.style.display = "none";
+    gcashPaymentApprovalDiv.style.display = "none";
     fetchMaintenancereq();
   });
   maintenanceBox.addEventListener("click", function (event) {
@@ -166,6 +201,7 @@ document.addEventListener("DOMContentLoaded", function () {
     technicianDiv.style.display = "none";
     mapContainer.style.display = "none";
     BoxslotsDiv.style.display = "none";
+    gcashPaymentApprovalDiv.style.display = "none";
     fetchMaintenancereq();
   });
 
@@ -180,6 +216,7 @@ document.addEventListener("DOMContentLoaded", function () {
     summary_container.style.display = "none";
     mapContainer.style.display = "none";
     BoxslotsDiv.style.display = "none";
+    gcashPaymentApprovalDiv.style.display = "none";
     fetchTechnicians();
   });
   techniciansBox.addEventListener("click", function (event) {
@@ -192,6 +229,7 @@ document.addEventListener("DOMContentLoaded", function () {
     summary_container.style.display = "none";
     mapContainer.style.display = "none";
     BoxslotsDiv.style.display = "none";
+    gcashPaymentApprovalDiv.style.display = "none";
     fetchTechnicians();
   });
 
@@ -206,6 +244,7 @@ document.addEventListener("DOMContentLoaded", function () {
     summary_container.style.display = "none";
     mapContainer.style.display = "none";
     BoxslotsDiv.style.display = "none";
+    gcashPaymentApprovalDiv.style.display = "none";
     fetchChangeplanReq();
   });
   ChangePlanBox.addEventListener("click", function (event) {
@@ -218,6 +257,7 @@ document.addEventListener("DOMContentLoaded", function () {
     summary_container.style.display = "none";
     mapContainer.style.display = "none";
     BoxslotsDiv.style.display = "none";
+    gcashPaymentApprovalDiv.style.display = "none";
     fetchChangeplanReq();
   });
   //show the 2d map
@@ -230,6 +270,7 @@ document.addEventListener("DOMContentLoaded", function () {
     summary_container.style.display = "none";
     mapContainer.style.display = "block";
     BoxslotsDiv.style.display = "none";
+    gcashPaymentApprovalDiv.style.display = "none";
   });
 
   //Show Box slot div and hide other section
@@ -243,6 +284,7 @@ document.addEventListener("DOMContentLoaded", function () {
     applicationDiv.style.display = "none";
     summary_container.style.display = "none";
     mapContainer.style.display = "none";
+    gcashPaymentApprovalDiv.style.display = "none";
   });
   boxSlotsBox.addEventListener("click", function (event) {
     event.preventDefault();
@@ -254,5 +296,6 @@ document.addEventListener("DOMContentLoaded", function () {
     applicationDiv.style.display = "none";
     summary_container.style.display = "none";
     mapContainer.style.display = "none";
+    gcashPaymentApprovalDiv.style.display = "none";
   });
 });

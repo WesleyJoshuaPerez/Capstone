@@ -32,6 +32,13 @@ async function fetchTotals() {
       totalBoxslotsElem.innerText = data.totalBoxslots;
     }
 
+    const totalPendingPaymentsElem = document.getElementById(
+      "totalgcashpendingpayments"
+    );
+    if (totalPendingPaymentsElem) {
+      totalPendingPaymentsElem.innerText = data.pendingPayments;
+    }
+
     // Chart Data
     const labels = [
       "Pending Applicants",
@@ -40,6 +47,7 @@ async function fetchTotals() {
       "Pending Change Plans",
       "Maintenance Requests",
       "Total Box Slots",
+      "Pending Payments",
     ];
 
     const values = [
@@ -49,6 +57,7 @@ async function fetchTotals() {
       data.changeplan,
       data.maintenancerequest,
       data.totalBoxslots,
+      data.pendingPayments,
     ];
 
     const ctx = document.getElementById("totalsChart").getContext("2d");

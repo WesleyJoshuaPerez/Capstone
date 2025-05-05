@@ -781,13 +781,13 @@ select:focus {
   }
 
   #homeSection {
-    height: 95px !important;
+    height: 120px !important;
     width: 100wh !important;
     position: relative;
     top: 10px;
   }
   #homeSection h1 {
-    font-size: 24px !important;
+    font-size: 22px !important;
   }
   #homeSection .status {
     position: relative;
@@ -918,11 +918,11 @@ select:focus {
 /* Responsiveness for 768px screen */
 @media screen and (max-width: 768px) {
   #homeSection {
-    height: 7rem;
+    height: 120px;
     padding: 20px;
   }
   #homeSection h1 {
-    font-size: 2rem;
+    font-size: 22px;
   }
   #homeSection .status {
     justify-content: left;
@@ -1001,4 +1001,93 @@ select:focus {
     font-size: 12px;
     padding: 7px;
   }
+}
+/* Custom modal layout */
+.payment-method-modal .swal2-actions {
+  display: flex;
+  flex-direction: column; /* Stack buttons vertically */
+  align-items: center; /* Center all buttons */
+  justify-content: center;
+  gap: 10px; /* Space between buttons */
+}
+
+/* Set a fixed width for the entire modal */
+.payment-method-modal .swal2-popup {
+  width: 50px !important; /* Adjust the width as needed */
+  max-width: 100% !important; /* Ensure responsiveness */
+  padding: 20px !important; /* Optional: Add padding inside the modal */
+}
+
+/* Align PayPal and GCash in a row */
+.payment-method-modal .paypal-btn,
+.payment-method-modal .gcash-btn {
+  display: inline-flex; /* Align PayPal and GCash in a row */
+  margin: 0 10px; /* Add spacing between PayPal and GCash buttons */
+}
+
+/* Styles for PayPal, GCash, and Cancel buttons */
+.payment-method-modal .paypal-btn,
+.payment-method-modal .gcash-btn {
+  background-color: white !important;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  color: #000;
+  border: 1px solid #ccc !important;
+  border-radius: 5px !important;
+  padding: 10px 20px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 40px;
+}
+
+/* Control the size of images inside buttons */
+.payment-method-modal .paypal-btn img,
+.payment-method-modal .gcash-btn img {
+  max-height: 30px;
+  max-width: 85px;
+}
+
+/* Optional hover effect */
+.payment-method-modal .paypal-btn:hover,
+.payment-method-modal .gcash-btn:hover {
+  background-color: #f9f9f9 !important;
+  cursor: pointer;
+}
+.payment-method-modal .cancel-btn {
+  background-color: #f44336 !important; /* Red background */
+  color: white !important; /* White text */
+  border: 1px solid #e53935 !important; /* Darker red border */
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 10px 20px !important;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 150px;
+  height: 40px;
+  margin-top: 15px; /* Space above Cancel button */
+  align-self: center; /* Center the Cancel button under the other two */
+}
+
+.payment-method-modal .cancel-btn:hover {
+  background-color: #d32f2f !important; /* Darker red on hover */
+  cursor: pointer;
+}
+
+/* Ensure the Cancel button is centered and directly below PayPal and GCash */
+.payment-method-modal .cancel-btn {
+  margin-top: 15px; /* Space above Cancel button */
+  align-self: center; /* Center the Cancel button under the other two */
+}
+
+/* Ensure proper alignment and spacing */
+.payment-method-modal .swal2-actions {
+  justify-content: center;
+  gap: 10px; /* Ensure there's space between the top buttons and the Cancel button */
 }
