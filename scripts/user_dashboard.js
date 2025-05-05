@@ -960,6 +960,15 @@ document.addEventListener("DOMContentLoaded", () => {
       },
     }).then((result) => {
       if (result.isConfirmed) {
+        // Show loading spinner
+        Swal.fire({
+          title: "Processing PayPal Payment...",
+          allowOutsideClick: false,
+          allowEscapeKey: false,
+          didOpen: () => {
+            Swal.showLoading();
+          },
+        });
         // PayPal Payment
         fetch("backend/handle_Payment.php", { method: "POST" })
           .then((r) => r.json())
