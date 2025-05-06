@@ -438,18 +438,144 @@ function attachDelegatedEvents() {
     } else if ($(target).hasClass("disable-btn")) {
       e.stopPropagation();
       const technicianId = $(target).data("id");
-      Swal.fire({
-        title: "Are you sure?",
-        text: "Do you want to disable this technician? They will be marked as 'On Leave'.",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, disable it!",
-        cancelButtonText: "Cancel",
-      }).then(function (result) {
-        if (result.isConfirmed) {
-          toggleTechnicianStatus(technicianId, "On Leave");
+    
+      fetchAssignedClientsCount(technicianId).then((clientCount) => {
+        if (clientCount > 0) {
+          // Show warning modal first
+          Swal.fire({
+            title: "Technician has active clients!",
+            text: "You must reassign their clients before disabling.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Reassign Clients",
+            cancelButtonText: "Cancel",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              // Fetch assigned clients
+              $.ajax({
+                url: "backend/fetch_assigned_clients.php",
+                data: { technician_id: technicianId },
+                dataType: "json",
+                success: function (clientData) {
+                  if (!clientData.success || !clientData.clients.length) {
+                    Swal.fire("Error!", "No clients found to reassign.", "error");
+                    return;
+                  }
+    
+                  const clientCheckboxes = clientData.clients
+                    .map(
+                      (client) => `
+                      <div style="margin-bottom: 8px;">
+                        <input type="checkbox" class="client-checkbox" value="${client.maintenance_id}" id="client-${client.id}">
+                        <label for="client-${client.id}">${client.full_name} - ${client.issue_type}</label>
+                      </div>
+                    `
+                    )
+                    .join("");
+    
+                  // Fetch available technicians
+                  $.ajax({
+                    url: "backend/fetch_technicians.php",
+                    dataType: "json",
+                    success: function (techData) {
+                      const availableTechs = techData.data.filter(
+                        (tech) =>
+                          tech.status === "Available" && tech.id !== technicianId
+                      );
+    
+                      if (availableTechs.length === 0) {
+                        Swal.fire(
+                          "No Available Technicians",
+                          "There are no available technicians to transfer clients to.",
+                          "info"
+                        );
+                        return;
+                      }
+    
+                      const selectOptions = availableTechs
+                        .map(
+                          (tech) =>
+                            `<option value="${tech.id}">${tech.name} (${tech.role})</option>`
+                        )
+                        .join("");
+    
+                      // Show checkbox + dropdown modal
+                      Swal.fire({
+                        title: "Select Clients to Reassign",
+                        html: `
+                          <div style="max-height: 200px; overflow-y: auto; text-align: left;">
+                            ${clientCheckboxes}
+                          </div>
+                          <hr>
+                          <label><strong>Select Technician:</strong></label>
+                          <select id="reassignTechSelect" class="swal2-select" style="width: 80%;">
+                            ${selectOptions}
+                          </select>
+                        `,
+                        showCancelButton: true,
+                        confirmButtonText: "Transfer Selected Clients",
+                      }).then((res) => {
+                        if (res.isConfirmed) {
+                          const selectedClientIds = [];
+                          $(".client-checkbox:checked").each(function () {
+                            selectedClientIds.push($(this).val());
+                          });
+    
+                          const toTechnicianId = $("#reassignTechSelect").val();
+    
+                          if (selectedClientIds.length === 0) {
+                            Swal.fire("Error!", "Please select at least one client.", "error");
+                            return;
+                          }
+    
+                          // Reassign clients
+                          $.ajax({
+                            url: "backend/reassign_clients.php",
+                            method: "POST",
+                            contentType: "application/json",
+                            data: JSON.stringify({
+                              clientIds: selectedClientIds,
+                              toTechnicianId: toTechnicianId,
+                            }),
+                            success: function (res) {
+                              if (res.success) {
+                                Swal.fire("Success!", "Clients reassigned.", "success");
+                                fetchTechnicians(); // Refresh
+                              } else {
+                                Swal.fire("Error!", res.error || "Reassignment failed.", "error");
+                              }
+                            },
+                            error: function (xhr, status, error) {
+                              console.error("AJAX Error:", error);
+                              console.error("Status:", status);
+                              console.error("Response Text:", xhr.responseText);
+                              Swal.fire("Error!", `Failed to reassign clients: ${xhr.responseText}`, "error");
+                            }                            
+                          });
+                        }
+                      });
+                    },
+                  });
+                },
+              });
+            }
+          });
+        } else {
+          // No clients, proceed with normal disable
+          Swal.fire({
+            title: "Are you sure?",
+            text: "Do you want to disable this technician? They will be marked as 'On Leave'.",
+            icon: "warning",
+            showCancelButton: true,
+            confirmButtonText: "Yes, disable it!",
+            cancelButtonText: "Cancel",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              toggleTechnicianStatus(technicianId, "On Leave");
+            }
+          });
         }
-      });
+      });         
     } else if ($(target).hasClass("enable-btn")) {
       e.stopPropagation();
       const technicianId = $(target).data("id");
@@ -481,7 +607,7 @@ function attachDelegatedEvents() {
           title: `Technician: ${technician.name}`,
           html: `
             <div style="text-align: left; max-height: 400px; overflow-y: auto;">
-              <strong>Valid ID::</strong><br>
+              <strong>Valid ID:</strong><br>
               <img src="frontend/assets/images/technicians/${
                 technician.profile_image
               }" 
@@ -507,12 +633,14 @@ function attachDelegatedEvents() {
           denyButtonText: "Assign Task",
         }).then(function (result) {
           if (result.isDenied) {
+            // You may call assignTechnicianToRequest here if desired
           }
         });
       }
     }
   });
 }
+
 
 // Toggle technician status (Enable/Disable)
 function toggleTechnicianStatus(technicianId, newStatus) {
