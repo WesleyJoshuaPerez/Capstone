@@ -478,17 +478,13 @@ function attachDelegatedEvents() {
                     url: "backend/fetch_technicians.php",
                     dataType: "json",
                     success: function (techData) {
-                      const availableTechs = techData.data.filter(
-                        (tech) =>
-                          tech.status === "Available" && tech.id !== technicianId
+                      const availableTechs = techData.data.filter((tech) =>
+                        tech.status === "Available" && parseInt(tech.id) !== parseInt(technicianId)
                       );
-    
+                      
+                    
                       if (availableTechs.length === 0) {
-                        Swal.fire(
-                          "No Available Technicians",
-                          "There are no available technicians to transfer clients to.",
-                          "info"
-                        );
+                        Swal.fire("No Available Technicians", "There are no available technicians to transfer clients to.", "info");
                         return;
                       }
     
@@ -524,9 +520,12 @@ function attachDelegatedEvents() {
                           const toTechnicianId = $("#reassignTechSelect").val();
     
                           if (selectedClientIds.length === 0) {
-                            Swal.fire("Error!", "Please select at least one client.", "error");
+                            Swal.fire("Error!", "Please select at least one client.", "error").then(() => {
+                              // Re-show the modal to let the user try again
+                              $(target).click(); // Trigger the same button again to reopen the modal
+                            });
                             return;
-                          }
+                          }                          
     
                           // Reassign clients
                           $.ajax({
