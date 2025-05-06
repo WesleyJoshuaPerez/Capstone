@@ -977,7 +977,7 @@ document.addEventListener("DOMContentLoaded", () => {
               window.location.href = data.checkout_url; // Redirect to PayPal
             } else {
               Swal.fire(
-                "Oops!",
+                "Error",
                 data.message || "Could not generate PayPal link.",
                 "error"
               );
