@@ -35,31 +35,62 @@ function fetchTechnicians() {
             .then(function (clientCount) {
               // Determine computed status:
               let computedStatus = technician.status;
-              if (clientCount >= 5) {
-                computedStatus = "Not-Available";
-                if (technician.status !== "Not-Available") {
-                  updateTechnicianStatus(technician.id, "Not-Available")
-                    .then(function () {
-                      technician.status = "Not-Available";
-                    })
-                    .fail(function (err) {
-                      console.error("Error updating technician status:", err);
-                    });
+
+              // Only auto-update status if technician is not "On Leave"
+              if (technician.status !== "On Leave") {
+                if (clientCount >= 5) {
+                  computedStatus = "Not-Available";
+                  if (technician.status !== "Not-Available") {
+                    updateTechnicianStatus(technician.id, "Not-Available")
+                      .then(function () {
+                        technician.status = "Not-Available";
+                      })
+                      .fail(function (err) {
+                        console.error("Error updating technician status:", err);
+                      });
+                  }
+                } else {
+                  computedStatus = "Available";
+                  if (technician.status !== "Available") {
+                    updateTechnicianStatus(technician.id, "Available")
+                      .then(function () {
+                        technician.status = "Available";
+                      })
+                      .fail(function (err) {
+                        console.error("Error updating technician status:", err);
+                      });
+                  }
                 }
               } else {
-                computedStatus = "Available";
-                if (technician.status !== "Available") {
-                  updateTechnicianStatus(technician.id, "Available")
-                    .then(function () {
-                      technician.status = "Available";
-                    })
-                    .fail(function (err) {
-                      console.error("Error updating technician status:", err);
-                    });
-                }
+                // If the technician is "On Leave", preserve that status
+                computedStatus = "On Leave";
               }
-              const statusColor =
-                computedStatus === "Available" ? "green" : "red";
+
+              let statusColor;
+              if (computedStatus === "Available") {
+                statusColor = "green";
+              } else if (computedStatus === "Not-Available") {
+                statusColor = "red";
+              } else {
+                // On Leave status
+                statusColor = "orange";
+              }
+
+              // Determine if assign button should be disabled
+              const disableAssignBtn =
+                computedStatus === "Not-Available" ||
+                computedStatus === "On Leave" ||
+                clientCount >= 5;
+
+              // Determine label and style for the toggle button based on technician status
+              const toggleBtnLabel =
+                computedStatus === "On Leave" ? "Enable" : "Disable";
+              const toggleBtnClass =
+                computedStatus === "On Leave" ? "enable-btn" : "disable-btn";
+              const toggleBtnStyle =
+                computedStatus === "On Leave"
+                  ? "background-color: #4CAF50; color: white;" // Green for Enable
+                  : "background-color: #f44336; color: white;"; // Red for Disable
 
               // Create the row for the technician
               let row = $(`
@@ -74,12 +105,19 @@ function fetchTechnicians() {
                     <div class="btn-group">
                       <button class="assign-btn" data-name="${
                         technician.name
-                      }" data-id="${technician.id}" ${
-                clientCount >= 5 ? "disabled" : ""
-              }>Assign</button>
-                      <button class="delete-btn" data-id="${
-                        technician.id
-                      }">Disable</button>
+                      }" data-id="${technician.id}" 
+                        ${
+                          disableAssignBtn
+                            ? "disabled style='background-color: #cccccc; cursor: not-allowed;'"
+                            : ""
+                        }>
+                        Assign
+                      </button>
+                      <button class="${toggleBtnClass}" data-id="${
+                technician.id
+              }" data-status="${computedStatus}" style="${toggleBtnStyle}">
+                        ${toggleBtnLabel}
+                      </button>
                       <button class="view-clients-btn" data-id="${
                         technician.id
                       }">View Clients</button>
@@ -127,6 +165,7 @@ function fetchTechnicians() {
     },
   });
 }
+
 // Add Technician Event Listener
 $("#addTechnicianBtn").on("click", function () {
   Swal.fire({
@@ -254,6 +293,7 @@ function addTechnician(data) {
     },
   });
 }
+
 // Fetch Ongoing Maintenance Requests using AJAX
 function fetchOngoingMaintenanceRequests() {
   return $.ajax({
@@ -316,13 +356,12 @@ function fetchAssignedClientsCount(technicianId) {
 }
 
 // Update Technician Status in the Database using AJAX
-// Update Technician Status in the Database using AJAX
 function updateTechnicianStatus(technicianId, newStatus) {
   return $.ajax({
     url: "backend/update_technician_status.php",
     type: "POST",
     contentType: "application/json",
-    data: JSON.stringify({ technician_id: technicianId, status: newStatus }), // ✅ FIXED HERE
+    data: JSON.stringify({ technician_id: technicianId, status: newStatus }),
     dataType: "json",
   })
     .done(function (data) {
@@ -392,22 +431,38 @@ function fetchAssignedClients(technicianId) {
 function attachDelegatedEvents() {
   $("#technicianTable tbody").on("click", function (e) {
     const target = e.target;
+
     if ($(target).hasClass("assign-btn")) {
       e.stopPropagation();
       assignTechnicianToRequest($(target).data("name"));
-    } else if ($(target).hasClass("delete-btn")) {
+    } else if ($(target).hasClass("disable-btn")) {
       e.stopPropagation();
       const technicianId = $(target).data("id");
       Swal.fire({
         title: "Are you sure?",
-        text: "This action cannot be undone!",
+        text: "Do you want to disable this technician? They will be marked as 'On Leave'.",
         icon: "warning",
         showCancelButton: true,
         confirmButtonText: "Yes, disable it!",
         cancelButtonText: "Cancel",
       }).then(function (result) {
         if (result.isConfirmed) {
-          disableTechnician(technicianId);
+          toggleTechnicianStatus(technicianId, "On Leave");
+        }
+      });
+    } else if ($(target).hasClass("enable-btn")) {
+      e.stopPropagation();
+      const technicianId = $(target).data("id");
+      Swal.fire({
+        title: "Enable Technician",
+        text: "Do you want to enable this technician? They will be marked as 'Available'.",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonText: "Yes, enable it!",
+        cancelButtonText: "Cancel",
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          toggleTechnicianStatus(technicianId, "Available");
         }
       });
     } else if ($(target).hasClass("view-clients-btn")) {
@@ -437,7 +492,11 @@ function attachDelegatedEvents() {
               <strong>Specialization:</strong> ${technician.role}<br>
               <strong>Contact:</strong> ${technician.contact}<br>
               <strong>Status:</strong> <span style="color: ${
-                technician.status === "Available" ? "green" : "red"
+                technician.status === "Available"
+                  ? "green"
+                  : technician.status === "On Leave"
+                  ? "orange"
+                  : "red"
               }">${technician.status}</span>
             </div>
           `,
@@ -452,6 +511,34 @@ function attachDelegatedEvents() {
         });
       }
     }
+  });
+}
+
+// Toggle technician status (Enable/Disable)
+function toggleTechnicianStatus(technicianId, newStatus) {
+  $.ajax({
+    url: "backend/update_technician_status.php",
+    type: "POST",
+    contentType: "application/json",
+    data: JSON.stringify({ technician_id: technicianId, status: newStatus }),
+    dataType: "json",
+    success: function (data) {
+      if (data.success) {
+        const actionText = newStatus === "On Leave" ? "disabled" : "enabled";
+        Swal.fire("Success!", `Technician has been ${actionText}.`, "success");
+        fetchTechnicians(); // Refresh the list to update UI
+      } else {
+        Swal.fire(
+          "Error!",
+          data.error || "Failed to update technician status.",
+          "error"
+        );
+      }
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.error("Error updating technician status:", errorThrown);
+      Swal.fire("Error!", "Failed to update technician status.", "error");
+    },
   });
 }
 
@@ -474,14 +561,23 @@ function viewTechnicianInfo(technicianId) {
 
         console.log("Technician Data:", technician);
 
+        // Determine status color
+        let statusColor;
+        if (technician.status === "Available") {
+          statusColor = "green";
+        } else if (technician.status === "Not-Available") {
+          statusColor = "red";
+        } else {
+          // On Leave status
+          statusColor = "orange";
+        }
+
         Swal.fire({
           title: "Technician Information",
           html: `
             <div style="text-align: left;">
               <p><strong>Valid ID: </strong></p>
-              <img src="frontend/assets/images/technicians/${
-                technician.profile_image
-              }" 
+              <img src="frontend/assets/images/technicians/${technician.profile_image}" 
                    alt="Profile Image" 
                    style="width:100%; height:auto; object-fit:cover; margin-bottom:10px; cursor: pointer;" 
                    onerror="this.onerror=null; this.src='frontend/assets/images/uploads/default_profile.jpg';"
@@ -489,9 +585,7 @@ function viewTechnicianInfo(technicianId) {
               <p><strong>Name:</strong> ${technician.name}</p>
               <p><strong>Contact:</strong> ${technician.contact}</p>
               <p><strong>Role:</strong> ${technician.role}</p>
-              <p><strong>Status:</strong> <span style="color:${
-                technician.status === "Available" ? "green" : "red"
-              };">${technician.status}</span></p>
+              <p><strong>Status:</strong> <span style="color:${statusColor};">${technician.status}</span></p>
             </div>
           `,
           icon: "info",
@@ -561,29 +655,6 @@ function assignTechnicianToRequest(technicianName) {
     });
 }
 
-// Disable Technician Account using AJAX
-function disableTechnician(technicianId) {
-  $.ajax({
-    url: "backend/delete_technician.php",
-    type: "POST",
-    contentType: "application/json",
-    data: JSON.stringify({ id: technicianId }),
-    dataType: "json",
-    success: function (data) {
-      if (data.success) {
-        Swal.fire("Disabled!", "Technician has been removed.", "success");
-        fetchTechnicians(); // Refresh list
-      } else {
-        Swal.fire("Error!", data.error, "error");
-      }
-    },
-    error: function (jqXHR, textStatus, errorThrown) {
-      console.error("Error disabling technician:", errorThrown);
-      Swal.fire("Error!", "Failed to disable technician.", "error");
-    },
-  });
-}
-
 // Update Technician Client Count
 function updateTechnicianClientCount(technicianId, immediate = false) {
   fetchAssignedClientsCount(technicianId)
@@ -593,20 +664,36 @@ function updateTechnicianClientCount(technicianId, immediate = false) {
       );
       if (row.length) {
         row.find(".client-count").text(clientCount);
-        // Update status if needed
+
+        // Get the current status from the row
         const statusCell = row.find(".technician-status");
-        const statusColor = clientCount >= 5 ? "red" : "green";
-        const computedStatus = clientCount >= 5 ? "Not-Available" : "Available";
-        statusCell.css("color", statusColor).text(computedStatus);
-        if (computedStatus !== JSON.parse(row.attr("data-technician")).status) {
-          updateTechnicianStatus(technicianId, computedStatus).then(() => {
-            if (immediate) {
-              // Update the row data-technician attribute to reflect the new status
-              const updatedTechnician = JSON.parse(row.attr("data-technician"));
-              updatedTechnician.status = computedStatus;
-              row.attr("data-technician", JSON.stringify(updatedTechnician));
-            }
-          });
+        const currentStatus = statusCell.text();
+
+        // Only update status automatically if not on leave
+        if (currentStatus !== "On Leave") {
+          const statusColor = clientCount >= 5 ? "red" : "green";
+          const computedStatus =
+            clientCount >= 5 ? "Not-Available" : "Available";
+          statusCell.css("color", statusColor).text(computedStatus);
+
+          if (computedStatus !== currentStatus) {
+            updateTechnicianStatus(technicianId, computedStatus).then(() => {
+              if (immediate) {
+                // Update the assign button state based on new status
+                const assignBtn = row.find(".assign-btn");
+                if (computedStatus === "Not-Available" || clientCount >= 5) {
+                  assignBtn.prop("disabled", true).css({
+                    "background-color": "#cccccc",
+                    cursor: "not-allowed",
+                  });
+                } else {
+                  assignBtn
+                    .prop("disabled", false)
+                    .css({ "background-color": "", cursor: "" });
+                }
+              }
+            });
+          }
         }
       }
     })
