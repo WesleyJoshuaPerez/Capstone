@@ -90,6 +90,6 @@ foreach ($data['links'] as $link) {
 if ($approvalUrl) {
     echo json_encode(['status'=>'success', 'checkout_url'=>$approvalUrl]);
 } else {
-    echo json_encode(['status'=>'error', 'message'=>'Could not create PayPal order', 'response'=>$data]);
+    echo json_encode(['status'=>'error', 'message'=>'No pending bill found.', 'response'=>$data]);
 }
 ?>
