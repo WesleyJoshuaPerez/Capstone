@@ -22,22 +22,34 @@ function fetchMaintenancereq() {
             );
             tableBody.innerHTML = ""; // Clear previous data
 
-            response.data.forEach((row) => {
+            if (response.data.length === 0) {
               let tr = document.createElement("tr");
               tr.innerHTML = `
-                <td>${row.maintenance_id}</td>
-                <td>${row.technician_name || "N/A"}</td>
-                <td>${row.full_name}</td>
-                <td>${row.contact_number}</td>
-                <td>${row.issue_type}</td>
-                <td>${row.submitted_at}</td>
-                <td>${row.status}</td>
+                <td colspan="7" style="text-align: center;">
+                  No pending maintenance requests found.
+                </td>
               `;
-              tr.setAttribute("data-maintenance_request", JSON.stringify(row));
               tableBody.appendChild(tr);
-            });
-
-            attachMaintenanceRowClickEvent();
+            } else {
+              response.data.forEach((row) => {
+                let tr = document.createElement("tr");
+                tr.innerHTML = `
+                  <td>${row.maintenance_id}</td>
+                  <td>${row.technician_name || "N/A"}</td>
+                  <td>${row.full_name}</td>
+                  <td>${row.contact_number}</td>
+                  <td>${row.issue_type}</td>
+                  <td>${row.submitted_at}</td>
+                  <td>${row.status}</td>
+                `;
+                tr.setAttribute(
+                  "data-maintenance_request",
+                  JSON.stringify(row)
+                );
+                tableBody.appendChild(tr);
+              });
+              attachMaintenanceRowClickEvent();
+            }
           } else {
             Swal.fire("Error!", response.error, "error");
           }
@@ -83,11 +95,11 @@ function attachMaintenanceRowClickEvent() {
         `,
         icon: "info",
         showCancelButton: true,
-        showDenyButton: !isDisabled, // Disable Deny button if Assigned or Ongoing
+        showDenyButton: !isDisabled,
         confirmButtonText: "Approve",
         denyButtonText: "Deny",
         cancelButtonText: "Close",
-        showConfirmButton: !isDisabled, // Disable Approve button if Assigned or Ongoing
+        showConfirmButton: !isDisabled,
       }).then((result) => {
         if (!isDisabled) {
           if (result.isConfirmed) {
