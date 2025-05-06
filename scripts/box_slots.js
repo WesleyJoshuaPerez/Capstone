@@ -143,30 +143,47 @@ function loadNapBoxes() {
       const tableBody = document.querySelector("#boxslotTable tbody");
       tableBody.innerHTML = ""; // Clear the existing rows
 
-      if (data.success) {
+      if (data.success && data.data.length > 0) {
         data.data.forEach((napBox) => {
           const row = document.createElement("tr");
           row.innerHTML = `
-              <td>${napBox.nap_box_id}</td>
-              <td>${napBox.nap_box_brgy}</td>
-              <td>${napBox.available_slots}</td>
-              <td>
-                <button id="toggleStatusBtn_${
-                  napBox.nap_box_id
-                }" class="toggle-status-btn" 
-                  data-status="${napBox.nap_box_status}"
-                  onclick="toggleNapBoxStatus(${napBox.nap_box_id})">
-                  ${napBox.nap_box_status === "Enabled" ? "Disable" : "Enable"}
-                </button>
-              </td>
-            `;
+            <td>${napBox.nap_box_id}</td>
+            <td>${napBox.nap_box_brgy}</td>
+            <td>${napBox.available_slots}</td>
+            <td>
+              <button id="toggleStatusBtn_${
+                napBox.nap_box_id
+              }" class="toggle-status-btn" 
+                data-status="${napBox.nap_box_status}"
+                onclick="toggleNapBoxStatus(${napBox.nap_box_id})">
+                ${napBox.nap_box_status === "Enabled" ? "Disable" : "Enable"}
+              </button>
+            </td>
+          `;
           tableBody.appendChild(row);
         });
       } else {
-        console.log("No NapBox records found.");
+        // If no data or empty array
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td colspan="4" style="text-align: center;">
+            No Nap Boxes found.
+          </td>
+        `;
+        tableBody.appendChild(row);
       }
     })
-    .catch((error) => console.error("Error loading NapBox data:", error));
+    .catch((error) => {
+      console.error("Error loading NapBox data:", error);
+      const tableBody = document.querySelector("#boxslotTable tbody");
+      tableBody.innerHTML = `
+        <tr>
+          <td colspan="4" style="text-align: center; color: red;">
+            Failed to load data.
+          </td>
+        </tr>
+      `;
+    });
 }
 
 // Function to toggle the status of a NapBox (enable/disable)

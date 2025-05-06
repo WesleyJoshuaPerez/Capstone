@@ -41,18 +41,29 @@ function populatePaymentTable(payments) {
   const tableBody = document.querySelector("#gcashPaymentApprovalTable tbody");
   tableBody.innerHTML = ""; // Clear existing rows
 
+  if (payments.length === 0) {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td colspan="7" style="text-align: center;">
+        No pending GCash payments found.
+      </td>
+    `;
+    tableBody.appendChild(row);
+    return;
+  }
+
   payments.forEach((payment) => {
     const row = document.createElement("tr");
     row.setAttribute("data-payment", JSON.stringify(payment));
     row.innerHTML = `
-          <td>${payment.payment_id}</td>
-          <td>${payment.user_id}</td>
-          <td>${payment.fullname}</td>
-          <td>${payment.subscription_plan}</td>
-          <td>${payment.paid_amount}</td>
-          <td>${payment.payment_date}</td>
-          <td>${payment.reference_number}</td>
-        `;
+      <td>${payment.payment_id}</td>
+      <td>${payment.user_id}</td>
+      <td>${payment.fullname}</td>
+      <td>${payment.subscription_plan}</td>
+      <td>${payment.paid_amount}</td>
+      <td>${payment.payment_date}</td>
+      <td>${payment.reference_number}</td>
+    `;
     tableBody.appendChild(row);
   });
 

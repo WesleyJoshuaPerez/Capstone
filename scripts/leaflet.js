@@ -103,10 +103,10 @@ document.addEventListener("DOMContentLoaded", function () {
             const lng = position.coords.longitude;
             map.setView([lat, lng], 14);
 
-            // Add user marker
-            L.marker([lat, lng], { icon: userIcon })
-              .addTo(map)
-              .bindPopup("You are here");
+            // // Add user marker
+            // L.marker([lat, lng], { icon: userIcon })
+            //   .addTo(map)
+            //   .bindPopup("You are here");
 
             // Load markers
             updateMarkers(map);
