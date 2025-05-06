@@ -136,7 +136,6 @@ document.addEventListener("DOMContentLoaded", function () {
     mapContainer.style.display = "none";
     BoxslotsDiv.style.display = "none";
     gcashPaymentApprovalDiv.style.display = "none";
-    fetchApplications();
   });
   applicantsBox.addEventListener("click", function (event) {
     event.preventDefault();
@@ -149,7 +148,6 @@ document.addEventListener("DOMContentLoaded", function () {
     mapContainer.style.display = "none";
     BoxslotsDiv.style.display = "none";
     gcashPaymentApprovalDiv.style.display = "none";
-    fetchApplications();
   });
 
   //Show gcash approval and hide other section

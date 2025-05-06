@@ -33,8 +33,8 @@ if (!$technician) {
 $technician_name = $technician['name'];
 
 if ($countOnly) {
-    // Count total maintenance requests for this technician
-    $stmt = $conn->prepare("SELECT COUNT(*) AS total_clients FROM maintenance_requests WHERE technician_name = ?");
+  // Count total maintenance requests for this technician (excluding Completed)
+$stmt = $conn->prepare("SELECT COUNT(*) AS total_clients FROM maintenance_requests WHERE technician_name = ? AND status != 'Completed'");
     if (!$stmt) {
         echo json_encode(['success' => false, 'error' => 'Failed to prepare count statement: ' . $conn->error]);
         exit;
@@ -48,8 +48,8 @@ if ($countOnly) {
     exit;
 }
 
-// Fetch detailed list of maintenance requests for this technician
-$stmt = $conn->prepare("SELECT maintenance_id, full_name, issue_type, status FROM maintenance_requests WHERE technician_name = ?");
+// Fetch detailed list of maintenance requests for this technician (excluding Completed)
+$stmt = $conn->prepare("SELECT maintenance_id, full_name, issue_type, status FROM maintenance_requests WHERE technician_name = ? AND status != 'Completed'");
 if (!$stmt) {
     echo json_encode(['success' => false, 'error' => 'Failed to prepare detail statement: ' . $conn->error]);
     exit;
