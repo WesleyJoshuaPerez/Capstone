@@ -26,6 +26,8 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css"
     />
+    <!--use to authenticate if they logged in the system-->
+    <script src="scripts/auth.js" defer></script>
   </head>
   <body>
     <div class="wrapper">
@@ -55,7 +57,9 @@
             >
           </li>
           <li>
-            <a href="login.html"><i class="fa fa-sign-out"></i> Log out</a>
+            <a href="" id="logoutButton"
+              ><i class="fa fa-sign-out"></i> Log out</a
+            >
           </li>
         </ul>
       </div>

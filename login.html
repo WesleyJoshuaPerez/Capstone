@@ -74,5 +74,23 @@
     </div>
 
     <script src="scripts/login.js"></script>
+    <script>
+      // Immediately check sessionStorage on page load
+      window.addEventListener("load", function () {
+        const isLoggedIn = sessionStorage.getItem("isLoggedIn");
+        const userRole = sessionStorage.getItem("userRole");
+
+        // If logged in, redirect to the appropriate dashboard
+        if (isLoggedIn === "true") {
+          if (userRole === "admin") {
+            window.location.href = "admin.html";
+          } else if (userRole === "user") {
+            window.location.href = "user_dashboard.html";
+          } else if (userRole === "technician") {
+            window.location.href = "technician_dashboard.html";
+          }
+        }
+      });
+    </script>
   </body>
 </html>

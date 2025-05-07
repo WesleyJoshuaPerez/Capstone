@@ -3,6 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
     <title>Admin</title>
     <link rel="stylesheet" href="frontend/styles/admin.css" />
     <!-- Change the default icon of the xampp -->
@@ -33,6 +39,8 @@
       href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
       rel="stylesheet"
     />
+    <!--use to authenticate if they logged in the system-->
+    <script src="scripts/auth.js" defer></script>
   </head>
   <body>
     <div class="wrapper">
@@ -88,7 +96,9 @@
             <a href="#" id="mapLink"><i class="fas fa-map"></i> 2D Map</a>
           </li>
           <li>
-            <a href="login.html"><i class="fa fa-sign-out"></i> Logout</a>
+            <a href="" id="logoutButton"
+              ><i class="fa fa-sign-out"></i> Logout</a
+            >
           </li>
         </ul>
       </div>

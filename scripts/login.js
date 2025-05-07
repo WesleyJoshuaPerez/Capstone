@@ -50,6 +50,19 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Server Response:", data);
 
         if (data.status === "success") {
+          // Save login state and role in localStorage
+          sessionStorage.setItem("isLoggedIn", "true");
+          // Determine user role based on the redirect path
+          let role = "";
+          if (data.redirect.includes("admin.html")) {
+            role = "admin";
+          } else if (data.redirect.includes("technician_dashboard.html")) {
+            role = "technician";
+          } else if (data.redirect.includes("user_dashboard.html")) {
+            role = "user";
+          }
+          sessionStorage.setItem("userRole", role);
+
           Swal.fire({
             icon: "success",
             title: "Login Successful",
