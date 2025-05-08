@@ -821,17 +821,19 @@ function loadNotifications() {
               <p style="text-align:left;"><strong>Reference Number:</strong> ${
                 data.reference_number
               }</p>
-              ${
-                data.proof_of_payment
-                  ? `
-                <p style="text-align:left;"><strong>Proof of Payment:</strong></p>
-                <img 
-                  src="backend/uploads/gcash_proofs/${data.proof_of_payment}" 
-                  alt="Proof" 
-                  style="max-width: 100%; height: auto; border:1px solid #ccc; margin-top:5px;" />
-              `
-                  : ""
-              }
+            <p style="text-align:left;"><strong>Proof of Payment:</strong></p>
+${
+  data.proof_of_payment &&
+  (data.proof_of_payment.endsWith(".jpg") ||
+    data.proof_of_payment.endsWith(".jpeg") ||
+    data.proof_of_payment.endsWith(".png") ||
+    data.proof_of_payment.endsWith(".gif"))
+    ? `<img 
+         src="backend/uploads/gcash_proofs/${data.proof_of_payment}" 
+         alt="Proof" 
+         style="max-width: 100%; height: auto; border:1px solid #ccc; margin-top:5px;" />`
+    : `<p style="color: #888;">N/A or invalid file format</p>`
+}
               <p style="text-align:left;"><strong>Status:</strong> ${
                 data.status
               }</p>
