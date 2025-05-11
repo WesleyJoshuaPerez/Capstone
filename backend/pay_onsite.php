@@ -44,7 +44,7 @@ try {
     $conn->begin_transaction();
 
     // Fetch subscriber details from the approved_user table
-    $stmt = $conn->prepare("SELECT firstname, last_name, subscription_plan, currentBill FROM approved_user WHERE user_id = ?");
+    $stmt = $conn->prepare("SELECT fullname, subscription_plan, currentBill FROM approved_user WHERE user_id = ?");
     $stmt->bind_param("s", $subscriberId);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -52,7 +52,9 @@ try {
         throw new Exception("Subscriber not found.");
     }
     $subscriber = $result->fetch_assoc();
-    $fullname = $subscriber['first_name'] . ' ' . $subscriber['last_name'];
+    
+    // Use the 'fullname' as it is
+    $fullname = $subscriber['fullname'];
     $subscriptionPlan = $subscriber['subscription_plan'];
     $currentBillFromDB = $subscriber['currentBill'];
 

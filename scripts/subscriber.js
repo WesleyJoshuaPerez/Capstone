@@ -109,9 +109,10 @@ function attachSubscriberRowClickEvent() {
           Swal.fire({
             title: "Add Miscellaneous Fee",
             input: "number",
-            inputLabel: "Enter the fee amount:",
+            inputLabel: "Enter the fee amount (₱10 - ₱1000):",
             inputAttributes: {
-              min: 0,
+              min: 10,
+              max: 1000,
               step: 0.01,
             },
             showCancelButton: true,
@@ -119,12 +120,45 @@ function attachSubscriberRowClickEvent() {
           }).then((feeResult) => {
             if (feeResult.isConfirmed && feeResult.value) {
               const fee = parseFloat(feeResult.value);
-              console.log("Fee to add:", fee);
-              Swal.fire(
-                "Success",
-                "Miscellaneous fee added successfully.",
-                "success"
-              );
+
+              if (isNaN(fee) || fee < 10 || fee > 1000) {
+                Swal.fire(
+                  "Invalid Input",
+                  "Fee must be between ₱10 and ₱1,000.",
+                  "error"
+                );
+                return;
+              }
+
+              fetch("backend/add_miscfee.php", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ subscriberId: subscriber.id, fee }),
+              })
+                .then((response) => response.json())
+                .then((data) => {
+                  if (data.success) {
+                    Swal.fire(
+                      "Success",
+                      "Miscellaneous fee added successfully.",
+                      "success"
+                    ).then(() => {
+                      fetchSubscribers(); // Refresh table after Swal closes
+                    });
+                  } else {
+                    Swal.fire(
+                      "Error",
+                      data.message || "Failed to add fee.",
+                      "error"
+                    );
+                  }
+                })
+                .catch((error) => {
+                  console.error("Error adding misc fee:", error);
+                  Swal.fire("Error", "Error adding fee.", "error");
+                });
             }
           });
         }
@@ -158,8 +192,13 @@ function payCurrentBill(subscriberId, currentBill) {
         .then((response) => response.json())
         .then((data) => {
           if (data.success) {
-            Swal.fire("Success", "Current bill paid successfully.", "success");
-            fetchSubscribers(); // Refresh the list
+            Swal.fire(
+              "Success",
+              "Current bill paid successfully.",
+              "success"
+            ).then(() => {
+              fetchSubscribers(); // Refresh the list after Swal closes
+            });
           } else {
             Swal.fire("Error", data.message || "Payment failed.", "error");
           }

@@ -809,9 +809,6 @@ function loadNotifications() {
               <p style="text-align:left;"><strong>Mode of Payment:</strong> ${
                 data.mode_of_payment
               }</p>
-              <p style="text-align:left;"><strong>Added Miscellaneous:</strong> ₱${
-                data.added_misc
-              }</p>
               <p style="text-align:left;"><strong>Paid Amount:</strong> ₱${
                 data.paid_amount
               }</p>
@@ -881,58 +878,6 @@ document.addEventListener("DOMContentLoaded", function () {
     })
     .catch((error) => console.log("Error:", error));
 });
-
-// /// for PayPal payment
-// document.addEventListener("DOMContentLoaded", () => {
-//   const payBtn = document.querySelector(".pay-btn");
-//   if (!payBtn) return;
-
-//   payBtn.addEventListener("click", () => {
-//     fetch("backend/handle_Payment.php", { method: "POST" })
-//       .then((r) => r.json())
-//       .then((data) => {
-//         console.log("PayPal response:", data);
-//         if (data.status === "success" && data.checkout_url) {
-//           window.location.href = data.checkout_url;
-//         } else {
-//           Swal.fire(
-//             "Oops!",
-//             data.message || "Could not generate payment link.",
-//             "error"
-//           );
-//         }
-//       })
-//       .catch((err) => {
-//         console.error("Fetch error:", err);
-//         Swal.fire("Error", "Please try again later.", "error");
-//       });
-//   });
-// });
-
-// // for Swal of payment status
-// document.addEventListener("DOMContentLoaded", function () {
-//   const urlParams = new URLSearchParams(window.location.search);
-
-//   if (urlParams.get("paid") === "true") {
-//     Swal.fire({
-//       icon: "success",
-//       title: "Payment Successful!",
-//       text: "Your payment has been recorded.",
-//       confirmButtonColor: "#3085d6",
-//     });
-//   }
-
-//   if (urlParams.get("status") === "canceled") {
-//     Swal.fire({
-//       icon: "info",
-//       title: "Payment Canceled",
-//       text: "You have canceled the payment process.",
-//       confirmButtonColor: "#d33",
-//     });
-//   }
-// });
-
-//use to integrate both paypal ang gcash payment
 // Use to integrate both PayPal and GCash payment
 document.addEventListener("DOMContentLoaded", () => {
   const payBtn = document.querySelector(".pay-btn");
