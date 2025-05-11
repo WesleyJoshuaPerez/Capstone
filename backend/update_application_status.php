@@ -103,7 +103,17 @@ if ($conn->query($insertQuery) === TRUE) {
                 echo json_encode(["success" => false, "error" => "User not found."]);
             }
         } else {
-            echo json_encode(["success" => true, "message" => "Status updated to $status"]);
+           // If Denied, send a denial email
+    if ($status === 'Denied') {
+        $query = "SELECT email_address, first_name FROM registration_acc WHERE id='$id'";
+        $result = $conn->query($query);
+
+        if ($result->num_rows > 0) {
+            $user = $result->fetch_assoc();
+            sendDenialEmail($user['email_address'], $user['first_name']);
+        }
+    }
+    echo json_encode(["success" => true, "message" => "Status updated to $status"]);
         }
     } else {
         echo json_encode(["success" => false, "error" => $conn->error]);
@@ -113,7 +123,7 @@ if ($conn->query($insertQuery) === TRUE) {
 }
 
 $conn->close();
-
+//email function use to notify user their login credential
 function sendApprovalEmail($email, $username, $plainPassword) {
     $mail = new PHPMailer(true);
     try {
@@ -142,6 +152,33 @@ function sendApprovalEmail($email, $username, $plainPassword) {
         $mail->send();
     } catch (Exception $e) {
         error_log("Email sending failed: " . $mail->ErrorInfo);
+    }
+}
+//email function use to notify user if their application is denied
+function sendDenialEmail($email, $firstName) {
+    $mail = new PHPMailer(true);
+    try {
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'noreplylynxfiberinternet@gmail.com';
+        $mail->Password = 'xoel vjfs smnc ckjy';
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587;
+
+        $mail->setFrom('noreplylynxfiberinternet@gmail.com', 'Lynx Fiber');
+        $mail->addAddress($email);
+
+        $mail->isHTML(true);
+        $mail->Subject = 'Application Status: Denied';
+        $mail->Body = "<h3>Hello $firstName,</h3>
+                       <p>We regret to inform you that your application for Lynx Fiber Internet has been <strong>denied</strong>.</p>
+                       <p>If you have questions or believe this was a mistake, feel free to contact us at support@lynxfiber.com.</p>
+                       <p>Thank you for your interest.</p>";
+
+        $mail->send();
+    } catch (Exception $e) {
+        error_log("Denial email failed: " . $mail->ErrorInfo);
     }
 }
 ?>
