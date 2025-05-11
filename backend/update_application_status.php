@@ -54,10 +54,18 @@ if (isset($decodedData['id']) && isset($decodedData['status'])) {
                 $birthDay = date('d', strtotime($user['birth_date']));
                 $username = $firstLetters . $secondLetters . $surname . $birthDay . $user['id'];  //use to Append user ID so if their the same name it has a uniques username
 
-   // Generate random password
-function generateRandomPassword($length = 8) {
-    return substr(str_shuffle("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*"), 0, $length);
-}
+      // Generate random password with at least one number
+                function generateRandomPassword($length = 8) {
+                    $characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*";
+                    $numbers = "0123456789";
+
+                    // Ensure at least one number is present
+                    $password = substr(str_shuffle($characters), 0, $length - 1);
+                    $password .= $numbers[rand(0, strlen($numbers) - 1)]; // Add a random number at the end
+
+                    // Shuffle to make the number position random
+                    return str_shuffle($password);
+                }
 $plainPassword = generateRandomPassword();
 
 // Hash the password with MD5
