@@ -61,10 +61,10 @@ if (!empty($_FILES['uploadEvidence']['name']) && $_FILES['uploadEvidence']['erro
     }
 }
 
-// --- Duplicate Check for SAME Issue Type ---
 $dupCheckStmt = $conn->prepare("SELECT COUNT(*) as count 
     FROM maintenance_requests 
-    WHERE user_id = ? AND issue_type = ? AND status <> 'Complete'");
+    WHERE user_id = ? AND issue_type = ? AND status NOT IN ('Completed', 'Denied')");
+
 if (!$dupCheckStmt) {
     echo json_encode(["status" => "error", "message" => "Prepare failed: " . $conn->error]);
     exit;
@@ -83,9 +83,9 @@ if ((int)$dupRow['count'] > 0) {
     exit;
 }
 
-// --- Overall Request Limit Check ---
-$checkStmt = $conn->prepare("SELECT COUNT(*) as count FROM maintenance_requests WHERE user_id = ?");
-$checkStmt->bind_param("i", $userId); // Use userId here
+// --- Overall Request Limit Check (exclude Denied and Completed) ---
+$checkStmt = $conn->prepare("SELECT COUNT(*) as count FROM maintenance_requests WHERE user_id = ? AND status NOT IN ('Denied', 'Completed')");
+$checkStmt->bind_param("i", $userId);
 $checkStmt->execute();
 $checkResult = $checkStmt->get_result();
 $row = $checkResult->fetch_assoc();
@@ -94,7 +94,7 @@ $checkStmt->close();
 if ((int)$row['count'] >= 3) {
     echo json_encode([ 
         "status" => "exists", 
-        "message" => "You have reached the limit of 3 maintenance requests. Please wait for admin approval or resolution of your previous requests."
+        "message" => "You have reached the limit of 3 active maintenance requests. Please wait for admin approval or resolution of your previous requests."
     ]);
     exit;
 }

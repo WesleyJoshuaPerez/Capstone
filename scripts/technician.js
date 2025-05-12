@@ -194,16 +194,17 @@ $("#addTechnicianBtn").on("click", function () {
           </div>
         </div>
 
- <div id="passwordFeedback" style="font-size: 12px; color: red;">Password must be at least 8 characters and contain at least 1 number.</div>
-        
- <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-          <label for="technicianRole" style="font-weight: 600; min-width: 100px; text-align: left;  ">Role:</label>
+        <div id="passwordFeedback" style="font-size: 12px; color: red;">Password must be at least 8 characters and contain at least 1 number.</div>
+
+        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+          <label for="technicianRole" style="font-weight: 600; min-width: 100px; text-align: left;">Role:</label>
           <select id="technicianRole" class="swal2-input" style="width: 200px; height: 38px; padding: 5px;" required>
             <option value="" disabled selected>Select a Role</option>
             <option value="Installer">Installer</option>
             <option value="Repair Technician">Repair Technician</option>
           </select>
         </div>
+
         <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
           <label for="technicianContact" style="font-weight: 600; min-width: 100px; text-align: right;">Contact:</label>
           <input type="text" id="technicianContact" class="swal2-input" style="width: 200px; height: 38px;" required>
@@ -227,7 +228,7 @@ $("#addTechnicianBtn").on("click", function () {
       const profileImage = $("#technicianProfileImage")[0].files[0];
 
       // Validate fields
-      if (!name || !username || !password || !role || !contact) {
+      if (!name || !username || !password || !role || !contact || !profileImage) {
         Swal.showValidationMessage("Please fill out all required fields.");
         return false;
       }
@@ -299,28 +300,78 @@ $("#addTechnicianBtn").on("click", function () {
         }
       });
 
-      // Auto-formatting contact number
+      // Real-time name validation (No numbers, only letters and spaces allowed)
+      const nameField = document.getElementById("technicianName");
+      nameField.addEventListener("input", function () {
+        const value = this.value.replace(/[^A-Za-z\s]/g, '');
+        this.value = value;
+      });
+
+      // Real-time username validation (No spaces or special characters except '_')
+      const usernameField = document.getElementById("technicianUsername");
+      usernameField.addEventListener("input", function () {
+        const value = this.value.replace(/[^A-Za-z0-9_]/g, '');
+        this.value = value;
+      });
+
+      // Real-time contact validation (Format 09xx-xxx-xxxx)
       const contactField = document.getElementById("technicianContact");
       contactField.addEventListener("input", function () {
-        let value = this.value.replace(/\D/g, ""); // Remove non-numeric characters
+        let value = this.value.replace(/\D/g, ''); // Remove non-numeric characters
         if (value.length > 11) value = value.substring(0, 11); // Limit to 11 digits
+        
         // Format as 09xx-xxx-xxxx
-        if (value.length > 4 && value.length <= 7) {
+        if (value.length > 3 && value.length <= 5) {
           value = value.replace(/(\d{4})(\d{1,3})/, "$1-$2");
-        } else if (value.length > 7) {
-          value = value.replace(/(\d{4})(\d{3})(\d{1,4})/, "$1-$2-$3");
+        } else if (value.length > 5 && value.length <= 8) {
+          value = value.replace(/(\d{4})(\d{3})(\d{1,})/, "$1-$2-$3");
+        } else if (value.length > 8) {
+          value = value.replace(/(\d{4})(\d{3})(\d{4})/, "$1-$2-$3");
         }
-
+        
         this.value = value;
       });
     },
   }).then(function (result) {
     if (result.isConfirmed) {
-      const formData = result.value;
-      addTechnician(formData);
+      const { name, username, contact } = result.value;
+
+      // Call validateTechnician function
+      validateTechnician(name, username, contact, result.value);
     }
   });
 });
+
+// Function to validate technician if they already exist
+function validateTechnician(name, username, contact, formData) {
+  $.ajax({
+    url: "backend/validate_technicianAcc.php",
+    type: "POST",
+    contentType: "application/json",
+    data: JSON.stringify({ name, username, contact }),
+    success: function (response) {
+      console.log("Response from server:", response); // Log response for debugging
+      if (response.success) {
+        // Proceed with adding technician only if no duplicate exists
+        addTechnician(formData); 
+      } else {
+        // Show error message if technician already exists
+        Swal.fire("Error!", response.message, "error");
+      }
+    },
+    error: function (jqXHR, textStatus, errorThrown) {
+      console.error("Error validating technician:", errorThrown);
+      Swal.fire("Error!", "Failed to validate technician.", "error");
+    }
+  });
+}
+
+// Function to handle adding technician (placeholder function)
+function addTechnician(formData) {
+  // You can implement additional logic to handle form submission after validation
+  console.log("Technician data:", formData);
+}
+
 
 // Add Technician AJAX Function
 function addTechnician(data) {
@@ -1282,3 +1333,4 @@ function viewImage(src) {
     showConfirmButton: false,
   });
 }
+

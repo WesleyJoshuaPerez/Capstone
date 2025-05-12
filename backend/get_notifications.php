@@ -20,7 +20,7 @@ $sqlMaint = "SELECT
     technician_name,
     'maintenance' AS type
   FROM maintenance_requests
-  WHERE user_id = $userId";
+  WHERE user_id = $userId AND status NOT IN ('Denied', 'Completed')";
 
 $resMaint = $conn->query($sqlMaint);
 if ($resMaint) {
@@ -41,7 +41,7 @@ $sqlPlan = "SELECT
     changed_at,
     'change_plan' AS type
   FROM change_plan_application
-  WHERE user_id = $userId";
+  WHERE user_id = $userId AND status NOT IN ('Denied', 'Completed')";
 
 $resPlan = $conn->query($sqlPlan);
 if ($resPlan) {
@@ -66,7 +66,7 @@ $sqlPayments = "SELECT
     admin_remarks,
     'payment' AS type
   FROM payments
-  WHERE user_id = $userId";
+  WHERE user_id = $userId AND status NOT IN ('Paid')";
 
 $resPayments = $conn->query($sqlPayments);
 if ($resPayments) {

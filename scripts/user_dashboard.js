@@ -220,7 +220,6 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 // update profile button function
-
 document.addEventListener("DOMContentLoaded", function () {
   let updateProfileBtn = document.querySelector(".update-btn");
 
@@ -240,7 +239,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
       // validate fields before sending request
       if (!contactNumber && !emailAddress) {
-        Swal.fire("Error", "No changes detected.", "error");
+        Swal.fire("Error", "No changes were made.", "error");
         return;
       }
 
@@ -690,6 +689,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
 //handles notification displaying
 function loadNotifications() {
   const notificationTableBody = document.querySelector(
@@ -819,20 +819,19 @@ function loadNotifications() {
                 data.reference_number
               }</p>  
        <p style="text-align:left;"><strong>Status:</strong> ${data.status}</p>
-${
-  data.proof_of_payment &&
-  (data.proof_of_payment.endsWith(".jpg") ||
-    data.proof_of_payment.endsWith(".jpeg") ||
-    data.proof_of_payment.endsWith(".png") ||
-    data.proof_of_payment.endsWith(".gif"))
-    ? `
-      <p style="text-align:left;"><strong>Proof of Payment:</strong></p>
-    <img 
-         src="backend/uploads/gcash_proofs/${data.proof_of_payment}" 
-         alt="Proof" 
-         style="max-width: 100%; height: auto; border:1px solid #ccc; margin-top:5px;" />`
-    : ``
-}
+        ${
+          data.proof_of_payment &&
+          (data.proof_of_payment.endsWith(".jpg") ||
+            data.proof_of_payment.endsWith(".jpeg") ||
+            data.proof_of_payment.endsWith(".png"))
+            ? `
+              <p style="text-align:left;"><strong>Proof of Payment:</strong></p>
+            <img 
+                src="backend/uploads/gcash_proofs/${data.proof_of_payment}" 
+                alt="Proof" 
+                style="max-width: 100%; height: auto; border:1px solid #ccc; margin-top:5px;" />`
+            : ``
+        }
        
             `;
 
@@ -844,11 +843,22 @@ ${
           }
 
           Swal.fire({
-            title: "Request Details",
-            html: `<div style="max-height:400px; overflow-y:auto;">${detailHtml}</div>`,
-            icon: "info",
-            confirmButtonText: "Close",
-          });
+        title: "Request Details",
+        html: `<div style="max-height:400px; overflow-y:auto;">${detailHtml}</div>`,
+        icon: "info",
+        confirmButtonText: "Close",
+      }).then(() => {
+        const status = data.status?.toLowerCase();
+        if (status === "denied" || status === "completed" || status === "paid") {
+          const updatedViewed = JSON.parse(localStorage.getItem("viewedNotifications") || "[]");
+          if (!updatedViewed.includes(String(data.request_id))) {
+            updatedViewed.push(String(data.request_id));
+            localStorage.setItem("viewedNotifications", JSON.stringify(updatedViewed));
+          }
+
+          this.remove();
+        }
+      });
         });
 
         notificationTableBody.appendChild(row);
@@ -878,6 +888,7 @@ document.addEventListener("DOMContentLoaded", function () {
     })
     .catch((error) => console.log("Error:", error));
 });
+
 // Use to integrate both PayPal and GCash payment
 document.addEventListener("DOMContentLoaded", () => {
   const payBtn = document.querySelector(".pay-btn");
