@@ -228,7 +228,14 @@ $("#addTechnicianBtn").on("click", function () {
       const profileImage = $("#technicianProfileImage")[0].files[0];
 
       // Validate fields
-      if (!name || !username || !password || !role || !contact || !profileImage) {
+      if (
+        !name ||
+        !username ||
+        !password ||
+        !role ||
+        !contact ||
+        !profileImage
+      ) {
         Swal.showValidationMessage("Please fill out all required fields.");
         return false;
       }
@@ -303,23 +310,23 @@ $("#addTechnicianBtn").on("click", function () {
       // Real-time name validation (No numbers, only letters and spaces allowed)
       const nameField = document.getElementById("technicianName");
       nameField.addEventListener("input", function () {
-        const value = this.value.replace(/[^A-Za-z\s]/g, '');
+        const value = this.value.replace(/[^A-Za-z\s]/g, "");
         this.value = value;
       });
 
       // Real-time username validation (No spaces or special characters except '_')
       const usernameField = document.getElementById("technicianUsername");
       usernameField.addEventListener("input", function () {
-        const value = this.value.replace(/[^A-Za-z0-9_]/g, '');
+        const value = this.value.replace(/[^A-Za-z0-9_]/g, "");
         this.value = value;
       });
 
       // Real-time contact validation (Format 09xx-xxx-xxxx)
       const contactField = document.getElementById("technicianContact");
       contactField.addEventListener("input", function () {
-        let value = this.value.replace(/\D/g, ''); // Remove non-numeric characters
+        let value = this.value.replace(/\D/g, ""); // Remove non-numeric characters
         if (value.length > 11) value = value.substring(0, 11); // Limit to 11 digits
-        
+
         // Format as 09xx-xxx-xxxx
         if (value.length > 3 && value.length <= 5) {
           value = value.replace(/(\d{4})(\d{1,3})/, "$1-$2");
@@ -328,7 +335,7 @@ $("#addTechnicianBtn").on("click", function () {
         } else if (value.length > 8) {
           value = value.replace(/(\d{4})(\d{3})(\d{4})/, "$1-$2-$3");
         }
-        
+
         this.value = value;
       });
     },
@@ -353,7 +360,7 @@ function validateTechnician(name, username, contact, formData) {
       console.log("Response from server:", response); // Log response for debugging
       if (response.success) {
         // Proceed with adding technician only if no duplicate exists
-        addTechnician(formData); 
+        addTechnician(formData);
       } else {
         // Show error message if technician already exists
         Swal.fire("Error!", response.message, "error");
@@ -362,7 +369,7 @@ function validateTechnician(name, username, contact, formData) {
     error: function (jqXHR, textStatus, errorThrown) {
       console.error("Error validating technician:", errorThrown);
       Swal.fire("Error!", "Failed to validate technician.", "error");
-    }
+    },
   });
 }
 
@@ -371,7 +378,6 @@ function addTechnician(formData) {
   // You can implement additional logic to handle form submission after validation
   console.log("Technician data:", formData);
 }
-
 
 // Add Technician AJAX Function
 function addTechnician(data) {
@@ -445,10 +451,11 @@ function assignMaintenanceRequest(technicianName, requestId) {
         "Success",
         "Maintenance request assigned successfully.",
         "success"
-      );
-      const technicianId = data.technicianId; // Assuming backend returns technicianId
-      updateTechnicianClientCount(technicianId, true); // Update immediately
-      fetchTechnicians(); // to refresh the status and total client count
+      ).then(() => {
+        const technicianId = data.technicianId; // Assuming backend returns technicianId
+        updateTechnicianClientCount(technicianId, true); // Update immediately
+        fetchTechnicians(); // to refresh the status and total client count
+      });
     })
     .fail(function (jqXHR, textStatus, errorThrown) {
       console.error("Error assigning maintenance request:", errorThrown);
@@ -672,8 +679,9 @@ function attachDelegatedEvents() {
                                   "Success!",
                                   "Clients reassigned.",
                                   "success"
-                                );
-                                fetchTechnicians(); // Refresh
+                                ).then(() => {
+                                  fetchTechnicians(); // Refresh the technician list
+                                });
                               } else {
                                 Swal.fire(
                                   "Error!",
@@ -792,8 +800,13 @@ function toggleTechnicianStatus(technicianId, newStatus) {
     success: function (data) {
       if (data.success) {
         const actionText = newStatus === "On Leave" ? "disabled" : "enabled";
-        Swal.fire("Success!", `Technician has been ${actionText}.`, "success");
-        fetchTechnicians(); // Refresh the list to update UI
+        Swal.fire(
+          "Success!",
+          `Technician has been ${actionText}.`,
+          "success"
+        ).then(() => {
+          fetchTechnicians(); // Refresh the list to update the UI
+        });
       } else {
         Swal.fire(
           "Error!",
@@ -1333,4 +1346,3 @@ function viewImage(src) {
     showConfirmButton: false,
   });
 }
-
