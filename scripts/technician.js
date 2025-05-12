@@ -97,19 +97,29 @@ function fetchTechnicians() {
                   <td class="client-count">${clientCount}</td>
                   <td>
                     <div class="btn-group">
-                      <button class="assign-btn" data-name="${technician.name}" data-id="${technician.id}" ${
-                        disableAssignBtn
-                          ? "disabled style='background-color: #cccccc; cursor: not-allowed;'"
-                          : ""
-                      }>
+                      <button class="assign-btn" data-name="${
+                        technician.name
+                      }" data-id="${technician.id}" ${
+                disableAssignBtn
+                  ? "disabled style='background-color: #cccccc; cursor: not-allowed;'"
+                  : ""
+              }>
                         Assign
                       </button>
-                      <button class="${toggleBtnClass}" data-id="${technician.id}" data-status="${computedStatus}" style="${toggleBtnStyle}">
+                      <button class="${toggleBtnClass}" data-id="${
+                technician.id
+              }" data-status="${computedStatus}" style="${toggleBtnStyle}">
                         ${toggleBtnLabel}
                       </button>
-                      <button class="view-clients-btn" data-id="${technician.id}">View Clients</button>
-                      <button class="view-info-btn" data-id="${technician.id}">View Info</button>
-                      <button class="reset-password-btn" data-id="${technician.id}">Reset Password</button> <!-- Added Reset Password Button -->
+                      <button class="view-clients-btn" data-id="${
+                        technician.id
+                      }">View Clients</button>
+                      <button class="view-info-btn" data-id="${
+                        technician.id
+                      }">View Info</button>
+                      <button class="reset-password-btn" data-id="${
+                        technician.id
+                      }">Reset Password</button> <!-- Added Reset Password Button -->
                     </div>
                   </td>
                 </tr>
@@ -117,7 +127,10 @@ function fetchTechnicians() {
               rowsArray.push({ id: technician.id, row: row });
             })
             .fail(function (error) {
-              console.error("Error fetching client count for technician " + technician.id, error);
+              console.error(
+                "Error fetching client count for technician " + technician.id,
+                error
+              );
             });
           promises.push(promise);
         });
@@ -149,119 +162,6 @@ function fetchTechnicians() {
   });
 }
 
-// add technician event listener
-$("#addTechnicianBtn").on("click", function () {
-  Swal.fire({
-    title: "Add New Technician",
-    html: `
-      <form id="addTechnicianForm" style="
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-        max-width: 400px;
-        margin: auto;
-      ">
-        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-          <label for="technicianName" style="font-weight: 600; min-width: 100px; text-align: right;">Name:</label>
-          <input type="text" id="technicianName" class="swal2-input" style="width: 200px; height: 38px;" required>
-        </div>
-
-        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-          <label for="technicianUsername" style="font-weight: 600; min-width: 100px; text-align: right;">Username:</label>
-          <input type="text" id="technicianUsername" class="swal2-input" style="width: 200px; height: 38px;" required>
-        </div>
-        
-        <!-- Other form fields here -->
-      </form>
-    `,
-    focusConfirm: false,
-    showCancelButton: true,
-    confirmButtonText: "Add Technician",
-    preConfirm: function () {
-      const name = $("#technicianName").val();
-      const username = $("#technicianUsername").val();
-      const password = $("#technicianPassword").val();
-      const role = $("#technicianRole").val();
-      const contact = $("#technicianContact").val();
-      const profileImage = $("#technicianProfileImage")[0].files[0];
-
-      // Validate fields
-      if (!name || !username || !password || !role || !contact) {
-        Swal.showValidationMessage("Please fill out all required fields.");
-        return false;
-      }
-
-      // Name validation: No numbers, only letters and spaces allowed
-      const nameRegex = /^[A-Za-z\s]+$/;
-      if (!nameRegex.test(name)) {
-        Swal.showValidationMessage("Name can only contain letters and spaces.");
-        return false;
-      }
-
-      // Username validation: No spaces or special characters except '_'
-      const usernameRegex = /^[A-Za-z0-9_]+$/;
-      if (!usernameRegex.test(username)) {
-        Swal.showValidationMessage("Username can only contain letters, numbers, and underscores (_), no spaces allowed.");
-        return false;
-      }
-
-      // Password validation: At least 8 characters and 1 number
-      const passwordRegex = /^(?=.*\d)[A-Za-z\d]{8,}$/;
-      if (!passwordRegex.test(password)) {
-        Swal.showValidationMessage("Password must be at least 8 characters and contain at least 1 number.");
-        return false;
-      }
-
-      // Contact validation: Format 09xx-xxx-xxxx
-      const contactRegex = /^09\d{2}-\d{3}-\d{4}$/;
-      if (!contactRegex.test(contact)) {
-        Swal.showValidationMessage("Contact number must be in the format 09xx-xxx-xxxx.");
-        return false;
-      }
-
-      return { name, username, password, role, contact, profileImage };
-    },
-    didOpen: () => {
-      const togglePasswordButton = document.getElementById("togglePassword");
-      const passwordField = document.getElementById("technicianPassword");
-
-      togglePasswordButton.addEventListener("click", () => {
-        // Toggle password visibility
-        const type = passwordField.type === "password" ? "text" : "password";
-        passwordField.type = type;
-
-        // Toggle icon
-        const icon = togglePasswordButton.querySelector("i");
-        icon.classList.toggle("fa-eye");
-        icon.classList.toggle("fa-eye-slash");
-      });
-
-      // Add input restriction to the name field
-      const nameField = document.getElementById("technicianName");
-      nameField.addEventListener("input", function () {
-        const value = this.value;
-        // Allow only letters and spaces
-        const validValue = value.replace(/[^A-Za-z\s]/g, '');
-        this.value = validValue;
-      });
-
-      // Add input restriction to the username field
-      const usernameField = document.getElementById("technicianUsername");
-      usernameField.addEventListener("input", function () {
-        const value = this.value;
-        // Allow only letters, numbers, and underscores
-        const validValue = value.replace(/[^A-Za-z0-9_]/g, '');
-        this.value = validValue;
-      });
-    },
-  }).then(function (result) {
-    if (result.isConfirmed) {
-      const formData = result.value;
-      addTechnician(formData);
-    }
-  });
-});
-
 // Add Technician Event Listener
 $("#addTechnicianBtn").on("click", function () {
   Swal.fire({
@@ -292,10 +192,11 @@ $("#addTechnicianBtn").on("click", function () {
               <i class="fa fa-eye" aria-hidden="true"></i>
             </button>
           </div>
-          <div id="passwordFeedback" style="font-size: 12px; color: red;">Password must be at least 8 characters and contain at least 1 number.</div>
         </div>
 
-        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+ <div id="passwordFeedback" style="font-size: 12px; color: red;">Password must be at least 8 characters and contain at least 1 number.</div>
+        
+ <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
           <label for="technicianRole" style="font-weight: 600; min-width: 100px; text-align: left;  ">Role:</label>
           <select id="technicianRole" class="swal2-input" style="width: 200px; height: 38px; padding: 5px;" required>
             <option value="" disabled selected>Select a Role</option>
@@ -303,7 +204,6 @@ $("#addTechnicianBtn").on("click", function () {
             <option value="Repair Technician">Repair Technician</option>
           </select>
         </div>
-
         <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
           <label for="technicianContact" style="font-weight: 600; min-width: 100px; text-align: right;">Contact:</label>
           <input type="text" id="technicianContact" class="swal2-input" style="width: 200px; height: 38px;" required>
@@ -342,21 +242,27 @@ $("#addTechnicianBtn").on("click", function () {
       // Username validation: No spaces or special characters except '_'
       const usernameRegex = /^[A-Za-z0-9_]+$/;
       if (!usernameRegex.test(username)) {
-        Swal.showValidationMessage("Username can only contain letters, numbers, and underscores (_), no spaces allowed.");
+        Swal.showValidationMessage(
+          "Username can only contain letters, numbers, and underscores (_), no spaces allowed."
+        );
         return false;
       }
 
       // Password validation: At least 8 characters and 1 number
       const passwordRegex = /^(?=.*\d)[A-Za-z\d]{8,}$/;
       if (!passwordRegex.test(password)) {
-        Swal.showValidationMessage("Password must be at least 8 characters and contain at least 1 number.");
+        Swal.showValidationMessage(
+          "Password must be at least 8 characters and contain at least 1 number."
+        );
         return false;
       }
 
       // Contact validation: Format 09xx-xxx-xxxx
       const contactRegex = /^09\d{2}-\d{3}-\d{4}$/;
       if (!contactRegex.test(contact)) {
-        Swal.showValidationMessage("Contact number must be in the format 09xx-xxx-xxxx.");
+        Swal.showValidationMessage(
+          "Contact number must be in the format 09xx-xxx-xxxx."
+        );
         return false;
       }
 
@@ -387,7 +293,8 @@ $("#addTechnicianBtn").on("click", function () {
           passwordFeedback.textContent = "Valid password";
           passwordFeedback.style.color = "green";
         } else {
-          passwordFeedback.textContent = "Password must be at least 8 characters and contain at least 1 number.";
+          passwordFeedback.textContent =
+            "Password must be at least 8 characters and contain at least 1 number.";
           passwordFeedback.style.color = "red";
         }
       });
@@ -395,16 +302,15 @@ $("#addTechnicianBtn").on("click", function () {
       // Auto-formatting contact number
       const contactField = document.getElementById("technicianContact");
       contactField.addEventListener("input", function () {
-        let value = this.value.replace(/\D/g, ''); // Remove non-numeric characters
+        let value = this.value.replace(/\D/g, ""); // Remove non-numeric characters
         if (value.length > 11) value = value.substring(0, 11); // Limit to 11 digits
         // Format as 09xx-xxx-xxxx
-        if (value.length > 3 && value.length <= 5) {
-          value = value.replace(/(\d{3})(\d{1,})/, "$1-$2");
-        } else if (value.length > 5 && value.length <= 8) {
-          value = value.replace(/(\d{3})(\d{3})(\d{1,})/, "$1-$2-$3");
-        } else if (value.length > 8) {
-          value = value.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
+        if (value.length > 4 && value.length <= 7) {
+          value = value.replace(/(\d{4})(\d{1,3})/, "$1-$2");
+        } else if (value.length > 7) {
+          value = value.replace(/(\d{4})(\d{3})(\d{1,4})/, "$1-$2-$3");
         }
+
         this.value = value;
       });
     },
@@ -438,8 +344,11 @@ function addTechnician(data) {
     dataType: "json",
     success: function (response) {
       if (response.success) {
-        Swal.fire("Success!", "Technician added successfully.", "success");
-        fetchTechnicians(); // Refresh the technician list
+        Swal.fire("Success!", "Technician added successfully.", "success").then(
+          () => {
+            fetchTechnicians(); // Refresh the technician list AFTER the alert is closed
+          }
+        );
       } else {
         Swal.fire("Error!", response.error, "error");
       }
@@ -595,7 +504,7 @@ function attachDelegatedEvents() {
     } else if ($(target).hasClass("disable-btn")) {
       e.stopPropagation();
       const technicianId = $(target).data("id");
-    
+
       fetchAssignedClientsCount(technicianId).then((clientCount) => {
         if (clientCount > 0) {
           // Show warning modal first
@@ -615,10 +524,14 @@ function attachDelegatedEvents() {
                 dataType: "json",
                 success: function (clientData) {
                   if (!clientData.success || !clientData.clients.length) {
-                    Swal.fire("Error!", "No clients found to reassign.", "error");
+                    Swal.fire(
+                      "Error!",
+                      "No clients found to reassign.",
+                      "error"
+                    );
                     return;
                   }
-    
+
                   const clientCheckboxes = clientData.clients
                     .map(
                       (client) => `
@@ -629,29 +542,34 @@ function attachDelegatedEvents() {
                     `
                     )
                     .join("");
-    
+
                   // Fetch available technicians
                   $.ajax({
                     url: "backend/fetch_technicians.php",
                     dataType: "json",
                     success: function (techData) {
-                      const availableTechs = techData.data.filter((tech) =>
-                        tech.status === "Available" && parseInt(tech.id) !== parseInt(technicianId)
+                      const availableTechs = techData.data.filter(
+                        (tech) =>
+                          tech.status === "Available" &&
+                          parseInt(tech.id) !== parseInt(technicianId)
                       );
-                      
-                    
+
                       if (availableTechs.length === 0) {
-                        Swal.fire("No Available Technicians", "There are no available technicians to transfer clients to.", "info");
+                        Swal.fire(
+                          "No Available Technicians",
+                          "There are no available technicians to transfer clients to.",
+                          "info"
+                        );
                         return;
                       }
-    
+
                       const selectOptions = availableTechs
                         .map(
                           (tech) =>
                             `<option value="${tech.id}">${tech.name} (${tech.role})</option>`
                         )
                         .join("");
-    
+
                       // Show checkbox + dropdown modal
                       Swal.fire({
                         title: "Select Clients to Reassign",
@@ -673,17 +591,21 @@ function attachDelegatedEvents() {
                           $(".client-checkbox:checked").each(function () {
                             selectedClientIds.push($(this).val());
                           });
-    
+
                           const toTechnicianId = $("#reassignTechSelect").val();
-    
+
                           if (selectedClientIds.length === 0) {
-                            Swal.fire("Error!", "Please select at least one client.", "error").then(() => {
+                            Swal.fire(
+                              "Error!",
+                              "Please select at least one client.",
+                              "error"
+                            ).then(() => {
                               // Re-show the modal to let the user try again
                               $(target).click(); // Trigger the same button again to reopen the modal
                             });
                             return;
-                          }                          
-    
+                          }
+
                           // Reassign clients
                           $.ajax({
                             url: "backend/reassign_clients.php",
@@ -695,18 +617,30 @@ function attachDelegatedEvents() {
                             }),
                             success: function (res) {
                               if (res.success) {
-                                Swal.fire("Success!", "Clients reassigned.", "success");
+                                Swal.fire(
+                                  "Success!",
+                                  "Clients reassigned.",
+                                  "success"
+                                );
                                 fetchTechnicians(); // Refresh
                               } else {
-                                Swal.fire("Error!", res.error || "Reassignment failed.", "error");
+                                Swal.fire(
+                                  "Error!",
+                                  res.error || "Reassignment failed.",
+                                  "error"
+                                );
                               }
                             },
                             error: function (xhr, status, error) {
                               console.error("AJAX Error:", error);
                               console.error("Status:", status);
                               console.error("Response Text:", xhr.responseText);
-                              Swal.fire("Error!", `Failed to reassign clients: ${xhr.responseText}`, "error");
-                            }                            
+                              Swal.fire(
+                                "Error!",
+                                `Failed to reassign clients: ${xhr.responseText}`,
+                                "error"
+                              );
+                            },
                           });
                         }
                       });
@@ -731,7 +665,7 @@ function attachDelegatedEvents() {
             }
           });
         }
-      });         
+      });
     } else if ($(target).hasClass("enable-btn")) {
       e.stopPropagation();
       const technicianId = $(target).data("id");
@@ -875,16 +809,16 @@ function viewTechnicianInfo(technicianId) {
           showConfirmButton: false,
           cancelButtonText: "Close",
           showDenyButton: true,
-          denyButtonText: "Reset Password", // Added Reset Password Button
+          denyButtonText: "Delete Account", // Added Delete Account Button
           showConfirmButton: true, // Add Delete Button
-          confirmButtonText: "Delete Account", // Added Delete Account Button
+          confirmButtonText: "Reset Password", // Added Reset Password Button
         }).then(function (result) {
           if (result.isDenied) {
-            // Call reset password function
-            resetTechnicianPassword(technician.id);
-          } else if (result.isConfirmed) {
             // Call delete account function
             deleteTechnicianAccount(technician.id);
+          } else if (result.isConfirmed) {
+            // Call reset password function
+            resetTechnicianPassword(technician.id);
           }
         });
       } else {
@@ -895,7 +829,7 @@ function viewTechnicianInfo(technicianId) {
       Swal.close();
       console.error("Error fetching technician data:", errorThrown);
       Swal.fire("Error!", "Error fetching technician data.", "error");
-    }
+    },
   });
 }
 
@@ -920,23 +854,41 @@ function deleteTechnicianAccount(technicianId) {
         url: "backend/delete_technicianAcc.php", // The PHP file that handles the deletion in your backend
         type: "POST",
         contentType: "application/json",
+        dataType: "json",
         data: JSON.stringify({ technician_id: technicianId }), // Send technician id
         success: function (response) {
           console.log(response); // Log the response for debugging purposes
           if (response.success) {
-            Swal.fire("Deleted!", "Technician's account has been deleted.", "success");
-            fetchTechnicians(); // Refresh the technician list after deletion
+            Swal.fire(
+              "Deleted!",
+              "Technician's account has been deleted.",
+              "success"
+            ).then(() => {
+              fetchTechnicians(); // Refresh the technician list after deletion
+            });
           } else {
-            Swal.fire("Error!", "Failed to delete technician's account.", "error");
+            Swal.fire(
+              "Error!",
+              "Failed to delete technician's account.",
+              "error"
+            );
           }
         },
         error: function (jqXHR, textStatus, errorThrown) {
           console.error("Error deleting technician account:", errorThrown);
-          Swal.fire("Error!", "Failed to delete technician's account.", "error");
+          Swal.fire(
+            "Error!",
+            "Failed to delete technician's account.",
+            "error"
+          );
         },
       });
     } else {
-      Swal.fire("Cancelled", "The technician's account was not deleted.", "info");
+      Swal.fire(
+        "Cancelled",
+        "The technician's account was not deleted.",
+        "info"
+      );
     }
   });
 }
@@ -955,65 +907,104 @@ function resetTechnicianPassword(technicianId) {
       // Prompt for the new password after confirmation
       Swal.fire({
         title: "Enter New Password",
-        input: 'password',  // This is a password input field
-        inputPlaceholder: 'Enter new password...',
+        input: "password",
+        inputPlaceholder: "Enter new password...",
         inputAttributes: {
-          autocapitalize: 'off',
-          autocorrect: 'off'
+          autocapitalize: "off",
+          autocorrect: "off",
         },
         showCancelButton: true,
         confirmButtonText: "Reset Password",
         cancelButtonText: "Cancel",
         showLoaderOnConfirm: true,
-        html: `<div id="passwordFeedback" style="font-size: 12px; color: red; text-align: center;"></div>`, // Position the feedback above buttons
-        preConfirm: function(newPassword) {
+
+        didOpen: () => {
+          const inputField = Swal.getInput();
+
+          // Add feedback div
+          const feedbackDiv = document.createElement("div");
+          feedbackDiv.id = "passwordFeedback";
+          feedbackDiv.style =
+            "font-size: 12px; text-align: center; margin-top: 5px; color: red;";
+          inputField.insertAdjacentElement("afterend", feedbackDiv);
+
+          // Add show/hide password toggle button with icon
+          const toggleBtn = document.createElement("button");
+          toggleBtn.type = "button";
+          toggleBtn.style =
+            "position: absolute; right: 50px; top: 45%; transform: translateY(-50%); font-size: 18px; background: none; border: none; cursor: pointer;";
+
+          // Add Font Awesome icon for password visibility
+          toggleBtn.innerHTML = '<i class="fa fa-eye"></i>'; // Initially show eye icon
+
+          toggleBtn.addEventListener("click", () => {
+            // Toggle the password visibility
+            inputField.type =
+              inputField.type === "password" ? "text" : "password";
+
+            // Toggle the icon classes
+            const icon = toggleBtn.querySelector("i");
+            icon.classList.toggle("fa-eye");
+            icon.classList.toggle("fa-eye-slash");
+          });
+
+          // Style parent container for relative positioning
+          inputField.parentElement.style.position = "relative";
+          inputField.parentElement.appendChild(toggleBtn);
+
+          // Real-time validation
+          inputField.addEventListener("input", function () {
+            const value = this.value;
+            const passwordValid = /^(?=.*\d)[A-Za-z\d]{8,}$/.test(value);
+            if (passwordValid) {
+              feedbackDiv.textContent = "Valid password";
+              feedbackDiv.style.color = "green";
+            } else {
+              feedbackDiv.textContent =
+                "Password must be at least 8 characters and contain at least 1 number.";
+              feedbackDiv.style.color = "red";
+            }
+          });
+        },
+
+        preConfirm: function (newPassword) {
           if (!newPassword) {
             Swal.showValidationMessage("Please enter a new password.");
             return false;
           }
 
-          // Password validation: At least 8 characters and 1 number
           const passwordRegex = /^(?=.*\d)[A-Za-z\d]{8,}$/;
           if (!passwordRegex.test(newPassword)) {
-            Swal.showValidationMessage("Password must be at least 8 characters and contain at least 1 number.");
+            Swal.showValidationMessage(
+              "Password must be at least 8 characters and contain at least 1 number."
+            );
             return false;
           }
 
-          // Make an AJAX request to reset the password
+          // AJAX request to reset password
           return $.ajax({
-            url: "backend/reset_technician_password.php",  // PHP script to reset password
+            url: "backend/reset_technician_password.php",
             type: "POST",
             data: { technician_id: technicianId, new_password: newPassword },
             success: function (response) {
               if (response.status === "success") {
-                Swal.fire("Success!", "Technician's password has been reset.", "success");
-                fetchTechnicians(); // Refresh technician list after reset
+                Swal.fire(
+                  "Success!",
+                  "Technician's password has been reset.",
+                  "success"
+                ).then(() => {
+                  // Refresh the technician list after the Swal is closed
+                  fetchTechnicians();
+                });
               } else {
                 Swal.fire("Error!", "Failed to reset password.", "error");
               }
             },
-            error: function (error) {
+            error: function () {
               Swal.fire("Error!", "Failed to reset password.", "error");
-            }
+            },
           });
         },
-        didOpen: () => {
-          const passwordField = document.querySelector('input[type="password"]');
-          const passwordFeedback = document.getElementById("passwordFeedback");
-
-          // Real-time password validation
-          passwordField.addEventListener("input", function () {
-            const value = this.value;
-            const passwordValid = /^(?=.*\d)[A-Za-z\d]{8,}$/.test(value);
-            if (passwordValid) {
-              passwordFeedback.textContent = "Valid password";
-              passwordFeedback.style.color = "green";
-            } else {
-              passwordFeedback.textContent = "Password must be at least 8 characters and contain at least 1 number.";
-              passwordFeedback.style.color = "red";
-            }
-          });
-        }
       });
     }
   });
@@ -1117,18 +1108,26 @@ function fetchTechnicians() {
                   <td class="client-count">${clientCount}</td>
                   <td>
                     <div class="btn-group">
-                      <button class="assign-btn" data-name="${technician.name}" data-id="${technician.id}" ${
-                        disableAssignBtn
-                          ? "disabled style='background-color: #cccccc; cursor: not-allowed;'"
-                          : ""
-                      }>
+                      <button class="assign-btn" data-name="${
+                        technician.name
+                      }" data-id="${technician.id}" ${
+                disableAssignBtn
+                  ? "disabled style='background-color: #cccccc; cursor: not-allowed;'"
+                  : ""
+              }>
                         Assign
                       </button>
-                      <button class="${toggleBtnClass}" data-id="${technician.id}" data-status="${computedStatus}" style="${toggleBtnStyle}">
+                      <button class="${toggleBtnClass}" data-id="${
+                technician.id
+              }" data-status="${computedStatus}" style="${toggleBtnStyle}">
                         ${toggleBtnLabel}
                       </button>
-                      <button class="view-clients-btn" data-id="${technician.id}">View Clients</button>
-                      <button class="view-info-btn" data-id="${technician.id}">View Info</button>
+                      <button class="view-clients-btn" data-id="${
+                        technician.id
+                      }">View Clients</button>
+                      <button class="view-info-btn" data-id="${
+                        technician.id
+                      }">View Info</button>
                     </div>
                   </td>
                 </tr>
@@ -1136,7 +1135,10 @@ function fetchTechnicians() {
               rowsArray.push({ id: technician.id, row: row });
             })
             .fail(function (error) {
-              console.error("Error fetching client count for technician " + technician.id, error);
+              console.error(
+                "Error fetching client count for technician " + technician.id,
+                error
+              );
             });
           promises.push(promise);
         });

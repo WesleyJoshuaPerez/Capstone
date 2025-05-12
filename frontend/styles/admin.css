@@ -12,6 +12,10 @@
 body {
   background-color: #ffffff;
 }
+/*dissabling edge reveal password*/
+::-ms-reveal {
+  display: none;
+}
 
 .wrapper {
   display: flex;

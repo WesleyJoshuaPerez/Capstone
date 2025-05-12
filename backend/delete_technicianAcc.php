@@ -12,7 +12,7 @@ if (!$technician_id) {
 }
 
 // SQL to delete technician account from the database
-$stmt = $conn->prepare("DELETE FROM lynx_technicians WHERE id = ?");
+$stmt = $conn->prepare("DELETE FROM lynx_technicians WHERE technician_id = ?");
 $stmt->bind_param("i", $technician_id);
 $deleteSuccess = $stmt->execute();
 $stmt->close();
