@@ -796,8 +796,6 @@ function attachDelegatedEvents() {
     }
   });
 }
-
-
 // Toggle technician status (Enable/Disable)
 function toggleTechnicianStatus(technicianId, newStatus) {
   $.ajax({
@@ -826,7 +824,7 @@ function toggleTechnicianStatus(technicianId, newStatus) {
   });
 }
 
-// View Technician Information using AJAX
+// Function to view Technician Information
 function viewTechnicianInfo(technicianId) {
   $.ajax({
     url: "backend/fetch_technicians.php",
@@ -852,11 +850,10 @@ function viewTechnicianInfo(technicianId) {
         } else if (technician.status === "Not-Available") {
           statusColor = "red";
         } else {
-          // On Leave status
-          statusColor = "orange";
+          statusColor = "orange"; // On Leave status
         }
 
-        // Show technician info in a modal with the Reset Password button inside
+        // Show technician info in a modal with the Reset Password and Delete buttons inside
         Swal.fire({
           title: "Technician Information",
           html: `
@@ -879,10 +876,15 @@ function viewTechnicianInfo(technicianId) {
           cancelButtonText: "Close",
           showDenyButton: true,
           denyButtonText: "Reset Password", // Added Reset Password Button
-        }).then(function(result) {
+          showConfirmButton: true, // Add Delete Button
+          confirmButtonText: "Delete Account", // Added Delete Account Button
+        }).then(function (result) {
           if (result.isDenied) {
-            // Call a function to reset the technician's password
+            // Call reset password function
             resetTechnicianPassword(technician.id);
+          } else if (result.isConfirmed) {
+            // Call delete account function
+            deleteTechnicianAccount(technician.id);
           }
         });
       } else {
@@ -893,6 +895,48 @@ function viewTechnicianInfo(technicianId) {
       Swal.close();
       console.error("Error fetching technician data:", errorThrown);
       Swal.fire("Error!", "Error fetching technician data.", "error");
+    }
+  });
+}
+
+// Function to delete Technician's Account
+function deleteTechnicianAccount(technicianId) {
+  // Show confirmation before proceeding with deletion
+  Swal.fire({
+    title: "Are you sure?",
+    text: "This action will permanently delete the technician's account. You cannot undo this action.",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonText: "Yes, delete it!",
+    cancelButtonText: "No, keep it",
+    reverseButtons: true, // For placing cancel and confirm buttons in reverse order
+  }).then((result) => {
+    if (result.isConfirmed) {
+      // Log the technicianId to ensure it's correctly passed
+      console.log("Technician ID to delete:", technicianId);
+
+      // Make AJAX request to backend for deleting the technician's account
+      $.ajax({
+        url: "backend/delete_technicianAcc.php", // The PHP file that handles the deletion in your backend
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({ technician_id: technicianId }), // Send technician id
+        success: function (response) {
+          console.log(response); // Log the response for debugging purposes
+          if (response.success) {
+            Swal.fire("Deleted!", "Technician's account has been deleted.", "success");
+            fetchTechnicians(); // Refresh the technician list after deletion
+          } else {
+            Swal.fire("Error!", "Failed to delete technician's account.", "error");
+          }
+        },
+        error: function (jqXHR, textStatus, errorThrown) {
+          console.error("Error deleting technician account:", errorThrown);
+          Swal.fire("Error!", "Failed to delete technician's account.", "error");
+        },
+      });
+    } else {
+      Swal.fire("Cancelled", "The technician's account was not deleted.", "info");
     }
   });
 }
@@ -974,7 +1018,6 @@ function resetTechnicianPassword(technicianId) {
     }
   });
 }
-
 
 function fetchTechnicians() {
   Swal.fire({
