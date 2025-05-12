@@ -194,15 +194,20 @@ document.addEventListener("DOMContentLoaded", function () {
             }
             // Contact Number must match format 0000-000-0000
             if (input.id === "contact-number") {
-                if (!/^\d{4}-\d{3}-\d{4}$/.test(input.value.trim())) {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Invalid Contact Number",
-                        text: "Contact number must be in the format 0000-000-0000.",
-                    });
-                    return false;
-                }
+            // Check if the number starts with "09" and follows the format 09xx-xxx-xxxx
+            const contactNumber = input.value.trim();
+
+            // Check if the contact number matches the desired format
+            if (!/^09\d{2}-\d{3}-\d{4}$/.test(contactNumber)) {
+                Swal.fire({
+                icon: "error",
+                title: "Invalid Contact Number",
+                text: "Contact number must be in the format 09xx-xxx-xxxx.",
+                });
+                return false;
             }
+            }
+
             // ** Validate Email Format **
             if (input.id === "email") {
                 if (!validateEmail(input)) {

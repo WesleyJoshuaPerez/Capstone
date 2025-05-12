@@ -99,7 +99,7 @@ document.addEventListener("DOMContentLoaded", function () {
       // *** NEW: Update the mapLink button's background based on the selected plan ***
       mapLink.style.background = planData[selectedPlan].color;
     } else {
-      console.warn("⚠ Selected plan not found in planData.");
+      console.warn("Selected plan not found in planData.");
     }
   }
 
@@ -115,8 +115,13 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Barangay options for each municipality
   const barangayData = {
-    orion: ["Bilolo", "Sto. Domingo", "Balagtas", "Lati", "General Lim"],
-    limay: ["Alangan", "Duale", "Kitang", "Townsite", "Wawa"],
+    orion: ["ARELLANO", "BAGUMBAYAN", "BALAGTAS", 
+            "BALUT", "BANTAN", "BILOLO", "CALUNGUSAN", "CAMACHILE", 
+            "DAANG BAGO", "DAANG BILOLO", "DAANG PARE", 
+            "GENERAL LIM", "KAPUNITAN", "LATI", "LUSUNGAN", 
+            "PUTING BUHANGIN", "SABATAN", "SAN VICENTE", 
+            "SANTA ELENA", "SANTO DOMINGO", "VILLA ANGELES", 
+            "WAKAS", "WAWA"],
   };
 
   // Get elements
@@ -147,7 +152,7 @@ document.addEventListener("DOMContentLoaded", function () {
         barangaySelect.appendChild(option);
       });
     } else {
-      console.warn("⚠ No barangay data found for selected municipality.");
+      console.warn("No barangay data found for selected municipality.");
     }
   }
 
