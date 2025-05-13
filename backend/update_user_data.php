@@ -19,19 +19,21 @@ if (!isset($data['contact_number']) && !isset($data['email_address'])) {
     exit;
 }
 
-// **Check if user exists before updating**
-$checkUserStmt = $conn->prepare("SELECT user_id FROM approved_user WHERE user_id = ?");
+// Check if user exists before updating
+$checkUserStmt = $conn->prepare("SELECT contact_number, email_address FROM approved_user WHERE user_id = ?");
 $checkUserStmt->bind_param("i", $user_id);
 $checkUserStmt->execute();
-$userExists = $checkUserStmt->get_result()->num_rows > 0;
-$checkUserStmt->close();
+$userResult = $checkUserStmt->get_result();
 
-if (!$userExists) {
+if ($userResult->num_rows === 0) {
     echo json_encode(["status" => "error", "message" => "User not found."]);
     exit;
 }
 
-// **New: Check if the new contact number or email address already exists for another user**
+$currentData = $userResult->fetch_assoc();
+$checkUserStmt->close();
+
+// Check if new contact number or email already exists for another user
 if (isset($data['contact_number'])) {
     $checkContactStmt = $conn->prepare("SELECT user_id FROM approved_user WHERE contact_number = ? AND user_id != ?");
     $checkContactStmt->bind_param("si", $data['contact_number'], $user_id);
@@ -54,18 +56,33 @@ if (isset($data['email_address'])) {
     $checkEmailStmt->close();
 }
 
+// Check if any values actually changed
+$sameContact = isset($data['contact_number']) && $data['contact_number'] === $currentData['contact_number'];
+$sameEmail = isset($data['email_address']) && $data['email_address'] === $currentData['email_address'];
+
+$contactSent = isset($data['contact_number']);
+$emailSent = isset($data['email_address']);
+
+if (
+    ($contactSent && $sameContact) &&
+    ($emailSent && $sameEmail)
+) {
+    echo json_encode(["status" => "info", "message" => "No changes were made."]);
+    exit;
+}
+
 // Prepare SQL query based on received fields
 $fields = [];
 $params = [];
 $types = "";
 
-if (isset($data['contact_number'])) {
+if ($contactSent && !$sameContact) {
     $fields[] = "contact_number = ?";
     $params[] = $data['contact_number'];
     $types .= "s";
 }
 
-if (isset($data['email_address'])) {
+if ($emailSent && !$sameEmail) {
     $fields[] = "email_address = ?";
     $params[] = $data['email_address'];
     $types .= "s";
@@ -86,10 +103,11 @@ $stmt->bind_param($types, ...$params);
 $success = $stmt->execute();
 
 if ($success) {
-    echo json_encode(["status" => "success", "message" => "Profile updated successfully"]);
+    echo json_encode(["status" => "success", "message" => "Profile updated successfully."]);
 } else {
     echo json_encode(["status" => "error", "message" => "Update failed"]);
 }
 
 $stmt->close();
 $conn->close();
+?>

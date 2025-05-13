@@ -237,12 +237,6 @@ document.addEventListener("DOMContentLoaded", function () {
         ? emailAddressField.value.trim()
         : null;
 
-      // validate fields before sending request
-      if (!contactNumber && !emailAddress) {
-        Swal.fire("Error", "No changes were made.", "error");
-        return;
-      }
-
       let updateData = {};
       if (contactNumber) updateData.contact_number = contactNumber;
       if (emailAddress) updateData.email_address = emailAddress;
@@ -259,6 +253,8 @@ document.addEventListener("DOMContentLoaded", function () {
         .then((data) => {
           if (data.status === "success") {
             Swal.fire("Updated!", data.message, "success");
+          } else if (data.status === "info") {
+            Swal.fire("No Changes", data.message, "info");
           } else {
             Swal.fire("Error", data.message, "error");
           }
@@ -280,7 +276,6 @@ function makeEditable(fieldId) {
       console.error(`Element with ID '${fieldId}' not found.`);
       return;
     }
-
     let fieldLabel = fieldId.includes("contact")
       ? "Contact Number"
       : "Email Address";
