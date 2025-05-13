@@ -14,7 +14,7 @@ $user_id = $_SESSION['user_id'];
 
 $checkStmt = $conn->prepare("
     SELECT changed_at FROM change_plan_application
-    WHERE user_id = ? 
+    WHERE user_id = ? AND status != 'Denied'
     ORDER BY changed_at DESC 
     LIMIT 1
 ");
