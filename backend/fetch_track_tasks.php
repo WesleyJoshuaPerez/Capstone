@@ -37,7 +37,8 @@ $sql = "
   FROM progress_reports pr
   LEFT JOIN maintenance_requests mr 
     ON pr.client_name = mr.full_name AND pr.issue_type = mr.issue_type
-  WHERE pr.submitted_by = ? AND COALESCE(mr.status, 'No Status') != 'Completed')
+  WHERE pr.submitted_by = ? 
+    AND COALESCE(mr.status, 'No Status') NOT IN ('Completed', 'Denied', 'Ongoing', 'Pending'))
 
   UNION
 
@@ -59,10 +60,12 @@ $sql = "
   FROM completion_report cf
   LEFT JOIN maintenance_requests mr 
     ON cf.client_name = mr.full_name AND cf.issue_type = mr.issue_type
-  WHERE cf.submitted_by = ?)
+  WHERE cf.submitted_by = ?
+    AND COALESCE(mr.status, 'No Status') NOT IN ('Denied', 'Ongoing', 'Pending'))
 
   ORDER BY submitted_at DESC
 ";
+
 
 
 $stmt = $conn->prepare($sql);
