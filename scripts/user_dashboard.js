@@ -838,22 +838,31 @@ function loadNotifications() {
           }
 
           Swal.fire({
-        title: "Request Details",
-        html: `<div style="max-height:400px; overflow-y:auto;">${detailHtml}</div>`,
-        icon: "info",
-        confirmButtonText: "Close",
-      }).then(() => {
-        const status = data.status?.toLowerCase();
-        if (status === "denied" || status === "completed" || status === "paid") {
-          const updatedViewed = JSON.parse(localStorage.getItem("viewedNotifications") || "[]");
-          if (!updatedViewed.includes(String(data.request_id))) {
-            updatedViewed.push(String(data.request_id));
-            localStorage.setItem("viewedNotifications", JSON.stringify(updatedViewed));
-          }
+            title: "Request Details",
+            html: `<div style="max-height:400px; overflow-y:auto;">${detailHtml}</div>`,
+            icon: "info",
+            confirmButtonText: "Close",
+          }).then(() => {
+            const status = data.status?.toLowerCase();
+            if (
+              status === "denied" ||
+              status === "completed" ||
+              status === "paid"
+            ) {
+              const updatedViewed = JSON.parse(
+                localStorage.getItem("viewedNotifications") || "[]"
+              );
+              if (!updatedViewed.includes(String(data.request_id))) {
+                updatedViewed.push(String(data.request_id));
+                localStorage.setItem(
+                  "viewedNotifications",
+                  JSON.stringify(updatedViewed)
+                );
+              }
 
-          this.remove();
-        }
-      });
+              this.remove();
+            }
+          });
         });
 
         notificationTableBody.appendChild(row);
@@ -964,7 +973,7 @@ document.addEventListener("DOMContentLoaded", () => {
                            placeholder="Enter Reference Number (e.g., 1234 567 890123)" 
                            required 
                            style="width: 80%; margin-bottom: 10px;" 
-                           maxlength="16" 
+                           maxlength="15" //reference number length
                            title="Reference number must follow the format: #### ### ######">
                     <input type="file" id="screenshot" 
                            class="swal2-input" 
