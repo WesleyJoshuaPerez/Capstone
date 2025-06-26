@@ -59,8 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
       homeSection.style.display = "block"; // Show Home section
     });
   }
-
-  // Toggle Billing History section
+  
   // Toggle Billing History section
   if (billingHistoryLink) {
     billingHistoryLink.addEventListener("click", function (event) {
@@ -1010,7 +1009,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     return false;
                   }
                   if (!screenshot) {
-                    Swal.showValidationMessage("Screenshot is required.");
+                    Swal.showValidationMessage("Proof of Payment is required.");
                     return false;
                   }
 
