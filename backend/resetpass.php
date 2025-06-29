@@ -12,11 +12,7 @@ require 'PHPMailer/src/PHPMailer.php';
 require 'PHPMailer/src/SMTP.php';
 
 // Database connection
-$conn = new mysqli('localhost', 'root', '', 'lynx');
-if ($conn->connect_error) {
-    echo json_encode(["status" => "error", "title" => "Database Error", "message" => "Database connection failed: " . $conn->connect_error]);
-    exit();
-}
+require_once 'connectdb.php';
 
 if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['email'])) {
     $email = trim($_POST['email']);

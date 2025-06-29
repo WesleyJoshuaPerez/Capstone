@@ -6,17 +6,7 @@ ob_start();
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 // Database connection
-$host = "localhost"; 
-$username = "root"; 
-$password = ""; 
-$database = "lynx";
-
-$conn = new mysqli($host, $username, $password, $database);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
+require_once 'connectdb.php';
 
 // Ensure all POST data is received
 if (!isset($_POST['subscription_plan'])) {
