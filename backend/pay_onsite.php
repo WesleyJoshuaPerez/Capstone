@@ -1,34 +1,35 @@
 <?php
 session_start();
 include('connectdb.php');
-header('Content-Type: application/json');
 
-// Set default timezone
+ 
+ini_set('log_errors', 1);
+ini_set('display_errors', 0);
+error_reporting(E_ALL);
+
+header('Content-Type: application/json');
 date_default_timezone_set('Asia/Manila');
 
-// Validate session to ensure the user is logged in
+ 
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(['success' => false, 'message' => 'User not logged in.']);
     exit;
 }
 
-// Get the raw POST data
+// Read and decode JSON input
 $input = file_get_contents("php://input");
 $data = json_decode($input, true);
 
-// Validate JSON input
 if (json_last_error() !== JSON_ERROR_NONE) {
     echo json_encode(['success' => false, 'message' => 'Invalid JSON input.']);
     exit;
 }
 
-// Validate required fields
 if (!isset($data['subscriberId']) || !isset($data['currentBill'])) {
     echo json_encode(['success' => false, 'message' => 'Missing required fields.']);
     exit;
 }
 
-// Sanitize input
 $subscriberId = filter_var($data['subscriberId'], FILTER_SANITIZE_STRING);
 $currentBill = filter_var($data['currentBill'], FILTER_VALIDATE_FLOAT);
 
@@ -37,33 +38,48 @@ if ($currentBill === false || $currentBill < 0) {
     exit;
 }
 
-$today = date('Y-m-d');
+$today = date('Y-m-d H:i:s');
+
+// Function to generate a unique reference number
+function generateUniqueReference($conn) {
+    $count = 0;
+    do {
+        $reference = 'REF' . strtoupper(uniqid());
+        $stmt = $conn->prepare("SELECT COUNT(*) FROM payments WHERE reference_number = ?");
+        $stmt->bind_param("s", $reference);
+        $stmt->execute();
+        $stmt->bind_result($count);
+        $stmt->fetch();
+        $stmt->close();
+    } while ($count > 0);
+    return $reference;
+}
 
 try {
-    // Start transaction
     $conn->begin_transaction();
 
-    // Fetch subscriber details from the approved_user table
+    // Get subscriber info
     $stmt = $conn->prepare("SELECT fullname, subscription_plan, currentBill FROM approved_user WHERE user_id = ?");
     $stmt->bind_param("s", $subscriberId);
     $stmt->execute();
     $result = $stmt->get_result();
+
     if ($result->num_rows === 0) {
         throw new Exception("Subscriber not found.");
     }
+
     $subscriber = $result->fetch_assoc();
-    
-    // Use the 'fullname' as it is
     $fullname = $subscriber['fullname'];
     $subscriptionPlan = $subscriber['subscription_plan'];
     $currentBillFromDB = $subscriber['currentBill'];
 
-    // Validate if the current bill matches the record in the database
     if ($currentBill != $currentBillFromDB) {
-        throw new Exception("Current bill amount does not match the database record.");
+        throw new Exception("Current bill does not match database.");
     }
 
-    // Insert payment into payments table
+    $referenceNumber = generateUniqueReference($conn);
+
+    // Insert payment
     $stmt = $conn->prepare("
         INSERT INTO payments (
             user_id, 
@@ -75,33 +91,43 @@ try {
             reference_number, 
             proof_of_payment, 
             status
-        ) VALUES (?, ?, ?, 'Onsite', ?, ?, 'N/A', 'Onsite Payment', 'Paid')
+        ) VALUES (?, ?, ?, 'Onsite', ?, ?, ?, 'Onsite Payment', 'Paid')
     ");
-    $stmt->bind_param("sssds", $subscriberId, $fullname, $subscriptionPlan, $currentBill, $today);
+    // Correct bind_param: sssdds
+    $stmt->bind_param("sssdss", $subscriberId, $fullname, $subscriptionPlan, $currentBill, $today, $referenceNumber);
+
     if (!$stmt->execute()) {
         throw new Exception("Failed to insert payment.");
     }
 
-    // Update the approved_user table
+    // Update subscriber
     $stmt = $conn->prepare("
         UPDATE approved_user
-           SET currentBill = 0,
-               payment_status = 'Paid',
-               last_payment_date = ?
-         WHERE user_id = ?
+        SET currentBill = 0,
+            payment_status = 'Paid',
+            last_payment_date = ?
+        WHERE user_id = ?
     ");
     $stmt->bind_param("ss", $today, $subscriberId);
+
     if (!$stmt->execute()) {
         throw new Exception("Failed to update subscriber.");
     }
 
-    // Commit transaction
     $conn->commit();
 
-    echo json_encode(['success' => true, 'message' => 'Payment successful.']);
+    //Return valid JSON success
+    echo json_encode([
+        'success' => true,
+        'message' => 'Payment successful.',
+        'reference_number' => $referenceNumber
+    ]);
+
 } catch (Exception $e) {
-    // Rollback transaction on error
     $conn->rollback();
-    echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+    echo json_encode([
+        'success' => false,
+        'message' => $e->getMessage()
+    ]);
 }
 ?>
