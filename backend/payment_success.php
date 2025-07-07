@@ -99,11 +99,11 @@ if (isset($captureData['status']) && $captureData['status'] === 'COMPLETED') {
     mysqli_stmt_close($stmt);
 
     // 8) Redirect home with a flag
-    header("Location: http://localhost/Github/Capstone/user_dashboard.html?paid=true");
+ header("Location: https://lynxfiberinternet.com/user_dashboard.html?paid=true");
     exit;
 }
 
 // If we get here, something went wrong
 error_log("PayPal capture failed: " . print_r($captureData, true));
-header("Location: http://localhost/Github/Capstone/user_dashboard.html?status=failed");
+header("Location: https://lynxfiberinternet.com/user_dashboard.html?status=failed");
 exit;
