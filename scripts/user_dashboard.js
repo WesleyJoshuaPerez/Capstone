@@ -59,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function () {
       homeSection.style.display = "block"; // Show Home section
     });
   }
-  
+
   // Toggle Billing History section
   if (billingHistoryLink) {
     billingHistoryLink.addEventListener("click", function (event) {
@@ -511,20 +511,20 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (billingAmountEl) billingAmountEl.textContent = bill.toFixed(2);
       // next month will not proceed if the bill of the previous month is not paid
       if (data.installation_date && dueDateEl) {
-      const installDate = new Date(data.installation_date);
-      let dueDate = new Date(installDate);
-      dueDate.setMonth(dueDate.getMonth() + 1); // Initial due date
+        const installDate = new Date(data.installation_date);
+        let dueDate = new Date(installDate);
+        dueDate.setMonth(dueDate.getMonth() + 1); // Initial due date
 
-      const currentDate = new Date();
+        const currentDate = new Date();
 
-      // Only roll over due date if the user has paid
-      if (data.isPaid) {
-        while (dueDate < currentDate) {
-          dueDate.setMonth(dueDate.getMonth() + 1);
+        // Only roll over due date if the user has paid
+        if (data.isPaid) {
+          while (dueDate < currentDate) {
+            dueDate.setMonth(dueDate.getMonth() + 1);
+          }
         }
-      }
 
-      const options = { year: "numeric", month: "short", day: "2-digit" };
+        const options = { year: "numeric", month: "short", day: "2-digit" };
         dueDateEl.textContent = dueDate.toLocaleDateString("en-US", options);
         // highlight if overdue and unpaid
         if (dueDate < currentDate && !data.isPaid) {
@@ -535,10 +535,9 @@ document.addEventListener("DOMContentLoaded", async () => {
           dueDateEl.style.color = "";
           dueDateEl.style.fontWeight = "";
         }
-    } else {
-      if (dueDateEl) dueDateEl.textContent = "Unavailable";
-    }
-
+      } else {
+        if (dueDateEl) dueDateEl.textContent = "Unavailable";
+      }
 
       // Set current subscription input (hidden field if you have it)
       subscriptionField.value = data.subscription_plan;
@@ -944,7 +943,7 @@ document.addEventListener("DOMContentLoaded", () => {
           },
         });
         // PayPal Payment
-        fetch("backend/handle_Payment.php", { method: "POST" })
+        fetch("backend/handle_payment.php", { method: "POST" })
           .then((r) => r.json())
           .then((data) => {
             if (data.status === "success" && data.checkout_url) {
