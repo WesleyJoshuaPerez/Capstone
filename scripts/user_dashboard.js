@@ -962,7 +962,7 @@ document.addEventListener("DOMContentLoaded", () => {
           });
       } else if (result.isDenied) {
         // GCash Payment
-        fetch("backend/handle_GCash.php") // Fetch QR code and payment details
+        fetch("backend/handle_Gcash.php") // Fetch QR code and payment details
           .then((r) => r.json())
           .then((data) => {
             if (data.status === "success" && data.data.qr_code_url) {
