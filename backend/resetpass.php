@@ -94,14 +94,16 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['email'])) {
         // Email content
         $mail->isHTML(true);
         $mail->Subject = 'Password Reset';
-        $mail->Body = 'To reset your password, click the link here: <a href="http://localhost/Github/Capstone/changepass.html?code='.$reset_token.'">Reset Password</a>.<br>This link will expire in 24 hours.';
+      $mail->Body = 'To reset your password, click the link here: <a href="https://lynxfiberinternet.com/changepass.html?code='.$reset_token.'">Reset Password</a>.<br>This link will expire in 24 hours.';
+
 
         if ($mail->send()) {
             echo json_encode([
                 "status" => "success",
                 "title" => "Email Sent!",
                 "message" => "Password reset link has been sent to your email. Check your inbox or spam folder.",
-                "redirect" => "http://localhost/Github/Capstone/index.html"
+                "redirect" => "https://lynxfiberinternet.com/index.html"
+
             ]);
         } else {
             throw new Exception("Email not sent.");

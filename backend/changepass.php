@@ -48,7 +48,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     "status" => "success",
                     "title" => "Success!",
                     "message" => "Password updated successfully!",
-                    "redirect" => "http://localhost/Github/Capstone/login.html"
+                    "redirect" => "https://lynxfiberinternet.com/login.html"
+
                 ];
             } else {
                 $response["message"] = "Failed to update password.";
