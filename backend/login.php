@@ -26,15 +26,15 @@ function checkLogin($conn, $table, $idField, $username) {
         error_log("Prepare failed: " . $conn->error);
         return null;
     }
-    
+
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
-    
+
     if ($result && $result->num_rows > 0) {
         return $result->fetch_assoc();
     }
-    
+
     return null;
 }
 
@@ -43,8 +43,11 @@ $is_technician = false;
 
 // Try regular user login (approved_user table)
 $user = checkLogin($conn, "approved_user", "user_id", $username);
+$is_regular_user = false;
 
-if (!$user) {
+if ($user) {
+    $is_regular_user = true;
+} else {
     // Try admin login (lynx_admin table)
     $user = checkLogin($conn, "lynx_admin", "admin_id", $username);
     if ($user) {
@@ -81,14 +84,58 @@ if ($user) {
         // Store ID in session
         $_SESSION['user_id'] = $user['user_id'] ?? $user['admin_id'] ?? $user['technician_id'];
         $_SESSION['username'] = $username;
-        
+
+        // BEGIN: Overdue logic for regular users only
+        $isOverdue = false;
+
+        if ($is_regular_user) {
+            $stmt = $conn->prepare("SELECT installation_date, payment_status, last_payment_date FROM approved_user WHERE username = ?");
+            $stmt->bind_param("s", $username);
+            $stmt->execute();
+            $res = $stmt->get_result();
+
+            if ($res && $res->num_rows > 0) {
+                $u = $res->fetch_assoc();
+
+                $installDate = $u['installation_date'];
+                $paymentStatus = $u['payment_status'];
+                $lastPayment = $u['last_payment_date'];
+
+                $today = date('Y-m-d');
+                $nextDueDate = date('Y-m-d', strtotime("+1 month", strtotime($installDate)));
+
+                if (
+                    strtotime($today) >= strtotime($nextDueDate) &&
+                    (!$lastPayment || strtotime($lastPayment) < strtotime($nextDueDate)) &&
+                    $paymentStatus === 'unpaid'
+                ) {
+                    $isOverdue = true;
+                }
+            }
+            $stmt->close();
+        }
+        // 
+
         // Redirect based on role
         if ($is_admin) {
-            echo json_encode([ "status" => "success", "message" => "Login successful.", "redirect" => "admin.html" ]);
+            echo json_encode([
+                "status" => "success",
+                "message" => "Login successful.",
+                "redirect" => "admin.html"
+            ]);
         } elseif ($is_technician) {
-            echo json_encode([ "status" => "success", "message" => "Login successful.", "redirect" => "technician_dashboard.html" ]);
+            echo json_encode([
+                "status" => "success",
+                "message" => "Login successful.",
+                "redirect" => "technician_dashboard.html"
+            ]);
         } else {
-            echo json_encode([ "status" => "success", "message" => "Login successful.", "redirect" => "user_dashboard.html" ]);
+            echo json_encode([
+                "status" => "success",
+                "message" => "Login successful.",
+                "redirect" => "user_dashboard.html",
+                "isOverdue" => $isOverdue 
+            ]);
         }
     } else {
         echo json_encode(["status" => "error", "message" => "Invalid username or password."]);
@@ -98,4 +145,3 @@ if ($user) {
 }
 
 $conn->close();
-?>

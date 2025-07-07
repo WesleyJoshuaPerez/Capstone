@@ -52,6 +52,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (data.status === "success") {
           // Save login state and role in localStorage
           sessionStorage.setItem("isLoggedIn", "true");
+
           // Determine user role based on the redirect path
           let role = "";
           if (data.redirect.includes("admin.html")) {
@@ -63,16 +64,35 @@ document.addEventListener("DOMContentLoaded", function () {
           }
           sessionStorage.setItem("userRole", role);
 
-          Swal.fire({
-            icon: "success",
-            title: "Login Successful",
-            text: data.message,
-            timer: 1500,
-            showConfirmButton: true,
-          }).then(() => {
-            // Redirect to the correct page
-            window.location.href = data.redirect; //
-          });
+          // Show billing reminder if overdue
+          if (data.isOverdue) {
+            Swal.fire({
+              icon: "warning",
+              title: "Billing Reminder",
+              text: "You have an overdue bill. Please settle it as soon as possible.",
+              confirmButtonText: "Got it",
+            }).then(() => {
+              // Proceed with login success and redirect after the user clicks OK
+              Swal.fire({
+                icon: "success",
+                title: "Login Successful",
+                text: "You have successfully logged in.",
+                showConfirmButton: true,  
+              }).then(() => {
+                window.location.href = data.redirect;
+              });
+            });
+          } else {
+            // Normal login redirect when not overdue
+            Swal.fire({
+              icon: "success",
+              title: "Login Successful",
+              text: "You have successfully logged in.",
+              showConfirmButton: true,
+            }).then(() => {
+              window.location.href = data.redirect;
+            });
+          }
         } else {
           Swal.fire({
             icon: "error",

@@ -509,23 +509,36 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (planNameEl) planNameEl.textContent = `${plan.toUpperCase()} PLAN`;
       if (planPriceEl) planPriceEl.textContent = bill.toFixed(2);
       if (billingAmountEl) billingAmountEl.textContent = bill.toFixed(2);
+      // next month will not proceed if the bill of the previous month is not paid
       if (data.installation_date && dueDateEl) {
-        const installDate = new Date(data.installation_date);
-        let dueDate = new Date(installDate);
-        dueDate.setMonth(dueDate.getMonth() + 1); // Initial due date: 1 month after installation
+      const installDate = new Date(data.installation_date);
+      let dueDate = new Date(installDate);
+      dueDate.setMonth(dueDate.getMonth() + 1); // Initial due date
 
-        const currentDate = new Date(); // Current date
+      const currentDate = new Date();
 
-        // Roll over the due date to the next month if it has already passed
+      // Only roll over due date if the user has paid
+      if (data.isPaid) {
         while (dueDate < currentDate) {
           dueDate.setMonth(dueDate.getMonth() + 1);
         }
-
-        const options = { year: "numeric", month: "short", day: "2-digit" };
-        dueDateEl.textContent = dueDate.toLocaleDateString("en-US", options);
-      } else {
-        if (dueDateEl) dueDateEl.textContent = "Unavailable";
       }
+
+      const options = { year: "numeric", month: "short", day: "2-digit" };
+        dueDateEl.textContent = dueDate.toLocaleDateString("en-US", options);
+        // highlight if overdue and unpaid
+        if (dueDate < currentDate && !data.isPaid) {
+          dueDateEl.style.color = "red";
+          dueDateEl.style.fontWeight = "bold";
+        } else {
+          // Reset style if not overdue
+          dueDateEl.style.color = "";
+          dueDateEl.style.fontWeight = "";
+        }
+    } else {
+      if (dueDateEl) dueDateEl.textContent = "Unavailable";
+    }
+
 
       // Set current subscription input (hidden field if you have it)
       subscriptionField.value = data.subscription_plan;
