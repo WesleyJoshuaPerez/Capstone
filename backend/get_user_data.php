@@ -47,7 +47,7 @@ if ($result->num_rows > 0) {
 
     $monthsSinceInstall = floor((strtotime($today) - strtotime($installDate)) / (30 * 24 * 60 * 60));
     //$nextDueDate = date('Y-m-d', strtotime("+$monthsSinceInstall month", strtotime($installDate)));
-    $nextDueDate = '2025-05-01'; //for testing if the due is changing
+    $nextDueDate = '2025-08-01'; //for testing if the due is changing
     if (strtotime($today) >= strtotime($nextDueDate)) {
         // Trigger billing only if user hasn't paid for this cycle
         if (!$lastPayment || strtotime($lastPayment) < strtotime($nextDueDate)) {
