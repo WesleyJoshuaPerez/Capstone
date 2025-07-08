@@ -444,26 +444,17 @@ body {
     overflow-x: auto;
   }
 
-  #applicationTable,
-  #subscriberTable,
-  #maintenance_reqTable,
-  #technicianTable,
-  #changePlanTable {
+  #assignedTaskTable,
+  #trackTaskTable {
     min-width: 300px;
     width: auto;
     font-size: 14px;
   }
 
-  #applicationTable th,
-  #applicationTable td,
-  #subscriberTable th,
-  #subscriberTable td,
-  #maintenance_reqTable th,
-  #maintenance_reqTable td,
-  #technicianTable th,
-  #technicianTable td,
-  #changePlanTable th,
-  #changePlanTable td {
+  #assignedTaskTable th,
+  #trackTaskTable th,
+  #assignedTaskTable td,
+  #trackTaskTable td {
     padding: 5px;
     font-size: 12px;
   }
@@ -497,26 +488,17 @@ body {
     width: 100%;
     margin-left: 65px;
   }
-  #applicationTable,
-  #subscriberTable,
-  #maintenance_reqTable,
-  #technicianTable,
-  #changePlanTable {
+  #assignedTaskTable,
+  #trackTaskTable {
     min-width: 300px;
     width: auto;
     font-size: 12px;
   }
 
-  #applicationTable th,
-  #applicationTable td,
-  #subscriberTable th,
-  #subscriberTable td,
-  #maintenance_reqTable th,
-  #maintenance_reqTable td,
-  #technicianTable th,
-  #technicianTable td,
-  #changePlanTable th,
-  #changePlanTable td {
+  #assignedTaskTable th,
+  #trackTaskTable th,
+  #assignedTaskTable td,
+  #trackTaskTable td {
     padding: 3px;
     font-size: 10px;
   }
