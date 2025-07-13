@@ -49,11 +49,7 @@
           <span class="close-btn material-symbols-rounded">close</span>
           <li><a href="aboutus.html" class="aboutus-link">ABOUT US </a></li>
           <li>
-            <a
-              href="contactus.html"
-              class="contactus-link"
-              >CONTACT US
-            </a>
+            <a href="contactus.html" class="contactus-link">CONTACT US </a>
           </li>
           <li>
             <a href="https://www.facebook.com/LYNXFIBR1" class="facebook-link"
@@ -256,30 +252,12 @@
       </div>
     </section>
 
-    <!--For Chatbot-->
-    <div class="chatbot-container">
-      <div class="chatbot-window" id="chatWindow" style="display: none">
-        <div class="chat-header">
-          <img
-            src="frontend/assets/images/icons/chatbotprofile.png"
-            alt="Chatbot Icon"
-            class="chatbot-icon"
-          />
-          Chatbot
-          <button id="closeChatbot" onclick="closeChatbot()">✖</button>
-        </div>
-        <div class="chat-body" id="chatBody"></div>
-        <div class="chat-footer">
-          <input type="text" id="chatInput" placeholder="Type a message..." />
-          <button onclick="sendMessage()">Send</button>
-        </div>
-      </div>
-<!-- Button to toggle the chatbot -->
+    <!--  Chatbot iframe popup for the copilot.live
+      Button to toggle the chatbot 
 <button id="chatToggle" class="chatbot-toggle" onclick="toggleChatbot()">
   <img src="frontend/assets/images/icons/chatboticon.png" alt="Chat" class="chat-icon" />
 </button>
 
-<!-- Chatbot iframe popup -->
 <div id="chatbotPopup" class="chatbot-popup" style="display: none;">
   <button id="closeChat" class="close-chat" onclick="closeChatbot()">X</button>
   <iframe
@@ -292,12 +270,43 @@
     width="700px"
     height="400px"
   ></iframe>
-</div>
+</div> 
+    For ChatbotFunction
+    <script src="scripts/chatbot.js"></script> -->
 
-
-
-    <!--For ChatbotFunction-->
-    <script src="scripts/chatbot.js"></script>
+    <!-- Chatbot iframe popup for the chatbase-->
+    <script>
+      (function () {
+        if (!window.chatbase || window.chatbase("getState") !== "initialized") {
+          window.chatbase = (...arguments) => {
+            if (!window.chatbase.q) {
+              window.chatbase.q = [];
+            }
+            window.chatbase.q.push(arguments);
+          };
+          window.chatbase = new Proxy(window.chatbase, {
+            get(target, prop) {
+              if (prop === "q") {
+                return target.q;
+              }
+              return (...args) => target(prop, ...args);
+            },
+          });
+        }
+        const onLoad = function () {
+          const script = document.createElement("script");
+          script.src = "https://www.chatbase.co/embed.min.js";
+          script.id = "h-ImgdyM0T1WM-B5MM21P";
+          script.domain = "www.chatbase.co";
+          document.body.appendChild(script);
+        };
+        if (document.readyState === "complete") {
+          onLoad();
+        } else {
+          window.addEventListener("load", onLoad);
+        }
+      })();
+    </script>
     <footer>
       <div class="footer">
         <img

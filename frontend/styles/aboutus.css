@@ -144,7 +144,7 @@ section h2 {
 }
 
 section h2::after {
-  content: '';
+  content: "";
   position: absolute;
   bottom: -10px;
   left: 50%;
@@ -156,8 +156,8 @@ section h2::after {
 
 /* About LYNX Section*/
 .our-story {
-  padding-top: 0; 
-  margin-top: 60px; 
+  padding-top: 0;
+  margin-top: 60px;
 }
 
 .our-story .section-container {
@@ -380,16 +380,19 @@ footer {
     font-size: 12.8px;
     padding: 0.4375rem 0.625rem;
   }
-  
+
   .story-content {
     flex-direction: column;
   }
-  
-  .story-image, .story-text {
+
+  .story-image,
+  .story-text {
     flex: 1 1 100%;
   }
-  
-  .services-grid, .team-grid, .contact-grid {
+
+  .services-grid,
+  .team-grid,
+  .contact-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
@@ -398,21 +401,25 @@ footer {
   .our-story {
     margin-top: 50px;
   }
-  
+
   .section-container {
     padding: 60px 20px;
   }
-  
+
   section h2 {
     font-size: 28px;
   }
-  
-  .services-grid, .team-grid, .contact-grid {
+
+  .services-grid,
+  .team-grid,
+  .contact-grid {
     grid-template-columns: 1fr;
     gap: 20px;
   }
-  
-  .service-card, .team-card, .contact-item {
+
+  .service-card,
+  .team-card,
+  .contact-item {
     max-width: 100%;
   }
 }
@@ -421,35 +428,37 @@ footer {
   .our-story {
     margin-top: 40px;
   }
-  
+
   .section-container {
     padding: 40px 15px;
   }
-  
+
   section h2 {
     font-size: 24px;
     margin-bottom: 30px;
   }
-  
-  .service-card, .team-card, .contact-item {
+
+  .service-card,
+  .team-card,
+  .contact-item {
     padding: 20px;
   }
-  
+
   .service-icon {
     width: 60px;
     height: 60px;
   }
-  
+
   .team-image {
     height: 200px;
   }
-  
+
   .story-content {
     gap: 20px;
   }
-  
+
   footer {
     padding: 15px 0;
-    display: none; 
+    display: none;
   }
 }
