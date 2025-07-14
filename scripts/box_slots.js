@@ -1,17 +1,26 @@
-// Modified full code with auto POST number, fixed 15 slots, and updated NapBox list after each addition
+// Modified full code with optimizations and improved responsiveness
 
 let existingNapBoxes = []; // Will hold fetched NapBoxes
 
+// Define icons once
+const enabledIcon = L.icon({
+  iconUrl: "frontend/assets/images/icons/napbox_enabled.png",
+  iconSize: [64, 40],
+  iconAnchor: [32, 40],
+  popupAnchor: [0, -40],
+});
+
+const disabledIcon = L.icon({
+  iconUrl: "frontend/assets/images/icons/napbox_disabled.png",
+  iconSize: [64, 40],
+  iconAnchor: [32, 40],
+  popupAnchor: [0, -40],
+});
+
 async function refreshExistingNapBoxes() {
-  await fetch("backend/fetch_napboxes.php")
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.success && data.data.length > 0) {
-        existingNapBoxes = data.data;
-      } else {
-        existingNapBoxes = [];
-      }
-    });
+  const res = await fetch("backend/fetch_napboxes.php");
+  const data = await res.json();
+  existingNapBoxes = data.success && data.data.length > 0 ? data.data : [];
 }
 
 document.addEventListener("DOMContentLoaded", async function () {
@@ -21,55 +30,48 @@ document.addEventListener("DOMContentLoaded", async function () {
   document
     .getElementById("addNapboxBtn")
     .addEventListener("click", async function () {
-      await refreshExistingNapBoxes(); // Refresh right before opening modal
-
       Swal.fire({
         title: "Add Nap Box",
         html: `<style>
-      .swal2-input {
-        max-width: 100% !important;
-        width: 90% !important;
-        margin: 5px auto !important;
-        display: block;
-      }
-      .swal2-label {
-        text-align: left;
-        display: block;
-        width: 90%;
-        margin: 5px auto 0 auto;
-        font-weight: bold;
-      }
-    </style>
-    <div>
-      <label for="barangayDropdown" class="swal2-label">Barangay</label>
-      <select id="barangayDropdown" class="swal2-input">
-        <option value="" disabled selected>Select Barangay</option>
-      </select>
+        .swal2-input {
+          max-width: 100% !important;
+          width: 90% !important;
+          margin: 5px auto !important;
+          display: block;
+        }
+        .swal2-label {
+          text-align: left;
+          display: block;
+          width: 90%;
+          margin: 5px auto 0 auto;
+          font-weight: bold;
+        }
+      </style>
+      <div>
+        <label for="barangayDropdown" class="swal2-label">Barangay</label>
+        <select id="barangayDropdown" class="swal2-input">
+          <option value="" disabled selected>Select Barangay</option>
+        </select>
 
-      <label for="postNumber" class="swal2-label">Post Number</label>
-      <input id="postNumber" class="swal2-input" placeholder="Post Number" type="number" readonly>
+        <label for="postNumber" class="swal2-label">Post Number</label>
+        <input id="postNumber" class="swal2-input" placeholder="Post Number" type="number" readonly>
 
-      <label for="slots" class="swal2-label">Slots</label>
-      <input id="slots" class="swal2-input" type="number" value="15" readonly>
+        <label for="slots" class="swal2-label">Slots</label>
+        <input id="slots" class="swal2-input" type="number" value="15" readonly>
 
-      <label class="swal2-label">Location</label>
-      <div id="leafletMapContainer" style="height: 300px; margin-top: 5px; border-radius: 10px;"></div>
+        <label class="swal2-label">Location</label>
+        <div id="leafletMapContainer" style="height: 300px; margin-top: 5px; border-radius: 10px;"></div>
 
-      <button id="pinLocationBtn" class="swal2-styled" style="margin-top: 10px;">Pin My Current Location</button>
-      <p style="margin-top: 10px;">Click on the map to set location.</p>
-    </div>`,
+        <button id="pinLocationBtn" class="swal2-styled" style="margin-top: 10px;">Pin My Current Location</button>
+        <p style="margin-top: 10px;">Click on the map to set location.</p>
+      </div>`,
         showCancelButton: true,
         confirmButtonText: "Save",
         width: 650,
-        didOpen: () => {
+        didOpen: async () => {
           let map, marker;
-          let defaultLat = 14.6206;
-          let defaultLng = 120.581;
-
-          const napIcon = L.icon({
-            iconUrl: "https://cdn-icons-png.flaticon.com/512/854/854878.png",
-            iconSize: [30, 30],
-          });
+          const defaultLat = 14.6206;
+          const defaultLng = 120.581;
 
           function initializeMap(lat, lng) {
             map = L.map("leafletMapContainer").setView([lat, lng], 14);
@@ -82,26 +84,10 @@ document.addEventListener("DOMContentLoaded", async function () {
               setMarker(e.latlng.lat, e.latlng.lng);
             });
 
-            const enabledIcon = L.icon({
-              iconUrl: "frontend/assets/images/icons/napbox_enabled.png",
-              iconSize: [64, 40],
-              iconAnchor: [32, 40],
-              popupAnchor: [0, -40],
-            });
-
-            const disabledIcon = L.icon({
-              iconUrl: "frontend/assets/images/icons/napbox_disabled.png",
-              iconSize: [64, 40],
-              iconAnchor: [32, 40],
-              popupAnchor: [0, -40],
-            });
-
-            // Show existing NapBox markers with appropriate icons
             existingNapBoxes.forEach((box) => {
               if (box.nap_box_latitude && box.nap_box_longitude) {
                 const iconToUse =
                   box.nap_box_status === "Enabled" ? enabledIcon : disabledIcon;
-
                 L.marker(
                   [
                     parseFloat(box.nap_box_latitude),
@@ -141,6 +127,8 @@ document.addEventListener("DOMContentLoaded", async function () {
           document
             .getElementById("pinLocationBtn")
             .addEventListener("click", () => {
+              const btn = document.getElementById("pinLocationBtn");
+              btn.innerText = "Locating...";
               if (!navigator.geolocation) return;
               navigator.geolocation.getCurrentPosition(
                 (position) => {
@@ -148,13 +136,16 @@ document.addEventListener("DOMContentLoaded", async function () {
                   const lng = position.coords.longitude;
                   map.setView([lat, lng], 15);
                   setMarker(lat, lng);
+                  btn.innerText = "Pin My Current Location";
                 },
-                () =>
+                () => {
                   Swal.fire(
                     "Error",
                     "Unable to access current location.",
                     "error"
-                  )
+                  );
+                  btn.innerText = "Pin My Current Location";
+                }
               );
             });
 
@@ -201,27 +192,6 @@ document.addEventListener("DOMContentLoaded", async function () {
             const nextPost = related.length + 1;
             document.getElementById("postNumber").value = nextPost;
           });
-
-          // Optional fetch to recenter map based on latest coords
-          fetch("backend/fetch_map_coordinates.php")
-            .then((res) => res.json())
-            .then((data) => {
-              if (Array.isArray(data)) {
-                const firstNap = data.find((d) => d.type === "napbox");
-                if (firstNap && firstNap.latitude && firstNap.longitude) {
-                  map.setView(
-                    [
-                      parseFloat(firstNap.latitude),
-                      parseFloat(firstNap.longitude),
-                    ],
-                    14
-                  );
-                }
-              }
-            })
-            .catch((err) => {
-              console.error("Error fetching coordinates:", err);
-            });
         },
         preConfirm: () => {
           const barangay = document
@@ -240,7 +210,6 @@ document.addEventListener("DOMContentLoaded", async function () {
           }
 
           const fullName = `${barangay}-POST${post}`;
-
           return { barangay: fullName, slots, lat, lng };
         },
       }).then((result) => {
@@ -299,15 +268,14 @@ function loadNapBoxes() {
         });
       } else {
         tbody.innerHTML = `
-  <tr>
-    <td colspan="4" style="text-align: center; padding: 30px;">
-      <div style="display: inline-block; ">
-        <i class="fa-solid fa-box fa-3x" style="margin-bottom: 10px; color: #3775b9;"></i>
-        <div style="font-size: 16px; color: #888; ">No Nap Boxes found.</div>
-      </div>
-    </td>
-  </tr>
-`;
+          <tr>
+            <td colspan="4" style="text-align: center; padding: 30px;">
+              <div style="display: inline-block;">
+                <i class="fa-solid fa-box fa-3x" style="margin-bottom: 10px; color: #3775b9;"></i>
+                <div style="font-size: 16px; color: #888;">No Nap Boxes found.</div>
+              </div>
+            </td>
+          </tr>`;
       }
     });
 }
