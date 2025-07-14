@@ -135,7 +135,43 @@ body {
   justify-content: center;
   align-items: stretch;
 }
+/*For search box */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 10px;
+}
 
+.section-header h2 {
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+.search-wrapper {
+  position: relative;
+  width: 250px;
+  max-width: 100%;
+}
+
+.search-wrapper i {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  color: #888;
+  pointer-events: none;
+}
+
+.search-wrapper input.table-search {
+  padding: 8px 10px 8px 32px;
+  width: 100%;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
 .summary-box {
   background: #f4f4f4;
   padding: 20px;

@@ -45,7 +45,10 @@ function populatePaymentTable(payments) {
     const row = document.createElement("tr");
     row.innerHTML = `
       <td colspan="7" style="text-align: center;">
-        No pending GCash payments found.
+        <div style="display: inline-block; color: #3775b9;">
+      <i class="bx bxs-wallet-alt" style="margin-bottom: 10px; font-size: 3rem;"></i>
+      <div style="color: #888; font-size: 16px;">No pending GCash payments found.</div>
+    </div>
       </td>
     `;
     tableBody.appendChild(row);

@@ -80,7 +80,14 @@ document.addEventListener("DOMContentLoaded", function () {
     );
     if (assignedTaskTable && assignedTaskTable.rows.length === 0) {
       const noTaskRow = document.createElement("tr");
-      noTaskRow.innerHTML = `<td colspan="8" class="text-center">No assigned tasks found.</td>`;
+      noTaskRow.innerHTML = `
+  <td colspan="8" style="text-align: center; padding: 30px;">
+    <div style="display: inline-block;">
+      <i class="fas fa-user fa-3x" style="margin-bottom: 10px; color: #3775b9;"></i>
+      <div style="font-size: 16px; color:#888;">No assigned tasks found.</div>
+    </div>
+  </td>
+`;
       assignedTaskTable.appendChild(noTaskRow);
     }
   }
@@ -341,7 +348,14 @@ document.addEventListener("DOMContentLoaded", function () {
         if (data.status === "success") {
           if (data.message) {
             const noTaskRow = document.createElement("tr");
-            noTaskRow.innerHTML = `<td colspan="5" class="text-center">${data.message}</td>`;
+            noTaskRow.innerHTML = `
+  <td colspan="8" style="text-align: center; padding: 30px;">
+    <div style="display: inline-block;">
+      <i class="fas fa-address-card fa-3x" style="margin-bottom: 10px; color: #3775b9;"></i>
+      <div style="font-size: 16px; color: #888;">${data.message}</div>
+    </div>
+  </td>
+`;
             tbody.appendChild(noTaskRow);
           } else {
             populateTrackTaskTable(data.data);

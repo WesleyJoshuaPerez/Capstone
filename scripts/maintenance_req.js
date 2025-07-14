@@ -25,8 +25,11 @@ function fetchMaintenancereq() {
             if (response.data.length === 0) {
               let tr = document.createElement("tr");
               tr.innerHTML = `
-                <td colspan="7" style="text-align: center;">
-                  No pending maintenance requests found.
+                <td colspan="7" style="text-align: center; padding: 30px">
+                 <div style="display: inline-block; color: #3775b9;">
+                <i class="fas fa-exclamation-circle fa-3x" style="margin-bottom: 10px;"></i>
+                <div style="color: #888; font-size: 16px;">      No pending maintenance requests found.</div>
+                 </div>
                 </td>
               `;
               tableBody.appendChild(tr);

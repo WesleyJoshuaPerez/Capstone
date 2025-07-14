@@ -50,7 +50,16 @@ if ($result->num_rows > 0) {
     }
 
     if ($allCompleted) {
-        $output .= "<tr><td colspan='8' class='text-center'>No assigned tasks found.</td></tr>";
+       $output .= "
+<tr>
+  <td colspan='8' style='text-align: center; padding: 30px;'>
+    <div style='display: inline-block;'>
+      <i class='fas fa-user fa-3x' style='margin-bottom: 10px; color: #3775b9;'></i>
+      <div style='font-size: 16px; color: #888;'>No assigned tasks found.</div>
+    </div>
+  </td>
+</tr>";
+
     } else {
         foreach ($taskRows as $row) {
             if (strtolower(trim($row['status'])) === 'completed') continue; // skip completed tasks
@@ -73,7 +82,16 @@ if ($result->num_rows > 0) {
         }
     }
 } else {
-    $output .= "<tr><td colspan='8'>No assigned tasks found.</td></tr>";
+  $output .= "
+<tr>
+  <td colspan='8' style='text-align: center; padding: 30px;'>
+    <div style='display: inline-block;'>
+      <i class='fas fa-user fa-3x' style='margin-bottom: 10px; color: #3775b9;'></i>
+      <div style='font-size: 16px; color: #888;'>No assigned tasks found.</div>
+    </div>
+  </td>
+</tr>";
+
 }
 
 echo $output;

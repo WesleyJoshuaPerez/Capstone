@@ -146,12 +146,16 @@ function fetchTechnicians() {
         });
       } else {
         // If no technicians, display message in the center of the table
-        const noDataMessage = `
-          <tr>
-            <td colspan="7" style="text-align: center; font-size: 18px; color: #666;">No technicians available</td>
-          </tr>
-        `;
-        tableBody.append(noDataMessage);
+        const noDataMessage = document.createElement("tr");
+        noDataMessage.innerHTML = `
+       <td colspan="7" style="text-align: center; padding: 30px;">
+       <div style="display: inline-block; color: #6c757d;">
+      <i class="fas fa-project-diagram fa-3x" style="margin-bottom: 10px;"></i>
+      <div style="font-size: 16px;">No technicians available</div>
+    </div>
+  </td>
+`;
+        tableBody.appendChild(noDataMessage);
       }
     },
     error: function (jqXHR, textStatus, errorThrown) {

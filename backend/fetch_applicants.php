@@ -31,7 +31,16 @@ if ($result->num_rows > 0) {
               </tr>";
     }
 } else {
-    echo "<tr><td colspan='5'style=text-align:center;>No pending application found.</td></tr>";
+    echo "
+<tr>
+  <td colspan='5' style='text-align: center; padding: 30px;'>
+    <div style='display: inline-block; '>
+      <i class='fas fa-address-card fa-3x' style='margin-bottom: 10px; color: #3775b9;'></i>
+      <div style='font-size: 16px; color: #888;'>No pending application found.</div>
+    </div>
+  </td>
+</tr>";
+
 }
 
 $conn->close();

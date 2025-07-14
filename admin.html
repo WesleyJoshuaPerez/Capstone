@@ -159,9 +159,20 @@
 
         <!--For applications of plan-->
         <div class="info">
+          <!-- Applications -->
           <div id="applicationDiv">
-            <h2>Applications</h2>
-            <!-- Add a wrapper div with class "table-container" -->
+            <div class="section-header">
+              <h2>Applications</h2>
+              <div class="search-wrapper">
+                <i class="fas fa-search"></i>
+                <input
+                  type="text"
+                  class="table-search"
+                  data-target="applicationTable"
+                  placeholder="Search Applications..."
+                />
+              </div>
+            </div>
             <div class="table-container">
               <table id="applicationTable">
                 <thead>
@@ -180,10 +191,20 @@
             </div>
           </div>
 
-          <!--For subscribers-->
+          <!-- Subscribers -->
           <div id="subscriberDiv">
-            <h2>Subscribers</h2>
-            <!-- Add a wrapper div with class "table-container" -->
+            <div class="section-header">
+              <h2>Subscribers</h2>
+              <div class="search-wrapper">
+                <i class="fas fa-search"></i>
+                <input
+                  type="text"
+                  class="table-search"
+                  data-target="subscriberTable"
+                  placeholder="Search Subscribers..."
+                />
+              </div>
+            </div>
             <div class="table-container">
               <table id="subscriberTable">
                 <thead>
@@ -204,9 +225,21 @@
               </table>
             </div>
           </div>
+
+          <!-- GCash Payment Approvals -->
           <div id="gcashPaymentApprovalDiv">
-            <h2>GCash Payment Approvals</h2>
-            <!-- Add a wrapper div with class "table-container" -->
+            <div class="section-header">
+              <h2>GCash Payment Approvals</h2>
+              <div class="search-wrapper">
+                <i class="fas fa-search"></i>
+                <input
+                  type="text"
+                  class="table-search"
+                  data-target="gcashPaymentApprovalTable"
+                  placeholder="Search GCash Payments..."
+                />
+              </div>
+            </div>
             <div class="table-container">
               <table id="gcashPaymentApprovalTable">
                 <thead>
@@ -227,10 +260,20 @@
             </div>
           </div>
 
-          <!--For Changing Plan-->
+          <!-- Change Plan Requests -->
           <div id="changePlanDiv">
-            <h2>Change Plan Requests</h2>
-            <!-- Add a wrapper div with class "table-container" -->
+            <div class="section-header">
+              <h2>Change Plan Requests</h2>
+              <div class="search-wrapper">
+                <i class="fas fa-search"></i>
+                <input
+                  type="text"
+                  class="table-search"
+                  data-target="changePlanTable"
+                  placeholder="Search Change Plan Requests..."
+                />
+              </div>
+            </div>
             <div class="table-container">
               <table id="changePlanTable">
                 <thead>
@@ -250,11 +293,20 @@
             </div>
           </div>
 
-          <!---For technician-->
+          <!-- Technicians -->
           <div id="technicianDiv">
-            <h2>Technicians</h2>
-            <!-- Add a wrapper div with class "table-container" -->
-            <!-- Add Technician Button -->
+            <div class="section-header">
+              <h2>Technicians</h2>
+              <div class="search-wrapper">
+                <i class="fas fa-search"></i>
+                <input
+                  type="text"
+                  class="table-search"
+                  data-target="technicianTable"
+                  placeholder="Search Technicians..."
+                />
+              </div>
+            </div>
             <button id="addTechnicianBtn">Add Technician</button>
             <div class="table-container">
               <table id="technicianTable">
@@ -276,10 +328,20 @@
             </div>
           </div>
 
-          <!--For maintenance-->
+          <!-- Maintenance Requests -->
           <div id="maintenance_reqDiv">
-            <h2>Maintenance Requests</h2>
-            <!-- Add a wrapper div with class "table-container" -->
+            <div class="section-header">
+              <h2>Maintenance Requests</h2>
+              <div class="search-wrapper">
+                <i class="fas fa-search"></i>
+                <input
+                  type="text"
+                  class="table-search"
+                  data-target="maintenance_reqTable"
+                  placeholder="Search Maintenance Requests..."
+                />
+              </div>
+            </div>
             <div class="table-container">
               <table id="maintenance_reqTable">
                 <thead>
@@ -293,18 +355,25 @@
                     <th>Status</th>
                   </tr>
                 </thead>
-                <tbody>
-                  <!-- Data will be inserted here dynamically -->
-                </tbody>
+                <tbody></tbody>
               </table>
             </div>
           </div>
-          <!--For Box slots-->
-          <!---For technician-->
+
+          <!-- Box Slots -->
           <div id="BoxslotsDiv">
-            <h2>Available Nap Boxes</h2>
-            <!-- Add a wrapper div with class "table-container" -->
-            <!-- Add Technician Button -->
+            <div class="section-header">
+              <h2>Available Nap Boxes</h2>
+              <div class="search-wrapper">
+                <i class="fas fa-search"></i>
+                <input
+                  type="text"
+                  class="table-search"
+                  data-target="boxslotTable"
+                  placeholder="Search Nap Boxes..."
+                />
+              </div>
+            </div>
             <button id="addNapboxBtn">Add Nap Box</button>
             <div class="table-container">
               <table id="boxslotTable">
@@ -352,5 +421,7 @@
     <script src="scripts/box_slots.js" defer></script>
     <!--for approving gcash pending payments-->
     <script src="scripts/gcash_pending_payments.js" defer></script>
+    <!--for seach box-->
+    <script src="scripts/searchfilter.js" defer></script>
   </body>
 </html>

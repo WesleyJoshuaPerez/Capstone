@@ -240,7 +240,16 @@ function loadNapBoxes() {
           tbody.appendChild(row);
         });
       } else {
-        tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">No Nap Boxes found.</td></tr>`;
+        tbody.innerHTML = `
+  <tr>
+    <td colspan="4" style="text-align: center; padding: 30px;">
+      <div style="display: inline-block; ">
+        <i class="fa-solid fa-box fa-3x" style="margin-bottom: 10px; color: #3775b9;"></i>
+        <div style="font-size: 16px; color: #888; ">No Nap Boxes found.</div>
+      </div>
+    </td>
+  </tr>
+`;
       }
     });
 }

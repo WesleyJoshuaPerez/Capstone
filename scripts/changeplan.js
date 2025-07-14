@@ -41,14 +41,28 @@ function fetchChangeplanReq() {
 
           if (!hasPending) {
             let tr = document.createElement("tr");
-            tr.innerHTML = `<td colspan="7" style="text-align:center;">No pending change plan requests.</td>`;
+            tr.innerHTML = `
+  <td colspan="7" style="text-align: center; padding: 30px;">
+    <div style="display: inline-block; color: #3775b9;">
+      <i class="fas fa-exchange fa-3x" style="margin-bottom: 10px;"></i>
+      <div style="color: #888; font-size: 16px;">No pending change plan requests.</div>
+    </div>
+  </td>
+`;
             tableBody.appendChild(tr);
           }
 
           attachChangeRowClickEvent(); // Attach event listener to rows
         } else {
           let tr = document.createElement("tr");
-          tr.innerHTML = `<td colspan="7" style="text-align:center;">No change plan requests found.</td>`;
+          tr.innerHTML = `
+  <td colspan="7" style="text-align: center; padding: 30px;">
+    <div style="display: inline-block; color: #3775b9;">
+      <i class="fas fa-exchange fa-3x" style="margin-bottom: 10px;"></i>
+      <div style="color: #888; font-size: 16px;">No pending change plan requests.</div>
+    </div>
+  </td>
+`;
           tableBody.appendChild(tr);
         }
       } else {
@@ -119,29 +133,28 @@ function updateChangePlanStatus(
     return;
   }
 
-let planPrice = 0;
-switch (newPlan) {
-  case 'Bronze':
-    planPrice = 1199;
-    break;
-  case 'Silver':
-    planPrice = 1499;
-    break;
-  case 'Gold':
-    planPrice = 1799;
-    break;
-  default:
-    planPrice = 0;
-    break;
-}
-
+  let planPrice = 0;
+  switch (newPlan) {
+    case "Bronze":
+      planPrice = 1199;
+      break;
+    case "Silver":
+      planPrice = 1499;
+      break;
+    case "Gold":
+      planPrice = 1799;
+      break;
+    default:
+      planPrice = 0;
+      break;
+  }
 
   let requestData = {
     change_plan_id: changePlanId,
     user_id: userId,
     status: status,
     new_plan: newPlan,
-    price: planPrice // Send the correct price
+    price: planPrice, // Send the correct price
   };
 
   console.log("Sending request data:", requestData); // Debugging
