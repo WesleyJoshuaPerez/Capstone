@@ -45,9 +45,10 @@ document.addEventListener("DOMContentLoaded", function () {
             if (location.type === "user") {
               icon = userIcon;
               popupContent = `
-                Username: <b>${location.username}</b><br>
-                Fullname: <b>${location.fullname}</b><br>
-                Subscription Plan: ${location.subscription_plan}
+               <b> Username: </b>${location.username} <br>
+               <b> Fullname: </b>${location.fullname} <br>
+               <b> Subscription Plan:</b> ${location.subscription_plan} <br>
+                 <b>Nap Box: </b>${location.barangay}<br>
               `;
             } else if (location.type === "napbox") {
               icon = location.status === "Enabled" ? enabledIcon : disabledIcon;

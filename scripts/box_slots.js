@@ -66,6 +66,11 @@ document.addEventListener("DOMContentLoaded", async function () {
           let defaultLat = 14.6206;
           let defaultLng = 120.581;
 
+          const napIcon = L.icon({
+            iconUrl: "https://cdn-icons-png.flaticon.com/512/854/854878.png",
+            iconSize: [30, 30],
+          });
+
           function initializeMap(lat, lng) {
             map = L.map("leafletMapContainer").setView([lat, lng], 14);
             L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -75,6 +80,38 @@ document.addEventListener("DOMContentLoaded", async function () {
 
             map.on("click", function (e) {
               setMarker(e.latlng.lat, e.latlng.lng);
+            });
+
+            const enabledIcon = L.icon({
+              iconUrl: "frontend/assets/images/icons/napbox_enabled.png",
+              iconSize: [64, 40],
+              iconAnchor: [32, 40],
+              popupAnchor: [0, -40],
+            });
+
+            const disabledIcon = L.icon({
+              iconUrl: "frontend/assets/images/icons/napbox_disabled.png",
+              iconSize: [64, 40],
+              iconAnchor: [32, 40],
+              popupAnchor: [0, -40],
+            });
+
+            // Show existing NapBox markers with appropriate icons
+            existingNapBoxes.forEach((box) => {
+              if (box.nap_box_latitude && box.nap_box_longitude) {
+                const iconToUse =
+                  box.nap_box_status === "Enabled" ? enabledIcon : disabledIcon;
+
+                L.marker(
+                  [
+                    parseFloat(box.nap_box_latitude),
+                    parseFloat(box.nap_box_longitude),
+                  ],
+                  { icon: iconToUse }
+                )
+                  .addTo(map)
+                  .bindPopup(`${box.nap_box_brgy} (${box.nap_box_status})`);
+              }
             });
           }
 
@@ -164,6 +201,27 @@ document.addEventListener("DOMContentLoaded", async function () {
             const nextPost = related.length + 1;
             document.getElementById("postNumber").value = nextPost;
           });
+
+          // Optional fetch to recenter map based on latest coords
+          fetch("backend/fetch_map_coordinates.php")
+            .then((res) => res.json())
+            .then((data) => {
+              if (Array.isArray(data)) {
+                const firstNap = data.find((d) => d.type === "napbox");
+                if (firstNap && firstNap.latitude && firstNap.longitude) {
+                  map.setView(
+                    [
+                      parseFloat(firstNap.latitude),
+                      parseFloat(firstNap.longitude),
+                    ],
+                    14
+                  );
+                }
+              }
+            })
+            .catch((err) => {
+              console.error("Error fetching coordinates:", err);
+            });
         },
         preConfirm: () => {
           const barangay = document
