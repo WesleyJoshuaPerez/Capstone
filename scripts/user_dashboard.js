@@ -860,7 +860,7 @@ function loadNotifications() {
                   JSON.stringify(updatedViewed)
                 );
               }
-
+              markNotificationAsViewed(data.request_id, data.type);
               this.remove();
             }
           });
@@ -874,6 +874,21 @@ function loadNotifications() {
       Swal.fire("Error", "Unable to fetch notifications.", "error");
     });
 }
+
+function markNotificationAsViewed(requestId, type) {
+  fetch('backend/mark_notification_viewed.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      request_id: requestId,
+      type: type
+    })
+  });
+}
+
+
 
 // get the account number
 document.addEventListener("DOMContentLoaded", function () {

@@ -34,7 +34,7 @@ $technician_name = $technician['name'];
 
 if ($countOnly) {
   // Count total maintenance requests for this technician (excluding Completed)
-$stmt = $conn->prepare("SELECT COUNT(*) AS total_clients FROM maintenance_requests WHERE technician_name = ? AND status != 'Completed'");
+$stmt = $conn->prepare("SELECT COUNT(*) AS total_clients FROM maintenance_requests WHERE technician_name = ? AND status NOT IN ('Completed', 'Viewed')");
     if (!$stmt) {
         echo json_encode(['success' => false, 'error' => 'Failed to prepare count statement: ' . $conn->error]);
         exit;

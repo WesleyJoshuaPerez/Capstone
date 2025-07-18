@@ -62,7 +62,9 @@ if ($result->num_rows > 0) {
 
     } else {
         foreach ($taskRows as $row) {
-            if (strtolower(trim($row['status'])) === 'completed') continue; // skip completed tasks
+            $status = strtolower(trim($row['status']));
+          if ($status === 'completed' || $status === 'viewed') continue; // skip completed and viewed
+
 
             $output .= "<tr>";
             $output .= "<td>" . htmlspecialchars($row['user_id']) . "</td>";
@@ -97,9 +99,9 @@ if ($result->num_rows > 0) {
 echo $output;
 
 // Assigned task counter (if needed on frontend)
-echo "<div id='assignedTaskBox'>
-        <h3>Assigned Tasks: <span>" . $response["assignedtasks"] . "</span></h3>
-      </div>";
+//echo "<div id='assignedTaskBox'>
+//        <h3>Assigned Tasks: <span>" . $response["assignedtasks"] . "</span></h3>
+//      </div>";
 
 $stmt->close();
 $conn->close();
