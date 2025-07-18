@@ -49,7 +49,7 @@ $stmt = $conn->prepare("SELECT COUNT(*) AS total_clients FROM maintenance_reques
 }
 
 // Fetch detailed list of maintenance requests for this technician (excluding Completed)
-$stmt = $conn->prepare("SELECT maintenance_id, full_name, issue_type, status FROM maintenance_requests WHERE technician_name = ? AND status != 'Completed'");
+$stmt = $conn->prepare("SELECT maintenance_id, full_name, issue_type, status FROM maintenance_requests WHERE technician_name = ? AND status NOT IN ('Completed', 'Viewed')");
 if (!$stmt) {
     echo json_encode(['success' => false, 'error' => 'Failed to prepare detail statement: ' . $conn->error]);
     exit;
