@@ -50,22 +50,13 @@ while ($row = $result->fetch_assoc()) {
 
     $originalPrice = $planPrices[$row['subscription_plan']] ?? 0;
 
-    // Installation date
     $installDate = $row['installation_date'];
-    $currentDate = new DateTime(); // Current date for comparison
+$today = date('Y-m-d');
 
-    // Calculate the original due date: 1 month after installation
-    $installDateTime = new DateTime($installDate);
-    $installDateTime->modify('+1 month');
-    $nextDueDate = $installDateTime;
+$monthsSinceInstall = floor((strtotime($today) - strtotime($installDate)) / (30 * 24 * 60 * 60));
+$nextDueDate = date('Y-m-d', strtotime("+$monthsSinceInstall month", strtotime($installDate)));
+$formattedNextDueDate = $nextDueDate;
 
-    // Roll over due date until it is in the future
-    while ($nextDueDate < $currentDate) {
-        $nextDueDate->modify('+1 month');
-    }
-
-    // Format the due date for display
-    $formattedNextDueDate = $nextDueDate->format('Y-m-d');
 
     $subscribers[] = [
         "id" => $row["user_id"],
