@@ -11,8 +11,8 @@ if ($conn->connect_error) {
     exit;
 }
 
-// Exclude maintenance requests with status 'Completed' or 'Denied'
-$sql = "SELECT * FROM maintenance_requests WHERE status NOT IN ('Completed', 'Denied')";
+// Exclude maintenance requests with status 'Completed' or 'Denied' or 'Viewed'
+$sql = "SELECT * FROM maintenance_requests WHERE status NOT IN ('Completed', 'Denied', 'Viewed')";
 $result = $conn->query($sql);
 
 if (!$result) {

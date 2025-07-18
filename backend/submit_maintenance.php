@@ -63,7 +63,7 @@ if (!empty($_FILES['uploadEvidence']['name']) && $_FILES['uploadEvidence']['erro
 
 $dupCheckStmt = $conn->prepare("SELECT COUNT(*) as count 
     FROM maintenance_requests 
-    WHERE user_id = ? AND issue_type = ? AND status NOT IN ('Completed', 'Denied')");
+    WHERE user_id = ? AND issue_type = ? AND status NOT IN ('Completed', 'Denied', 'Viewed')");
 
 if (!$dupCheckStmt) {
     echo json_encode(["status" => "error", "message" => "Prepare failed: " . $conn->error]);

@@ -38,7 +38,7 @@ $sql = "
   LEFT JOIN maintenance_requests mr 
     ON pr.client_name = mr.full_name AND pr.issue_type = mr.issue_type
   WHERE pr.submitted_by = ? 
-    AND COALESCE(mr.status, 'No Status') NOT IN ('Completed', 'Denied', 'Ongoing', 'Pending'))
+    AND COALESCE(mr.status, 'No Status') NOT IN ('Completed', 'Denied', 'Ongoing', 'Pending', 'Viewed'))
 
   UNION
 
@@ -61,7 +61,7 @@ $sql = "
   LEFT JOIN maintenance_requests mr 
     ON cf.client_name = mr.full_name AND cf.issue_type = mr.issue_type
   WHERE cf.submitted_by = ?
-    AND COALESCE(mr.status, 'No Status') NOT IN ('Denied', 'Ongoing', 'Pending'))
+    AND COALESCE(mr.status, 'No Status') NOT IN ('Denied', 'Ongoing', 'Pending', 'Viewed'))
 
   ORDER BY submitted_at DESC
 ";
