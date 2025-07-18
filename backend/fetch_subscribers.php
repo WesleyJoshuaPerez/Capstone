@@ -18,7 +18,7 @@ $planPrices = [
     'gold'   => 1799
 ];
 
-// Query to get all approved users
+// Query to get all approved users, including last_payment_date
 $sql = "SELECT * FROM approved_user";
 $result = $conn->query($sql);
 
@@ -48,15 +48,51 @@ while ($row = $result->fetch_assoc()) {
         $lastName = '';
     }
 
-    $originalPrice = $planPrices[$row['subscription_plan']] ?? 0;
+    $originalPrice = $planPrices[strtolower($row['subscription_plan'])] ?? 0;
 
+    $today = date('Y-m-d');
     $installDate = $row['installation_date'];
-$today = date('Y-m-d');
 
-$monthsSinceInstall = floor((strtotime($today) - strtotime($installDate)) / (30 * 24 * 60 * 60));
-$nextDueDate = date('Y-m-d', strtotime("+$monthsSinceInstall month", strtotime($installDate)));
-$formattedNextDueDate = $nextDueDate;
+    // Count full months since install
+    $monthsSinceInstall = floor((strtotime($today) - strtotime($installDate)) / (30 * 24 * 60 * 60));
+    $nextDueDate = date('Y-m-d', strtotime("+$monthsSinceInstall month", strtotime($installDate)));
 
+    // Get last payment date
+    $lastPayment = $row['last_payment_date'] ?? null;
+    $paymentStatus = $row['payment_status'];
+    $currentBill = $row['currentBill'];
+
+    // Advance next_due_date if user paid after/on the current due date
+    if ($lastPayment && strtotime($lastPayment) >= strtotime($nextDueDate)) {
+        $nextDueDate = date('Y-m-d', strtotime("+1 month", strtotime($nextDueDate)));
+    }
+
+    // Determine if bill is due: must not have paid for this cycle
+    $isDue = strtotime($today) >= strtotime($nextDueDate);
+    $needsBill = (!$lastPayment || strtotime($lastPayment) < strtotime($nextDueDate));
+
+    // Update currentBill and payment_status if due and not already billed for this cycle
+    if ($isDue && $needsBill) {
+        if ($currentBill == 0 && $paymentStatus == 'unpaid') {
+            $row['currentBill'] = $originalPrice;
+
+            // Update payment_status in DB
+            $updateSQL = "UPDATE approved_user SET currentBill = ?, payment_status = 'unpaid' WHERE user_id = ?";
+            $stmt = $conn->prepare($updateSQL);
+            $stmt->bind_param("ii", $row['currentBill'], $row['user_id']);
+            $stmt->execute();
+            $stmt->close();
+        }
+
+        if ($paymentStatus == 'paid') {
+            $updateStatus = $conn->prepare("UPDATE approved_user SET payment_status = 'unpaid' WHERE user_id = ?");
+            $updateStatus->bind_param("i", $row['user_id']);
+            $updateStatus->execute();
+            $updateStatus->close();
+
+            $row['payment_status'] = 'unpaid';
+        }
+    }
 
     $subscribers[] = [
         "id" => $row["user_id"],
@@ -76,11 +112,10 @@ $formattedNextDueDate = $nextDueDate;
         "registration_date" => $row["registration_date"],
         "id_photo" => $row["id_photo"],
         "proof_of_residency" => $row["proof_of_residency"],
-        "next_due_date" => $formattedNextDueDate // Adjusted dynamically
+        "next_due_date" => $nextDueDate
     ];
 }
 
 echo json_encode(["success" => true, "data" => $subscribers], JSON_UNESCAPED_UNICODE);
-
 $conn->close();
 ?>

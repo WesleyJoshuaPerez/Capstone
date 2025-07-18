@@ -509,29 +509,19 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (planNameEl) planNameEl.textContent = `${plan.toUpperCase()} PLAN`;
       if (planPriceEl) planPriceEl.textContent = bill.toFixed(2);
       if (billingAmountEl) billingAmountEl.textContent = bill.toFixed(2);
-      // next month will not proceed if the bill of the previous month is not paid
-      if (data.installation_date && dueDateEl) {
-        const installDate = new Date(data.installation_date);
-        let dueDate = new Date(installDate);
-        dueDate.setMonth(dueDate.getMonth() + 1); // Initial due date
 
-        const currentDate = new Date();
-
-        // Only roll over due date if the user has paid
-        if (data.isPaid) {
-          while (dueDate < currentDate) {
-            dueDate.setMonth(dueDate.getMonth() + 1);
-          }
-        }
-
+      // Use next_due_date from backend, not calculated in JS
+      if (data.next_due_date && dueDateEl) {
+        const dueDate = new Date(data.next_due_date);
         const options = { year: "numeric", month: "short", day: "2-digit" };
         dueDateEl.textContent = dueDate.toLocaleDateString("en-US", options);
+
+        const currentDate = new Date();
         // highlight if overdue and unpaid
         if (dueDate < currentDate && !data.isPaid) {
           dueDateEl.style.color = "red";
           dueDateEl.style.fontWeight = "bold";
         } else {
-          // Reset style if not overdue
           dueDateEl.style.color = "";
           dueDateEl.style.fontWeight = "";
         }

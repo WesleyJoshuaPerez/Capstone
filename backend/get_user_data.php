@@ -37,7 +37,6 @@ if ($result->num_rows > 0) {
     $lastPayment = $user['last_payment_date'];
     $isPaid = ($user['payment_status'] === 'paid');
 
-
     $planPrices = [
         'bronze' => 1199,
         'silver' => 1499,
@@ -45,11 +44,17 @@ if ($result->num_rows > 0) {
     ];
     $originalPrice = $planPrices[$plan] ?? 0;
 
+    // Calculate how many months since install
     $monthsSinceInstall = floor((strtotime($today) - strtotime($installDate)) / (30 * 24 * 60 * 60));
     $nextDueDate = date('Y-m-d', strtotime("+$monthsSinceInstall month", strtotime($installDate)));
-    // $nextDueDate = '2025-05-01'; //for testing if the due is changing
+
+    // If the user has paid for the current cycle, advance due date to next cycle
+    if ($lastPayment && strtotime($lastPayment) >= strtotime($nextDueDate)) {
+        $nextDueDate = date('Y-m-d', strtotime("+1 month", strtotime($nextDueDate)));
+    }
+
+    // Billing trigger: only if today >= due date and not paid for this cycle
     if (strtotime($today) >= strtotime($nextDueDate)) {
-        // Trigger billing only if user hasn't paid for this cycle
         if (!$lastPayment || strtotime($lastPayment) < strtotime($nextDueDate)) {
             if ($currentBill == 0 && $paymentStatus == 'unpaid') {
                 $update = $conn->prepare("UPDATE approved_user SET currentBill = ?, payment_status = 'unpaid' WHERE user_id = ?");
@@ -85,7 +90,8 @@ if ($result->num_rows > 0) {
         "installation_date" => $user['installation_date'],
         "registration_date" => $user['registration_date'],
         "payment_status" => $user['payment_status'],
-        "isPaid" => $isPaid
+        "isPaid" => $isPaid,
+        "next_due_date" => $nextDueDate
     ]);
 } else {
     echo json_encode([
