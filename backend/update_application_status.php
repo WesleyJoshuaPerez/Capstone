@@ -1,12 +1,15 @@
 <?php
+// Import PHPMailer classes from correct path
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 use PHPMailer\PHPMailer\SMTP;
 
-require 'PHPMailer/src/Exception.php';
-require 'PHPMailer/src/PHPMailer.php';
-require 'PHPMailer/src/SMTP.php';
-include 'connectdb.php';
+require_once __DIR__ . '/phpmailer/src/Exception.php';
+require_once __DIR__ . '/phpmailer/src/PHPMailer.php';
+require_once __DIR__ . '/phpmailer/src/SMTP.php';
+
+// Database connection
+require_once 'connectdb.php';
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
