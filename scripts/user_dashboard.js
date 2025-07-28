@@ -876,19 +876,17 @@ function loadNotifications() {
 }
 
 function markNotificationAsViewed(requestId, type) {
-  fetch('backend/mark_notification_viewed.php', {
-    method: 'POST',
+  fetch("backend/mark_notification_viewed.php", {
+    method: "POST",
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json",
     },
     body: JSON.stringify({
       request_id: requestId,
-      type: type
-    })
+      type: type,
+    }),
   });
 }
-
-
 
 // get the account number
 document.addEventListener("DOMContentLoaded", function () {
@@ -1034,7 +1032,7 @@ document.addEventListener("DOMContentLoaded", () => {
                   formData.append("reference_number", referenceNumber);
                   formData.append("screenshot", screenshot);
 
-                  return fetch("backend/handle_GCash.php", {
+                  return fetch("backend/handle_Gcash.php", {
                     method: "POST",
                     body: formData,
                   })
