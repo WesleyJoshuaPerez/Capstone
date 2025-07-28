@@ -99,6 +99,7 @@ while ($row = $result->fetch_assoc()) {
         "username" => $row["username"],
         "subscription_plan" => $row["subscription_plan"],
         "currentBill" => $row["currentBill"],
+        "status" => $row["account_status"],
         "first_name" => $firstName,
         "last_name" => $lastName,
         "contact_number" => $row["contact_number"],

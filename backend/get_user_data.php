@@ -18,7 +18,7 @@ if (!$conn) {
 $stmt = $conn->prepare("
     SELECT user_id, fullname, subscription_plan, currentBill, 
            contact_number, address, birth_date, email_address, 
-           installation_date, registration_date, payment_status, last_payment_date
+           installation_date, registration_date, payment_status, last_payment_date, account_status
     FROM approved_user WHERE user_id = ?
 ");
 
@@ -91,7 +91,8 @@ if ($result->num_rows > 0) {
         "registration_date" => $user['registration_date'],
         "payment_status" => $user['payment_status'],
         "isPaid" => $isPaid,
-        "next_due_date" => $nextDueDate
+        "next_due_date" => $nextDueDate,
+        "account_status" => $user['account_status']
     ]);
 } else {
     echo json_encode([

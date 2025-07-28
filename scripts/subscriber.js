@@ -11,7 +11,7 @@ function fetchSubscribers() {
   fetch("backend/fetch_subscribers.php")
     .then((response) => response.json())
     .then((data) => {
-      Swal.close(); // Close the loading Swal when data is loaded
+      Swal.close();
       if (data.success) {
         const tableBody = document.querySelector("#subscriberTable tbody");
 
@@ -20,23 +20,34 @@ function fetchSubscribers() {
           return;
         }
 
-        tableBody.innerHTML = ""; // Clear existing rows
+        tableBody.innerHTML = "";
 
         data.data.forEach((subscriber) => {
           let row = document.createElement("tr");
           row.setAttribute("data-subscriber", JSON.stringify(subscriber));
           row.innerHTML = `
-                <td>${subscriber.id}</td>
-                <td>${subscriber.subscription_plan}</td>
-                <td>${subscriber.currentBill}</td>
-                <td>${subscriber.next_due_date}</td>
-                <td>${subscriber.first_name}</td>
-                <td>${subscriber.last_name}</td>
-                <td>${subscriber.contact_number}</td>
-                <td>${subscriber.address}</td>
-              `;
+            <td>${subscriber.id}</td>
+            <td>${subscriber.subscription_plan}</td>
+            <td>${subscriber.currentBill}</td>
+            <td style="color: ${
+              subscriber.status.toLowerCase() === "terminated"
+                ? "red"
+                : subscriber.status.toLowerCase() === "active"
+                ? "green"
+                : "black"
+            }; font-weight: bold;">
+           ${subscriber.status}
+           </td>
+
+            <td>${subscriber.next_due_date}</td>
+            <td>${subscriber.first_name}</td>
+            <td>${subscriber.last_name}</td>
+            <td>${subscriber.contact_number}</td>
+            <td>${subscriber.address}</td>
+          `;
           tableBody.appendChild(row);
         });
+
         attachSubscriberRowClickEvent();
       } else {
         console.error("Failed to fetch subscribers:", data.error);
@@ -55,46 +66,45 @@ function attachSubscriberRowClickEvent() {
   rows.forEach((row) => {
     row.addEventListener("click", () => {
       const subscriber = JSON.parse(row.getAttribute("data-subscriber"));
+      const isOverdue = new Date(subscriber.next_due_date) < new Date();
 
       Swal.fire({
         title: `Subscriber ID: ${subscriber.id}`,
         html: `
         <div style="text-align: left; max-height: 400px; overflow-y: auto; padding-right: 10px;">
-               <strong>Username:</strong> ${subscriber.username}<br>
-                  <strong>Subscription Plan:</strong> ${
-                    subscriber.subscription_plan
-                  }<br>
-                  <strong>Name:</strong> ${subscriber.first_name} ${
+          <strong>Username:</strong> ${subscriber.username}<br>
+          <strong>Subscription Plan:</strong> ${
+            subscriber.subscription_plan
+          }<br>
+          <strong>Status:</strong> ${subscriber.status}<br>
+
+          <strong>Name:</strong> ${subscriber.first_name} ${
           subscriber.last_name
         }<br>
-                  <strong>Birth Date:</strong> ${subscriber.birth_date}<br>
-                  <strong>Address:</strong> ${subscriber.address}<br>
-                  <strong>Contact:</strong> ${subscriber.contact_number}<br>
-                  <strong>Email:</strong> ${subscriber.email_address}<br>
-                  <strong>ID Type:</strong> ${subscriber.id_type} <br>
-                  <strong>ID Number: </strong> ${
-                    subscriber.id_number || "N/A"
-                  }<br>
-                  <strong>Home Ownership:</strong> ${
-                    subscriber.home_ownership_type
-                  }<br>
-                  <strong>Installation Date:</strong> ${
-                    subscriber.installation_date
-                  }<br>
-                  <strong>Registration Date:</strong> ${
-                    subscriber.registration_date
-                  }<br>
-                  <strong>ID Photo:</strong><br>
-                  <img src="frontend/assets/images/uploads/Id_Photo/${
-                    subscriber.id_photo
-                  }" width="100%" style="cursor: pointer;" 
-                      onclick="viewImage(this.src)" onerror="this.onerror=null;this.src='frontend/assets/images/uploads/default_id_photo.jpg';"><br>
-                  <strong>Proof of Residency:</strong><br>
-                  <img src="frontend/assets/images/uploads/Proof_of_Residency/${
-                    subscriber.proof_of_residency
-                  }" width="100%" style="cursor: pointer;" 
-                      onclick="viewImage(this.src)" onerror="this.onerror=null;this.src='frontend/assets/images/uploads/default_proof_of_residency.jpg';">
-                </div>
+          <strong>Birth Date:</strong> ${subscriber.birth_date}<br>
+          <strong>Address:</strong> ${subscriber.address}<br>
+          <strong>Contact:</strong> ${subscriber.contact_number}<br>
+          <strong>Email:</strong> ${subscriber.email_address}<br>
+          <strong>ID Type:</strong> ${subscriber.id_type} <br>
+          <strong>ID Number:</strong> ${subscriber.id_number || "N/A"}<br>
+          <strong>Home Ownership:</strong> ${subscriber.home_ownership_type}<br>
+          <strong>Installation Date:</strong> ${
+            subscriber.installation_date
+          }<br>
+          <strong>Registration Date:</strong> ${
+            subscriber.registration_date
+          }<br>
+          <strong>ID Photo:</strong><br>
+          <img src="frontend/assets/images/uploads/Id_Photo/${
+            subscriber.id_photo
+          }" width="100%" style="cursor: pointer;"
+              onclick="viewImage(this.src)" onerror="this.onerror=null;this.src='frontend/assets/images/uploads/default_id_photo.jpg';"><br>
+          <strong>Proof of Residency:</strong><br>
+          <img src="frontend/assets/images/uploads/Proof_of_Residency/${
+            subscriber.proof_of_residency
+          }" width="100%" style="cursor: pointer;"
+              onclick="viewImage(this.src)" onerror="this.onerror=null;this.src='frontend/assets/images/uploads/default_proof_of_residency.jpg';">
+        </div>
         `,
         icon: "info",
         showCancelButton: true,
@@ -102,6 +112,61 @@ function attachSubscriberRowClickEvent() {
         confirmButtonText: "Pay Current Bill",
         denyButtonText: "Add Misc Fee",
         cancelButtonText: "Close",
+        footer:
+          isOverdue && subscriber.status !== "terminated"
+            ? `<button id="terminateBtn" class="swal2-cancel swal2-styled swal2-danger">Terminate Account</button>`
+            : "",
+
+        didRender: () => {
+          const terminateBtn = document.getElementById("terminateBtn");
+
+          if (terminateBtn) {
+            terminateBtn.addEventListener("click", () => {
+              Swal.fire({
+                title: "Terminate Account",
+                text: "Are you sure you want to terminate this subscriber's account?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, Terminate",
+                cancelButtonText: "Cancel",
+              }).then((result) => {
+                if (result.isConfirmed) {
+                  fetch("backend/terminate_subscriber.php", {
+                    method: "POST",
+                    headers: {
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ subscriberId: subscriber.id }),
+                  })
+                    .then((res) => res.json())
+                    .then((data) => {
+                      if (data.success) {
+                        Swal.fire(
+                          "Terminated",
+                          "Account successfully terminated.",
+                          "success"
+                        ).then(() => fetchSubscribers());
+                      } else {
+                        Swal.fire(
+                          "Error",
+                          data.message || "Termination failed.",
+                          "error"
+                        );
+                      }
+                    })
+                    .catch((error) => {
+                      console.error("Termination error:", error);
+                      Swal.fire(
+                        "Error",
+                        "An error occurred while terminating.",
+                        "error"
+                      );
+                    });
+                }
+              });
+            });
+          }
+        },
       }).then((result) => {
         if (result.isConfirmed) {
           payCurrentBill(subscriber.id, subscriber.currentBill);
@@ -145,7 +210,7 @@ function attachSubscriberRowClickEvent() {
                       "Miscellaneous fee added successfully.",
                       "success"
                     ).then(() => {
-                      fetchSubscribers(); // Refresh table after Swal closes
+                      fetchSubscribers();
                     });
                   } else {
                     Swal.fire(
@@ -197,7 +262,7 @@ function payCurrentBill(subscriberId, currentBill) {
               "Current bill paid successfully.",
               "success"
             ).then(() => {
-              fetchSubscribers(); // Refresh the list after Swal closes
+              fetchSubscribers();
             });
           } else {
             Swal.fire("Error", data.message || "Payment failed.", "error");

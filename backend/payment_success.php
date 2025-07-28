@@ -91,7 +91,8 @@ if (isset($captureData['status']) && $captureData['status'] === 'COMPLETED') {
       UPDATE approved_user
          SET currentBill = 0,
              payment_status = 'paid',
-             last_payment_date = ?
+             last_payment_date = ?,
+             account_status = 'active'
        WHERE user_id = ?
     ");
     mysqli_stmt_bind_param($stmt, "si", $today, $user_id);

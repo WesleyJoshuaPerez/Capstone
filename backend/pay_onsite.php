@@ -105,7 +105,8 @@ try {
         UPDATE approved_user
         SET currentBill = 0,
             payment_status = 'Paid',
-            last_payment_date = ?
+            last_payment_date = ?, 
+            account_status = 'active'
         WHERE user_id = ?
     ");
     $stmt->bind_param("ss", $today, $subscriberId);

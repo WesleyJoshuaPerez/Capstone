@@ -42,12 +42,28 @@ $is_admin = false;
 $is_technician = false;
 
 // Try regular user login (approved_user table)
-$user = checkLogin($conn, "approved_user", "user_id", $username);
 $is_regular_user = false;
+$user = null;
 
-if ($user) {
-    $is_regular_user = true;
-} else {
+$query = "SELECT user_id, username, password, account_status FROM approved_user WHERE username = ?";
+$stmt = $conn->prepare($query);
+if ($stmt) {
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($result && $result->num_rows > 0) {
+        $user = $result->fetch_assoc();
+        $is_regular_user = true;
+
+        //Check if user is terminated
+       $isTerminated = strtolower($user['account_status']) === 'terminated';
+     
+
+    }
+    $stmt->close();
+}
+
+if (!$user) {
     // Try admin login (lynx_admin table)
     $user = checkLogin($conn, "lynx_admin", "admin_id", $username);
     if ($user) {
@@ -102,19 +118,25 @@ if ($user) {
                 $lastPayment = $u['last_payment_date'];
 
                 $today = date('Y-m-d');
-                $nextDueDate = date('Y-m-d', strtotime("+1 month", strtotime($installDate)));
 
-                if (
-                    strtotime($today) >= strtotime($nextDueDate) &&
-                    (!$lastPayment || strtotime($lastPayment) < strtotime($nextDueDate)) &&
-                    $paymentStatus === 'unpaid'
-                ) {
+                // Count full months since install
+                $monthsSinceInstall = floor((strtotime($today) - strtotime($installDate)) / (30 * 24 * 60 * 60));
+                $nextDueDate = date('Y-m-d', strtotime("+$monthsSinceInstall month", strtotime($installDate)));
+
+                // Advance due date if already paid this cycle
+                if ($lastPayment && strtotime($lastPayment) >= strtotime($nextDueDate)) {
+                    $nextDueDate = date('Y-m-d', strtotime("+1 month", strtotime($nextDueDate)));
+                }
+
+                $isDue = strtotime($today) >= strtotime($nextDueDate);
+                $needsBill = (!$lastPayment || strtotime($lastPayment) < strtotime($nextDueDate));
+
+                if ($isDue && $needsBill && $paymentStatus === 'unpaid') {
                     $isOverdue = true;
                 }
             }
             $stmt->close();
         }
-        // 
 
         // Redirect based on role
         if ($is_admin) {
@@ -131,11 +153,13 @@ if ($user) {
             ]);
         } else {
             echo json_encode([
-                "status" => "success",
-                "message" => "Login successful.",
-                "redirect" => "user_dashboard.html",
-                "isOverdue" => $isOverdue 
-            ]);
+    "status" => "success",
+    "message" => "Login successful.",
+    "redirect" => "user_dashboard.html",
+    "isOverdue" => $isOverdue,
+    "isTerminated" => $isTerminated
+]);
+
         }
     } else {
         echo json_encode(["status" => "error", "message" => "Invalid username or password."]);

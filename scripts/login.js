@@ -50,10 +50,10 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log("Server Response:", data);
 
         if (data.status === "success") {
-          // Save login state and role in localStorage
+          // Save login state and role in sessionStorage
           sessionStorage.setItem("isLoggedIn", "true");
 
-          // Determine user role based on the redirect path
+          // Determine user role based on redirect path
           let role = "";
           if (data.redirect.includes("admin.html")) {
             role = "admin";
@@ -64,26 +64,52 @@ document.addEventListener("DOMContentLoaded", function () {
           }
           sessionStorage.setItem("userRole", role);
 
-          // Show billing reminder if overdue
-          if (data.isOverdue) {
-            Swal.fire({
-              icon: "warning",
-              title: "Billing Reminder",
-              text: "You have an overdue bill. Please settle it as soon as possible.",
-              confirmButtonText: "Got it",
-            }).then(() => {
-              // Proceed with login success and redirect after the user clicks OK
+          // Show appropriate alert based on status
+          if (role === "user") {
+            if (data.isTerminated === true) {
+              Swal.fire({
+                icon: "warning",
+                title: "Account Suspended",
+                html: "Your account has been <b>suspended due to overdue payment</b>.<br><br>Please settle your bill to regain full access.",
+                confirmButtonText: "Continue to Dashboard",
+              }).then(() => {
+                Swal.fire({
+                  icon: "success",
+                  title: "Login Successful",
+                  text: "You have successfully logged in.",
+                  showConfirmButton: true,
+                }).then(() => {
+                  window.location.href = data.redirect;
+                });
+              });
+            } else if (data.isOverdue === true) {
+              Swal.fire({
+                icon: "warning",
+                title: "Billing Reminder",
+                text: "You have an overdue bill. Please settle it as soon as possible.",
+                confirmButtonText: "Got it",
+              }).then(() => {
+                Swal.fire({
+                  icon: "success",
+                  title: "Login Successful",
+                  text: "You have successfully logged in.",
+                  showConfirmButton: true,
+                }).then(() => {
+                  window.location.href = data.redirect;
+                });
+              });
+            } else {
               Swal.fire({
                 icon: "success",
                 title: "Login Successful",
                 text: "You have successfully logged in.",
-                showConfirmButton: true,  
+                showConfirmButton: true,
               }).then(() => {
                 window.location.href = data.redirect;
               });
-            });
+            }
           } else {
-            // Normal login redirect when not overdue
+            // Admins/Technicians login success
             Swal.fire({
               icon: "success",
               title: "Login Successful",

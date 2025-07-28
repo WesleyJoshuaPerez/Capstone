@@ -111,6 +111,16 @@ ul li:hover {
   font-weight: bold;
 }
 
+/*for account status */
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 0.9em;
+  display: inline-block;
+  color: white;
+  background-color: green;
+}
 .header {
   display: flex;
   justify-content: space-between; /* Push items to opposite ends */
