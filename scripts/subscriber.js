@@ -257,12 +257,22 @@ function payCurrentBill(subscriberId, currentBill) {
         .then((response) => response.json())
         .then((data) => {
           if (data.success) {
+            // generate PDF receipt and download it
+            if (data.pdf_url) {
+              const link = document.createElement("a");
+              link.href = data.pdf_url;
+              link.download = ""; // Optional: let browser choose filename
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+            }
+
             Swal.fire(
               "Success",
-              "Current bill paid successfully.",
+              "Current bill paid successfully. Receipt is downloading.",
               "success"
             ).then(() => {
-              fetchSubscribers();
+              fetchSubscribers(); // reload your table or UI
             });
           } else {
             Swal.fire("Error", data.message || "Payment failed.", "error");
