@@ -86,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function () {
               Swal.fire({
                 icon: "warning",
                 title: "Billing Reminder",
-                text: "You have an overdue bill. Please settle it within (5) days after your supposed due date or contact our office to avoid termination of your account.",
+                text: "You have an overdue bill. Please settle it within (5) days after your due date or contact our office to avoid disconnection of your internet.",
                 confirmButtonText: "Got it",
               }).then(() => {
                 Swal.fire({
