@@ -55,8 +55,8 @@ if ($stmt) {
         $user = $result->fetch_assoc();
         $is_regular_user = true;
 
-        //Check if user is terminated
-       $isTerminated = strtolower($user['account_status']) === 'terminated';
+        //Check if user is disconnected
+       $isDisconnected = strtolower($user['account_status']) === 'disconnected';
      
 
     }
@@ -157,7 +157,7 @@ if ($user) {
     "message" => "Login successful.",
     "redirect" => "user_dashboard.html",
     "isOverdue" => $isOverdue,
-    "isTerminated" => $isTerminated
+    "isDisconnected" =>  $isDisconnected
 ]);
 
         }

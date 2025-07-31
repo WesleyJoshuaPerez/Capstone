@@ -1,5 +1,5 @@
 <?php
-// backend/terminate_subscriber.php
+// disconnect_subscriber.php
 
 header("Content-Type: application/json");
 require 'connectdb.php';
@@ -22,7 +22,7 @@ if (!isset($input['subscriberId'])) {
 $subscriberId = intval($input['subscriberId']);
 
 // Optional: Logically "terminate" account status and doesnt remove data on the database table
-$stmt = $conn->prepare("UPDATE approved_user SET account_status = 'terminated' WHERE user_id = ?");
+$stmt = $conn->prepare("UPDATE approved_user SET account_status = 'disconnected' WHERE user_id = ?");
 $stmt->bind_param("i", $subscriberId);
 
 if ($stmt->execute()) {

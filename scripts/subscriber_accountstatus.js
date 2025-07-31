@@ -22,8 +22,8 @@ function updateAccountStatusUI(status) {
   if (status === "active") {
     statusElement.textContent = "Active";
     statusElement.style.backgroundColor = "#00c853"; // Bright green
-  } else if (status === "terminated") {
-    statusElement.textContent = "Terminated";
+  } else if (status === "disconnected") {
+    statusElement.textContent = "Disconnected";
     statusElement.style.backgroundColor = "#ffffff"; // Dark background
     statusElement.style.color = "#700000"; // White text
     statusIcon.style.backgroundColor = "#ffffff";

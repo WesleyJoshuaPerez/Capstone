@@ -30,7 +30,7 @@ function fetchSubscribers() {
             <td>${subscriber.subscription_plan}</td>
             <td>${subscriber.currentBill}</td>
             <td style="color: ${
-              subscriber.status.toLowerCase() === "terminated"
+              subscriber.status.toLowerCase() === "disconnected"
                 ? "red"
                 : subscriber.status.toLowerCase() === "active"
                 ? "green"
@@ -113,25 +113,25 @@ function attachSubscriberRowClickEvent() {
         denyButtonText: "Add Misc Fee",
         cancelButtonText: "Close",
         footer:
-          isOverdue && subscriber.status !== "terminated"
-            ? `<button id="terminateBtn" class="swal2-cancel swal2-styled swal2-danger">Terminate Account</button>`
+          isOverdue && subscriber.status !== "disconnected"
+            ? `<button id="disconnectBtn" class="swal2-cancel swal2-styled swal2-danger">Disconnect Internet Access</button>`
             : "",
 
         didRender: () => {
-          const terminateBtn = document.getElementById("terminateBtn");
+          const disconnectBtn = document.getElementById("disconnectBtn");
 
-          if (terminateBtn) {
-            terminateBtn.addEventListener("click", () => {
+          if (disconnectBtn) {
+            disconnectBtn.addEventListener("click", () => {
               Swal.fire({
-                title: "Terminate Account",
-                text: "Are you sure you want to terminate this subscriber's account?",
+                title: "Disconnect Internet Access",
+                text: "Do you really want to disconnect this subscriber?",
                 icon: "warning",
                 showCancelButton: true,
-                confirmButtonText: "Yes, Terminate",
+                confirmButtonText: "Yes, Disconnect",
                 cancelButtonText: "Cancel",
               }).then((result) => {
                 if (result.isConfirmed) {
-                  fetch("backend/terminate_subscriber.php", {
+                  fetch("backend/disconnect_subscriber.php", {
                     method: "POST",
                     headers: {
                       "Content-Type": "application/json",
@@ -142,20 +142,20 @@ function attachSubscriberRowClickEvent() {
                     .then((data) => {
                       if (data.success) {
                         Swal.fire(
-                          "Terminated",
-                          "Account successfully terminated.",
+                          "Disconnected",
+                          "Account successfully disconnected.",
                           "success"
                         ).then(() => fetchSubscribers());
                       } else {
                         Swal.fire(
                           "Error",
-                          data.message || "Termination failed.",
+                          data.message || "Disconnection Failed",
                           "error"
                         );
                       }
                     })
                     .catch((error) => {
-                      console.error("Termination error:", error);
+                      console.error("Disconnection error:", error);
                       Swal.fire(
                         "Error",
                         "An error occurred while terminating.",

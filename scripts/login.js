@@ -66,11 +66,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
           // Show appropriate alert based on status
           if (role === "user") {
-            if (data.isTerminated === true) {
+            if (data.isDisconnected === true) {
               Swal.fire({
                 icon: "warning",
-                title: "Account Suspended",
-                html: "Your account has been <b>suspended due to overdue payment</b>.<br><br>Please settle your bill to regain full access.",
+                title: "Internet Connectivity Suspended",
+                html: "Your internet connectivity has been <b>suspended due to the unpaid balance.</b>.To fix this issue, please settle your payment immediately.",
                 confirmButtonText: "Continue to Dashboard",
               }).then(() => {
                 Swal.fire({
