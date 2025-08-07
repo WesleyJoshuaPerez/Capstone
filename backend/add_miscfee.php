@@ -58,6 +58,22 @@ try {
         throw new Exception("Failed to update current bill.");
     }
 
+    // File operations for logging
+    $logDir = 'logs';
+    if (!is_dir($logDir)) {
+        mkdir($logDir, 0777, true);
+    }
+
+    $logFile = $logDir . '/misfee_log_' . date('Y-m-d') . '.txt';
+    $logMessage = "[" . date('Y-m-d H:i:s') . "] User ID: $subscriberId | Fee: ₱$fee | Updated Bill: ₱" . number_format($updatedBill, 2) . "\n";
+
+    $file = fopen($logFile, 'a') or die('Unable to open log file');
+    fwrite($file, $logMessage);
+    fclose($file);
+
+    //use to read the file  
+    $readContent = file_get_contents($logFile);
+
     $conn->commit();
     echo json_encode(['success' => true, 'message' => 'Miscellaneous fee added to current bill.']);
 } catch (Exception $e) {
