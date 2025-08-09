@@ -29,7 +29,7 @@ $(document).ready(function () {
       data: { email: email },
       dataType: "json",
       success: function (response) {
-        console.log("Server response:", response); // ✅ DEBUG LINE
+        console.log("Server response:", response); //  DEBUG LINE
 
         Swal.close(); // Close loading alert
         Swal.fire({
@@ -44,8 +44,8 @@ $(document).ready(function () {
       },
       error: function (jqXHR, textStatus, errorThrown) {
         Swal.close();
-        console.error("AJAX Error:", textStatus, errorThrown); // ✅ DEBUG
-        console.error("Server returned:", jqXHR.responseText); // ✅ DEBUG
+        console.error("AJAX Error:", textStatus, errorThrown); //  DEBUG
+        console.error("Server returned:", jqXHR.responseText); //  DEBUG
 
         Swal.fire({
           title: "Server Error!",

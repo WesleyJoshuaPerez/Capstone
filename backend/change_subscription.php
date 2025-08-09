@@ -34,7 +34,7 @@ if (!array_key_exists($new_plan, $planPrices)) {
     exit;
 }
 
-// ✅ Validate current bill
+// Validate current bill
 $billCheckStmt = $conn->prepare("SELECT currentBill FROM approved_user WHERE user_id = ?");
 $billCheckStmt->bind_param("s", $user_id);
 $billCheckStmt->execute();
