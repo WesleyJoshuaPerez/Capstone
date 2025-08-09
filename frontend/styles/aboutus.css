@@ -262,15 +262,18 @@ section h2::after {
 
 .team-image {
   width: 100%;
-  height: 250px;
+  height: auto; /* Let height adjust to image */
   overflow: hidden;
 }
 
+
 .team-image img {
-  width: 100%;
-  height: 100%;
+  width: 180px;
+  height: 180px;
   object-fit: cover;
   display: block;
+  margin: 0 auto;
+  border-radius: 10px;
 }
 
 .team-card h3 {
@@ -340,35 +343,6 @@ footer {
 }
 
 /* Media Queries */
-
-/* Laptop screen sizes (1024px to 1366px) - Make team section smaller */
-@media (min-width: 951px) and (max-width: 1366px) {
-  .team-grid {
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    max-width: 900px;
-    margin: 0 auto;
-  }
-
-  .team-card {
-    padding: 20px;
-  }
-
-  .team-image {
-    height: 200px;
-  }
-
-  .team-card h3 {
-    font-size: 18px;
-    margin-top: 15px;
-  }
-
-  .team-card p {
-    font-size: 14px;
-    margin: 5px 0 15px;
-  }
-}
-
 @media (max-width: 950px) {
   .navbar :is(.hamburger-btn, .close-btn) {
     display: block;
@@ -421,22 +395,12 @@ footer {
   }
 
   .services-grid,
-  .team-grid,
+  .team-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
   .contact-grid {
     grid-template-columns: repeat(2, 1fr);
   }
-
-  /* Make team cards smaller on tablet */
-  .team-grid {
-    gap: 15px;
-    max-width: 600px;
-    margin: 0 auto;
-  }
-
-  .team-card {
-    padding: 15px;
-  }
-
   .team-image {
     width: 100%;
     height: auto;
@@ -444,22 +408,11 @@ footer {
   }
 
   .team-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  .team-card h3 {
-    font-size: 16px;
-    margin-top: 10px;
-  }
-
-  .team-card p {
-    font-size: 13px;
-    margin: 3px 0 10px;
+    width: 200px;
+    height: 200px;
   }
 }
+
 
 @media (max-width: 768px) {
   .our-story {
@@ -479,14 +432,15 @@ footer {
     overflow: hidden;
   }
 
-  .team-image img {
-    width: 100%;
-    height: auto;
-    object-fit: contain; /* Or remove this line entirely */
-    display: block;
-  }
+	.team-image img {
+	  width: 150px;
+	  height: 150px;
+	}
+
   .services-grid,
-  .team-grid,
+  .team-grid {
+    grid-template-columns: 1fr;
+  }
   .contact-grid {
     grid-template-columns: 1fr;
     gap: 20px;
@@ -529,13 +483,12 @@ footer {
     height: auto;
     overflow: hidden;
   }
-
+  
   .team-image img {
-    width: 100%;
-    height: auto;
-    object-fit: contain; /* Or remove this line entirely */
-    display: block;
+    width: 140px;
+    height: 140px;
   }
+}
 
   .story-content {
     gap: 20px;
