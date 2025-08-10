@@ -266,7 +266,6 @@ section h2::after {
   overflow: hidden;
 }
 
-
 .team-image img {
   width: 180px;
   height: 180px;
@@ -413,7 +412,6 @@ footer {
   }
 }
 
-
 @media (max-width: 768px) {
   .our-story {
     margin-top: 50px;
@@ -432,10 +430,10 @@ footer {
     overflow: hidden;
   }
 
-	.team-image img {
-	  width: 150px;
-	  height: 150px;
-	}
+  .team-image img {
+    width: 150px;
+    height: 150px;
+  }
 
   .services-grid,
   .team-grid {
@@ -483,19 +481,18 @@ footer {
     height: auto;
     overflow: hidden;
   }
-  
+
   .team-image img {
     width: 140px;
     height: 140px;
   }
 }
 
-  .story-content {
-    gap: 20px;
-  }
+.story-content {
+  gap: 20px;
+}
 
-  footer {
-    padding: 15px 0;
-    display: none;
-  }
+footer {
+  padding: 15px 0;
+  display: none;
 }
