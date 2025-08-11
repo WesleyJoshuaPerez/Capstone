@@ -84,7 +84,7 @@ if ((int)$dupRow['count'] > 0) {
 }
 
 // --- Overall Request Limit Check (exclude Denied and Completed) ---
-$checkStmt = $conn->prepare("SELECT COUNT(*) as count FROM maintenance_requests WHERE user_id = ? AND status NOT IN ('Denied', 'Completed')");
+$checkStmt = $conn->prepare("SELECT COUNT(*) as count FROM maintenance_requests WHERE user_id = ? AND status NOT IN ('Denied', 'Completed', 'Viewed')");
 $checkStmt->bind_param("i", $userId);
 $checkStmt->execute();
 $checkResult = $checkStmt->get_result();
