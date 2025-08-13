@@ -15,68 +15,46 @@ if (!$conn) {
     exit;
 }
 
+// Add the new columns to the SELECT query
 $stmt = $conn->prepare("
     SELECT user_id, fullname, subscription_plan, currentBill, 
            contact_number, address, birth_date, email_address, 
-           installation_date, registration_date, payment_status, last_payment_date, account_status
+           installation_date, registration_date, payment_status, 
+           last_payment_date, account_status, reminder_sent, due_date
     FROM approved_user WHERE user_id = ?
 ");
-
 $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows > 0) {
     $user = $result->fetch_assoc();
-
     $plan = strtolower($user['subscription_plan']);
-    $currentBill = floatval($user['currentBill']);
     $installDate = $user['installation_date'];
     $today = date('Y-m-d');
-    $paymentStatus = $user['payment_status'];
-    $lastPayment = $user['last_payment_date'];
     $isPaid = ($user['payment_status'] === 'paid');
-
+    
     $planPrices = [
         'bronze' => 1199,
         'silver' => 1499,
         'gold'   => 1799
     ];
     $originalPrice = $planPrices[$plan] ?? 0;
-
-    // Calculate how many months since install
+    
+    // Simple next due date calculation no billing logic
     $monthsSinceInstall = floor((strtotime($today) - strtotime($installDate)) / (30 * 24 * 60 * 60));
     $nextDueDate = date('Y-m-d', strtotime("+$monthsSinceInstall month", strtotime($installDate)));
-
+    
+    // If user has a specific due_date set by the billing system, use that instead
+    if (!empty($user['due_date'])) {
+        $nextDueDate = $user['due_date'];
+    }
+    
     // If the user has paid for the current cycle, advance due date to next cycle
-    if ($lastPayment && strtotime($lastPayment) >= strtotime($nextDueDate)) {
+    if ($user['last_payment_date'] && strtotime($user['last_payment_date']) >= strtotime($nextDueDate)) {
         $nextDueDate = date('Y-m-d', strtotime("+1 month", strtotime($nextDueDate)));
     }
-
-    // Billing trigger: only if today >= due date and not paid for this cycle
-    if (strtotime($today) >= strtotime($nextDueDate)) {
-        if (!$lastPayment || strtotime($lastPayment) < strtotime($nextDueDate)) {
-            if ($currentBill == 0 && $paymentStatus == 'unpaid') {
-                $update = $conn->prepare("UPDATE approved_user SET currentBill = ?, payment_status = 'unpaid' WHERE user_id = ?");
-                $update->bind_param("di", $originalPrice, $user_id);
-                $update->execute();
-                $update->close();
-
-                $user['currentBill'] = $originalPrice;
-                $user['payment_status'] = 'unpaid';
-            }
-
-            if ($paymentStatus == 'paid') {
-                $updateStatus = $conn->prepare("UPDATE approved_user SET payment_status = 'unpaid' WHERE user_id = ?");
-                $updateStatus->bind_param("i", $user_id);
-                $updateStatus->execute();
-                $updateStatus->close();
-
-                $user['payment_status'] = 'unpaid';
-            }
-        }
-    }
-
+    
     echo json_encode([
         "status" => "success",
         "user_id" => str_pad($user['user_id'], 10, '0', STR_PAD_LEFT),
@@ -92,11 +70,13 @@ if ($result->num_rows > 0) {
         "payment_status" => $user['payment_status'],
         "isPaid" => $isPaid,
         "next_due_date" => $nextDueDate,
-        "account_status" => $user['account_status']
+        "account_status" => $user['account_status'],
+        "reminder_sent" => $user['reminder_sent'],
+        "due_date" => $user['due_date']
     ]);
 } else {
     echo json_encode([
-        "status" => "error",
+        "status" => "error", 
         "message" => "User not found in the database."
     ]);
 }

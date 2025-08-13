@@ -57,11 +57,19 @@ function generateUniqueReference($conn) {
     return $reference;
 }
 
+// Function to calculate next due date
+function calculateNextDueDate($installationDate) {
+    $today = date('Y-m-d');
+    $monthsSinceInstall = floor((strtotime($today) - strtotime($installationDate)) / (30 * 24 * 60 * 60));
+    $nextDueDate = date('Y-m-d', strtotime("+1 month +$monthsSinceInstall month", strtotime($installationDate)));
+    return $nextDueDate;
+}
+
 try {
     $conn->begin_transaction();
 
-    // Get subscriber info
-    $stmt = $conn->prepare("SELECT fullname, subscription_plan, currentBill FROM approved_user WHERE user_id = ?");
+    // Get subscriber info including installation_date for due date calculation
+    $stmt = $conn->prepare("SELECT fullname, subscription_plan, currentBill, installation_date FROM approved_user WHERE user_id = ?");
     $stmt->bind_param("s", $subscriberId);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -74,12 +82,16 @@ try {
     $fullname = $subscriber['fullname'];
     $subscriptionPlan = $subscriber['subscription_plan'];
     $currentBillFromDB = $subscriber['currentBill'];
+    $installationDate = $subscriber['installation_date'];
 
     if ($currentBill != $currentBillFromDB) {
         throw new Exception("Current bill does not match database.");
     }
 
     $referenceNumber = generateUniqueReference($conn);
+
+    // Calculate next due date based on installation date
+    $nextDueDate = calculateNextDueDate($installationDate);
 
     // Insert payment
     $stmt = $conn->prepare("
@@ -101,89 +113,342 @@ try {
         throw new Exception("Failed to insert payment.");
     }
 
-    // Update subscriber
+    // Update subscriber - UPDATED to include due_date and reminder_sent reset
     $stmt = $conn->prepare("
         UPDATE approved_user
         SET currentBill = 0,
             payment_status = 'Paid',
             last_payment_date = ?, 
-            account_status = 'active'
+            account_status = 'active',
+            due_date = ?,
+            reminder_sent = 0
         WHERE user_id = ?
     ");
-    $stmt->bind_param("ss", $today, $subscriberId);
+    $stmt->bind_param("sss", $today, $nextDueDate, $subscriberId);
 
     if (!$stmt->execute()) {
         throw new Exception("Failed to update subscriber.");
     }
 
-    // Generate PDF Receipt
+    // Generate PDF Receipt (using actual data instead of hardcoded values)
     $dompdf = new Dompdf();
-  $html = "
-  <!DOCTYPE html>
-  <html lang='en'>
-  <head>
-  <meta charset='UTF-8'>
-  <title>LYNX Fiber Internet Receipt</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      padding: 40px;
-      color: #333;
-    }
-    header {
-      display: flex;
-      align-items: center;
-      border-bottom: 2px solid #007bff;
-      padding-bottom: 10px;
-      margin-bottom: 30px;
-    }
-    header img {
-      height: 60px;
-      margin-right: 20px;
-    }
-    header .company-info h1 {
-      margin: 0;
-      font-size: 24px;
-      color: #007bff;
-    }
-    header .company-info p {
-      margin: 2px 0 0;
-      font-size: 14px;
-      color: #666;
-    }
-    .receipt-details {
-      margin-top: 20px;
-    }
-    .receipt-details p {
-      margin: 10px 0;
-    }
-    .receipt-details strong {
-      color: #007bff;
-    }
-   </style>
-   </head>
-  <body>
-  <header>
-    <div class='company-info'>
-      <h1>LYNX Fiber Internet</h1>
-      <p>Your Trusted ISP</p>
+    $html = "
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <title>LYNX Fiber Internet Receipt</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 15px;
+            color: #333;
+            background-color: #fff;
+            line-height: 1.2;
+            font-size: 14px;
+        }
+        
+        .receipt-container {
+            max-width: 600px;
+            margin: 0 auto;
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 123, 255, 0.1);
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            right: 0;
+            height: 15px;
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            clip-path: polygon(0 0, 100% 0, 95% 100%, 5% 100%);
+        }
+        
+        .company-name {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0 0 3px 0;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .tagline {
+            font-size: 14px;
+            margin: 0;
+            opacity: 0.9;
+            font-style: italic;
+        }
+        
+        .receipt-badge {
+            background: #28a745;
+            color: white;
+            padding: 6px 15px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 12px;
+            margin-top: 8px;
+            display: inline-block;
+        }
+        
+        .content {
+            padding: 20px;
+            background: #fff;
+            position: relative;
+        }
+        
+        .receipt-title {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .reference-section {
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 10px;
+            margin-bottom: 15px;
+            border-radius: 0 5px 5px 0;
+        }
+        
+        .reference-number {
+            font-size: 16px;
+            font-weight: bold;
+            color: #007bff;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .details-grid {
+            display: table;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+        
+        .detail-row {
+            display: table-row;
+        }
+        
+        .detail-label {
+            display: table-cell;
+            padding: 8px 0;
+            font-weight: 600;
+            color: #495057;
+            width: 40%;
+            border-bottom: 1px solid #eee;
+            font-size: 13px;
+        }
+        
+        .detail-value {
+            display: table-cell;
+            padding: 8px 0 8px 15px;
+            color: #212529;
+            font-weight: 500;
+            border-bottom: 1px solid #eee;
+            font-size: 13px;
+        }
+        
+        .amount-highlight {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            padding: 15px;
+            text-align: center;
+            border-radius: 8px;
+            margin: 15px 0;
+            box-shadow: 0 2px 8px rgba(40, 167, 69, 0.2);
+        }
+        
+        .amount-text {
+            font-size: 22px;
+            font-weight: bold;
+            margin: 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+        }
+        
+        .amount-label {
+            font-size: 12px;
+            opacity: 0.9;
+            margin-top: 3px;
+        }
+        
+        .status-badge {
+            background: #28a745;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+            font-size: 12px;
+            display: inline-block;
+        }
+        
+        .footer {
+            background: #f8f9fa;
+            padding: 15px;
+            text-align: center;
+            border-top: 1px solid #dee2e6;
+            margin-top: 15px;
+        }
+        
+        .footer p {
+            margin: 3px 0;
+            color: #6c757d;
+            font-size: 13px;
+        }
+        
+        .thank-you {
+            font-size: 16px;
+            font-weight: bold;
+            color: #007bff;
+            margin-bottom: 8px;
+        }
+        
+        .contact-info {
+            font-size: 11px;
+            color: #6c757d;
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #dee2e6;
+        }
+        
+        .verification-section {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: white;
+            padding: 12px;
+            border-radius: 6px;
+            max-width: 280px;
+            margin: 15px auto;
+            text-align: center;
+        }
+        
+        .verification-title {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 3px;
+        }
+        
+        .verification-subtitle {
+            font-size: 11px;
+            opacity: 0.9;
+        }
+        
+        .verification-id {
+            font-size: 10px;
+            margin-top: 5px;
+            font-family: Courier New, monospace;
+        }
+        
+        .watermark {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-45deg);
+            font-size: 60px;
+            color: rgba(0, 123, 255, 0.03);
+            font-weight: bold;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @media print {
+            body { margin: 0; padding: 10px; }
+            .receipt-container { box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class='receipt-container'>
+        <div class='header'>
+            <h1 class='company-name'>LYNX FIBER INTERNET</h1>
+            <p class='tagline'>Stay Connected, Stay Fast!</p>
+            <div class='receipt-badge'>PAYMENT CONFIRMED</div>
+        </div>
+        
+        <div class='content'>
+            <div class='watermark'>PAID</div>
+            
+            <h2 class='receipt-title'>Official Receipt</h2>
+            
+            <div class='reference-section'>
+                <div style='font-size: 12px; color: #6c757d; margin-bottom: 3px;'>Reference Number</div>
+                <div class='reference-number'>{$referenceNumber}</div>
+            </div>
+            
+            <div class='details-grid'>
+                <div class='detail-row'>
+                    <div class='detail-label'>Customer Name:</div>
+                    <div class='detail-value'>{$fullname}</div>
+                </div>
+                <div class='detail-row'>
+                    <div class='detail-label'>Account ID:</div>
+                    <div class='detail-value'>{$subscriberId}</div>
+                </div>
+                <div class='detail-row'>
+                    <div class='detail-label'>Subscription Plan:</div>
+                    <div class='detail-value'>{$subscriptionPlan}</div>
+                </div>
+                <div class='detail-row'>
+                    <div class='detail-label'>Payment Method:</div>
+                    <div class='detail-value'>Cash Payment (Onsite)</div>
+                </div>
+                <div class='detail-row'>
+                    <div class='detail-label'>Transaction Date:</div>
+                    <div class='detail-value'>" . date('F j, Y - g:i A', strtotime($today)) . "</div>
+                </div>
+                <div class='detail-row'>
+                    <div class='detail-label'>Payment Status:</div>
+                    <div class='detail-value'><span class='status-badge'>PAID</span></div>
+                </div>
+                <div class='detail-row'>
+                    <div class='detail-label'>Next Due Date:</div>
+                    <div class='detail-value'>" . date('F j, Y', strtotime($nextDueDate)) . "</div>
+                </div>
+            </div>
+            
+            <div class='amount-highlight'>
+                <div class='amount-text'>PHP " . number_format($currentBill, 2) . "</div>
+                <div class='amount-label'>Total Amount Paid</div>
+            </div>
+            
+            <div class='verification-section'>
+                <div class='verification-title'>✓ PAYMENT VERIFIED</div>
+                <div class='verification-subtitle'>Transaction processed successfully</div>
+                <div class='verification-id'>ID: {$referenceNumber}</div>
+            </div>
+        </div>
+        
+        <div class='footer'>
+            <p class='thank-you'>Thank you for your payment!</p>
+            <p>Your internet service will continue without interruption.</p>
+            <p style='font-weight: 600; color: #007bff;'>
+                Next billing cycle starts immediately.
+            </p>
+            
+            <div class='contact-info'>
+                <p><strong>LYNX Fiber Internet</strong></p>
+                <p>For inquiries and support, please contact our customer service.</p>
+                <p>Website: https://lynxfiberinternet.com/</p>
+                <p style='margin-top: 8px; font-style: italic;'>
+                    This is an official computer-generated receipt. Please keep this for your records.
+                </p>
+            </div>
+        </div>
     </div>
-  </header>
-
-  <h2 style='text-align:center;'>Payment Receipt</h2>
-
-  <div class='receipt-details'>
-    <p><strong>Reference Number:</strong> {$referenceNumber}</p>
-    <p><strong>Name:</strong> {$fullname}</p>
-    <p><strong>Subscription Plan:</strong> {$subscriptionPlan}</p>
-    <p><strong>Amount Paid:</strong> PHP {$currentBill}</p>
-    <p><strong>Payment Method:</strong> Onsite</p>
-    <p><strong>Date:</strong> {$today}</p>
-  </div>
-  </body>
-</html>
-";
-
+</body>
+</html>";
 
     $dompdf->loadHtml($html);
     $dompdf->setPaper('A4', 'portrait');
@@ -207,7 +472,8 @@ try {
         'success' => true,
         'message' => 'Payment successful.',
         'reference_number' => $referenceNumber,
-        'pdf_url' => $publicUrl
+        'pdf_url' => $publicUrl,
+        'next_due_date' => $nextDueDate
     ]);
 
 } catch (Exception $e) {
