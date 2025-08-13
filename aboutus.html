@@ -78,11 +78,11 @@
           </div>
           <div class="story-text">
             <p>
-              <b>LYNX Fiber Internet</b> is a private internet company providing fast
-              and reliable fiber network services to far-flung areas in and
+              <b>LYNX Fiber Internet</b> is a private internet company providing
+              fast and reliable fiber network services to far-flung areas in and
               around Orion, Bataan. Founded in 2020 during the COVID-19
               pandemic, we recognized the critical need for strong and stable
-              internet connections throughout the locations often unreachable by 
+              internet connections throughout the locations often unreachable by
               traditional cell towers and major internet providers so we make it
               our mission to cater everyone who desires to purchase an internet
               connectivity even if they are living at the farthest reaches of
@@ -182,47 +182,39 @@
       </div>
     </section>
 
-    <!--For Chatbot-->
-    <div class="chatbot-container">
-      <div class="chatbot-window" id="chatWindow" style="display: none">
-        <div class="chat-header">
-          <img
-            src="frontend/assets/images/icons/chatbotprofile.png"
-            alt="Chatbot Icon"
-            class="chatbot-icon"
-          />
-          Chatbot
-          <button id="closeChatbot" onclick="closeChatbot()">✖</button>
-        </div>
-        <div class="chat-body" id="chatBody"></div>
-        <div class="chat-footer">
-          <input type="text" id="chatInput" placeholder="Type a message..." />
-          <button onclick="sendMessage()">Send</button>
-        </div>
-      </div>
-      <!-- Button to toggle the chatbot -->
-      <button id="chatToggle" class="chatbot-toggle" onclick="toggleChatbot()">
-        <img src="frontend/assets/images/icons/chatboticon.png" alt="Chat" class="chat-icon" />
-      </button>
-
-      <!-- Chatbot iframe popup -->
-      <div id="chatbotPopup" class="chatbot-popup" style="display: none;">
-        <button id="closeChat" class="close-chat" onclick="closeChatbot()">X</button>
-        <iframe
-          id="chatbotIframe"
-          title="LYNX Chatbot"
-          src="https://LYNXChatbot-aTxXjP.ai.copilot.live"
-          style="border: none;"
-          loading="lazy"
-          allow="microphone;camera;speaker;clipboard-read;clipboard-write;geolocation;"
-          width="700px"
-          height="400px"
-        ></iframe>
-      </div>
-    </div>
-
-    <!--For ChatbotFunction-->
-    <script src="scripts/chatbot.js"></script>
+    <!-- Chatbot iframe popup for the chatbase-->
+    <script>
+      (function () {
+        if (!window.chatbase || window.chatbase("getState") !== "initialized") {
+          window.chatbase = (...arguments) => {
+            if (!window.chatbase.q) {
+              window.chatbase.q = [];
+            }
+            window.chatbase.q.push(arguments);
+          };
+          window.chatbase = new Proxy(window.chatbase, {
+            get(target, prop) {
+              if (prop === "q") {
+                return target.q;
+              }
+              return (...args) => target(prop, ...args);
+            },
+          });
+        }
+        const onLoad = function () {
+          const script = document.createElement("script");
+          script.src = "https://www.chatbase.co/embed.min.js";
+          script.id = "h-ImgdyM0T1WM-B5MM21P";
+          script.domain = "www.chatbase.co";
+          document.body.appendChild(script);
+        };
+        if (document.readyState === "complete") {
+          onLoad();
+        } else {
+          window.addEventListener("load", onLoad);
+        }
+      })();
+    </script>
     <footer>
       <div class="footer">
         <img
