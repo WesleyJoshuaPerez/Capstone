@@ -39,7 +39,7 @@ function fetchSubscribers() {
            ${subscriber.status}
            </td>
 
-            <td>${subscriber.next_due_date}</td>
+            <td>${subscriber.due_date}</td>
             <td>${subscriber.first_name}</td>
             <td>${subscriber.last_name}</td>
             <td>${subscriber.contact_number}</td>
