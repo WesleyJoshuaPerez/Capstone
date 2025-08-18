@@ -64,8 +64,34 @@ if (!$hasReminderSent) {
 
 if (!$hasDueDate) {
     $conn->query("ALTER TABLE approved_user ADD COLUMN due_date DATE NULL");
-    //Update the flag after adding the column
     $hasDueDate = true;
+}
+
+/**
+ * Calculate next due date properly based on installation date
+ */
+function calculateNextDueDate($installationDate, $lastPaymentDate = null) {
+    $installDate = new DateTime($installationDate);
+    $today = new DateTime();
+    
+    // If there's a last payment date, calculate from that
+    if ($lastPaymentDate) {
+        $lastPayment = new DateTime($lastPaymentDate);
+        $nextDue = clone $lastPayment;
+        $nextDue->add(new DateInterval('P1M')); // Add 1 month
+        return $nextDue->format('Y-m-d');
+    }
+    
+    // Otherwise, calculate from installation date
+    $nextDue = clone $installDate;
+    $nextDue->add(new DateInterval('P1M')); // Add 1 month initially
+    
+    // Keep adding months until we're in the future
+    while ($nextDue <= $today) {
+        $nextDue->add(new DateInterval('P1M'));
+    }
+    
+    return $nextDue->format('Y-m-d');
 }
 
 /**
@@ -89,7 +115,7 @@ function sendBillingNotification($fullName, $accountNo, $amountDue, $dueDate, $e
         "Thank you for choosing LYNX Fiber Internet!\n" .
         "Stay Connected, Stay Fast!";
 
-    // PDF Generation (same as your original code)
+    // PDF Generation
     try {
         $options = new Options();
         $options->set('isRemoteEnabled', true);
@@ -275,7 +301,7 @@ function sendBillingNotification($fullName, $accountNo, $amountDue, $dueDate, $e
         return false;
     }
 
-    // Email sending (same as original)
+    // Email sending
     $mailSuccess = false;
     try {
         $mail = new PHPMailer(true);
@@ -324,7 +350,7 @@ $subscribers = [];
 $suffixes = ['JR', 'SR', 'III', 'IV'];
 
 while ($row = $result->fetch_assoc()) {
-    // Name processing (same as original)
+    // Name processing
     $nameParts = preg_split('/\s+/', trim($row['fullname']));
 
     if (count($nameParts) > 1) {
@@ -342,33 +368,53 @@ while ($row = $result->fetch_assoc()) {
     }
 
     $originalPrice = $planPrices[strtolower($row['subscription_plan'])] ?? 0;
-
     $today = date('Y-m-d');
-    $installDate = $row['installation_date'];
-
-    $monthsSinceInstall = floor((strtotime($today) - strtotime($installDate)) / (30 * 24 * 60 * 60));
-    $nextDueDate = date('Y-m-d', strtotime("+$monthsSinceInstall month", strtotime($installDate)));
+    
+    // FIXED: Use the existing due_date from database instead of recalculating
+    $currentDueDate = $row['due_date'];
+    
+    // Only calculate a new due date if none exists in the database
+    if (empty($currentDueDate)) {
+        // Use the same calculation method as update_application_status.php
+        $currentDueDate = date('Y-m-d', strtotime('+1 month', strtotime($row['installation_date'])));
+        
+        // Update the database with this calculated date
+        $updateDueDateSQL = "UPDATE approved_user SET due_date = ? WHERE user_id = ?";
+        $stmt = $conn->prepare($updateDueDateSQL);
+        $stmt->bind_param("si", $currentDueDate, $row['user_id']);
+        $stmt->execute();
+        $stmt->close();
+    }
 
     $lastPayment = $row['last_payment_date'] ?? null;
     $paymentStatus = $row['payment_status'];
     $currentBill = $row['currentBill'];
 
-    if ($lastPayment && strtotime($lastPayment) >= strtotime($nextDueDate)) {
-        $nextDueDate = date('Y-m-d', strtotime("+1 month", strtotime($nextDueDate)));
+    // Check if payment was made for current bill
+    if ($lastPayment && strtotime($lastPayment) >= strtotime($currentDueDate)) {
+        // Payment was made, calculate next due date
+        $nextDueDate = date('Y-m-d', strtotime('+1 month', strtotime($currentDueDate)));
+        
+        // Update due date in database
+        $updateNextDueSQL = "UPDATE approved_user SET due_date = ? WHERE user_id = ?";
+        $stmt = $conn->prepare($updateNextDueSQL);
+        $stmt->bind_param("si", $nextDueDate, $row['user_id']);
+        $stmt->execute();
+        $stmt->close();
+        
+        $currentDueDate = $nextDueDate;
     }
 
-    $isDue = strtotime($today) >= strtotime($nextDueDate);
-    $needsBill = (!$lastPayment || strtotime($lastPayment) < strtotime($nextDueDate));
+    $isDue = strtotime($today) >= strtotime($currentDueDate);
+    $needsBill = (!$lastPayment || strtotime($lastPayment) < strtotime($currentDueDate));
 
     if ($isDue && $needsBill) {
         if ($currentBill == 0 && $paymentStatus == 'unpaid') {
             $row['currentBill'] = $originalPrice;
 
-            // FIXED: Always include due_date since we ensure the column exists
-            $updateSQL = "UPDATE approved_user SET currentBill = ?, payment_status = 'unpaid', reminder_sent = 0, due_date = ? WHERE user_id = ?";
-            
+            $updateSQL = "UPDATE approved_user SET currentBill = ?, payment_status = 'unpaid', reminder_sent = 0 WHERE user_id = ?";
             $stmt = $conn->prepare($updateSQL);
-            $stmt->bind_param("iis", $row['currentBill'], $nextDueDate, $row['user_id']);
+            $stmt->bind_param("ii", $row['currentBill'], $row['user_id']);
             
             if (!$stmt->execute()) {
                 error_log("Failed to update currentBill for user_id {$row['user_id']}: " . $stmt->error);
@@ -377,9 +423,11 @@ while ($row = $result->fetch_assoc()) {
         }
 
         if ($paymentStatus == 'paid') {
-            // FIXED: Always include due_date
+            // Calculate next billing cycle
+            $nextBillingDate = date('Y-m-d', strtotime('+1 month', strtotime($currentDueDate)));
+            
             $updateStatus = $conn->prepare("UPDATE approved_user SET payment_status = 'unpaid', reminder_sent = 0, due_date = ? WHERE user_id = ?");
-            $updateStatus->bind_param("si", $nextDueDate, $row['user_id']);
+            $updateStatus->bind_param("si", $nextBillingDate, $row['user_id']);
             
             if (!$updateStatus->execute()) {
                 error_log("Failed to update payment_status for user_id {$row['user_id']}: " . $updateStatus->error);
@@ -387,7 +435,7 @@ while ($row = $result->fetch_assoc()) {
             $updateStatus->close();
 
             $row['payment_status'] = 'unpaid';
-            $row['due_date'] = $nextDueDate; // Update the row data as well
+            $currentDueDate = $nextBillingDate;
         }
 
         // Check reminder status
@@ -401,7 +449,7 @@ while ($row = $result->fetch_assoc()) {
         $reminderSentFlag = intval($reminderRow['reminder_sent'] ?? 0);
 
         if ($reminderSentFlag === 0 && $row['payment_status'] === 'unpaid' && $row['currentBill'] > 0) {
-            $dueDateFormatted = date('m/d/Y', strtotime($nextDueDate));
+            $dueDateFormatted = date('m/d/Y', strtotime($currentDueDate));
             $amountDue = number_format($row['currentBill'], 2);
             $fullName = trim($firstName . ' ' . $lastName);
             $accountNo = $row['user_id'];
@@ -411,8 +459,8 @@ while ($row = $result->fetch_assoc()) {
             $sentOk = sendBillingNotification($fullName, $accountNo, $amountDue, $dueDateFormatted, $email, $contactNumber, $config, $billsDir);
 
             if ($sentOk) {
-             $markStmt = $conn->prepare("UPDATE approved_user SET reminder_sent = 1, due_date = ? WHERE user_id = ?");
-             $markStmt->bind_param("si", $nextDueDate, $row['user_id']);
+                $markStmt = $conn->prepare("UPDATE approved_user SET reminder_sent = 1 WHERE user_id = ?");
+                $markStmt->bind_param("i", $row['user_id']);
                 $markStmt->execute();
                 $markStmt->close();
             } else {
@@ -441,8 +489,8 @@ while ($row = $result->fetch_assoc()) {
         "registration_date" => $row["registration_date"],
         "id_photo" => $row["id_photo"],
         "proof_of_residency" => $row["proof_of_residency"],
-        "next_due_date" => $nextDueDate,
-        "due_date" => $row["due_date"] ?? $nextDueDate // Always include due_date
+        "next_due_date" => $currentDueDate,
+        "due_date" => $currentDueDate
     ];
 
     $subscribers[] = $subscriber;
