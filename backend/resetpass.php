@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['email'])) {
                         <!-- Header -->
                         <tr>
                             <td style="background-color: #6366f1; color: white; padding: 30px; text-align: center; border-radius: 8px 8px 0 0;">
-                                <h1 style="margin: 0; font-size: 28px; font-weight: bold;">🔐 Password Reset</h1>
+                                <h1 style="margin: 0; font-size: 28px; font-weight: bold;">Password Reset</h1>
                                 <p style="margin: 10px 0 0 0; font-size: 16px;">Lynx Fiber Internet Services</p>
                             </td>
                         </tr>
@@ -120,7 +120,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['email'])) {
                                         <td align="center" style="padding: 20px 0;">
                                             <a href="https://lynxfiberinternet.com/changepass.html?code=' . $reset_token . '" 
                                                style="display: inline-block; background-color: #6366f1; color: white; padding: 15px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; font-size: 16px;">
-                                                🔑 Reset My Password
+                                                 Reset My Password
                                             </a>
                                         </td>
                                     </tr>
@@ -130,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['email'])) {
                                 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin: 25px 0;">
                                     <tr>
                                         <td style="background-color: #fff3cd; border: 2px solid #ffeaa7; border-radius: 6px; padding: 20px;">
-                                            <h3 style="margin: 0 0 10px 0; color: #856404; font-size: 18px; font-weight: bold;">⚠️ Important Security Information</h3>
+                                            <h3 style="margin: 0 0 10px 0; color: #856404; font-size: 18px; font-weight: bold;">Important Security Information</h3>
                                             <p style="margin: 0; color: #856404; font-size: 14px; line-height: 1.5;">
                                                 This password reset link will expire in <strong>24 hours</strong> for your security. If you did not request this password reset, please ignore this email or contact our support team immediately.
                                             </p>
@@ -191,7 +191,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST" && isset($_POST['email'])) {
         $mail->addAddress($email);
 
         $mail->isHTML(true);
-        $mail->Subject = '🔐 Password Reset Request - Lynx Fiber';
+        $mail->Subject = 'Password Reset Request - Lynx Fiber';
         $mail->Body = $emailTemplate;
 
         // Add plain text version for better compatibility
