@@ -67,8 +67,6 @@ if (!$hasDueDate) {
     $hasDueDate = true;
 }
 
- 
-
 /**
  * sendBillingNotification function  
  */
@@ -345,14 +343,14 @@ while ($row = $result->fetch_assoc()) {
     $originalPrice = $planPrices[strtolower($row['subscription_plan'])] ?? 0;
     $today = date('Y-m-d');
     
-    //  Use the existing due_date from database instead of recalculating
+    // Use database due_date as the authoritative source
     $currentDueDate = $row['due_date'];
     
-    // Only calculate a new due date if none exists in the database
-    if (empty($currentDueDate)) {
-    $installDate = new DateTime($row['installation_date']);
-    $installDate->add(new DateInterval('P1M'));
-    $currentDueDate = $installDate->format('Y-m-d');
+    // Initialize due_date if not set (first time setup)
+    if (empty($currentDueDate) || $currentDueDate === '0000-00-00') {
+        $installDate = new DateTime($row['installation_date']);
+        $installDate->add(new DateInterval('P1M'));
+        $currentDueDate = $installDate->format('Y-m-d');
         
         // Update the database with this calculated date
         $updateDueDateSQL = "UPDATE approved_user SET due_date = ? WHERE user_id = ?";
@@ -366,86 +364,81 @@ while ($row = $result->fetch_assoc()) {
     $paymentStatus = $row['payment_status'];
     $currentBill = $row['currentBill'];
 
-    // Check if payment was made for current bill
-    if ($lastPayment && strtotime($lastPayment) >= strtotime($currentDueDate)) {
-        // Payment was made, calculate next due date
-      $nextDate = new DateTime($currentDueDate);
-      $nextDate->add(new DateInterval('P1M'));
-      $nextDueDate = $nextDate->format('Y-m-d');
+    // Check if we've passed the current due date (bill generation trigger)
+    $isPastDueDate = strtotime($today) > strtotime($currentDueDate);
+    
+    // Only generate new bill if we've passed the due date AND no outstanding balance
+    if ($isPastDueDate && $currentBill == 0) {
+        // Time to generate a new bill and move to next billing cycle   
+     // MODIFIED: Handle late payments properly
+      $currentDueDateObj = new DateTime($currentDueDate);
+      $todayObj = new DateTime($today);
+     
+     // Calculate how many months the payment is late
+     $interval = $currentDueDateObj->diff($todayObj);
+     $monthsLate = ($interval->y * 12) + $interval->m;
+    
+     if ($monthsLate >= 2) {
+        // For payments that are 2+ months late, set due date to next month from today
+        $nextDueDateObj = new DateTime($today);
+        $nextDueDateObj->add(new DateInterval('P1M'));
+        $nextDueDate = $nextDueDateObj->format('Y-m-d');
+        error_log("Late payment detected for user_id {$row['user_id']} - {$monthsLate} months late. Setting due date to: {$nextDueDate}");
+     } else {
+        // Normal case: advance by 1 month from current due date
+        $nextDate = new DateTime($currentDueDate);
+        $nextDate->add(new DateInterval('P1M'));
+        $nextDueDate = $nextDate->format('Y-m-d');
+    }
+    
         
-        // Update due date in database
-        $updateNextDueSQL = "UPDATE approved_user SET due_date = ? WHERE user_id = ?";
-        $stmt = $conn->prepare($updateNextDueSQL);
-        $stmt->bind_param("si", $nextDueDate, $row['user_id']);
-        $stmt->execute();
+        // Generate new bill and update due date
+        $updateSQL = "UPDATE approved_user SET 
+            currentBill = ?, 
+            payment_status = 'unpaid', 
+            reminder_sent = 0, 
+            due_date = ? 
+            WHERE user_id = ?";
+        $stmt = $conn->prepare($updateSQL);
+        $stmt->bind_param("dsi", $originalPrice, $nextDueDate, $row['user_id']);
+        
+        if ($stmt->execute()) {
+            // Update our local variables with the new values
+            $row['currentBill'] = $originalPrice;
+            $row['payment_status'] = 'unpaid';
+            $row['reminder_sent'] = 0;
+            $currentDueDate = $nextDueDate;
+            
+            error_log("New bill generated for user_id {$row['user_id']}: PHP {$originalPrice}, due: {$nextDueDate}");
+        } else {
+            error_log("Failed to generate new bill for user_id {$row['user_id']}: " . $stmt->error);
+        }
         $stmt->close();
-        
-        $currentDueDate = $nextDueDate;
     }
 
-    $isDue = strtotime($today) >= strtotime($currentDueDate);
-    $needsBill = (!$lastPayment || strtotime($lastPayment) < strtotime($currentDueDate));
+    // Send reminder only if there's an outstanding bill and we haven't sent a reminder yet
+    $hasOutstandingBill = ($row['currentBill'] > 0 && $row['payment_status'] === 'unpaid');
+    $reminderNotSent = (intval($row['reminder_sent'] ?? 0) === 0);
+    
+    if ($hasOutstandingBill && $reminderNotSent) {
+        $dueDateFormatted = date('m/d/Y', strtotime($currentDueDate));
+        $amountDue = number_format($row['currentBill'], 2);
+        $fullName = trim($firstName . ' ' . $lastName);
+        $accountNo = $row['user_id'];
+        $email = $row['email_address'];
+        $contactNumber = $row['contact_number'];
 
-    if ($isDue && $needsBill) {
-        if ($currentBill == 0 && $paymentStatus == 'unpaid') {
-            $row['currentBill'] = $originalPrice;
+        $sentOk = sendBillingNotification($fullName, $accountNo, $amountDue, $dueDateFormatted, $email, $contactNumber, $config, $billsDir);
 
-            $updateSQL = "UPDATE approved_user SET currentBill = ?, payment_status = 'unpaid', reminder_sent = 0 WHERE user_id = ?";
-            $stmt = $conn->prepare($updateSQL);
-            $stmt->bind_param("ii", $row['currentBill'], $row['user_id']);
+        if ($sentOk) {
+            $markStmt = $conn->prepare("UPDATE approved_user SET reminder_sent = 1 WHERE user_id = ?");
+            $markStmt->bind_param("i", $row['user_id']);
+            $markStmt->execute();
+            $markStmt->close();
             
-            if (!$stmt->execute()) {
-                error_log("Failed to update currentBill for user_id {$row['user_id']}: " . $stmt->error);
-            }
-            $stmt->close();
-        }
-
-        if ($paymentStatus == 'paid') {
-            // Calculate next billing cycle
-           $nextBilling = new DateTime($currentDueDate);
-           $nextBilling->add(new DateInterval('P1M'));
-           $nextBillingDate = $nextBilling->format('Y-m-d');
-            
-            $updateStatus = $conn->prepare("UPDATE approved_user SET payment_status = 'unpaid', reminder_sent = 0, due_date = ? WHERE user_id = ?");
-            $updateStatus->bind_param("si", $nextBillingDate, $row['user_id']);
-            
-            if (!$updateStatus->execute()) {
-                error_log("Failed to update payment_status for user_id {$row['user_id']}: " . $updateStatus->error);
-            }
-            $updateStatus->close();
-
-            $row['payment_status'] = 'unpaid';
-            $currentDueDate = $nextBillingDate;
-        }
-
-        // Check reminder status
-        $checkStmt = $conn->prepare("SELECT reminder_sent FROM approved_user WHERE user_id = ?");
-        $checkStmt->bind_param("i", $row['user_id']);
-        $checkStmt->execute();
-        $checkRes = $checkStmt->get_result();
-        $reminderRow = $checkRes->fetch_assoc();
-        $checkStmt->close();
-
-        $reminderSentFlag = intval($reminderRow['reminder_sent'] ?? 0);
-
-        if ($reminderSentFlag === 0 && $row['payment_status'] === 'unpaid' && $row['currentBill'] > 0) {
-            $dueDateFormatted = date('m/d/Y', strtotime($currentDueDate));
-            $amountDue = number_format($row['currentBill'], 2);
-            $fullName = trim($firstName . ' ' . $lastName);
-            $accountNo = $row['user_id'];
-            $email = $row['email_address'];
-            $contactNumber = $row['contact_number'];
-
-            $sentOk = sendBillingNotification($fullName, $accountNo, $amountDue, $dueDateFormatted, $email, $contactNumber, $config, $billsDir);
-
-            if ($sentOk) {
-                $markStmt = $conn->prepare("UPDATE approved_user SET reminder_sent = 1 WHERE user_id = ?");
-                $markStmt->bind_param("i", $row['user_id']);
-                $markStmt->execute();
-                $markStmt->close();
-            } else {
-                error_log("Notification sending failed for user_id {$row['user_id']}");
-            }
+            error_log("Billing reminder sent for user_id {$row['user_id']}");
+        } else {
+            error_log("Notification sending failed for user_id {$row['user_id']}");
         }
     }
 

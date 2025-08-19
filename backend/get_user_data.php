@@ -44,7 +44,7 @@ if ($result->num_rows > 0) {
     ];
     $originalPrice = $planPrices[$plan] ?? 0;
     
-    //Use consistent due date logic with billing system
+    //  Use the due_date from database as authoritative source
     $nextDueDate = $user['due_date'];
     
     // If no due_date is set in database, calculate from installation date
@@ -54,8 +54,6 @@ if ($result->num_rows > 0) {
         $installDateTime->add(new DateInterval('P1M')); // Add 1 month properly
         $nextDueDate = $installDateTime->format('Y-m-d');
     }
-    
-    
     
     echo json_encode([
         "status" => "success",
