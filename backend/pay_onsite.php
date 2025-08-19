@@ -57,19 +57,40 @@ function generateUniqueReference($conn) {
     return $reference;
 }
 
-// Function to calculate next due date
-function calculateNextDueDate($installationDate) {
-    $today = date('Y-m-d');
-    $monthsSinceInstall = floor((strtotime($today) - strtotime($installationDate)) / (30 * 24 * 60 * 60));
-    $nextDueDate = date('Y-m-d', strtotime("+1 month +$monthsSinceInstall month", strtotime($installationDate)));
-    return $nextDueDate;
+//  
+//  Proper due date calculation for consistent billing cycles
+function calculateNextDueDate($currentDueDate, $installationDate = null) {
+    $baseDate = null;
+    
+    // Priority 1: Use current due date if available and valid
+    if ($currentDueDate && $currentDueDate !== '0000-00-00') {
+        $baseDate = $currentDueDate;
+    }
+    // Priority 2: Use installation date for first-time calculation
+    elseif ($installationDate && $installationDate !== '0000-00-00') {
+        $baseDate = $installationDate;
+    }
+    // Priority 3: Use today as fallback
+    else {
+        $baseDate = date('Y-m-d');
+    }
+    
+    // Use DateTime for proper month handling (fixes month-end date issues)
+    try {
+        $date = new DateTime($baseDate);
+        $date->add(new DateInterval('P1M')); // Add 1 month properly
+        return $date->format('Y-m-d');
+    } catch (Exception $e) {
+        // Fallback to strtotime if DateTime fails
+        return date('Y-m-d', strtotime('+1 month', strtotime($baseDate)));
+    }
 }
 
 try {
     $conn->begin_transaction();
 
-    // Get subscriber info including installation_date for due date calculation
-    $stmt = $conn->prepare("SELECT fullname, subscription_plan, currentBill, installation_date FROM approved_user WHERE user_id = ?");
+    // Get current due_date from database
+    $stmt = $conn->prepare("SELECT fullname, subscription_plan, currentBill, installation_date, due_date FROM approved_user WHERE user_id = ?");
     $stmt->bind_param("s", $subscriberId);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -83,6 +104,7 @@ try {
     $subscriptionPlan = $subscriber['subscription_plan'];
     $currentBillFromDB = $subscriber['currentBill'];
     $installationDate = $subscriber['installation_date'];
+    $currentDueDate = $subscriber['due_date']; // ADDED: Get current due date
 
     if ($currentBill != $currentBillFromDB) {
         throw new Exception("Current bill does not match database.");
@@ -90,8 +112,8 @@ try {
 
     $referenceNumber = generateUniqueReference($conn);
 
-    // Calculate next due date based on installation date
-    $nextDueDate = calculateNextDueDate($installationDate);
+    // Calculate next due date properly
+    $nextDueDate = calculateNextDueDate($currentDueDate, $installationDate);
 
     // Insert payment
     $stmt = $conn->prepare("
@@ -113,7 +135,7 @@ try {
         throw new Exception("Failed to insert payment.");
     }
 
-    // Update subscriber - UPDATED to include due_date and reminder_sent reset
+    // Update subscriber with correct next due date
     $stmt = $conn->prepare("
         UPDATE approved_user
         SET currentBill = 0,
@@ -130,7 +152,7 @@ try {
         throw new Exception("Failed to update subscriber.");
     }
 
-    // Generate PDF Receipt (using actual data instead of hardcoded values)
+    // Generate PDF Receipt  
     $dompdf = new Dompdf();
     $html = "
 <!DOCTYPE html>
@@ -413,6 +435,10 @@ try {
                     <div class='detail-value'><span class='status-badge'>PAID</span></div>
                 </div>
                 <div class='detail-row'>
+                    <div class='detail-label'>Current Bill Paid For:</div>
+                    <div class='detail-value'>" . date('F j, Y', strtotime($currentDueDate)) . "</div>
+                </div>
+                <div class='detail-row'>
                     <div class='detail-label'>Next Due Date:</div>
                     <div class='detail-value'>" . date('F j, Y', strtotime($nextDueDate)) . "</div>
                 </div>
@@ -434,7 +460,7 @@ try {
             <p class='thank-you'>Thank you for your payment!</p>
             <p>Your internet service will continue without interruption.</p>
             <p style='font-weight: 600; color: #007bff;'>
-                Next billing cycle starts immediately.
+                Next billing cycle: " . date('F j, Y', strtotime($nextDueDate)) . "
             </p>
             
             <div class='contact-info'>
@@ -456,7 +482,7 @@ try {
 
     // Save the file
     $filename = "receipt_{$referenceNumber}.pdf";
-    $receiptsDir = __DIR__ . "/../receipts"; // adjust path as needed
+    $receiptsDir = __DIR__ . "/../receipts"; // location of the receipts in the system
     if (!is_dir($receiptsDir)) {
         mkdir($receiptsDir, 0755, true);
     }
@@ -473,7 +499,8 @@ try {
         'message' => 'Payment successful.',
         'reference_number' => $referenceNumber,
         'pdf_url' => $publicUrl,
-        'next_due_date' => $nextDueDate
+        'next_due_date' => $nextDueDate,
+        'current_bill_period' => date('F j, Y', strtotime($currentDueDate)) // Added for clarity
     ]);
 
 } catch (Exception $e) {

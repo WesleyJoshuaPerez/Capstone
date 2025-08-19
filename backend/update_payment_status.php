@@ -1,7 +1,7 @@
 <?php
 // Include database connection
 include('connectdb.php'); // Ensure this connects $conn (MySQLi)
-
+date_default_timezone_set('Asia/Manila');
 // Set JSON response header
 header('Content-Type: application/json');
 
@@ -20,12 +20,32 @@ $paymentId = $data['payment_id'];
 $status = strtolower($data['status']); // Convert status to lowercase for consistency
 $reason = isset($data['reason']) ? trim($data['reason']) : null; // Optional reason
 
-// Function to calculate next due date based on installation date
-function calculateNextDueDate($installationDate) {
-    $today = date('Y-m-d');
-    $monthsSinceInstall = floor((strtotime($today) - strtotime($installationDate)) / (30 * 24 * 60 * 60));
-    $nextDueDate = date('Y-m-d', strtotime("+1 month +$monthsSinceInstall month", strtotime($installationDate)));
-    return $nextDueDate;
+// Proper due date calculation for consistent billing cycles
+function calculateNextDueDate($currentDueDate, $installationDate = null) {
+    $baseDate = null;
+    
+    // Priority 1: Use current due date if available and valid
+    if ($currentDueDate && $currentDueDate !== '0000-00-00') {
+        $baseDate = $currentDueDate;
+    }
+    // Priority 2: Use installation date for first-time calculation
+    elseif ($installationDate && $installationDate !== '0000-00-00') {
+        $baseDate = $installationDate;
+    }
+    // Priority 3: Use today as fallback
+    else {
+        $baseDate = date('Y-m-d');
+    }
+    
+    // Use DateTime for proper month handling (fixes month-end date issues)
+    try {
+        $date = new DateTime($baseDate);
+        $date->add(new DateInterval('P1M')); // Add 1 month properly
+        return $date->format('Y-m-d');
+    } catch (Exception $e) {
+        // Fallback to strtotime if DateTime fails
+        return date('Y-m-d', strtotime('+1 month', strtotime($baseDate)));
+    }
 }
 
 try {
@@ -41,9 +61,9 @@ try {
             throw new Exception("Failed to update payment status to Paid.");
         }
 
-        // Fetch the user_id and installation_date associated with the payment
+        // FIXED: Fetch the user_id, installation_date AND current due_date
         $stmt = $conn->prepare("
-            SELECT p.user_id, u.installation_date 
+            SELECT p.user_id, u.installation_date, u.due_date 
             FROM payments p 
             JOIN approved_user u ON p.user_id = u.user_id 
             WHERE p.payment_id = ?
@@ -59,12 +79,13 @@ try {
         $row = $result->fetch_assoc();
         $userId = $row['user_id'];
         $installationDate = $row['installation_date'];
+        $currentDueDate = $row['due_date']; // ADDED: Get current due date
 
-        // Calculate next due date
-        $nextDueDate = calculateNextDueDate($installationDate);
+        // Calculate next due date properly using current due date
+        $nextDueDate = calculateNextDueDate($currentDueDate, $installationDate);
         $currentDate = date('Y-m-d H:i:s'); // Current timestamp
 
-        // Update the approved_user table with due_date and reminder_sent reset
+        // Update the approved_user table with correct next due date
         $stmt = $conn->prepare("
             UPDATE approved_user
             SET currentBill = 0,
@@ -86,6 +107,7 @@ try {
             'status' => 'success', 
             'message' => 'Payment approved and status updated successfully.',
             'next_due_date' => $nextDueDate,
+            'current_bill_period' => $currentDueDate ? date('F j, Y', strtotime($currentDueDate)) : 'N/A',
             'user_id' => $userId
         ];
     }

@@ -1,6 +1,7 @@
 <?php
 session_start();
 include('connectdb.php');
+date_default_timezone_set('Asia/Manila');
 //This use for paypal payment
 
 // 1) Grab the Order ID PayPal sent back
@@ -9,12 +10,32 @@ if (!$orderId) {
     die('Payment token missing.');
 }
 
-// Function to calculate next due date based on installation date
-function calculateNextDueDate($installationDate) {
-    $today = date('Y-m-d');
-    $monthsSinceInstall = floor((strtotime($today) - strtotime($installationDate)) / (30 * 24 * 60 * 60));
-    $nextDueDate = date('Y-m-d', strtotime("+1 month +$monthsSinceInstall month", strtotime($installationDate)));
-    return $nextDueDate;
+//  Proper due date calculation for consistent billing cycles
+function calculateNextDueDate($currentDueDate, $installationDate = null) {
+    $baseDate = null;
+    
+    // Priority 1: Use current due date if available and valid
+    if ($currentDueDate && $currentDueDate !== '0000-00-00') {
+        $baseDate = $currentDueDate;
+    }
+    // Priority 2: Use installation date for first-time calculation
+    elseif ($installationDate && $installationDate !== '0000-00-00') {
+        $baseDate = $installationDate;
+    }
+    // Priority 3: Use today as fallback
+    else {
+        $baseDate = date('Y-m-d');
+    }
+    
+    // Use DateTime for proper month handling (fixes month-end date issues)
+    try {
+        $date = new DateTime($baseDate);
+        $date->add(new DateInterval('P1M')); // Add 1 month properly
+        return $date->format('Y-m-d');
+    } catch (Exception $e) {
+        // Fallback to strtotime if DateTime fails
+        return date('Y-m-d', strtotime('+1 month', strtotime($baseDate)));
+    }
 }
 
 // 2) Get a fresh access-token (same as in handle_payment.php)
@@ -57,16 +78,16 @@ if (isset($captureData['status']) && $captureData['status'] === 'COMPLETED') {
         // Start transaction for data integrity
         mysqli_begin_transaction($conn);
 
-        // 5) Fetch user details including installation_date
+        // 5) FIXED: Fetch user details including installation_date AND current due_date
         $user_id = $_SESSION['user_id'] ?? null;
         if (!$user_id) {
             throw new Exception("Unauthorized - User not logged in");
         }
 
-        $stmt = mysqli_prepare($conn, "SELECT fullname, subscription_plan, currentBill, installation_date FROM approved_user WHERE user_id = ?");
+        $stmt = mysqli_prepare($conn, "SELECT fullname, subscription_plan, currentBill, installation_date, due_date FROM approved_user WHERE user_id = ?");
         mysqli_stmt_bind_param($stmt, "s", $user_id);
         mysqli_stmt_execute($stmt);
-        mysqli_stmt_bind_result($stmt, $fullname, $subscription_plan, $currentBill, $installation_date);
+        mysqli_stmt_bind_result($stmt, $fullname, $subscription_plan, $currentBill, $installation_date, $current_due_date);
         
         if (!mysqli_stmt_fetch($stmt)) {
             mysqli_stmt_close($stmt);
@@ -74,8 +95,8 @@ if (isset($captureData['status']) && $captureData['status'] === 'COMPLETED') {
         }
         mysqli_stmt_close($stmt);
 
-        // Calculate next due date
-        $nextDueDate = calculateNextDueDate($installation_date);
+        // Calculate next due date properly using current due date
+        $nextDueDate = calculateNextDueDate($current_due_date, $installation_date);
 
         // 6) Insert payment details into the payments table
         $today = date('Y-m-d H:i:s'); // Include time for better tracking
@@ -111,7 +132,7 @@ if (isset($captureData['status']) && $captureData['status'] === 'COMPLETED') {
         }
         mysqli_stmt_close($stmt);
 
-        // 7) Update the approved_user table with due_date and reminder_sent reset
+        // 7) Update the approved_user table with correct next due date
         $stmt = mysqli_prepare($conn, "
           UPDATE approved_user
              SET currentBill = 0,

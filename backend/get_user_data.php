@@ -3,6 +3,9 @@ session_start();
 header('Content-Type: application/json');
 require 'connectdb.php';
 
+// Set consistent timezone
+date_default_timezone_set('Asia/Manila');
+
 if (!isset($_SESSION['user_id'])) {
     echo json_encode(["status" => "error", "message" => "Not logged in"]);
     exit;
@@ -41,19 +44,18 @@ if ($result->num_rows > 0) {
     ];
     $originalPrice = $planPrices[$plan] ?? 0;
     
-    // Simple next due date calculation no billing logic
-    $monthsSinceInstall = floor((strtotime($today) - strtotime($installDate)) / (30 * 24 * 60 * 60));
-    $nextDueDate = date('Y-m-d', strtotime("+$monthsSinceInstall month", strtotime($installDate)));
+    //Use consistent due date logic with billing system
+    $nextDueDate = $user['due_date'];
     
-    // If user has a specific due_date set by the billing system, use that instead
-    if (!empty($user['due_date'])) {
-        $nextDueDate = $user['due_date'];
+    // If no due_date is set in database, calculate from installation date
+    if (empty($nextDueDate) || $nextDueDate === '0000-00-00') {
+        // Use DateTime for proper month calculation (handles month-end dates correctly)
+        $installDateTime = new DateTime($installDate);
+        $installDateTime->add(new DateInterval('P1M')); // Add 1 month properly
+        $nextDueDate = $installDateTime->format('Y-m-d');
     }
     
-    // If the user has paid for the current cycle, advance due date to next cycle
-    if ($user['last_payment_date'] && strtotime($user['last_payment_date']) >= strtotime($nextDueDate)) {
-        $nextDueDate = date('Y-m-d', strtotime("+1 month", strtotime($nextDueDate)));
-    }
+    
     
     echo json_encode([
         "status" => "success",

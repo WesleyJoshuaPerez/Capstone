@@ -14,7 +14,7 @@ require_once __DIR__ . '/phpmailer/src/SMTP.php';
 // Enable error reporting for debugging
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-
+date_default_timezone_set('Asia/Manila'); 
 header("Content-Type: application/json");
 
 if ($conn->connect_error) {
@@ -67,32 +67,7 @@ if (!$hasDueDate) {
     $hasDueDate = true;
 }
 
-/**
- * Calculate next due date properly based on installation date
- */
-function calculateNextDueDate($installationDate, $lastPaymentDate = null) {
-    $installDate = new DateTime($installationDate);
-    $today = new DateTime();
-    
-    // If there's a last payment date, calculate from that
-    if ($lastPaymentDate) {
-        $lastPayment = new DateTime($lastPaymentDate);
-        $nextDue = clone $lastPayment;
-        $nextDue->add(new DateInterval('P1M')); // Add 1 month
-        return $nextDue->format('Y-m-d');
-    }
-    
-    // Otherwise, calculate from installation date
-    $nextDue = clone $installDate;
-    $nextDue->add(new DateInterval('P1M')); // Add 1 month initially
-    
-    // Keep adding months until we're in the future
-    while ($nextDue <= $today) {
-        $nextDue->add(new DateInterval('P1M'));
-    }
-    
-    return $nextDue->format('Y-m-d');
-}
+ 
 
 /**
  * sendBillingNotification function  
@@ -329,7 +304,7 @@ function sendBillingNotification($fullName, $accountNo, $amountDue, $dueDate, $e
         $mailSuccess = false;
     }
 
-    // Remove generated PDF (optional)
+    // Remove generated PDF 
     if (file_exists($pdfPath)) {
         @unlink($pdfPath);
     }
@@ -370,13 +345,14 @@ while ($row = $result->fetch_assoc()) {
     $originalPrice = $planPrices[strtolower($row['subscription_plan'])] ?? 0;
     $today = date('Y-m-d');
     
-    // FIXED: Use the existing due_date from database instead of recalculating
+    //  Use the existing due_date from database instead of recalculating
     $currentDueDate = $row['due_date'];
     
     // Only calculate a new due date if none exists in the database
     if (empty($currentDueDate)) {
-        // Use the same calculation method as update_application_status.php
-        $currentDueDate = date('Y-m-d', strtotime('+1 month', strtotime($row['installation_date'])));
+    $installDate = new DateTime($row['installation_date']);
+    $installDate->add(new DateInterval('P1M'));
+    $currentDueDate = $installDate->format('Y-m-d');
         
         // Update the database with this calculated date
         $updateDueDateSQL = "UPDATE approved_user SET due_date = ? WHERE user_id = ?";
@@ -393,7 +369,9 @@ while ($row = $result->fetch_assoc()) {
     // Check if payment was made for current bill
     if ($lastPayment && strtotime($lastPayment) >= strtotime($currentDueDate)) {
         // Payment was made, calculate next due date
-        $nextDueDate = date('Y-m-d', strtotime('+1 month', strtotime($currentDueDate)));
+      $nextDate = new DateTime($currentDueDate);
+      $nextDate->add(new DateInterval('P1M'));
+      $nextDueDate = $nextDate->format('Y-m-d');
         
         // Update due date in database
         $updateNextDueSQL = "UPDATE approved_user SET due_date = ? WHERE user_id = ?";
@@ -424,7 +402,9 @@ while ($row = $result->fetch_assoc()) {
 
         if ($paymentStatus == 'paid') {
             // Calculate next billing cycle
-            $nextBillingDate = date('Y-m-d', strtotime('+1 month', strtotime($currentDueDate)));
+           $nextBilling = new DateTime($currentDueDate);
+           $nextBilling->add(new DateInterval('P1M'));
+           $nextBillingDate = $nextBilling->format('Y-m-d');
             
             $updateStatus = $conn->prepare("UPDATE approved_user SET payment_status = 'unpaid', reminder_sent = 0, due_date = ? WHERE user_id = ?");
             $updateStatus->bind_param("si", $nextBillingDate, $row['user_id']);
