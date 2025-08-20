@@ -101,41 +101,29 @@ if ($user) {
         $_SESSION['user_id'] = $user['user_id'] ?? $user['admin_id'] ?? $user['technician_id'];
         $_SESSION['username'] = $username;
 
-        // BEGIN: Overdue logic for regular users only
+        // Overdue logic for regular users only
         $isOverdue = false;
 
         if ($is_regular_user) {
-            $stmt = $conn->prepare("SELECT installation_date, payment_status, last_payment_date FROM approved_user WHERE username = ?");
-            $stmt->bind_param("s", $username);
-            $stmt->execute();
-            $res = $stmt->get_result();
+             $stmt = $conn->prepare("SELECT due_date, payment_status, account_status FROM approved_user WHERE username = ?");
+    $stmt->bind_param("s", $username);
+    $stmt->execute();
+    $res = $stmt->get_result();
 
-            if ($res && $res->num_rows > 0) {
-                $u = $res->fetch_assoc();
+    if ($res && $res->num_rows > 0) {
+        $u = $res->fetch_assoc();
 
-                $installDate = $u['installation_date'];
-                $paymentStatus = $u['payment_status'];
-                $lastPayment = $u['last_payment_date'];
+        $dueDate       = $u['due_date'];
+        $paymentStatus = $u['payment_status'];
+        $today         = date('Y-m-d');
 
-                $today = date('Y-m-d');
+        // Overdue if today is past due date and still unpaid
+        $isOverdue = (strtotime($today) > strtotime($dueDate) && $paymentStatus === 'unpaid');
 
-                // Count full months since install
-                $monthsSinceInstall = floor((strtotime($today) - strtotime($installDate)) / (30 * 24 * 60 * 60));
-                $nextDueDate = date('Y-m-d', strtotime("+$monthsSinceInstall month", strtotime($installDate)));
-
-                // Advance due date if already paid this cycle
-                if ($lastPayment && strtotime($lastPayment) >= strtotime($nextDueDate)) {
-                    $nextDueDate = date('Y-m-d', strtotime("+1 month", strtotime($nextDueDate)));
-                }
-
-                $isDue = strtotime($today) >= strtotime($nextDueDate);
-                $needsBill = (!$lastPayment || strtotime($lastPayment) < strtotime($nextDueDate));
-
-                if ($isDue && $needsBill && $paymentStatus === 'unpaid') {
-                    $isOverdue = true;
-                }
-            }
-            $stmt->close();
+        // keep your disconnected status check
+        $isDisconnected = strtolower($u['account_status']) === 'disconnected';
+    }
+    $stmt->close();
         }
 
         // Redirect based on role
