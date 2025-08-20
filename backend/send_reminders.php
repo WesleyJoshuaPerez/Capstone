@@ -1,20 +1,26 @@
 <?php
+require __DIR__ . '/vendor/autoload.php'; // for .env file
+// Try to load .env safely
+try {
+    $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
+    $dotenv->load();
+} catch (Throwable $e) {
+    header("Content-Type: application/json");
+    echo json_encode([
+        "success" => false,
+        "error" => "Failed to load .env: " . $e->getMessage()
+    ]);
+    exit;
+}
+
+
 // send_reminders.php
 // Sends SMS ONCE 5 days before due date
 // Shows subscriber's name and due date
-
+include('connectdb.php'); //for database connection
 date_default_timezone_set("Asia/Manila"); // Set PH timezone
 
-// Database connection
-$servername = "localhost";
-$username   = "root"; 
-$password   = "";
-$dbname     = "lynx"; 
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-if ($conn->connect_error) {
-    die("DB Connection failed: " . $conn->connect_error);
-}
 
 // Get target date (5 days ahead)
 $today = date('Y-m-d');
@@ -28,12 +34,20 @@ $result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $number   = $row['contact_number'];
+       $rawNumber = $row['contact_number'];
+
+     // Clean number
+     $digits = preg_replace('/\D/', '', $rawNumber);
+     if (substr($digits, 0, 1) === '0') {
+        $number = '63' . substr($digits, 1);
+      } else {
+        $number = $digits;
+     }
         $fullname = $row['fullname'];
         $due_date = date("m/d/Y", strtotime($row['due_date']));
 
         // Your Semaphore API Key
-        $api_key = "API_KEY"; // hide in env later
+        $api_key = $_ENV['SEMAPHORE_API_TOKEN']; // hide in env later
 
         // SMS message
         $message = "Hello $fullname, this is a reminder that your billing due date is on $due_date. Please settle your balance before the said date to avoid service interruption. \n- LYNX Fiber Internet";

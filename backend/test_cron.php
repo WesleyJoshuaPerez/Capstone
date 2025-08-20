@@ -7,8 +7,8 @@ date_default_timezone_set('Asia/Manila'); // set timezone to PH
 while (true) {
     $now = date('H:i');
     
-    // Check if it's exactly 9:00 AM
-    if ($now === '15:22') {
+    // Check if it's exactly 9:00 AM the time is military time
+    if ($now === '15:46') {
         echo "Running reminder script at " . date('Y-m-d H:i:s') . "\n";
         
         // Run your reminder script
