@@ -46,11 +46,11 @@ if ($result && $result->num_rows > 0) {
         $fullname = $row['fullname'];
         $due_date = date("m/d/Y", strtotime($row['due_date']));
 
-        // Your Semaphore API Key
+        // Semaphore API Key
         $api_key = $_ENV['SEMAPHORE_API_TOKEN']; // hide in env later
 
         // SMS message
-        $message = "Hello $fullname, this is a reminder that your billing due date is on $due_date. Please settle your balance before the said date to avoid service interruption. \n- LYNX Fiber Internet";
+        $message = "Hello $fullname, this is a reminder that your billing due date is on $due_date. Please settle your balance before the said date to avoid service interruption. Thank you!";
 
         // Send SMS via Semaphore
         $ch = curl_init();
