@@ -50,9 +50,9 @@ if ($result->num_rows > 0) {
 
                 // Different messages depending on status
                 if ($new_status === 'Disabled') {
-                    $message = "Hello $fullname, we would like to inform you that we are having an unscheduled internet interruption as of the moment. Thank you!";
+                    $message = "Hello, $fullname! We would like to inform you that we are currently experiencing an unscheduled internet interruption. Rest assured, we are working to resolve it quickly. Thank you!";
                 } else { 
-                    $message = "Hello $fullname, good news! Your internet service has been restored. Thank you for your patience!";
+                    $message = "Hello, $fullname! Good news! Your internet service has been restored. Thank you for your patience!";
                 }
 
                 $ch = curl_init();

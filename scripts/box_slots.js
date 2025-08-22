@@ -303,9 +303,13 @@ function toggleNapBoxStatus(napBoxId) {
     title: confirmMsg,
     icon: "warning",
     showCancelButton: true,
-    confirmButtonText: action === "enable" ? "Enable" : "Disable",
+    showDenyButton: action === "disable", // show only if disabling
+    confirmButtonText: action === "enable" ? "Enable Now" : "Disable Now",
+    denyButtonText: "Schedule Interruption",
+    cancelButtonText: "Cancel",
   }).then((result) => {
     if (result.isConfirmed) {
+      // Existing disable/enable logic
       fetch(
         `backend/toggle_napbox_status.php?nap_box_id=${napBoxId}&action=${action}`
       )
@@ -318,6 +322,90 @@ function toggleNapBoxStatus(napBoxId) {
             Swal.fire("Error", "Could not update status.", "error");
           }
         });
+    } else if (result.isDenied) {
+      // New interruption logic (send SMS immediately)
+      Swal.fire({
+  title: "Confirm Internet Interruption",
+  html: `
+    <label for="scheduleTime">Select Time:</label>
+    <input type="datetime-local" id="scheduleTime" class="swal2-input">
+  `,
+  confirmButtonText: "Send Now",
+  showCancelButton: true,
+  didOpen: () => {
+    const now = new Date();
+
+    // Add 10 minutes for minimum selectable time
+    now.setMinutes(now.getMinutes() + 10);
+
+    // Pad numbers to two digits
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, "0");
+    const day = String(now.getDate()).padStart(2, "0");
+    const hours = String(now.getHours()).padStart(2, "0");
+    const minutes = String(now.getMinutes()).padStart(2, "0");
+
+    // Set min attribute to current time + 10 minutes
+    const minDateTime = `${year}-${month}-${day}T${hours}:${minutes}`;
+    document.getElementById("scheduleTime").setAttribute("min", minDateTime);
+  },
+  preConfirm: () => {
+    const time = document.getElementById("scheduleTime").value;
+    if (!time) {
+      Swal.showValidationMessage("Please select a time.");
+      return false;
+    }
+
+    const selectedTime = new Date(time);
+    const now = new Date();
+    now.setMinutes(now.getMinutes() + 10); // 10-minute minimum
+
+    if (selectedTime < now) {
+      Swal.showValidationMessage("Please select a time at least 10 minutes from now.");
+      return false;
+    }
+
+    return time;
+  },
+}).then((scheduleResult) => {
+        if (scheduleResult.isConfirmed) {
+    const scheduledTime = scheduleResult.value; // string or Date
+    const dateObj = new Date(scheduledTime);
+
+    // Format date and time in words
+    const options = { 
+        weekday: 'long', 
+        year: 'numeric', 
+        month: 'long', 
+        day: 'numeric', 
+        hour: '2-digit', 
+        minute: '2-digit', 
+        hour12: true 
+    };
+    const formattedDateTime = dateObj.toLocaleString('en-PH', options);
+
+    fetch("backend/schedule_interruption.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+            nap_box_id: napBoxId,
+            scheduled_message: formattedDateTime // send just date & time
+        }),
+    })
+            .then((res) => res.text())
+            .then((data) => {
+              Swal.fire(
+                "Sent!",
+                "Subscribers have been notified of the interruption.",
+                "success"
+              );
+            })
+            .catch(() => {
+              Swal.fire("Error", "Could not send interruption SMS.", "error");
+            });
+        }
+      });
     }
   });
 }
+

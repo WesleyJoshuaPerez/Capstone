@@ -1,6 +1,5 @@
 <?php
-require __DIR__ . '/vendor/autoload.php'; // for .env file
-// Try to load .env safely
+require __DIR__ . '/vendor/autoload.php';
 try {
     $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
     $dotenv->load();
@@ -13,44 +12,39 @@ try {
     exit;
 }
 
+include('connectdb.php'); 
+date_default_timezone_set("Asia/Manila");
 
-// send_reminders.php
-// Sends SMS ONCE 5 days before due date
-// Shows subscriber's name and due date
-include('connectdb.php'); //for database connection
-date_default_timezone_set("Asia/Manila"); // Set PH timezone
+// Inputs
+$nap_box_id = $_POST['nap_box_id'] ?? null;
+$scheduled_message = $_POST['scheduled_message'] ?? "";
 
+if (!$nap_box_id) {
+    echo "NapBox ID is required.\n";
+    exit;
+}
 
-
-// Get target date (5 days ahead)
-$today = date('Y-m-d');
-$targetDate = date('Y-m-d', strtotime($today . " +5 days"));
-
-// Get subscribers whose due_date is 5 days away
-// Update SQL to include currentBill
-$sql = "SELECT user_id, fullname, contact_number, due_date, currentBill
+// Get subscribers under this NapBox with Active accounts
+$sql = "SELECT fullname, contact_number 
         FROM approved_user 
-        WHERE due_date = '$targetDate'";
-
+        WHERE nap_box_id = '$nap_box_id' 
+        AND account_status = 'Active'";
 $result = $conn->query($sql);
 
 if ($result && $result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
+        $fullname = $row['fullname'];
         $rawNumber = $row['contact_number'];
 
         // Clean number
         $digits = preg_replace('/\D/', '', $rawNumber);
         $number = (substr($digits, 0, 1) === '0') ? '63' . substr($digits, 1) : $digits;
 
-        $fullname = $row['fullname'];
-        $due_date = date("m/d/Y", strtotime($row['due_date']));
-        $amount = number_format($row['currentBill'], 2); // format as currency
-
         // Semaphore API Key
         $api_key = $_ENV['SEMAPHORE_API_TOKEN'];
 
-        // SMS message with amount
-        $message = "Hello, $fullname! This is a reminder that your billing due date is on $due_date with an amount of PHP $amount. Please settle your balance before the said date to avoid service interruption. Thank you!";
+        // Personalized SMS message
+        $message = "Hello, $fullname! This is to inform you that we will have an internet interruption on $scheduled_message. Thank you!";
 
         // Send SMS via Semaphore
         $ch = curl_init();
@@ -67,11 +61,10 @@ if ($result && $result->num_rows > 0) {
         $output = curl_exec($ch);
         curl_close($ch);
 
-        echo "Sent SMS to $fullname ($number) for due date $due_date, Amount: PHP $amount\n";
+        echo "Sent interruption SMS to $fullname ($number) for NapBox $nap_box_id\n";
     }
 } else {
-    echo "No reminders to send today.\n";
+    echo "No active subscribers under NapBox $nap_box_id.\n";
 }
-
 
 $conn->close();
