@@ -323,7 +323,7 @@ function toggleNapBoxStatus(napBoxId) {
           }
         });
     } else if (result.isDenied) {
-      // New interruption logic (send SMS immediately)
+      // (send SMS immediately)
       Swal.fire({
   title: "Confirm Internet Interruption",
   html: `
@@ -369,7 +369,7 @@ function toggleNapBoxStatus(napBoxId) {
   },
 }).then((scheduleResult) => {
         if (scheduleResult.isConfirmed) {
-    const scheduledTime = scheduleResult.value; // string or Date
+    const scheduledTime = scheduleResult.value; 
     const dateObj = new Date(scheduledTime);
 
     // Format date and time in words

@@ -13,7 +13,6 @@ try {
     exit;
 }
 
-
 // send_reminders.php
 // Sends SMS ONCE 5 days before due date
 // Shows subscriber's name and due date
