@@ -296,8 +296,8 @@ function toggleNapBoxStatus(napBoxId) {
   const action = status === "Enabled" ? "disable" : "enable";
   const confirmMsg =
     action === "enable"
-      ? "Are you sure you want to enable this NapBox?"
-      : "Are you sure you want to disable this NapBox?";
+      ? "Are you sure you want to enable this Nap Box?"
+      : "Are you sure you want to disable this Nap Box?";
 
   Swal.fire({
     title: confirmMsg,
