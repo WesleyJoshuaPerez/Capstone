@@ -42,14 +42,15 @@ if ($result && $result->num_rows > 0) {
         $number = (substr($digits, 0, 1) === '0') ? '63' . substr($digits, 1) : $digits;
 
         $fullname = $row['fullname'];
-        $due_date = date("m/d/Y", strtotime($row['due_date']));
+        $due_date_obj = new DateTime($row['due_date']);
+        $due_date_words = $due_date_obj->format('l, F j, Y'); // Friday, August 22, 2025
         $amount = number_format($row['currentBill'], 2); // format as currency
 
         // Semaphore API Key
         $api_key = $_ENV['SEMAPHORE_API_TOKEN'];
 
         // SMS message with amount
-        $message = "Hello, $fullname! This is a reminder that your billing due date is on $due_date with an amount of PHP $amount. Please settle your balance before the said date to avoid service interruption. Thank you!";
+        $message = "Hello, $fullname! This is a reminder that your billing due date is on $due_date_words with an amount of PHP $amount. Please settle your balance before the said date to avoid service interruption. Thank you!";
 
         // Send SMS via Semaphore
         $ch = curl_init();
