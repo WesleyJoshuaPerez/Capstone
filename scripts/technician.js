@@ -171,55 +171,49 @@ $("#addTechnicianBtn").on("click", function () {
   Swal.fire({
     title: "Add New Technician",
     html: `
-      <form id="addTechnicianForm" style="
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-        max-width: 400px;
-        margin: auto;
-      ">
-        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-          <label for="technicianName" style="font-weight: 600; min-width: 100px; text-align: right;">Name:</label>
-          <input type="text" id="technicianName" class="swal2-input" style="width: 200px; height: 38px;" required>
-        </div>
+  <form id="addTechnicianForm" style="display:flex; flex-direction:column; gap:15px; width:100%;">
+    <div class="form-group" style="display:flex; flex-direction:column; gap:5px;">
+      <label for="technicianName" style="font-weight:600; text-align:left;">Name:</label>
+      <input type="text" id="technicianName" class="swal2-input" required style="width:100%; margin:0;">
+    </div>
 
-        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-          <label for="technicianUsername" style="font-weight: 600; min-width: 100px; text-align: right;">Username:</label>
-          <input type="text" id="technicianUsername" class="swal2-input" style="width: 200px; height: 38px;" required>
-        </div>
+    <div class="form-group" style="display:flex; flex-direction:column; gap:5px;">
+      <label for="technicianUsername" style="font-weight:600; text-align:left;">Username:</label>
+      <input type="text" id="technicianUsername" class="swal2-input" required style="width:100%; margin:0;">
+    </div>
 
-        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-          <label for="technicianPassword" style="font-weight: 600; min-width: 100px; text-align: right;">Password:</label>
-          <div class="password_container" style="display: flex; align-items: center; gap: 10px;">
-            <input type="password" id="technicianPassword" class="swal2-input" style="width: 200px; height: 38px;" required>
-            <button type="button" id="togglePassword" style="background: none; border: none; cursor: pointer;">
-              <i class="fa fa-eye" aria-hidden="true"></i>
-            </button>
-          </div>
-        </div>
+    <div class="form-group" style="display:flex; flex-direction:column; gap:5px;">
+      <label for="technicianPassword" style="font-weight:600; text-align:left;">Password:</label>
+      <div class="password_container" style="position:relative; width:100%;">
+        <input type="password" id="technicianPassword" class="swal2-input" required style="width:100%; padding-right:45px; margin:0;">
+        <button type="button" id="togglePassword" style="position:absolute; right:15px; top:50%; transform:translateY(-50%); border:none; background:none; cursor:pointer; color:#666;">
+          <i class="fas fa-eye"></i>
+        </button>
+      </div>
+    </div>
 
-        <div id="passwordFeedback" style="font-size: 12px; color: red;">Password must be at least 8 characters and contain at least 1 number.</div>
+    <div id="passwordFeedback" style="font-size:12px; color:red;">Password must be at least 8 characters and contain at least 1 number.</div>
 
-        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-          <label for="technicianRole" style="font-weight: 600; min-width: 100px; text-align: left;">Role:</label>
-          <select id="technicianRole" class="swal2-input" style="width: 200px; height: 38px; padding: 5px;" required>
-            <option value="" disabled selected>Select a Role</option>
-            <option value="Installer">Installer</option>
-            <option value="Repair Technician">Repair Technician</option>
-          </select>
-        </div>
+    <div class="form-group" style="display:flex; flex-direction:column; gap:5px;">
+      <label for="technicianRole" style="font-weight:600; text-align:left;">Role:</label>
+      <select id="technicianRole" class="swal2-input" required style="width:100%; margin:0;">
+        <option value="" disabled selected>Select a Role</option>
+        <option value="Installer">Installer</option>
+        <option value="Repair Technician">Repair Technician</option>
+      </select>
+    </div>
 
-        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-          <label for="technicianContact" style="font-weight: 600; min-width: 100px; text-align: right;">Contact:</label>
-          <input type="text" id="technicianContact" class="swal2-input" style="width: 200px; height: 38px;" required>
-        </div>
+    <div class="form-group" style="display:flex; flex-direction:column; gap:5px;">
+      <label for="technicianContact" style="font-weight:600; text-align:left;">Contact:</label>
+      <input type="text" id="technicianContact" class="swal2-input" required style="width:100%; margin:0;">
+    </div>
 
-        <div style="display: flex; align-items: center; justify-content: center; gap: 10px;">
-          <label for="technicianProfileImage" style="font-weight: 600; min-width: 100px; text-align: right;">Profile:</label>
-          <input type="file" id="technicianProfileImage" class="swal2-file" style="width: 200px; height: 38px;" accept="image/*">
-        </div>
-      </form>
-    `,
+    <div class="form-group" style="display:flex; flex-direction:column; gap:5px;">
+      <label for="technicianProfileImage" style="font-weight:600; text-align:left;">Profile:</label>
+      <input type="file" id="technicianProfileImage" class="swal2-file" accept="image/*" style="width:100%; margin:0;">
+    </div>
+  </form>
+`,
     focusConfirm: false,
     showCancelButton: true,
     confirmButtonText: "Add Technician",

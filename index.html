@@ -31,6 +31,36 @@
     <script src="scripts/slidingimages.js" defer></script>
     <!--For apply button-->
     <script src="scripts/apply.js" defer></script>
+
+    <!--use for gallery image--->
+    <link
+      rel="preload"
+      as="image"
+      href="frontend/assets/images/slidingbackgrounds/slide1largest.webp"
+      media="(min-width: 951px)"
+      type="image/webp"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href="frontend/assets/images/slidingbackgrounds/slide1large.webp"
+      media="(max-width: 950px)"
+      type="image/webp"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href="frontend/assets/images/slidingbackgrounds/slide1medium.webp"
+      media="(max-width: 768px)"
+      type="image/webp"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href="frontend/assets/images/slidingbackgrounds/slide1small.webp"
+      media="(max-width: 480px)"
+      type="image/webp"
+    />
   </head>
   <body>
     <header>
@@ -75,6 +105,37 @@
         <div class="slider-container">
           <div class="slide">
             <picture>
+              <!-- WebP sources for better compression -->
+              <source
+                media="(max-width: 480px)"
+                srcset="
+                  frontend/assets/images/slidingbackgrounds/slide1small.webp
+                "
+                type="image/webp"
+              />
+              <source
+                media="(max-width: 768px)"
+                srcset="
+                  frontend/assets/images/slidingbackgrounds/slide1medium.webp
+                "
+                type="image/webp"
+              />
+              <source
+                media="(max-width: 950px)"
+                srcset="
+                  frontend/assets/images/slidingbackgrounds/slide1large.webp
+                "
+                type="image/webp"
+              />
+              <source
+                media="(min-width: 951px)"
+                srcset="
+                  frontend/assets/images/slidingbackgrounds/slide1largest.webp
+                "
+                type="image/webp"
+              />
+
+              <!-- Fallback PNG sources -->
               <source
                 media="(max-width: 480px)"
                 srcset="
@@ -93,15 +154,50 @@
                   frontend/assets/images/slidingbackgrounds/slide1large.png
                 "
               />
+
               <img
                 src="frontend/assets/images/slidingbackgrounds/slide1largest.png"
                 alt="Slide 1"
                 decoding="async"
+                fetchpriority="high"
               />
             </picture>
           </div>
+
+          <!-- Slide 2 - Lazy loaded -->
           <div class="slide">
             <picture>
+              <!-- WebP sources for better compression -->
+              <source
+                media="(max-width: 480px)"
+                srcset="
+                  frontend/assets/images/slidingbackgrounds/slide2small.webp
+                "
+                type="image/webp"
+              />
+              <source
+                media="(max-width: 768px)"
+                srcset="
+                  frontend/assets/images/slidingbackgrounds/slide2medium.webp
+                "
+                type="image/webp"
+              />
+              <source
+                media="(max-width: 950px)"
+                srcset="
+                  frontend/assets/images/slidingbackgrounds/slide2large.webp
+                "
+                type="image/webp"
+              />
+              <source
+                media="(min-width: 951px)"
+                srcset="
+                  frontend/assets/images/slidingbackgrounds/slide2largest.webp
+                "
+                type="image/webp"
+              />
+
+              <!-- Fallback PNG sources -->
               <source
                 media="(max-width: 480px)"
                 srcset="
@@ -120,6 +216,7 @@
                   frontend/assets/images/slidingbackgrounds/slide2large.png
                 "
               />
+
               <img
                 src="frontend/assets/images/slidingbackgrounds/slide2largest.png"
                 alt="Slide 2"
@@ -128,8 +225,41 @@
               />
             </picture>
           </div>
+
+          <!-- Slide 3 - Lazy loaded -->
           <div class="slide">
             <picture>
+              <!-- WebP sources for better compression -->
+              <source
+                media="(max-width: 480px)"
+                srcset="
+                  frontend/assets/images/slidingbackgrounds/slide3small.webp
+                "
+                type="image/webp"
+              />
+              <source
+                media="(max-width: 768px)"
+                srcset="
+                  frontend/assets/images/slidingbackgrounds/slide3medium.webp
+                "
+                type="image/webp"
+              />
+              <source
+                media="(max-width: 950px)"
+                srcset="
+                  frontend/assets/images/slidingbackgrounds/slide3large.webp
+                "
+                type="image/webp"
+              />
+              <source
+                media="(min-width: 951px)"
+                srcset="
+                  frontend/assets/images/slidingbackgrounds/slide3largest.webp
+                "
+                type="image/webp"
+              />
+
+              <!-- Fallback PNG sources -->
               <source
                 media="(max-width: 480px)"
                 srcset="
@@ -148,9 +278,10 @@
                   frontend/assets/images/slidingbackgrounds/slide3large.png
                 "
               />
+
               <img
                 src="frontend/assets/images/slidingbackgrounds/slide3largest.png"
-                alt="Slide 1"
+                alt="Slide 3"
                 loading="lazy"
                 decoding="async"
               />

@@ -115,13 +115,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // Barangay options for each municipality
   const barangayData = {
-    orion: ["ARELLANO", "BAGUMBAYAN", "BALAGTAS", 
-            "BALUT", "BANTAN", "BILOLO", "CALUNGUSAN", "CAMACHILE", 
-            "DAANG BAGO", "DAANG BILOLO", "DAANG PARE", 
-            "GENERAL LIM", "KAPUNITAN", "LATI", "LUSUNGAN", 
-            "PUTING BUHANGIN", "SABATAN", "SAN VICENTE", 
-            "SANTA ELENA", "SANTO DOMINGO", "VILLA ANGELES", 
-            "WAKAS", "WAWA"],
+    orion: [
+      "ARELLANO",
+      "BAGUMBAYAN",
+      "BALAGTAS",
+      "BALUT",
+      "BANTAN",
+      "BILOLO",
+      "CALUNGUSAN",
+      "CAMACHILE",
+      "DAANG BAGO",
+      "DAANG BILOLO",
+      "DAANG PARE",
+      "GENERAL LIM",
+      "KAPUNITAN",
+      "LATI",
+      "LUSUNGAN",
+      "PUTING BUHANGIN",
+      "SABATAN",
+      "SAN VICENTE",
+      "SANTA ELENA",
+      "SANTO DOMINGO",
+      "VILLA ANGELES",
+      "WAKAS",
+      "WAWA",
+    ],
   };
 
   // Get elements
