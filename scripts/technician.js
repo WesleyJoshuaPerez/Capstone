@@ -171,7 +171,7 @@ $("#addTechnicianBtn").on("click", function () {
   Swal.fire({
     title: "Add New Technician",
     html: `
-  <form id="addTechnicianForm" style="display:flex; flex-direction:column; gap:15px; width:100%;">
+  <form id="addTechnicianForm" style="display:flex; flex-direction:column; gap:15px; width:100%;" autocomplete="off">
     <div class="form-group" style="display:flex; flex-direction:column; gap:5px;">
       <label for="technicianName" style="font-weight:600; text-align:left;">Name:</label>
       <input type="text" id="technicianName" class="swal2-input" required style="width:100%; margin:0;">
@@ -179,13 +179,13 @@ $("#addTechnicianBtn").on("click", function () {
 
     <div class="form-group" style="display:flex; flex-direction:column; gap:5px;">
       <label for="technicianUsername" style="font-weight:600; text-align:left;">Username:</label>
-      <input type="text" id="technicianUsername" class="swal2-input" required style="width:100%; margin:0;">
+      <input type="text" id="technicianUsername" class="swal2-input" required style="width:100%; margin:0;" autocomplete="new-username">
     </div>
 
     <div class="form-group" style="display:flex; flex-direction:column; gap:5px;">
       <label for="technicianPassword" style="font-weight:600; text-align:left;">Password:</label>
       <div class="password_container" style="position:relative; width:100%;">
-        <input type="password" id="technicianPassword" class="swal2-input" required style="width:100%; padding-right:45px; margin:0;">
+        <input type="password" id="technicianPassword" class="swal2-input" required style="width:100%; padding-right:45px; margin:0;" autocomplete="new-password">
         <button type="button" id="togglePassword" style="position:absolute; right:15px; top:50%; transform:translateY(-50%); border:none; background:none; cursor:pointer; color:#666;">
           <i class="fas fa-eye"></i>
         </button>
