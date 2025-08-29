@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", async function () {
       font-weight: bold;
     }
 
-    /* ✅ Apply only on mobile (screens <= 768px) */
+    /* Apply only on mobile (screens <= 768px) */
     @media (max-width: 768px) {
       .swal2-input,
       .swal2-label,
