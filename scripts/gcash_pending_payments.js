@@ -80,19 +80,32 @@ function attachRowClickEvent() {
       const payment = JSON.parse(row.getAttribute("data-payment"));
 
       Swal.fire({
-        title: `Payment ID: ${payment.payment_id}`,
-        html: `
-              <div style="text-align: left; max-height: 400px; overflow-y: auto; padding-right: 10px;">
-                  <strong>Fullname:</strong> ${payment.fullname}<br>
-                  <strong>Subscription Plan:</strong> ${payment.subscription_plan}<br>
-                  <strong>Paid Amount:</strong> ${payment.paid_amount}<br>
-                  <strong>Payment Date:</strong> ${payment.payment_date}<br>
-                  <strong>Status:</strong> ${payment.status}<br>
-                  <strong>Proof of Payment:</strong><br>
-                  <img src="backend/uploads/gcash_proofs/${payment.proof_of_payment}" width="100%" style="cursor: pointer;" 
-                      onclick="viewImage(this.src)" onerror="this.onerror=null;this.src='uploads/default_proof_of_payment.jpg';">
-              </div>
-              `,
+  title: `Payment ID: ${payment.payment_id}`,
+  html: `
+    <style>
+      @media (max-width: 600px) {
+        .swal-content {
+          font-size: 13px !important;
+        }
+        .swal-content strong {
+          font-size: 13px !important;
+        }
+      }
+    </style>
+    <div class="swal-content" style="text-align: left; max-height: 400px; overflow-y: auto; padding-right: 10px;">
+        <strong>Fullname:</strong> ${payment.fullname}<br>
+        <strong>Subscription Plan:</strong> ${payment.subscription_plan}<br>
+        <strong>Paid Amount:</strong> ${payment.paid_amount}<br>
+        <strong>Payment Date:</strong> ${payment.payment_date}<br>
+        <strong>Status:</strong> ${payment.status}<br>
+        <strong>Proof of Payment:</strong><br>
+        <img src="backend/uploads/gcash_proofs/${payment.proof_of_payment}" 
+             width="100%" 
+             style="cursor: pointer;" 
+             onclick="viewImage(this.src)" 
+             onerror="this.onerror=null;this.src='uploads/default_proof_of_payment.jpg';">
+    </div>
+  `,
         icon: "info",
         showCancelButton: true,
         showDenyButton: true,

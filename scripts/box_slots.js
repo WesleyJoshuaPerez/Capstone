@@ -31,22 +31,42 @@ document.addEventListener("DOMContentLoaded", async function () {
     .getElementById("addNapboxBtn")
     .addEventListener("click", async function () {
       Swal.fire({
-        title: "Add Nap Box",
-        html: `<style>
+  title: "Add Nap Box",
+  html: `<style>
         .swal2-input {
-          max-width: 100% !important;
-          width: 90% !important;
-          margin: 5px auto !important;
-          display: block;
-        }
-        .swal2-label {
-          text-align: left;
-          display: block;
-          width: 90%;
-          margin: 5px auto 0 auto;
-          font-weight: bold;
-        }
-      </style>
+      max-width: 100% !important;
+      width: 90% !important;
+      margin: 5px auto !important;
+      display: block;
+    }
+    .swal2-label {
+      text-align: left;
+      display: block;
+      width: 90%;
+      margin: 5px auto 0 auto;
+      font-weight: bold;
+    }
+
+    /* ✅ Apply only on mobile (screens <= 768px) */
+    @media (max-width: 768px) {
+      .swal2-input,
+      .swal2-label,
+      #leafletMapContainer,
+      #pinLocationBtn,
+      .swal2-title {
+        font-size: 14px !important; /* adjust to your liking */
+      }
+
+      #leafletMapContainer {
+        height: 200px !important; /* make map smaller on mobile */
+      }
+
+      #pinLocationBtn {
+        padding: 6px 10px !important;
+        font-size: 13px !important;
+      }
+    }
+  </style>
       <div>
         <label for="barangayDropdown" class="swal2-label">Barangay</label>
         <select id="barangayDropdown" class="swal2-input">

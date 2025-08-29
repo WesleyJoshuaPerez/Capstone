@@ -488,6 +488,23 @@ body {
     overflow-x: auto;
   }
 
+  .subscriber-details {
+    font-size: 13px;   /* smaller text for mobile */
+    line-height: 1.4;
+  }
+
+  .subscriber-details strong {
+    font-size: 13px;   /* slightly larger labels for readability */
+  }
+  .application-details {
+    font-size: 13px;   /* reduce general text */
+    line-height: 1.4;
+  }
+
+  .application-details strong {
+    font-size: 13px;   /* keep labels readable */
+  }
+
   #applicationTable,
   #subscriberTable,
   #maintenance_reqTable,
@@ -598,7 +615,17 @@ body {
   cursor: pointer;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
-
+#addTechnicianForm label {
+  font-size: 13px;  /* smaller labels */
+}
+#addTechnicianForm input,
+#addTechnicianForm select,
+#addTechnicianForm button {
+  font-size: 13px;  /* smaller inputs */
+}
+#passwordFeedback {
+  font-size: 10px; /* reduce feedback text size */
+}
 #addTechnicianBtn:hover,
 #addNapboxBtn:hover {
   background-color: #2a5c92;

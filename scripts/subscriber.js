@@ -69,43 +69,30 @@ function attachSubscriberRowClickEvent() {
       const isOverdue = new Date(subscriber.next_due_date) < new Date();
 
       Swal.fire({
-        title: `Subscriber ID: ${subscriber.id}`,
-        html: `
-        <div style="text-align: left; max-height: 400px; overflow-y: auto; padding-right: 10px;">
+      title: `Subscriber ID: ${subscriber.id}`,
+      html: `
+        <div class="subscriber-details" style="text-align: left; max-height: 400px; overflow-y: auto; padding-right: 10px;">
           <strong>Username:</strong> ${subscriber.username}<br>
-          <strong>Subscription Plan:</strong> ${
-            subscriber.subscription_plan
-          }<br>
+          <strong>Subscription Plan:</strong> ${subscriber.subscription_plan}<br>
           <strong>Status:</strong> ${subscriber.status}<br>
-
-          <strong>Name:</strong> ${subscriber.first_name} ${
-          subscriber.last_name
-        }<br>
+          <strong>Name:</strong> ${subscriber.first_name} ${subscriber.last_name}<br>
           <strong>Birth Date:</strong> ${subscriber.birth_date}<br>
           <strong>Address:</strong> ${subscriber.address}<br>
           <strong>Contact:</strong> ${subscriber.contact_number}<br>
           <strong>Email:</strong> ${subscriber.email_address}<br>
-          <strong>ID Type:</strong> ${subscriber.id_type} <br>
+          <strong>ID Type:</strong> ${subscriber.id_type}<br>
           <strong>ID Number:</strong> ${subscriber.id_number || "N/A"}<br>
           <strong>Home Ownership:</strong> ${subscriber.home_ownership_type}<br>
-          <strong>Installation Date:</strong> ${
-            subscriber.installation_date
-          }<br>
-          <strong>Registration Date:</strong> ${
-            subscriber.registration_date
-          }<br>
+          <strong>Installation Date:</strong> ${subscriber.installation_date}<br>
+          <strong>Registration Date:</strong> ${subscriber.registration_date}<br>
           <strong>ID Photo:</strong><br>
-          <img src="frontend/assets/images/uploads/Id_Photo/${
-            subscriber.id_photo
-          }" width="100%" style="cursor: pointer;"
+          <img src="frontend/assets/images/uploads/Id_Photo/${subscriber.id_photo}" width="100%" style="cursor: pointer;"
               onclick="viewImage(this.src)" onerror="this.onerror=null;this.src='frontend/assets/images/uploads/default_id_photo.jpg';"><br>
           <strong>Proof of Residency:</strong><br>
-          <img src="frontend/assets/images/uploads/Proof_of_Residency/${
-            subscriber.proof_of_residency
-          }" width="100%" style="cursor: pointer;"
+          <img src="frontend/assets/images/uploads/Proof_of_Residency/${subscriber.proof_of_residency}" width="100%" style="cursor: pointer;"
               onclick="viewImage(this.src)" onerror="this.onerror=null;this.src='frontend/assets/images/uploads/default_proof_of_residency.jpg';">
         </div>
-        `,
+      `,
         icon: "info",
         showCancelButton: true,
         showDenyButton: true,

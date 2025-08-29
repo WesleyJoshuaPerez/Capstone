@@ -68,7 +68,7 @@
         <div class="header"> <button id="hamburgerBtn">
             <i class="fas fa-bars"></i>
           </button>
-            <span>LYNX User Dashboard </span>
+            <span>L.Y.N.X User Dashboard </span>
             <a href="" id="logoutButton" class="logout-btn">
                 <i class="fas fa-sign-out-alt"></i> Logout
             </a>
@@ -250,6 +250,7 @@
             </div>
 
             <button type="submit" class="maintenance-btn">Submit Request</button>
+            <div style="height: 1rem;"></div> <!-- Spacer -->
             </form>
             </div>
         </div> 
@@ -341,6 +342,7 @@
             </div>
                                 
             <button type="submit" class="update-btn">Update Profile</button>
+            <div style="height: 2rem;"></div> <!-- Spacer -->
             </form>
         </div>
         </div>
@@ -348,41 +350,69 @@
 
         <!-- start of change pass div-->
         <div id="changePasswordDiv">
-        <h2>Change Password</h2>
-        <div class="password-form-container">
-            <form id="changePasswordForm">
-                
-                <!-- Current Password -->
-                <div class="password-form-group">
-                    <label for="currentPassword">Current Password</label>
-                    <input type="password" id="currentPassword" name="currentPassword" placeholder="Type current password">
-                    <button type="button" id="togglePassword">
-                        <i class="fa fa-eye" aria-hidden="true"></i>
-                    </button>
-                </div>
-    
-                <!-- New Password -->
-                <div class="password-form-group">
-                    <label for="newPassword">New Password</label>
-                    <input type="password" id="newPassword" name="newPassword" placeholder="Type new password" required>
-                    <button type="button" id="togglePassword">
-                        <i class="fa fa-eye" aria-hidden="true"></i>
-                    </button>
-                </div>
-    
-                <!-- Confirm Password -->
-                <div class="password-form-group">
-                    <label for="confirmPassword">Confirm New Password</label>
-                    <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password" required>
-                    <button type="button" id="togglePassword">
-                        <i class="fa fa-eye" aria-hidden="true"></i>
-                    </button>
-                </div>
-    
-                <button type="submit" class="change-password-btn">Change Password</button>
-            </form>
+  <h2>Change Password</h2>
+  <div class="password-form-container">
+    <form id="changePasswordForm">
+      
+      <!-- Current Password -->
+      <div class="password-form-group">
+        <label for="currentPassword">Current Password</label>
+        <div class="input-group">
+          <input 
+            type="password" 
+            id="currentPassword" 
+            name="currentPassword" 
+            placeholder="Type current password"
+          />
+          <button type="button" id="togglePassword">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+          </button>
         </div>
+        <p class="validation-msg" id="currentPasswordMsg"></p>
+      </div>
+
+      <!-- New Password -->
+      <div class="password-form-group">
+        <label for="newPassword">New Password</label>
+        <div class="input-group">
+          <input 
+            type="password" 
+            id="newPassword" 
+            name="newPassword" 
+            placeholder="Type new password" 
+            required
+          />
+          <button type="button" id="togglePassword">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+          </button>
         </div>
+        <p class="validation-msg" id="newPasswordMessage"></p>
+      </div>
+
+      <!-- Confirm Password -->
+      <div class="password-form-group">
+        <label for="confirmPassword">Confirm New Password</label>
+        <div class="input-group">
+          <input 
+            type="password" 
+            id="confirmPassword" 
+            name="confirmPassword" 
+            placeholder="Confirm Password" 
+            required
+          />
+          <button type="button" id="togglePassword">
+            <i class="fa fa-eye" aria-hidden="true"></i>
+          </button>
+        </div>
+        <p class="validation-msg" id="confirmPasswordMsg"></p>
+      </div>
+
+      <button type="submit" class="change-password-btn">
+        Change Password
+      </button>
+      </form>
+      </div>
+      </div>
         <!-- end of change pass div-->
 
       </div>

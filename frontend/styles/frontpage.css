@@ -240,7 +240,7 @@ header {
 /* Default Style */
 .pricing-header {
   color: white;
-  padding: 15px;
+  padding: 18px 10px 18px 10px;
   border-radius: 8px 8px 0 0;
   font-size: 18px;
   font-weight: bold;

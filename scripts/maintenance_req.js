@@ -80,22 +80,33 @@ function attachMaintenanceRowClickEvent() {
         maintenance_request.status === "Ongoing";
 
       Swal.fire({
-        title: `Maintenance ID: ${maintenance_request.maintenance_id}`,
-        html: `
-          <div style="text-align: left; max-height: 400px; overflow-y: auto; padding-right: 10px;">
-              <strong>User ID:</strong> ${maintenance_request.user_id}<br>
-              <strong>Name:</strong> ${maintenance_request.full_name}<br>
-              <strong>Contact:</strong> ${maintenance_request.contact_number}<br>
-              <strong>Address:</strong> ${maintenance_request.address}<br>
-              <strong>Issue Type:</strong> ${maintenance_request.issue_type}<br>
-              <strong>Issue Description:</strong> ${maintenance_request.issue_description}<br>
-              <strong>Contact Time:</strong> ${maintenance_request.contact_time}<br>
-              <strong>Evidence:</strong><br>
-              <img src="frontend/assets/images/uploads/issue_evidence/${maintenance_request.evidence_filename}" width="100%" style="cursor: pointer;" 
-                  onclick="viewImage(this.src)" onerror="this.onerror=null;this.src='frontend/assets/images/uploads/default_id_photo.jpg';"><br>
-              <strong>Request Date:</strong> ${maintenance_request.submitted_at}<br>
-          </div>
-        `,
+  title: `Maintenance ID: ${maintenance_request.maintenance_id}`,
+  html: `
+    <style>
+      @media (max-width: 768px) {
+        .swal-content-custom {
+          font-size: 14px; /* smaller font for mobile */
+        }
+        .swal-content-custom strong {
+          font-size: 15px; /* slightly larger for labels */
+        }
+      }
+    </style>
+    <div class="swal-content-custom" style="text-align: left; max-height: 400px; overflow-y: auto; padding-right: 10px;">
+        <strong>User ID:</strong> ${maintenance_request.user_id}<br>
+        <strong>Name:</strong> ${maintenance_request.full_name}<br>
+        <strong>Contact:</strong> ${maintenance_request.contact_number}<br>
+        <strong>Address:</strong> ${maintenance_request.address}<br>
+        <strong>Issue Type:</strong> ${maintenance_request.issue_type}<br>
+        <strong>Issue Description:</strong> ${maintenance_request.issue_description}<br>
+        <strong>Contact Time:</strong> ${maintenance_request.contact_time}<br>
+        <strong>Evidence:</strong><br>
+        <img src="frontend/assets/images/uploads/issue_evidence/${maintenance_request.evidence_filename}" width="100%" style="cursor: pointer;" 
+            onclick="viewImage(this.src)" 
+            onerror="this.onerror=null;this.src='frontend/assets/images/uploads/default_id_photo.jpg';"><br>
+        <strong>Request Date:</strong> ${maintenance_request.submitted_at}<br>
+    </div>
+  `,
         icon: "info",
         showCancelButton: true,
         showDenyButton: !isDisabled,

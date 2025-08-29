@@ -27,19 +27,19 @@ document.addEventListener("DOMContentLoaded", function () {
   const planData = {
     Bronze: {
       title: "BRONZE",
-      price: "PHP 1199<br /><strong>per month</strong>",
+      price: "₱1,199.00<br /><strong>per month</strong>",
       details: "Up to 50 Mbps<br />Unlimited Bandwidth<br />24/7 Support",
       color: "linear-gradient(to right, #ec202a, #ff7676)", // use to apply red gradient
     },
     Silver: {
       title: "SILVER",
-      price: "PHP 1499<br /><strong>per month</strong>",
+      price: "₱1,499.00<br /><strong>per month</strong>",
       details: "Up to 100 Mbps<br />Unlimited Bandwidth<br />24/7 Support",
       color: "linear-gradient(to right, #36a13a, #7ed957)", // use to apply green gradient
     },
     Gold: {
       title: "GOLD",
-      price: "PHP 1799<br /><strong>per month</strong>",
+      price: "₱1,799.00<br /><strong>per month</strong>",
       details: "Up to 150 Mbps<br />Unlimited Bandwidth<br />24/7 Support",
       color: "linear-gradient(to right, #fcbf06, #ff9900)", // use to apply yellow-orange gradient
     },

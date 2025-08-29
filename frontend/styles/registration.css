@@ -96,7 +96,7 @@ p {
   width: 100%; /* Adjust width for responsiveness */
   max-width: 400px;
   position: relative;
-  left: 25px;
+  left: 15px;
   margin-top: 100px; /* Keep the Bronze border slightly above */
 }
 
@@ -449,15 +449,36 @@ button:hover {
   }
 
   @media (max-width: 760px) {
+    h1 {
+    font-size: 30px;
+    }
+    p {
+    margin-top: 20px;
+    font-size: 14px;
+    }
     .grid-container {
       flex-direction: column;
       align-items: center;
       gap: 20px;
     }
-
+    .checkbox-label {
+    font-size: 13px;
+    }
+    .checkbox-label input[type="checkbox"] {
+    width: 15px;
+    height: 15px;
+    }
+    #mapLink{
+      position: relative;
+      top: 2px;
+      left: 3rem;
+      font-size: 14px;
+    }
     .pricing-box {
       width: 100%;
       max-width: 90%;
+      position: relative;
+      bottom: 17px;
     }
 
     .form-step {
@@ -540,6 +561,10 @@ button:hover {
     gap: 10px; /* Add spacing between buttons */
     justify-content: center; /* Center buttons */
     margin-top: 20px;
+  }
+  .progress-bar {
+    font-size: 2rem; /* Slightly smaller */
+    gap: 20px; /* reduce spacing if needed */
   }
 }
 

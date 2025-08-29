@@ -524,7 +524,7 @@ select:focus {
   border-radius: 5px;
   font-size: 16px;
   cursor: pointer;
-  margin-top: 20px;
+  margin-top: 30px;
 }
 
 .maintenance-btn:hover {
@@ -573,7 +573,7 @@ select:focus {
   border-radius: 8px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
   position: relative;
-  top: 3rem;
+  margin: 100px auto 40px auto; /* top | right | bottom | left */
 }
 
 /* Form Row - Flexbox for alignment */
@@ -650,6 +650,28 @@ select:focus {
 /* end of view profile div style */
 
 /* start of change pass div style */
+.input-group {
+  position: relative;
+  width: 100%;
+}
+
+.input-group input {
+  width: 100%;
+  padding-right: 40px; /* leave space for the eye button */
+  box-sizing: border-box;
+}
+
+.input-group button {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+}
+
 .password-form-container {
   max-width: 400px;
   margin: 0 auto;
@@ -661,15 +683,8 @@ select:focus {
   top: 60px;
 }
 
-#togglePassword {
-  position: relative;
-  left: 20.5rem;
-  bottom: 1.9rem;
-  background: none;
-  border: none;
-  cursor: pointer;
-  font-size: 1.1rem;
-  color: #555;
+.password-input-wrapper {
+  position: relative; /* makes the wrapper the reference for absolute positioning */
 }
 
 /* Form Group Styling */
@@ -741,7 +756,6 @@ select:focus {
   .sidebar h2 {
     font-size: 14px;
   }
-
   .sidebar ul li a {
     font-size: 0;
     height: 50px;
@@ -769,9 +783,12 @@ select:focus {
 /* For Mobile */
 @media screen and (max-width: 480px) {
   .sidebar {
-    width: 65px;
-    height: auto;
-    padding-top: 20px;
+  width: 65px;
+  min-height: 100%;
+  background: #700000;
+  padding: 30px 0;
+  position: fixed;
+  transition: all 0.3s ease;
   }
   .sidebar h2 {
     font-size: 12px;
@@ -797,11 +814,18 @@ select:focus {
     top: 10px;
   }
   #homeSection h1 {
-    font-size: 22px !important;
+    position: relative;
+    bottom: 10px;
+    font-size: 21px !important;
   }
   #homeSection .status {
     position: relative;
-    top: 4.8px !important;
+    bottom: 5px !important;
+  }
+  #homeSection .account-info {
+  position: relative;
+  bottom: 10px;
+  font-size: 0.9rem;
   }
   .card {
     margin-right: 32px !important;
@@ -811,11 +835,14 @@ select:focus {
   .card-container {
     width: 100% !important;
   }
+  h3 {
+    font-size: 1.1rem;
+  }
   .price {
-    font-size: 1.125rem !important;
+    font-size: 1.1rem !important;
   }
   .modem-info {
-    font-size: 0.875rem !important;
+    font-size: 0.8rem !important;
   }
   #historyDiv {
     position: relative !important;
@@ -857,6 +884,17 @@ select:focus {
   .newSub_btn {
     width: 70% !important;
   }
+  .maintenance-form-container {
+    height: 788px;
+    position: relative;
+    margin: 50px auto 80px auto; /* top | right | bottom | left */
+  }
+  .maintenance-btn {
+    font-size: 14px;
+    width: 60%;
+    position: relative;
+    bottom: 15px;
+  }
   #maintenanceDiv {
     position: relative !important;
     right: 2rem !important;
@@ -870,9 +908,6 @@ select:focus {
   }
   .form-group label {
     padding-top: 0.5rem !important;
-  }
-  .maintenance-btn {
-    width: 70%;
   }
   #notificationDiv {
     position: relative !important;
@@ -895,19 +930,32 @@ select:focus {
     min-width: 21.875rem;
     table-layout: auto !important;
   }
-  #profileDiv {
-    position: relative !important;
-    right: 2rem !important;
-    top: 10px !important;
-    width: 18.7rem !important;
+  .profile-form-container {
+    height: 670px;
+    position: relative;
+    margin: 50px auto 40px auto; /* top | right | bottom | left */
   }
-  #profileDiv h2 {
-    font-size: 1rem !important;
-    position: relative !important;
-    right: 0.5rem !important;
+  .profile-form-row {
+    flex-direction: column;
   }
-  .update-btn {
-    width: 60%;
+  .profile-form-group {
+    margin-right: 0;
+    position: relative;
+    bottom: 10px;
+    width: 100%;
+  }
+  .profile-form-group input {
+    font-size: 14px;
+    padding: 7px;
+  }
+  .profile-form-group label {
+    font-size: 0.85rem;
+    margin-top: 10px;
+  }
+ .update-btn {
+  width: 60%;
+  left: 30%;
+  transform: translateX(-50%);
   }
   #changePasswordDiv {
     position: relative !important;
@@ -923,6 +971,7 @@ select:focus {
   .change-password-btn {
     width: 70%;
   }
+
 }
 
 /* Responsiveness for 768px screen */

@@ -372,25 +372,32 @@ document.addEventListener("DOMContentLoaded", function () {
   newPasswordField.addEventListener("input", function () {
     if (!passwordRegex.test(newPasswordField.value)) {
       newPasswordMessage.textContent =
-        "Password must have at least 8 characters and 1 number.";
+        "Min. of 8 characters and 1 number.";
       newPasswordMessage.style.display = "block";
       newPasswordMessage.style.color = "red";
     } else {
-      newPasswordMessage.textContent = "Valid password.";
       newPasswordMessage.style.color = "green";
+      newPasswordMessage.style.display = "none";
     }
   });
 
   // live validation for confirm password field
   confirmPasswordField.addEventListener("input", function () {
-    if (confirmPasswordField.value !== newPasswordField.value) {
-      confirmPasswordMessage.textContent = "Passwords do not match.";
-      confirmPasswordMessage.style.display = "block";
-      confirmPasswordMessage.style.color = "red";
-    } else {
-      confirmPasswordMessage.textContent = "Passwords match.";
-      confirmPasswordMessage.style.color = "green";
-    }
+  if (!confirmPasswordField.value || !newPasswordField.value) {
+    // hide message if either field is empty
+    confirmPasswordMessage.style.display = "none";
+    return;
+  }
+
+  if (confirmPasswordField.value !== newPasswordField.value) {
+    confirmPasswordMessage.textContent = "Passwords do not match.";
+    confirmPasswordMessage.style.display = "block";
+    confirmPasswordMessage.style.color = "red";
+  } else {
+    confirmPasswordMessage.textContent = "Passwords match.";
+    confirmPasswordMessage.style.display = "block";
+    confirmPasswordMessage.style.color = "green";
+  }
   });
 
   // handle change password button click

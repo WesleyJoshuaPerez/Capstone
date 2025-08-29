@@ -607,7 +607,8 @@ document.addEventListener("DOMContentLoaded", function () {
         margin: 0;
         font-size: 14px;
         display: grid;
-        grid-template-columns: 150px 1fr;
+        grid-template-columns: 1fr;
+        text-align: left;
         gap: 8px 10px;
         color: #333;
         white-space: pre-wrap;
@@ -736,52 +737,74 @@ document.addEventListener("DOMContentLoaded", function () {
       const issueDescription = row.find("td:eq(5)").text(); // 6th column
 
       Swal.fire({
-        title: "Progress Report",
-        html: `
-        <div style="
-          max-height: 500px;
-          max-width: 500px;
-          overflow-y: auto;
-          overflow-x: hidden;
-          margin: 0;
-          font-size: 14px;
-          display: grid;
-          grid-template-columns: 120px 1fr;
-          column-gap: 10px;
-          row-gap: 10px;
-          align-items: center;
-        ">
-          <!-- Client Name (read-only) -->
-          <label for="clientName" style="margin: 0;">Client Name:</label>
-          <input id="clientName" class="swal2-input" style="font-size: 15px; width: 90%;" value="${clientName}" readonly>
+  title: "Progress Report",
+  html: `
+    <div style="
+      max-height: 500px;
+      max-width: 500px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      margin: 0;
+      font-size: 15px;
+      display: grid;
+      grid-template-columns: 1fr; /* single column */
+      row-gap: 15px;
+      text-align: left;
+    ">
+    <style>
+      .swal2-popup input, 
+      .swal2-popup textarea {
+        width: 95% !important;
+        margin: 0 auto;
+      }
+    </style>
 
-          <!-- Contact Number (read-only) -->
-          <label for="contactNumber" style="margin: 0;">Contact Number:</label>
-          <input id="contactNumber" class="swal2-input" style="font-size: 15px; width: 90%;" value="${contactNumber}" readonly>
+      <!-- Client Name (read-only) -->
+      <div>
+        <label for="clientName" style="font-weight:bold; margin-bottom: 10px; display:block;">Client Name:</label>
+        <input id="clientName" class="swal2-input" style="font-size: 15px; width: 100%;" value="${clientName}" readonly>
+      </div>
 
-          <!-- Issue Type (read-only) -->
-          <label for="issueType" style="margin: 0;">Issue Type:</label>
-          <input id="issueType" class="swal2-input" style="font-size: 15px; width: 90%;" value="${issueType}" readonly>
+      <!-- Contact Number (read-only) -->
+      <div>
+        <label for="contactNumber" style="font-weight:bold; margin-bottom: 10px; display:block;">Contact Number:</label>
+        <input id="contactNumber" class="swal2-input" style="font-size: 15px; width: 100%;" value="${contactNumber}" readonly>
+      </div>
 
-          <!-- Description (read-only) -->
-          <label for="issueDescription" style="margin: 0;">Description:</label>
-          <textarea id="issueDescription" class="swal2-textarea" style="font-size: 15px; width: 90%; resize: none;" readonly>${issueDescription}</textarea>
-          
-          <!-- Divider -->
-          <div style="grid-column: 1 / -1; height: 1px; background: #ccc; margin: 10px 0;"></div>
-          
-          <!-- Progress Update (editable) -->
-          <label for="progressUpdate" style="margin: 0;">Progress Update:</label>
-          <textarea id="progressUpdate" class="swal2-textarea" style="font-size: 15px; width: 90%; resize: none;" placeholder="Enter progress update"></textarea>
+      <!-- Issue Type (read-only) -->
+      <div>
+        <label for="issueType" style="font-weight:bold; margin-bottom: 10px; display:block;">Issue Type:</label>
+        <input id="issueType" class="swal2-input" style="font-size: 15px; width: 100%;" value="${issueType}" readonly>
+      </div>
 
-          <!-- Work Done (editable) -->
-          <label for="workDone" style="margin: 0;">Work Done:</label>
-          <textarea id="workDone" class="swal2-textarea" style="font-size: 15px; width: 90%; resize: none;" placeholder="Enter work details"></textarea>
+      <!-- Description (read-only) -->
+      <div>
+        <label for="issueDescription" style="font-weight:bold; margin-bottom: 10px; display:block;">Description:</label>
+        <textarea id="issueDescription" class="swal2-textarea" style="font-size: 15px; width: 100%; resize: none;" readonly>${issueDescription}</textarea>
+      </div>
+      
+      <!-- Divider -->
+      <div style="height: 1px; background: #ccc; margin: 10px 0;"></div>
+      
+      <!-- Progress Update (editable) -->
+      <div>
+        <label for="progressUpdate" style="font-weight:bold; margin-bottom: 10px; display:block;">Progress Update:</label>
+        <textarea id="progressUpdate" class="swal2-textarea" style="font-size: 15px; width: 100%; resize: none;" placeholder="Enter progress update"></textarea>
+      </div>
 
-          <!-- Time Spent (editable) as numeric input -->
-          <label for="timeSpent" style="margin: 0;">Time Spent (hrs):</label>
-          <input type="number" id="timeSpent" class="swal2-input" style="font-size: 15px; width: 90%; resize: none;" placeholder="e.g. 2" min="0" step="0.5">
-        </div>
+      <!-- Work Done (editable) -->
+      <div>
+        <label for="workDone" style="font-weight:bold; margin-bottom: 10px; display:block;">Work Done:</label>
+        <textarea id="workDone" class="swal2-textarea" style="font-size: 15px; width: 100%; resize: none;" placeholder="Enter work details"></textarea>
+      </div>
+
+      <!-- Time Spent (editable) as numeric input -->
+      <div>
+        <label for="timeSpent" style="font-weight:bold; margin-bottom: 10px; display:block;">Time Spent (hrs):</label>
+        <input type="number" id="timeSpent" class="swal2-input" style="font-size: 15px; width: 100%;" placeholder="e.g. 2" min="0" step="0.5">
+      </div>
+
+    </div>
       `,
         showCancelButton: true,
         confirmButtonText: "Save",
@@ -846,58 +869,83 @@ document.addEventListener("DOMContentLoaded", function () {
       const userId = $(this).data("userid");
 
       Swal.fire({
-        title: "Completion Report",
-        html: `
-      <div style="
-        max-height: 500px;
-        max-width: 500px;
-        overflow-y: auto;
-        overflow-x: hidden;
-        margin: 0;
-        font-size: 14px;
-        display: grid;
-        grid-template-columns: 120px 1fr;
-        column-gap: 10px;
-        row-gap: 10px;
-        align-items: center;
-      ">
-        <!-- Display Client Details (read-only) -->
-        <label for="clientName" style="margin: 0;">Client Name:</label>
-        <input id="clientName" class="swal2-input" style="font-size: 15px; width: 90%;" value="${clientName}" readonly>
-
-        <label for="contactNumber" style="margin: 0;">Contact Number:</label>
-        <input id="contactNumber" class="swal2-input" style="font-size: 15px; width: 90%;" value="${contactNumber}" readonly>
-
-        <label for="issueType" style="margin: 0;">Issue Type:</label>
-        <input id="issueType" class="swal2-input" style="font-size: 15px; width: 90%;" value="${issueType}" readonly>
-
-        <label for="issueDescription" style="margin: 0;">Description:</label>
-        <textarea id="issueDescription" class="swal2-textarea" style="font-size: 15px; width: 90%; resize: none;" readonly>${issueDescription}</textarea>
-        
-        <!-- Divider -->
-        <div style="grid-column: 1 / -1; height: 1px; background: #ccc; margin: 10px 0;"></div>
-
-        <!-- Completion Form Fields -->
-        <!-- Completion Date/Time -->
-        <label for="completionDateTime" style="margin: 0;">Completion Date/Time:</label>
-        <input type="datetime-local" id="completionDateTime" class="swal2-input" style="font-size: 15px; width: 90%;">
-
-        <!-- Work Description -->
-        <label for="workDescription" style="margin: 0;">Work Description:</label>
-        <textarea id="workDescription" class="swal2-textarea" style="font-size: 15px; width: 90%; resize: none;" placeholder="Describe the work performed"></textarea>
-
-        <!-- Parts/Materials Used -->
-        <label for="partsUsed" style="margin: 0;">Parts/Materials Used:</label>
-        <textarea id="partsUsed" class="swal2-textarea" style="font-size: 15px; width: 90%; resize: none;" placeholder="List parts/materials used"></textarea>
-
-        <!-- Issues Encountered -->
-        <label for="issuesEncountered" style="margin: 0;">Issues Encountered:</label>
-        <textarea id="issuesEncountered" class="swal2-textarea" style="font-size: 15px; width: 90%; resize: none;" placeholder="Describe any issues encountered"></textarea>
-
-        <!-- Technician Comments -->
-        <label for="technicianComments" style="margin: 0;">Tech Comments:</label>
-        <textarea id="technicianComments" class="swal2-textarea" style="font-size: 15px; width: 90%; resize: none;" placeholder="Enter any additional comments"></textarea>
+  title: "Completion Report",
+  html: `
+    <div style="
+      max-height: 500px;
+      max-width: 500px;
+      overflow-y: auto;
+      margin: 0 auto;
+      font-size: 15px;
+      display: grid;
+      grid-template-columns: 1fr;
+      row-gap: 15px;
+      text-align: left;
+    ">
+    <style>
+      .swal2-popup label {
+        display: block;
+        text-align: left;
+        margin-bottom: 10px; /* gap between label and input */
+        font-weight: bold;
+      }
+      .swal2-popup input,
+      .swal2-popup textarea {
+        width: 95% !important; /* prevent cutting off */
+        margin: 0 auto;
+        font-size: 15px;
+      }
+    </style>
+      <!-- Display Client Details (read-only) -->
+      <div>
+        <label for="clientName">Client Name:</label>
+        <input id="clientName" class="swal2-input" value="${clientName}" readonly>
       </div>
+
+      <div>
+        <label for="contactNumber">Contact Number:</label>
+        <input id="contactNumber" class="swal2-input" value="${contactNumber}" readonly>
+      </div>
+
+      <div>
+        <label for="issueType">Issue Type:</label>
+        <input id="issueType" class="swal2-input" value="${issueType}" readonly>
+      </div>
+
+      <div>
+        <label for="issueDescription">Description:</label>
+        <textarea id="issueDescription" class="swal2-textarea" style="resize: none;" readonly>${issueDescription}</textarea>
+      </div>
+
+      <!-- Divider -->
+      <div style="height: 1px; background: #ccc; margin: 10px 0;"></div>
+
+      <!-- Completion Form Fields -->
+      <div>
+        <label for="completionDateTime">Completion Date/Time:</label>
+        <input type="datetime-local" id="completionDateTime" class="swal2-input">
+      </div>
+
+      <div>
+        <label for="workDescription">Work Description:</label>
+        <textarea id="workDescription" class="swal2-textarea" style="resize: none;" placeholder="Describe the work performed"></textarea>
+      </div>
+
+      <div>
+        <label for="partsUsed">Parts/Materials Used:</label>
+        <textarea id="partsUsed" class="swal2-textarea" style="resize: none;" placeholder="List parts/materials used"></textarea>
+      </div>
+
+      <div>
+        <label for="issuesEncountered">Issues Encountered:</label>
+        <textarea id="issuesEncountered" class="swal2-textarea" style="resize: none;" placeholder="Describe any issues encountered"></textarea>
+      </div>
+
+      <div>
+        <label for="technicianComments">Tech Comments:</label>
+        <textarea id="technicianComments" class="swal2-textarea" style="resize: none;" placeholder="Enter any additional comments"></textarea>
+      </div>
+    </div>
     `,
         showCancelButton: true,
         confirmButtonText: "Save",
