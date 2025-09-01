@@ -25,8 +25,12 @@
     />
     <link rel="stylesheet" href="frontend/styles/aboutus.css" />
     <link rel="stylesheet" href="frontend/styles/chatbot.css" />
+    <!--for youtube popup-->
+    <link rel="stylesheet" href="frontend/styles/youtubevid.css" />
     <!--For hamburger menu-->
     <script src="scripts/hamburger.js" defer></script>
+    <!--For youtube popup function-->
+    <script src="scripts/youtubepop.js" defer></script>
   </head>
   <body>
     <header>
@@ -76,7 +80,7 @@
               alt="About LYNX"
             />
           </div>
-          <div class="story-text" style="text-align: justify"> 
+          <div class="story-text" style="text-align: justify">
             <p>
               <b>LYNX Fiber Internet</b> is a private internet company providing
               fast and reliable fiber network services to far-flung areas in and
@@ -88,6 +92,13 @@
               connectivity even if they are living at the farthest reaches of
               Bataan.
             </p>
+            <!--To watch youtube video-->
+            <button
+              class="youtube-btn"
+              data-video="https://www.youtube.com/watch?v=hGNLYgmMq1c"
+            >
+              <span class="play-icon">▶</span> Getting Started
+            </button>
           </div>
         </div>
       </div>
@@ -223,5 +234,19 @@
         />
       </div>
     </footer>
+    <!--for youtube popup-->
+<div class="youtube-modal" id="youtubeModal">
+  <div class="youtube-content">
+    <span class="youtube-close" id="closeYoutube">&times;</span>
+    <iframe
+      id="youtubeIframe"
+      src=""
+      frameborder="0"
+      allow="autoplay; encrypted-media"
+      allowfullscreen
+    ></iframe>
+  </div>
+</div>
+    </div>
   </body>
 </html>
