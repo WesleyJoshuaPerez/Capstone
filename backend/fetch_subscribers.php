@@ -80,7 +80,7 @@ function sendBillingNotification($fullName, $accountNo, $amountDue, $dueDate, $e
         "• Due Date: {$dueDate}\n\n" .
         "Payment Options:\n" .
         "• Visit our office for cash payment\n" .
-       "• Pay online via our website using GCash or PayMaya:\n" .
+       "• Pay online via our website using GCash or PayPal:\n" .
          "https://lynxfiberinternet.com/\n" .
         "Important: Please settle your balance on or before the due date to avoid service interruption.\n\n" .
         "A detailed PDF bill has been attached to this email for your records.\n\n" .
@@ -239,7 +239,7 @@ function sendBillingNotification($fullName, $accountNo, $amountDue, $dueDate, $e
         <div class='payment-title'>Payment Methods Available:</div>
         <div class='payment-methods'>
             • Visit our office for cash payment<br>
-            • Pay online via our website using GCash or PayMaya: 
+            • Pay online via our website using GCash or PayPal: 
             <a href='https://lynxfiberinternet.com/' target='_blank'>
             https://lynxfiberinternet.com/
             </a>
