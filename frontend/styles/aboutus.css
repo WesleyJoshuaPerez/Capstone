@@ -379,11 +379,11 @@ footer {
   width: 100%;
 }
 .four_zero_four_bg {
-  background-image: url(https://cdn.dribbble.com/userupload/27471117/file/original-2b1701fbbea73fc89087142013c46ae2.gif);
+  background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
   height: 550px;
   background-repeat: no-repeat;
   background-position: center;
-  background-size: contain; /* ✅ ensures full gif shows */
+  background-size: contain; /* ensures full gif shows */
   position: relative;
   bottom: 40px;
 }
