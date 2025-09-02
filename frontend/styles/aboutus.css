@@ -297,8 +297,7 @@ section h2::after {
   transform: rotateY(180deg); /* horizontal flip */
 }
 
-.card-front,
-.card-back {
+.card-front {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -310,7 +309,13 @@ section h2::after {
   padding: 20px;
 }
 .card-back {
-  padding: 15px;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 10px;
+  box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.1);
+  position: absolute;
+  padding: 20px;
   text-align: center;
   transform: rotateY(180deg);
   display: flex;
@@ -334,6 +339,7 @@ section h2::after {
   bottom: 20px; 
   left: 50%;
   transform: translateX(-50%);
+  overflow: hidden;
 }
 
 /* Front side */
@@ -420,22 +426,26 @@ footer {
 /*animation css*/
 
 .page_404 {
-padding:40px 0; 
-background:#fff; 
-font-family: 'Arvo', serif;
+  padding: 40px 0;
+  background: #fff;
+  font-family: 'Arvo', serif;
 }
-.page_404  img {
-width:100%;
+
+.page_404 img {
+  width: 100%;
 }
+
 .four_zero_four_bg {
-background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
-height: 550px;
-background-repeat: no-repeat;
-background-position: center;
-position: relative;
-bottom: 40px;
-} 
-.contant_box_404 { 
+  background-image: url(https://cdn.dribbble.com/users/285475/screenshots/2083086/dribbble_1.gif);
+  height: 550px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain; /* ✅ ensures full gif shows */
+  position: relative;
+  bottom: 40px;
+}
+
+.contant_box_404 {
   position: relative;
   bottom: 50px;
   text-align: center;
@@ -529,8 +539,25 @@ bottom: 40px;
     font-size: 28px;
     position: relative;
   }
+  .team-card.flipped .card-inner {
+    transform: rotateY(180deg);
+  }
   .tap-me {
     display: block;
+  }
+  .typewriter-text {
+    display: block;
+  }
+  .four_zero_four_bg {
+    height: 300px;        /* shrink for small screens */
+    background-size: cover; /* better fill on mobile */
+    bottom: 20px;
+  }
+
+  .contant_box_404 {
+    font-size: 16px;
+    bottom: 30px;
+    padding: 0 15px; /* avoid text touching edges */
   }
   .team-image {
     width: 100%;
