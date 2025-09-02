@@ -25,12 +25,18 @@
     />
     <link rel="stylesheet" href="frontend/styles/aboutus.css" />
     <link rel="stylesheet" href="frontend/styles/chatbot.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
     <!--for youtube popup-->
     <link rel="stylesheet" href="frontend/styles/youtubevid.css" />
     <!--For hamburger menu-->
     <script src="scripts/hamburger.js" defer></script>
     <!--For youtube popup function-->
     <script src="scripts/youtubepop.js" defer></script>
+    <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet/dist/leaflet.css"
+    />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   </head>
   <body>
     <header>
@@ -74,13 +80,9 @@
       <div class="section-container">
         <h2>About LYNX</h2>
         <div class="story-content">
-          <div class="story-image">
-            <img
-              src="frontend/assets/images/aboutus/lynx_whitebghd.png"
-              alt="About LYNX"
-            />
-          </div>
-          <div class="story-text" style="text-align: justify">
+          <!-- Shows the location of LYNX in orion -->
+          <div class="story-image" id="map"></div>
+          <div class="story-text" style="text-align:justify">
             <p>
               <b>LYNX Fiber Internet</b> is a private internet company providing
               fast and reliable fiber network services to far-flung areas in and
@@ -97,7 +99,7 @@
               class="youtube-btn"
               data-video="https://www.youtube.com/watch?v=t2hMU98dM8Y"
             >
-              <span class="play-icon">▶</span> Getting Started
+              <span class="play-icon">▶</span> Know More Here!
             </button>
           </div>
         </div>
@@ -109,47 +111,100 @@
       <div class="section-container">
         <h2>OUR TEAM</h2>
         <div class="team-grid">
-          <!-- Team member cards - placeholders -->
+          <!-- first team card -->
           <div class="team-card">
-            <div class="team-image">
-              <img
-                src="frontend/assets/images/aboutus/K2.jpg"
-                alt="Team Member 1"
-              />
+          <div class="card-inner">
+            <!-- Front side -->
+            <div class="card-front">
+              <div class="team-image">
+                <img src="frontend/assets/images/aboutus/K2.jpg" alt="Team Member 1" />
+              </div>
+              <h3>Angeline Kate E. Rezada</h3>
+              <p>Leader/Programmer</p>
             </div>
-            <h3>Angeline Kate E. Rezada</h3>
-            <p>Leader/Programmer</p>
+
+          <!-- Back side -->
+          <div class="card-back">
+            <h3>About Angeline</h3>
+            <span class="tap-me">Tap me</span>
+            <p class="typewriter-text" data-text="A dedicated team leader who 
+            finds joy in coding and leading group projects, making sure the team works 
+            together."></p>
           </div>
+
+          </div>
+          </div>
+
+          <!-- second team card -->
           <div class="team-card">
-            <div class="team-image">
-              <img
-                src="frontend/assets/images/aboutus/T.png"
-                alt="Team Member 2"
-              />
+          <div class="card-inner">
+            <!-- Front side -->
+            <div class="card-front">
+              <div class="team-image">
+                <img src="frontend/assets/images/aboutus/T.png" alt="Team Member 2" />
+              </div>
+              <h3>Troy Francis N. Mendoza</h3>
+              <p>Documenter</p>
             </div>
-            <h3>Troy Francis N. Mendoza</h3>
-            <p>Documenter</p>
+
+            <!-- Back side -->
+            <div class="card-back">
+            <h3>About Troy</h3>
+            <span class="tap-me">Tap me</span>
+            <p class="typewriter-text" data-text="A detail-oriented person who focuses 
+            on documenting group work, making sure reports are clear, organized, and 
+            easy for the team to use."></p>
           </div>
+
+          </div>
+          </div>
+
+          <!-- third team card -->
           <div class="team-card">
-            <div class="team-image">
-              <img
-                src="frontend/assets/images/aboutus/W.png"
-                alt="Team Member 3"
-              />
+          <div class="card-inner">
+            <!-- Front side -->
+            <div class="card-front">
+              <div class="team-image">
+                <img src="frontend/assets/images/aboutus/W.png" alt="Team Member 3" />
+              </div>
+              <h3>Wesley Joshua H. Perez</h3>
+              <p>Programmer</p>
             </div>
-            <h3>Wesley Joshua H. Perez</h3>
-            <p>Programmer</p>
+
+            <!-- Back side -->
+            <div class="card-back">
+            <h3>About Wesley</h3>
+            <span class="tap-me">Tap me</span>
+            <p class="typewriter-text" data-text="A hard-working member who enjoys coding 
+            and helping the team turn ideas into working projects through programming."></p>
           </div>
+
+          </div>
+          </div>
+
+          <!-- fourth team card -->
           <div class="team-card">
-            <div class="team-image">
-              <img
-                src="frontend/assets/images/aboutus/S.png"
-                alt="Team Member 4"
-              />
+          <div class="card-inner">
+            <!-- Front side -->
+            <div class="card-front">
+              <div class="team-image">
+                <img src="frontend/assets/images/aboutus/S.png" alt="Team Member 4" />
+              </div>
+              <h3>Sebastian Kean O. Paclaon</h3>
+              <p>Documenter/QA Tester</p>
             </div>
-            <h3>Sebastian Kean O. Paclaon</h3>
-            <p>Documenter/QA Tester</p>
+
+            <!-- Back side -->
+            <div class="card-back">
+            <h3>About Sebastian</h3>
+            <span class="tap-me">Tap me</span>
+            <p class="typewriter-text" data-text="A student who checks the project 
+            carefully, testing for errors and helping the team improve the quality of the 
+            final output."></p>
           </div>
+
+          </div>
+        </div>
         </div>
       </div>
     </section>
@@ -191,6 +246,26 @@
           </div>
         </div>
       </div>
+    </section>
+
+    <!-- animation-->
+    <section class="page_404">
+	  <div class="container">
+      <div class="row">	
+        <div class="col-sm-12 ">
+          <div class="col-sm-10 col-sm-offset-1  text-center">
+      <div class="four_zero_four_bg">
+        <h1 class="title"></h1>			
+		  </div>
+		
+		<div class="contant_box_404">
+		<h3 class="h2"> You've reached the end of the page. </h3>
+		<p class="animation_text">Thank you for taking the time to explore our team!</p>
+	  </div>
+		      </div>
+		    </div>
+		  </div>
+	  </div>
     </section>
 
     <!-- Chatbot iframe popup for the chatbase-->
@@ -235,18 +310,106 @@
       </div>
     </footer>
     <!--for youtube popup-->
-<div class="youtube-modal" id="youtubeModal">
-  <div class="youtube-content">
-    <span class="youtube-close" id="closeYoutube">&times;</span>
-    <iframe
-      id="youtubeIframe"
-      src=""
-      frameborder="0"
-      allow="autoplay; encrypted-media"
-      allowfullscreen
-    ></iframe>
-  </div>
-</div>
+    <div class="youtube-modal" id="youtubeModal">
+      <div class="youtube-content">
+        <span class="youtube-close" id="closeYoutube">&times;</span>
+        <iframe
+          id="youtubeIframe"
+          src=""
+          frameborder="0"
+          allow="autoplay; encrypted-media"
+          allowfullscreen
+        ></iframe>
+      </div>
     </div>
+    </div>
+
+    <!--for leaflet-->
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Center coordinates: Bilolo, Orion, Bataan
+        const orionCoords = [14.6133, 120.5639];
+
+        const map = L.map("map", {
+          center: orionCoords,
+          zoom: 16,  // Zoomed in
+          dragging: false,
+          zoomControl: false,
+          scrollWheelZoom: false,
+          doubleClickZoom: false,
+          boxZoom: false,
+          keyboard: false,
+          tap: false
+        });
+
+        // Add OpenStreetMap tiles
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+          attribution: "&copy; OpenStreetMap contributors"
+        }).addTo(map);
+
+        // Example cell tower locations
+        const cellTowers = [
+          { coords: [14.6230, 120.5810], name: "Tower 1" },
+          { coords: [14.6220, 120.5820], name: "Tower 2" },
+          { coords: [14.6240, 120.5830], name: "Tower 3" }
+        ];
+
+        cellTowers.forEach(tower => {
+          // Custom FontAwesome tower icon
+          const towerIcon = L.divIcon({
+      className: "cell-tower-icon",
+      html: '<i class="fa-solid fa-broadcast-tower" style="font-size:24px;color:#2a5c91;"></i>',
+      iconSize: [24, 24],
+      iconAnchor: [12, 12]
+    });
+
+
+          L.marker(tower.coords, { icon: towerIcon })
+            .addTo(map)
+            .bindPopup(tower.name);
+        });
+
+        // Optional: Add main marker for Bilolo
+        L.marker(orionCoords).addTo(map)
+          .bindPopup("Bilolo, Orion, Bataan")
+          .openPopup();
+    });
+    </script>
+
+    <!--for typewriting effect-->
+    <script>
+    document.querySelectorAll(".typewriter-text").forEach(el => {
+      const text = el.getAttribute("data-text");
+      let interval;
+
+      function startTyping() {
+        clearInterval(interval); 
+        el.textContent = ""; // reset text
+        let i = 0;
+        interval = setInterval(() => {
+          el.textContent += text[i];
+          i++;
+          if (i === text.length) clearInterval(interval);
+        }, 80); // typing speed
+      }
+
+      // Desktop hover
+      el.parentElement.addEventListener("mouseenter", startTyping);
+      el.parentElement.addEventListener("mouseleave", () => {
+        el.textContent = "";
+        clearInterval(interval);
+      });
+
+      // Mobile flip (detect when card becomes visible again)
+      const observer = new MutationObserver(() => {
+        if (el.offsetParent !== null) { // element is visible
+          startTyping();
+        }
+      });
+
+      observer.observe(el.parentElement, { attributes: true, attributeFilter: ["style", "class"] });
+    });
+    </script>
+
   </body>
 </html>
