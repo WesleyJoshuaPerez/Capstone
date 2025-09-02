@@ -570,7 +570,7 @@ footer {
   }
   .service-card {
     position: relative;
-    left: 25px;
+    left: 18px;
     width: 300px;
   }
   .services-grid,
@@ -587,15 +587,21 @@ footer {
   }
   .team-card {
     position: relative;
-    right: 10px;
+    right: 20px;
     bottom: 45px;
     width: 330px;
   }
   .contant_box_404 p {
+    text-align: center;
     position: relative;
+    left: 10px;
+    right: 10px;
     font-size: 13px;
   }
   .contant_box_404 h3 {
+    text-align: center;
+    left: 10px;
+    right: 10px;
     position: relative;
     font-size: 16px;
   }
