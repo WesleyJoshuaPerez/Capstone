@@ -362,7 +362,6 @@ section h2::after {
   margin: 5px 0 20px;
 }
 
-
 /* Contact Info Section */
 .contact-info {
   background-color: #f9f9f9;
@@ -442,10 +441,6 @@ bottom: 40px;
   text-align: center;
   font-size: 20px;
 }
-
-/*another animation css*/
-
-
 
 /* Media Queries */
 @media (max-width: 950px) {

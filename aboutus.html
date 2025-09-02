@@ -347,29 +347,7 @@
           attribution: "&copy; OpenStreetMap contributors"
         }).addTo(map);
 
-        // Example cell tower locations
-        const cellTowers = [
-          { coords: [14.6230, 120.5810], name: "Tower 1" },
-          { coords: [14.6220, 120.5820], name: "Tower 2" },
-          { coords: [14.6240, 120.5830], name: "Tower 3" }
-        ];
-
-        cellTowers.forEach(tower => {
-          // Custom FontAwesome tower icon
-          const towerIcon = L.divIcon({
-      className: "cell-tower-icon",
-      html: '<i class="fa-solid fa-broadcast-tower" style="font-size:24px;color:#2a5c91;"></i>',
-      iconSize: [24, 24],
-      iconAnchor: [12, 12]
-    });
-
-
-          L.marker(tower.coords, { icon: towerIcon })
-            .addTo(map)
-            .bindPopup(tower.name);
-        });
-
-        // Optional: Add main marker for Bilolo
+        // optional: Add main marker for Bilolo
         L.marker(orionCoords).addTo(map)
           .bindPopup("Bilolo, Orion, Bataan")
           .openPopup();
