@@ -1,0 +1,224 @@
+.sms-container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 10px;
+  font-family: Arial, sans-serif;
+}
+.sms-table-wrapper {
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: auto;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: #fff;
+}
+.sms-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+  min-width: 0; /* Allows proper responsiveness */
+}
+.sms-table th {
+  background: #007bff;
+  color: white;
+  padding: 12px 8px;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  font-weight: bold;
+  white-space: nowrap; /* Prevent header text wrapping */
+}
+.sms-table td {
+  padding: 10px 8px;
+  border-bottom: 1px solid #eee;
+  word-wrap: break-word;
+  vertical-align: top;
+}
+.sms-table tr:hover {
+  background-color: #f8f9fa;
+}
+.message-cell {
+  max-width: 200px;
+  word-break: break-word;
+}
+.status-cell {
+  text-align: center;
+  font-weight: bold;
+}
+.status-delivered {
+  color: #28a745;
+}
+.status-pending {
+  color: #ffc107;
+}
+.status-failed {
+  color: #dc3545;
+}
+.no-data {
+  text-align: center;
+  color: #666;
+  padding: 20px;
+  font-style: italic;
+}
+.sms-highlight {
+  background: yellow;
+  padding: 0 2px;
+}
+
+/* Tablet responsiveness */
+@media screen and (max-width: 1024px) {
+  .sms-table {
+    font-size: 13px;
+  }
+  .sms-table th,
+  .sms-table td {
+    padding: 8px 6px;
+  }
+  .message-cell {
+    max-width: 180px;
+  }
+}
+
+/* Mobile responsiveness - horizontal scroll maintained */
+@media screen and (max-width: 768px) {
+  .sms-container {
+    padding: 8px;
+  }
+
+  .sms-table {
+    font-size: 12px;
+  }
+
+  .sms-table th,
+  .sms-table td {
+    padding: 8px 4px;
+  }
+
+  .message-cell {
+    max-width: 150px;
+  }
+
+  .sms-table th {
+    font-size: 11px;
+    padding: 10px 4px;
+  }
+}
+
+/* Card view for very small screens - shows ALL content */
+@media screen and (max-width: 480px) {
+  .sms-table-wrapper {
+    overflow-x: hidden;
+    max-height: none;
+    border: none;
+    box-shadow: none;
+    background: transparent;
+  }
+
+  .sms-table,
+  .sms-table thead,
+  .sms-table tbody,
+  .sms-table th,
+  .sms-table td,
+  .sms-table tr {
+    display: block;
+    width: 100%;
+  }
+
+  .sms-table thead tr {
+    position: absolute;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  .sms-table tr {
+    border: 1px solid #ddd;
+    margin-bottom: 12px;
+    padding: 15px;
+    border-radius: 10px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .sms-table td {
+    border: none;
+    position: relative;
+    padding: 10px 10px 10px 45%;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 14px; /* Restore readable font size */
+  }
+
+  .sms-table td:last-child {
+    border-bottom: none;
+  }
+
+  .sms-table td:before {
+    content: attr(data-label);
+    position: absolute;
+    left: 12px;
+    width: 40%;
+    padding-right: 10px;
+    white-space: nowrap;
+    font-weight: bold;
+    color: #007bff;
+    font-size: 13px;
+  }
+
+  /* Remove max-width constraints in card view */
+  .message-cell {
+    max-width: none;
+  }
+
+  /* Center status in card view but keep label */
+  .status-cell {
+    text-align: left;
+  }
+
+  .status-cell:before {
+    content: "Status:";
+  }
+}
+
+/* Extra small devices optimization */
+@media screen and (max-width: 360px) {
+  .sms-table td {
+    padding: 8px 8px 8px 50%;
+  }
+
+  .sms-table td:before {
+    width: 45%;
+    font-size: 12px;
+    left: 8px;
+  }
+
+  .sms-table tr {
+    padding: 12px;
+    margin-bottom: 10px;
+  }
+}
+
+/* Ensure horizontal scroll works well on medium screens */
+@media (min-width: 481px) and (max-width: 1024px) {
+  .sms-table-wrapper {
+    overflow-x: auto;
+  }
+
+  .sms-table {
+    min-width: 600px; /* Minimum width to contain all columns */
+  }
+}
+
+/* Accessibility improvements */
+@media (prefers-reduced-motion: no-preference) {
+  .sms-table tr {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .sms-table tr:active {
+    transform: scale(0.98);
+  }
+}

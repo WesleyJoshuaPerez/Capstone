@@ -608,7 +608,8 @@ body {
 }
 
 #addTechnicianBtn,
-#addNapboxBtn {
+#addNapboxBtn,
+#viewHistoryBtn {
   background-color: #3775b9;
   color: white;
   padding: 10px 20px;
