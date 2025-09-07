@@ -36,6 +36,7 @@ if ($action === 'fetch') {
     while ($row = $result->fetch_assoc()) {
         $technicians[] = [
             "id" => $row["technician_id"],
+            "username" => $row["username"],
             "name" => $row["name"],
             "role" => $row["role"],
             "contact" => $row["contact"],

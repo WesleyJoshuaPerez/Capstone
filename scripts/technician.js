@@ -867,6 +867,7 @@ function viewTechnicianInfo(technicianId) {
                    style="width:100%; height:auto; object-fit:cover; margin-bottom:10px; cursor: pointer;" 
                    onerror="this.onerror=null; this.src='frontend/assets/images/uploads/default_profile.jpg';"
                    onclick="viewImage(this.src)">
+              <p><strong>Username:</strong> ${technician.username}</p>   
               <p><strong>Name:</strong> ${technician.name}</p>
               <p><strong>Contact:</strong> ${technician.contact}</p>
               <p><strong>Role:</strong> ${technician.role}</p>
