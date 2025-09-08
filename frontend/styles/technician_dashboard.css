@@ -447,7 +447,7 @@ body {
   #assignedTaskTable,
   #trackTaskTable {
     min-width: 300px;
-    width: auto;
+    width: 100%;
     font-size: 14px;
   }
 
@@ -491,7 +491,7 @@ body {
   #assignedTaskTable,
   #trackTaskTable {
     min-width: 300px;
-    width: auto;
+    width: 100%;
     font-size: 12px;
   }
 

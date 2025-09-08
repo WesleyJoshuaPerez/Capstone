@@ -519,7 +519,7 @@ body {
   #gcashPaymentApprovalTable,
   #boxslotTable {
     min-width: 300px;
-    width: auto;
+    width: 100%;
     font-size: 14px;
   }
 
@@ -530,7 +530,7 @@ body {
   #maintenance_reqTable th,
   #maintenance_reqTable td,
   #gcashPaymentApprovalTable th,
-  #gcashPaymentApprovalTablet td,
+  #gcashPaymentApprovalTable td,
   #technicianTable th,
   #technicianTable td,
   #changePlanTable th,
@@ -584,7 +584,7 @@ body {
   #gcashPaymentApprovalTable,
   #boxslotTable {
     min-width: 300px;
-    width: auto;
+    width: 100%;
     font-size: 12px;
   }
 
