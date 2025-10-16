@@ -371,8 +371,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // live validation for new password field
   newPasswordField.addEventListener("input", function () {
     if (!passwordRegex.test(newPasswordField.value)) {
-      newPasswordMessage.textContent =
-        "Min. of 8 characters and 1 number.";
+      newPasswordMessage.textContent = "Min. of 8 characters and 1 number.";
       newPasswordMessage.style.display = "block";
       newPasswordMessage.style.color = "red";
     } else {
@@ -383,21 +382,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // live validation for confirm password field
   confirmPasswordField.addEventListener("input", function () {
-  if (!confirmPasswordField.value || !newPasswordField.value) {
-    // hide message if either field is empty
-    confirmPasswordMessage.style.display = "none";
-    return;
-  }
+    if (!confirmPasswordField.value || !newPasswordField.value) {
+      // hide message if either field is empty
+      confirmPasswordMessage.style.display = "none";
+      return;
+    }
 
-  if (confirmPasswordField.value !== newPasswordField.value) {
-    confirmPasswordMessage.textContent = "Passwords do not match.";
-    confirmPasswordMessage.style.display = "block";
-    confirmPasswordMessage.style.color = "red";
-  } else {
-    confirmPasswordMessage.textContent = "Passwords match.";
-    confirmPasswordMessage.style.display = "block";
-    confirmPasswordMessage.style.color = "green";
-  }
+    if (confirmPasswordField.value !== newPasswordField.value) {
+      confirmPasswordMessage.textContent = "Passwords do not match.";
+      confirmPasswordMessage.style.display = "block";
+      confirmPasswordMessage.style.color = "red";
+    } else {
+      confirmPasswordMessage.textContent = "Passwords match.";
+      confirmPasswordMessage.style.display = "block";
+      confirmPasswordMessage.style.color = "green";
+    }
   });
 
   // handle change password button click
@@ -516,7 +515,25 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (planNameEl) planNameEl.textContent = `${plan.toUpperCase()} PLAN`;
       if (planPriceEl) planPriceEl.textContent = bill.toFixed(2);
       if (billingAmountEl) billingAmountEl.textContent = bill.toFixed(2);
-
+      // Update Pay Button based on bill amount (recommended by panel)
+      const payBtn = document.querySelector(".pay-btn");
+      if (payBtn) {
+        if (bill === 0) {
+          // Change button to green and update text when bill is 0
+          payBtn.textContent = "PAID";
+          payBtn.style.backgroundColor = "#28a745"; // Green color
+          payBtn.style.cursor = "not-allowed";
+          payBtn.disabled = true;
+          payBtn.style.pointerEvents = "none";
+        } else {
+          // Reset button to default state when bill is not 0
+          payBtn.textContent = "PAY NOW";
+          payBtn.style.backgroundColor = ""; // Reset to original color
+          payBtn.style.cursor = "pointer";
+          payBtn.disabled = false;
+          payBtn.style.pointerEvents = "auto";
+        }
+      }
       // Use next_due_date from backend, not calculated in JS
       if (data.next_due_date && dueDateEl) {
         const dueDate = new Date(data.next_due_date);
