@@ -80,17 +80,17 @@ try {
         
         // Insert approved user with due_date and reminder_sent
         $insertQuery = "INSERT INTO approved_user (
-            user_id, username, password, subscription_plan, currentbill, fullname, birth_date, address,
-            address_latitude, address_longitude, contact_number, email_address, id_type, id_number, 
-            id_photo, proof_of_residency, home_ownership_type, installation_date, registration_date, 
-            nap_box_id, due_date, reminder_sent, payment_status, account_status
+        user_id, username, password, subscription_plan, currentbill, fullname, birth_date, address,
+        address_latitude, address_longitude, contact_number, email_address, id_type, id_number, 
+        id_photo, proof_of_residency, home_ownership_type, installation_date, installation_time, registration_date, 
+        nap_box_id, due_date, reminder_sent, payment_status, account_status
         ) VALUES (
-            '$formattedUserId', '$username', '$hashedPassword', '{$user['subscription_plan']}', '$currentBill', '$fullname', 
-            '{$user['birth_date']}', '$address', '{$user['address_latitude']}', '{$user['address_longitude']}',
-            '{$user['contact_number']}', '{$user['email_address']}', '{$user['id_type']}', '{$user['id_number']}',
-            '{$user['id_photo']}', '{$user['proof_of_residency']}', '{$user['home_ownership_type']}',
-            '{$user['installation_date']}', NOW(), '$nap_box_id', '$initialDueDate', 0, 'unpaid', 'active'
-        )";
+        '$formattedUserId', '$username', '$hashedPassword', '{$user['subscription_plan']}', '$currentBill', '$fullname', 
+        '{$user['birth_date']}', '$address', '{$user['address_latitude']}', '{$user['address_longitude']}',
+        '{$user['contact_number']}', '{$user['email_address']}', '{$user['id_type']}', '{$user['id_number']}',
+        '{$user['id_photo']}', '{$user['proof_of_residency']}', '{$user['home_ownership_type']}',
+        '{$user['installation_date']}', '{$user['installation_time']}', NOW(), '$nap_box_id', '$initialDueDate', 0, 'unpaid', 'active'
+)";
 
         if (!$conn->query($insertQuery)) {
             throw new Exception("Failed to insert into approved_user: " . $conn->error);
@@ -108,7 +108,7 @@ try {
         $conn->commit();
 
         // Send approval email
-        sendApprovalEmail($user['email_address'], $username, $plainPassword, $initialDueDate);
+        sendApprovalEmail($user['email_address'], $username, $plainPassword, $user['installation_date'], $user['installation_time'], $initialDueDate);
         
         echo json_encode([
             "success" => true, 
@@ -140,7 +140,7 @@ try {
 
 $conn->close();
 
-function sendApprovalEmail($email, $username, $plainPassword, $dueDate = null) {
+function sendApprovalEmail($email, $username, $plainPassword, $installationDate, $installationTime, $dueDate = null) {
     $mail = new PHPMailer(true);
     try {
         $mail->isSMTP();
@@ -173,6 +173,8 @@ function sendApprovalEmail($email, $username, $plainPassword, $dueDate = null) {
                     <h4>Your Account Details:</h4>
                     <p><b>Username:</b> $username</p>
                     <p><b>Temporary Password:</b> $plainPassword</p>
+                    <p><b>Installation Date:</b> $installationDate</p>
+                    <p><b>Preferred Time:</b> $installationTime</p>
                     $dueDateInfo
                 </div>
                 
@@ -180,8 +182,10 @@ function sendApprovalEmail($email, $username, $plainPassword, $dueDate = null) {
                     <p><strong>Important:</strong></p>
                     <ul>
                         <li>Please change your password after logging in</li>
-                        <li>Your first bill will be generated based on your installation date</li>
-                        <li>You can pay online or visit our office</li>
+                        <li>Your installation is scheduled based on your selected date and time.</li>
+                        <li>Don’t worry if you see an initial bill — it will reset to ₱0 once your installation is completed.</li>
+                        <li>Your actual billing cycle will begin after installation, and your due date will automatically adjust based on your installation date.</li>
+                        <li>You can pay online or visit our office for payments and inquiries.</li>
                     </ul>
                 </div>
                 

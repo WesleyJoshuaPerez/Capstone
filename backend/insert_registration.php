@@ -27,6 +27,7 @@ $province = $_POST['province'];
 $municipality = $_POST['municipality'];
 $barangay = $_POST['barangay'];
 $installation_date = !empty($_POST['installation-date']) ? date('Y-m-d', strtotime($_POST['installation-date'])) : NULL; // Convert date
+$installation_time = $_POST['installation-time'] ?? NULL;
 
 // Retrieve the address details if needed
 $address_details = $_POST['address_details'] ?? "";
@@ -64,17 +65,17 @@ $sql = "INSERT INTO registration_acc (
     subscription_plan, first_name, last_name, contact_number, email_address, 
     birth_date, id_type, id_number, id_photo, home_ownership_type, 
     province, municipality, barangay, proof_of_residency,
-    installation_date, terms_agreed, data_processing_consent, id_photo_consent,
+    installation_date, installation_time, terms_agreed, data_processing_consent, id_photo_consent,
     address_latitude, address_longitude
-) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 $stmt = $conn->prepare($sql);
 $stmt->bind_param(
-    "ssssssssssssssssssss", 
+    "sssssssssssssssssssss", 
     $subscription_plan, $first_name, $last_name, $contact_number, $email_address, 
     $birth_date, $id_type, $id_number, $id_photo_filename, $home_ownership_type, 
     $province, $municipality, $barangay, $proof_of_residency_filename, 
-    $installation_date, $terms_agreed, $data_processing_consent, $id_photo_consent, 
+    $installation_date, $installation_time, $terms_agreed, $data_processing_consent, $id_photo_consent, 
     $latitude, $longitude
 );
 

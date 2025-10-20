@@ -519,12 +519,26 @@ function fetchAssignedClients(technicianId) {
         let clientList = data.clients
           .map(function (client) {
             return `
-           <div style="padding: 10px; border-bottom: 1px solid #ccc; text-align: left;">
-           <strong>Name:</strong> ${client.full_name} <br>
-           <strong>Issue:</strong> ${client.issue_type} <br>
-           <strong>Status:</strong> ${client.status}
-           </div>
-             `;
+      <div style="padding: 10px; border-bottom: 1px solid #ccc; text-align: left;">
+        <strong>Name:</strong> ${client.full_name} <br>
+        <strong>Issue:</strong> ${client.issue_type} <br>
+        <strong>Status:</strong> ${client.status} <br>
+        <strong>Latest Progress:</strong> ${
+          client.progress_update || "No progress yet"
+        } <br>
+        <strong>Work Done:</strong> ${client.work_done || "N/A"} <br>
+        <strong>Time Spent:</strong> ${
+          client.time_spent_in_hour
+            ? client.time_spent_in_hour + " hr(s)"
+            : "N/A"
+        } <br>
+        <small><em>${
+          client.submitted_at
+            ? "Updated on " + client.submitted_at + " by " + client.submitted_by
+            : ""
+        }</em></small>
+      </div>
+    `;
           })
           .join("");
 

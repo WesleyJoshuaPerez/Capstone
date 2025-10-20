@@ -2,8 +2,7 @@
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-include 'connectdb.php'; 
-
+include 'connectdb.php';
 header('Content-Type: application/json');
 
 if (!isset($_GET['technician_id'])) {
@@ -14,12 +13,8 @@ if (!isset($_GET['technician_id'])) {
 $technician_id = intval($_GET['technician_id']);
 $countOnly = isset($_GET['count']) && $_GET['count'] === 'true';
 
-// Retrieve technician name from lynx_technicians table
+// Retrieve technician name
 $stmt = $conn->prepare("SELECT name FROM lynx_technicians WHERE technician_id = ?");
-if (!$stmt) {
-    echo json_encode(['success' => false, 'error' => 'Failed to prepare statement: ' . $conn->error]);
-    exit;
-}
 $stmt->bind_param("i", $technician_id);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -33,27 +28,49 @@ if (!$technician) {
 $technician_name = $technician['name'];
 
 if ($countOnly) {
-  // Count total maintenance requests for this technician (excluding Completed)
-$stmt = $conn->prepare("SELECT COUNT(*) AS total_clients FROM maintenance_requests WHERE technician_name = ? AND status NOT IN ('Completed', 'Viewed')");
-    if (!$stmt) {
-        echo json_encode(['success' => false, 'error' => 'Failed to prepare count statement: ' . $conn->error]);
-        exit;
-    }
+    // Count total assigned requests
+    $stmt = $conn->prepare("
+        SELECT COUNT(*) AS total_clients 
+        FROM maintenance_requests 
+        WHERE technician_name = ? 
+          AND status NOT IN ('Completed', 'Viewed')
+    ");
     $stmt->bind_param("s", $technician_name);
     $stmt->execute();
     $result = $stmt->get_result();
     $row = $result->fetch_assoc();
-    
     echo json_encode(['success' => true, 'total_clients' => $row['total_clients']]);
     exit;
 }
 
-// Fetch detailed list of maintenance requests for this technician (excluding Completed)
-$stmt = $conn->prepare("SELECT maintenance_id, full_name, issue_type, status FROM maintenance_requests WHERE technician_name = ? AND status NOT IN ('Completed', 'Viewed')");
-if (!$stmt) {
-    echo json_encode(['success' => false, 'error' => 'Failed to prepare detail statement: ' . $conn->error]);
-    exit;
-}
+// Fetch maintenance requests + latest progress report (if any)
+$query = "
+    SELECT 
+        mr.maintenance_id,
+        mr.full_name,
+        mr.issue_type,
+        mr.status,
+        pr.progress_update,
+        pr.work_done,
+        pr.time_spent_in_hour,
+        pr.submitted_by,
+        pr.submitted_at
+    FROM maintenance_requests mr
+    LEFT JOIN progress_reports pr 
+        ON mr.full_name = pr.client_name 
+        AND mr.issue_type = pr.issue_type
+        AND pr.submitted_at = (
+            SELECT MAX(pr2.submitted_at)
+            FROM progress_reports pr2
+            WHERE pr2.client_name = mr.full_name 
+              AND pr2.issue_type = mr.issue_type
+        )
+    WHERE mr.technician_name = ?
+      AND mr.status NOT IN ('Completed', 'Viewed')
+    ORDER BY mr.maintenance_id DESC
+";
+
+$stmt = $conn->prepare($query);
 $stmt->bind_param("s", $technician_name);
 $stmt->execute();
 $result = $stmt->get_result();

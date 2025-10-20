@@ -10,7 +10,7 @@ if ($conn->connect_error) {
 }
 
 // Query to select only approved applications
-$sql = "SELECT id, subscription_plan, first_name, last_name, contact_number, email_address, birth_date, id_type, id_number, id_photo, home_ownership_type, province, municipality, barangay, proof_of_residency, installation_date, registration_date 
+$sql = "SELECT id, subscription_plan, first_name, last_name, contact_number, email_address, birth_date, id_type, id_number, id_photo, home_ownership_type, province, municipality, barangay, proof_of_residency, installation_date,installation_time, registration_date 
         FROM registration_acc 
         WHERE status = 'Pending'"; // Filtering by status
 

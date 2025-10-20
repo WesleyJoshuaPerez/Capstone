@@ -346,19 +346,31 @@ while ($row = $result->fetch_assoc()) {
     // Use database due_date as the authoritative source
     $currentDueDate = $row['due_date'];
     
-    // Initialize due_date if not set (first time setup)
-    if (empty($currentDueDate) || $currentDueDate === '0000-00-00') {
-        $installDate = new DateTime($row['installation_date']);
+   // Initialize due_date only after installation date
+   if (empty($currentDueDate) || $currentDueDate === '0000-00-00') {
+    $installDate = new DateTime($row['installation_date']);
+    $todayDate = new DateTime($today);
+
+    // Only set the first due_date once installation is done or today >= installation_date
+    if ($todayDate >= $installDate) {
+        // Set due date 1 month after installation
         $installDate->add(new DateInterval('P1M'));
         $currentDueDate = $installDate->format('Y-m-d');
-        
-        // Update the database with this calculated date
-        $updateDueDateSQL = "UPDATE approved_user SET due_date = ? WHERE user_id = ?";
+
+        // Update database
+        $updateDueDateSQL = "UPDATE approved_user SET due_date = ?, currentBill = ?, payment_status = 'unpaid', reminder_sent = 0 WHERE user_id = ?";
         $stmt = $conn->prepare($updateDueDateSQL);
-        $stmt->bind_param("si", $currentDueDate, $row['user_id']);
+        $stmt->bind_param("sdi", $currentDueDate, $originalPrice, $row['user_id']);
         $stmt->execute();
         $stmt->close();
+
+        error_log("First billing created for user_id {$row['user_id']} — due: {$currentDueDate}");
+    } else {
+        // Installation not yet done — skip billing setup
+        error_log("Skipping billing setup for user_id {$row['user_id']} (installation date not reached)");
+        continue; // Skip this user for now
     }
+}
 
     $lastPayment = $row['last_payment_date'] ?? null;
     $paymentStatus = $row['payment_status'];
@@ -419,8 +431,11 @@ while ($row = $result->fetch_assoc()) {
     // Send reminder only if there's an outstanding bill and we haven't sent a reminder yet
     $hasOutstandingBill = ($row['currentBill'] > 0 && $row['payment_status'] === 'unpaid');
     $reminderNotSent = (intval($row['reminder_sent'] ?? 0) === 0);
-    
     if ($hasOutstandingBill && $reminderNotSent) {
+        // Only send SOA after installation date
+        if (strtotime($today) < strtotime($row['installation_date'])) {
+        error_log("Skipping SOA for user_id {$row['user_id']} — installation not yet done ({$row['installation_date']})");
+    } else {
         $dueDateFormatted = date('m/d/Y', strtotime($currentDueDate));
         $amountDue = number_format($row['currentBill'], 2);
         $fullName = trim($firstName . ' ' . $lastName);
@@ -441,7 +456,7 @@ while ($row = $result->fetch_assoc()) {
             error_log("Notification sending failed for user_id {$row['user_id']}");
         }
     }
-
+}
     // Build subscriber array
     $subscriber = [
         "id" => $row["user_id"],

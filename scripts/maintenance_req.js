@@ -38,12 +38,12 @@ function fetchMaintenancereq() {
                 let tr = document.createElement("tr");
                 tr.innerHTML = `
                   <td>${row.maintenance_id}</td>
-                  <td>${row.technician_name || "N/A"}</td>
-                  <td>${row.full_name}</td>
-                  <td>${row.contact_number}</td>
+                  <td>${row.status}</td>     
                   <td>${row.issue_type}</td>
+                  <td>${row.technician_name || "N/A"}</td>
+                  <td>${row.user_id}</td>
+                  <td>${row.full_name}</td>
                   <td>${row.submitted_at}</td>
-                  <td>${row.status}</td>
                 `;
                 tr.setAttribute(
                   "data-maintenance_request",
@@ -80,8 +80,8 @@ function attachMaintenanceRowClickEvent() {
         maintenance_request.status === "Ongoing";
 
       Swal.fire({
-  title: `Maintenance ID: ${maintenance_request.maintenance_id}`,
-  html: `
+        title: `Maintenance ID: ${maintenance_request.maintenance_id}`,
+        html: `
     <style>
       @media (max-width: 768px) {
         .swal-content-custom {

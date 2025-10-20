@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", function () {
       historyDiv.style.display = "block";
 
       // Get user ID from PHP (session-based)
-      const userId = document.getElementById("userId")?.value || null; // Ensure userId is retrieved from a hidden input field
+      const userId = document.getElementById("userId")?.value || null;
 
       if (!userId) {
         console.error("User ID is missing. Cannot fetch billing history.");
@@ -79,6 +79,13 @@ document.addEventListener("DOMContentLoaded", function () {
         );
         return;
       }
+
+      // Plan prices
+      const planPrices = {
+        Bronze: 1199,
+        Silver: 1499,
+        Gold: 1799,
+      };
 
       // Fetch paid payments for this user
       fetch(
@@ -96,11 +103,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
           if (Array.isArray(data) && data.length > 0) {
             data.forEach((payment) => {
+              // Determine the purpose dynamically
+              let purpose = "";
+              const planPrice = planPrices[payment.subscription_plan] || 0;
+
+              if (payment.paid_amount == planPrice) {
+                purpose = "Plan Payment";
+              } else if (payment.paid_amount > planPrice) {
+                purpose = "Plan Payment + Miscellaneous";
+              } else if (planPrice > 0 && payment.paid_amount < planPrice) {
+                purpose = "Miscellaneous Fee"; // Treat smaller amounts as only miscellaneous
+              } else {
+                purpose = "Miscellaneous Fee";
+              }
+
               const row = document.createElement("tr");
               row.innerHTML = `
               <td>${payment.payment_id}</td>
               <td>${payment.fullname}</td>
-              <td>${payment.subscription_plan}</td>
+              <td>${purpose}</td> <!-- Purpose column -->
               <td>${payment.mode_of_payment}</td>
               <td>₱${payment.paid_amount}</td>
               <td>${payment.payment_date}</td>
@@ -110,7 +131,7 @@ document.addEventListener("DOMContentLoaded", function () {
           } else {
             // Handle empty data
             const row = document.createElement("tr");
-            row.innerHTML = `<td colspan="6" style="text-align: center;">No billing history available.</td>`;
+            row.innerHTML = `<td colspan="7" style="text-align: center;">No billing history available.</td>`; // colspan updated
             tbody.appendChild(row);
           }
         })
@@ -724,10 +745,8 @@ function loadNotifications() {
         Swal.fire("Error", result.message, "error");
         return;
       }
-
       const notifications = result.data || [];
       notificationTableBody.innerHTML = "";
-
       if (notifications.length === 0) {
         const row = document.createElement("tr");
         const cell = document.createElement("td");
@@ -737,18 +756,14 @@ function loadNotifications() {
         notificationTableBody.appendChild(row);
         return;
       }
-
       notifications.forEach((notif) => {
         const row = document.createElement("tr");
-
         const userIdCell = document.createElement("td");
         userIdCell.textContent = notif.user_id;
         row.appendChild(userIdCell);
-
         const fullNameCell = document.createElement("td");
         fullNameCell.textContent = notif.full_name || "N/A";
         row.appendChild(fullNameCell);
-
         const requestsCell = document.createElement("td");
         requestsCell.textContent =
           notif.type === "maintenance"
@@ -757,116 +772,166 @@ function loadNotifications() {
             ? "Change Plan Request"
             : "Payment Record";
         row.appendChild(requestsCell);
-
         row.dataset.notif = JSON.stringify(notif);
-
         row.addEventListener("click", function () {
           const data = JSON.parse(this.dataset.notif);
           let detailHtml = "";
-
           if (data.type === "maintenance") {
             let imageHtml = "";
             if (data.evidence_filename) {
               imageHtml = `
-                <div style="margin-top:10px; text-align:left;">
-                  <strong>Uploaded Evidence:</strong><br/>
-                  <img 
-                    src="frontend/assets/images/uploads/issue_evidence/${data.evidence_filename}" 
-                    alt="Evidence" 
-                    style="max-width: 100%; height: auto; border:1px solid #ccc; margin-top:5px;"
-                  />
+              <div style="margin-top:10px; text-align:left;">
+                <strong>Uploaded Evidence:</strong><br/>
+                <img 
+                  src="frontend/assets/images/uploads/issue_evidence/${data.evidence_filename}" 
+                  alt="Evidence" 
+                  style="max-width: 100%; height: auto; border:1px solid #ccc; margin-top:5px;"
+                />
+              </div>`;
+            }
+
+            // Build progress reports HTML
+            let progressHtml = "";
+            if (data.progress_reports && data.progress_reports.length > 0) {
+              progressHtml = `
+              <div style="margin-top:20px; padding-top:15px; border-top:2px solid #3085d6;">
+                <h4 style="color:#3085d6; margin:0 0 15px 0; font-size:18px; font-weight:600;">Progress Updates</h4>`;
+
+              data.progress_reports.forEach((progress, index) => {
+                progressHtml += `
+                <div style="background:#f8f9fa; padding:12px; margin-bottom:12px; border-left:4px solid #3085d6; text-align:left;">
+                  <p style="margin:5px 0; font-weight:600; color:#333;">Update #${
+                    data.progress_reports.length - index
+                  }: ${progress.progress_update}</p>
+                  <p style="margin:5px 0; color:#555;"><strong>Work Done:</strong> ${
+                    progress.work_done || "N/A"
+                  }</p>
+                  <p style="margin:5px 0; color:#555;"><strong>Time Spent:</strong> ${
+                    progress.time_spent_in_hour || 0
+                  } hour(s)</p>
+                  <p style="margin:5px 0; color:#555;"><strong>Submitted By:</strong> ${
+                    progress.submitted_by
+                  }</p>
+                  <p style="margin:5px 0; color:#777; font-size:13px;"><strong>Date:</strong> ${
+                    progress.submitted_at
+                  }</p>
                 </div>`;
+              });
+
+              progressHtml += `</div>`;
+            }
+
+            // Show important note only for pending/not yet approved requests
+            let importantNote = "";
+            const status = data.status?.toLowerCase();
+            if (
+              status === "pending" ||
+              status === "submitted" ||
+              status === "new"
+            ) {
+              importantNote = `
+              <p style="margin-top:15px; color:#dc3545; font-style:italic; font-size:14px;">
+                <strong>Important note:</strong> Please wait for the assigned technician to contact you after the approval of this request.
+              </p>`;
             }
 
             detailHtml = `
-              <p style="text-align:left;"><strong>Request ID:</strong> ${
+            <div style="text-align:left;">
+              <p style="margin:8px 0;"><strong>Request ID:</strong> ${
                 data.request_id
               }</p>
-              <p style="text-align:left;"><strong>Status:</strong> ${
+              <p style="margin:8px 0;"><strong>Status:</strong> ${
                 data.status
               }</p>
-              <p style="text-align:left;"><strong>Issue Type:</strong> ${
+              <p style="margin:8px 0;"><strong>Issue Type:</strong> ${
                 data.issue_type
               }</p>
-              <p style="text-align:left;"><strong>Description:</strong> ${
+              <p style="margin:8px 0;"><strong>Description:</strong> ${
                 data.issue_description
               }</p>
-              <p style="text-align:left;"><strong>Preferred Contact Time:</strong> ${
+              <p style="margin:8px 0;"><strong>Preferred Contact Time:</strong> ${
                 data.contact_time
               }</p>
-              <p style="text-align:left;"><strong>Technician:</strong> ${
+              <p style="margin:8px 0;"><strong>Technician:</strong> ${
                 data.technician_name || "N/A"
               }</p>
-              <p style="text-align:left;"><strong>Submitted At:</strong> ${
+              <p style="margin:8px 0;"><strong>Submitted At:</strong> ${
                 data.submitted_at
               }</p>
               ${imageHtml}
-              <p style="margin-top:10px;color:red;"><em>
-                Important note: Please wait for the assigned technician to contact you after the approval of this request.
-              </em></p>
-            `;
+              ${progressHtml}
+              ${importantNote}
+            </div>
+          `;
           } else if (data.type === "change_plan") {
             detailHtml = `
-              <p style="text-align:left;"><strong>Request ID:</strong> ${data.request_id}</p>
-              <p style="text-align:left;"><strong>Status:</strong> ${data.status}</p>
-              <p style="text-align:left;"><strong>Current Plan:</strong> ${data.current_plan}</p>
-              <p style="text-align:left;"><strong>New Plan:</strong> ${data.new_plan}</p>
-              <p style="text-align:left;"><strong>Price:</strong> ${data.price}</p>
-              <p style="text-align:left;"><strong>Changed At:</strong> ${data.changed_at}</p>
-              <p style="margin-top:10px; color:red;"><em>
-                Important note: Approval date serves as the new billing date, but not settling your payment 
+            <div style="text-align:left;">
+              <p style="margin:8px 0;"><strong>Request ID:</strong> ${data.request_id}</p>
+              <p style="margin:8px 0;"><strong>Status:</strong> ${data.status}</p>
+              <p style="margin:8px 0;"><strong>Current Plan:</strong> ${data.current_plan}</p>
+              <p style="margin:8px 0;"><strong>New Plan:</strong> ${data.new_plan}</p>
+              <p style="margin:8px 0;"><strong>Price:</strong> ${data.price}</p>
+              <p style="margin:8px 0;"><strong>Changed At:</strong> ${data.changed_at}</p>
+              <p style="margin-top:15px; color:#dc3545; font-style:italic; font-size:14px;">
+                <strong>Important note:</strong> Approval date serves as the new billing date, but not settling your payment 
                 to the last billing will hinder the start of new plan and billing date.
-              </em></p>
-            `;
+              </p>
+            </div>
+          `;
           } else if (data.type === "payment") {
             detailHtml = `
-              <p style="text-align:left;"><strong>Payment ID:</strong> ${
+            <div style="text-align:left;">
+              <p style="margin:8px 0;"><strong>Payment ID:</strong> ${
                 data.request_id
               }</p>
-              <p style="text-align:left;"><strong>Subscription Plan:</strong> ${
+              <p style="margin:8px 0;"><strong>Subscription Plan:</strong> ${
                 data.subscription_plan
               }</p>
-              <p style="text-align:left;"><strong>Mode of Payment:</strong> ${
+              <p style="margin:8px 0;"><strong>Mode of Payment:</strong> ${
                 data.mode_of_payment
               }</p>
-              <p style="text-align:left;"><strong>Paid Amount:</strong> ₱${
+              <p style="margin:8px 0;"><strong>Paid Amount:</strong> ₱${
                 data.paid_amount
               }</p>
-              <p style="text-align:left;"><strong>Payment Date:</strong> ${
+              <p style="margin:8px 0;"><strong>Payment Date:</strong> ${
                 data.payment_date
               }</p>
-              <p style="text-align:left;"><strong>Reference Number:</strong> ${
+              <p style="margin:8px 0;"><strong>Reference Number:</strong> ${
                 data.reference_number
               }</p>  
-       <p style="text-align:left;"><strong>Status:</strong> ${data.status}</p>
-        ${
-          data.proof_of_payment &&
-          (data.proof_of_payment.endsWith(".jpg") ||
-            data.proof_of_payment.endsWith(".jpeg") ||
-            data.proof_of_payment.endsWith(".png"))
-            ? `
-              <p style="text-align:left;"><strong>Proof of Payment:</strong></p>
-            <img 
-                src="backend/uploads/gcash_proofs/${data.proof_of_payment}" 
-                alt="Proof" 
-                style="max-width: 100%; height: auto; border:1px solid #ccc; margin-top:5px;" />`
-            : ``
-        }
-       
-            `;
-
+              <p style="margin:8px 0;"><strong>Status:</strong> ${
+                data.status
+              }</p>
+              ${
+                data.proof_of_payment &&
+                (data.proof_of_payment.endsWith(".jpg") ||
+                  data.proof_of_payment.endsWith(".jpeg") ||
+                  data.proof_of_payment.endsWith(".png"))
+                  ? `
+                    <p style="margin:8px 0;"><strong>Proof of Payment:</strong></p>
+                  <img 
+                      src="backend/uploads/gcash_proofs/${data.proof_of_payment}" 
+                      alt="Proof" 
+                      style="max-width: 100%; height: auto; border:1px solid #ccc; margin-top:5px;" />`
+                  : ``
+              }
+            </div>
+          `;
             if (data.status === "Denied" && data.admin_remarks) {
               detailHtml += `
-                <p style="text-align:left; color:red;"><strong>Admin Remarks:</strong> ${data.admin_remarks}</p>
-              `;
+              <p style="margin:8px 0; color:#dc3545;"><strong>Admin Remarks:</strong> ${data.admin_remarks}</p>
+            `;
             }
           }
-
           Swal.fire({
             title: "Request Details",
-            html: `<div style="max-height:400px; overflow-y:auto;">${detailHtml}</div>`,
+            html: `<div style="max-height:450px; overflow-y:auto; padding:10px;">${detailHtml}</div>`,
             icon: "info",
             confirmButtonText: "Close",
+            width: "600px",
+            customClass: {
+              popup: "request-details-popup",
+            },
           }).then(() => {
             const status = data.status?.toLowerCase();
             if (
@@ -889,7 +954,6 @@ function loadNotifications() {
             }
           });
         });
-
         notificationTableBody.appendChild(row);
       });
     })

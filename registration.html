@@ -51,9 +51,13 @@
   </head>
   <body>
     <h1>
-  <a href="index.html" style="display: inline-block;">
-  <img src="frontend/assets/images/logos/lynxlogoicon.png" alt="Lynx Logo" style="height:40px; vertical-align:middle" />
-  </a>
+      <a href="index.html" style="display: inline-block">
+        <img
+          src="frontend/assets/images/logos/lynxlogoicon.png"
+          alt="Lynx Logo"
+          style="height: 40px; vertical-align: middle"
+        />
+      </a>
       LYNX Fiber Internet Application Form
     </h1>
     <p>
@@ -149,7 +153,15 @@
             placeholder="YYYY-MM-DD"
             required
           />
-          <small style="display: block; color: #d70101; font-size: 0.85em; position: relative; bottom: 6px">
+          <small
+            style="
+              display: block;
+              color: #d70101;
+              font-size: 0.85em;
+              position: relative;
+              bottom: 6px;
+            "
+          >
             Note: Only users aged 18 and above can register or apply for a
             subscription.
           </small>
@@ -180,7 +192,15 @@
 
           <label for="id-photo">Upload Valid ID Photo</label>
           <input type="file" id="id-photo" name="id_photo" required />
-          <small style="display: block; color: #d70101; font-size: 0.85em; position: relative; bottom: 6px">
+          <small
+            style="
+              display: block;
+              color: #d70101;
+              font-size: 0.85em;
+              position: relative;
+              bottom: 6px;
+            "
+          >
             Note: Only files in JPG or PNG format are accepted.
           </small>
           <div class="button-container">
@@ -250,11 +270,19 @@
             name="proof_of_residency"
             required
           />
-          <small style="display: block; color: #d70101; font-size: 0.85em; position: relative; bottom: 6px">
+          <small
+            style="
+              display: block;
+              color: #d70101;
+              font-size: 0.85em;
+              position: relative;
+              bottom: 6px;
+            "
+          >
             Note: Only files in JPG or PNG format are accepted.
           </small>
 
-          <label for="installation-date">Installation Date</label>
+          <label for="installation-date">Preferred Installation Date</label>
           <input
             type="text"
             id="installation-date"
@@ -262,6 +290,19 @@
             placeholder="Please select a date"
             required
           />
+          <label for="installation-time">Preferred Installation Time</label>
+          <select id="installation-time" name="installation-time" required>
+            <option value="" disabled selected>Select installation time</option>
+            <option value="Morning (8:00 AM – 11:00 AM)">
+              Morning (8:00 AM – 11:00 AM)
+            </option>
+            <option value="Early Afternoon (1:00 PM – 3:00 PM)">
+              Early Afternoon (1:00 PM – 3:00 PM)
+            </option>
+            <option value="Late Afternoon (3:00 PM – 6:00 PM)">
+              Late Afternoon (3:00 PM – 6:00 PM)
+            </option>
+          </select>
 
           <div class="consent-container">
             <label class="checkbox-label">
