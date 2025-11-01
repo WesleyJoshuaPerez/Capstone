@@ -19,7 +19,7 @@ if (empty($newPassword)) {
     exit;
 }
 
-// Hash the new password using MD5 (Note: MD5 is not recommended for security reasons)
+// Hash the new password using MD5 
 $hashedNewPassword = md5($newPassword);
 
 // Prepare SQL statement to update password for the technician

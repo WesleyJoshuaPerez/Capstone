@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-require 'connectdb.php'; // Ensure you're connecting to the database
+require 'connectdb.php'; 
 
 // Get the technician ID from the POST request
 $input = json_decode(file_get_contents("php://input"), true);

@@ -382,7 +382,6 @@ while ($row = $result->fetch_assoc()) {
     // Only generate new bill if we've passed the due date AND no outstanding balance
     if ($isPastDueDate && $currentBill == 0) {
         // Time to generate a new bill and move to next billing cycle   
-     // MODIFIED: Handle late payments properly
       $currentDueDateObj = new DateTime($currentDueDate);
       $todayObj = new DateTime($today);
      

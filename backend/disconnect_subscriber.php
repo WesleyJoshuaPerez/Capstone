@@ -21,7 +21,7 @@ if (!isset($input['subscriberId'])) {
 
 $subscriberId = intval($input['subscriberId']);
 
-// Optional: Logically "terminate" account status and doesnt remove data on the database table
+// Use to logically "terminate" account status and doesnt remove data on the database table
 $stmt = $conn->prepare("UPDATE approved_user SET account_status = 'disconnected' WHERE user_id = ?");
 $stmt->bind_param("i", $subscriberId);
 

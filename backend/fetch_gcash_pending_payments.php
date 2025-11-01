@@ -1,6 +1,6 @@
 <?php
 // Database connection
-include('connectdb.php'); // Ensure this connects $conn (MySQLi)
+include('connectdb.php'); 
 
 // Set JSON response header
 header('Content-Type: application/json');

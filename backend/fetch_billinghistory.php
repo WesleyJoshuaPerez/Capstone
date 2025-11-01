@@ -9,7 +9,7 @@ if (!isset($_GET['user_id']) || empty($_GET['user_id'])) {
     exit;
 }
 
-$user_id = $_GET['user_id']; // Assuming user_id is a string
+$user_id = $_GET['user_id']; 
 
 // Prepare SQL statement
 $stmt = mysqli_prepare($conn, "SELECT * FROM payments WHERE user_id = ? AND status IN ('Paid', 'Viewed')");

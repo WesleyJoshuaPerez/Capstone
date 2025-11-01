@@ -16,7 +16,7 @@ if (!$api_key) {
     exit;
 }
 
-// Set a high limit (API max is usually 1000, check Semaphore docs for actual max)
+// Set a high limit  for api
 $limit = 1000;
 
 $ch = curl_init();

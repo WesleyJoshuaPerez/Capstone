@@ -1,5 +1,5 @@
 <?php
-require 'connectdb.php'; // Adjust if needed
+require 'connectdb.php'; // Database connection
 
 $data = json_decode(file_get_contents("php://input"), true);
 $barangay = strtoupper(trim($data['barangay'])); // Normalize for case-insensitive check

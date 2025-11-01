@@ -155,7 +155,7 @@ function generateQRCodeAndPaymentDetails($conn, $user_id)
         exit;
     }
 
-    // Static QR code URL (replace with actual QR code path if necessary)
+    // Static QR code URL 
     $qr_code_url = 'frontend/assets/images/qr/gcash_qrcode.jpg';
 
     echo json_encode([

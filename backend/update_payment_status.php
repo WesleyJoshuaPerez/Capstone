@@ -1,6 +1,6 @@
 <?php
 // Include database connection
-include('connectdb.php'); // Ensure this connects $conn (MySQLi)
+include('connectdb.php'); 
 date_default_timezone_set('Asia/Manila');
 // Set JSON response header
 header('Content-Type: application/json');
@@ -82,10 +82,10 @@ try {
         $userId = $row['user_id'];
         $currentDueDate = $row['due_date'];
 
-        // Process ISP payment correctly (don't advance due date)
+        // Process ISP payment correctly 
         $nextDueDate = processISPPayment($conn, $userId);
 
-        // Success response with current due date (unchanged)
+        // Success response with current due date  
         $response = [
             'status' => 'success', 
             'message' => 'Payment approved and status updated successfully.',
